@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="pdCol" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="35%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="500" height="450" rx="16" fill="#090d16"/>
+  <rect x="10" y="10" width="480" height="430" rx="12" fill="none" stroke="rgba(56, 189, 248, 0.15)" stroke-width="1.5"/>
+
+  <!-- Badge -->
+  <rect x="25" y="25" width="130" height="26" rx="6" fill="rgba(56, 189, 248, 0.1)" stroke="#38bdf8" stroke-width="1"/>
+  <text x="90" y="42" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="11" fill="#38bdf8" text-anchor="middle">SVEW-PD-25</text>
+  <text x="475" y="42" font-family="'Inter', sans-serif" font-weight="600" font-size="12" fill="#94a3b8" text-anchor="end">PILLAR DRILL (25 MM)</text>
+
+  <!-- Heavy Pillar Drill Center Alignment -->
+  <!-- Base Plate -->
+  <rect x="160" y="380" width="180" height="25" rx="4" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+  <rect x="150" y="405" width="200" height="15" rx="2" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <line x1="175" y1="392" x2="325" y2="392" stroke="#00f0ff" stroke-width="2"/>
+
+  <!-- Column Base Flange -->
+  <rect x="220" y="350" width="60" height="30" rx="3" fill="#334155" stroke="#475569" stroke-width="1.5"/>
+  <!-- Cylindrical Pillar Column -->
+  <rect x="230" y="100" width="40" height="250" fill="url(#pdCol)" stroke="#334155" stroke-width="1"/>
+  <!-- Rack gear on column -->
+  <line x1="267" y1="120" x2="267" y2="340" stroke="#94a3b8" stroke-width="2" stroke-dasharray="2,2"/>
+
+  <!-- Adjustable Working Table (Middle) -->
+  <rect x="220" y="240" width="60" height="40" rx="4" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+  <rect x="150" y="230" width="140" height="14" rx="2" fill="url(#pdCol)" stroke="#64748b" stroke-width="1"/>
+  <line x1="160" y1="237" x2="280" y2="237" stroke="#0f172a" stroke-width="2"/>
+  <!-- Table elevating crank handle -->
+  <circle cx="288" cy="260" r="5" fill="#f59e0b"/>
+  <line x1="288" y1="260" x2="305" y2="250" stroke="#f59e0b" stroke-width="2.5"/>
+
+  <!-- Drill Head Body (Top) -->
+  <rect x="190" y="70" width="130" height="75" rx="6" fill="#0f172a" stroke="#00e5ff" stroke-width="2"/>
+  <!-- Pulley / Belt Guard Top Cover -->
+  <path d="M185 70 L325 70 L315 45 L195 45 Z" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+  
+  <!-- Electric Motor at Rear of Head -->
+  <rect x="270" y="35" width="45" height="50" rx="4" fill="#0284c7" stroke="#38bdf8" stroke-width="1"/>
+
+  <!-- Spindle Quill & Feed Handle -->
+  <rect x="195" y="145" width="22" height="45" fill="url(#pdCol)" stroke="#475569" stroke-width="1"/>
+  <!-- Feed Lever Wheel -->
+  <circle cx="170" cy="110" r="8" fill="#475569"/>
+  <line x1="170" y1="90" x2="170" y2="130" stroke="#e2e8f0" stroke-width="2.5"/>
+  <line x1="150" y1="110" x2="190" y2="110" stroke="#e2e8f0" stroke-width="2.5"/>
+  <circle cx="170" cy="90" r="2.5" fill="#f59e0b"/>
+  <circle cx="170" cy="130" r="2.5" fill="#f59e0b"/>
+  <circle cx="150" cy="110" r="2.5" fill="#f59e0b"/>
+
+  <!-- Chuck & Drill bit directly over the table -->
+  <rect x="198" y="190" width="16" height="16" fill="#334155" stroke="#00e5ff" stroke-width="1"/>
+  <path d="M203 206 L209 206 L207 225 L206 230 L205 225 Z" fill="#f59e0b" stroke="#78350f" stroke-width="1"/>
+</svg>

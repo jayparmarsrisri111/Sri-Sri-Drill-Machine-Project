@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="rd65Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="60%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="col65" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="30%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="500" height="450" rx="16" fill="#080c14"/>
+  <rect x="10" y="10" width="480" height="430" rx="12" fill="none" stroke="rgba(245, 158, 11, 0.3)" stroke-width="1.5"/>
+
+  <!-- Badge -->
+  <rect x="25" y="25" width="135" height="26" rx="6" fill="rgba(245, 158, 11, 0.15)" stroke="#f59e0b" stroke-width="1"/>
+  <text x="92" y="42" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="11" fill="#f59e0b" text-anchor="middle">SVEW-RD-65</text>
+  <text x="475" y="42" font-family="'Inter', sans-serif" font-weight="600" font-size="12" fill="#fbbf24" text-anchor="end">CAPACITY: 65 MM (EXTRA HEAVY)</text>
+
+  <!-- Massive Base -->
+  <path d="M50 380 L460 380 L480 412 L30 412 Z" fill="#0f172a" stroke="#475569" stroke-width="2"/>
+  <rect x="50" y="355" width="410" height="28" rx="3" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <line x1="160" y1="368" x2="440" y2="368" stroke="#f59e0b" stroke-width="2.5"/>
+
+  <!-- Massive 320mm Column -->
+  <rect x="80" y="305" width="95" height="52" rx="6" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
+  <rect x="90" y="60" width="75" height="250" fill="url(#col65)" stroke="#334155" stroke-width="1.5"/>
+  <rect x="95" y="22" width="65" height="34" rx="4" fill="#0f2b66" stroke="#38bdf8" stroke-width="1.5"/>
+
+  <!-- Huge Box Table -->
+  <rect x="270" y="270" width="180" height="90" rx="4" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
+  <rect x="260" y="258" width="200" height="16" rx="2" fill="url(#col65)" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="270" y1="265" x2="450" y2="265" stroke="#0f172a" stroke-width="3"/>
+
+  <!-- Massive Radial Arm -->
+  <rect x="80" y="110" width="105" height="110" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <path d="M180 115 L470 130 L470 190 L180 205 Z" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="185" y="140" width="280" height="18" fill="url(#col65)"/>
+
+  <!-- Drill Head with MT-5 Spindle -->
+  <g transform="translate(320, 95)">
+    <rect x="0" y="0" width="125" height="130" rx="8" fill="#0b1120" stroke="#f59e0b" stroke-width="2"/>
+    <rect x="30" y="-48" width="68" height="50" rx="5" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.5"/>
+    
+    <circle cx="35" cy="45" r="9" fill="#334155" stroke="#00e5ff" stroke-width="1.5"/>
+    <circle cx="90" cy="45" r="9" fill="#334155" stroke="#00e5ff" stroke-width="1.5"/>
+
+    <!-- Large Star Wheel -->
+    <circle cx="62" cy="85" r="12" fill="#475569"/>
+    <line x1="62" y1="55" x2="62" y2="115" stroke="#e2e8f0" stroke-width="3.5"/>
+    <line x1="32" y1="85" x2="92" y2="85" stroke="#e2e8f0" stroke-width="3.5"/>
+
+    <!-- Heavy MT-5 Spindle Quill -->
+    <rect x="47" y="130" width="32" height="55" fill="url(#col65)" stroke="#475569" stroke-width="1.5"/>
+    <rect x="50" y="185" width="26" height="24" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+    <!-- Large Heavy Drill Bit -->
+    <path d="M55 209 L71 209 L67 260 L63 275 L59 260 Z" fill="#f59e0b" stroke="#78350f" stroke-width="1.5"/>
+  </g>
+</svg>

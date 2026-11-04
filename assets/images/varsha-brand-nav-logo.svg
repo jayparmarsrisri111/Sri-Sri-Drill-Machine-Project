@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 64" width="380" height="64">
+  <defs>
+    <linearGradient id="goldText" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="40%" stop-color="#fef08a"/>
+      <stop offset="100%" stop-color="#eab308"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f0ff"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <clipPath id="logoClip">
+      <circle cx="32" cy="32" r="28"/>
+    </clipPath>
+  </defs>
+
+  <!-- Circular Logo Emblem Image Clip -->
+  <g transform="translate(0, 0)">
+    <circle cx="32" cy="32" r="30" fill="#090d16" stroke="#00e5ff" stroke-width="2"/>
+    <image href="varsha-logo.png" x="4" y="4" width="56" height="56" clip-path="url(#logoClip)" preserveAspectRatio="xMidYMid slice"/>
+    <circle cx="32" cy="32" r="28" fill="none" stroke="rgba(0, 229, 255, 0.4)" stroke-width="1.5"/>
+  </g>
+
+  <!-- Typography -->
+  <g transform="translate(74, 0)">
+    <!-- Brand Title -->
+    <text x="0" y="27" font-family="'Space Grotesk', -apple-system, sans-serif" font-weight="800" font-size="21" letter-spacing="0.8" fill="#ffffff">
+      VARSHA <tspan fill="url(#cyanGrad)">BRAND</tspan>
+    </text>
+
+    <!-- Company Name -->
+    <text x="1" y="44" font-family="'Inter', sans-serif" font-weight="700" font-size="10.5" letter-spacing="2" fill="#94a3b8">
+      SHREE VARSHA ENGINEERING
+    </text>
+
+    <!-- Rajkot Tag -->
+    <text x="1" y="56" font-family="'Inter', sans-serif" font-weight="600" font-size="8.5" letter-spacing="1" fill="#38bdf8">
+      DRILL MACHINE MANUFACTURERS • RAJKOT
+    </text>
+  </g>
+</svg>

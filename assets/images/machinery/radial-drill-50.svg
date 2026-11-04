@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="rd50Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="60%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="bDark50" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#090d16"/>
+    </linearGradient>
+    <linearGradient id="col50" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="35%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background plate -->
+  <rect width="500" height="450" rx="16" fill="#090d16"/>
+  <rect x="10" y="10" width="480" height="430" rx="12" fill="none" stroke="rgba(0, 229, 255, 0.2)" stroke-width="1.5"/>
+
+  <!-- Machine Model Header Tag -->
+  <rect x="25" y="25" width="130" height="26" rx="6" fill="rgba(0, 229, 255, 0.1)" stroke="#00e5ff" stroke-width="1"/>
+  <text x="90" y="42" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="11" fill="#00e5ff" text-anchor="middle">SVEW-RD-50</text>
+  
+  <text x="475" y="42" font-family="'Inter', sans-serif" font-weight="600" font-size="12" fill="#38bdf8" text-anchor="end">CAPACITY: 50 MM (HEAVY DUTY)</text>
+
+  <!-- Heavy Base -->
+  <path d="M70 380 L440 380 L460 408 L50 408 Z" fill="url(#bDark50)" stroke="#475569" stroke-width="1.5"/>
+  <rect x="70" y="360" width="370" height="25" rx="3" fill="#1e293b" stroke="#3b82f6" stroke-width="1"/>
+  <line x1="160" y1="372" x2="420" y2="372" stroke="#00e5ff" stroke-width="2"/>
+
+  <!-- Thick Column -->
+  <rect x="95" y="315" width="80" height="48" rx="5" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+  <rect x="105" y="70" width="62" height="250" fill="url(#col50)" stroke="#334155" stroke-width="1"/>
+  
+  <!-- Elevating motor on top -->
+  <rect x="110" y="32" width="50" height="28" rx="4" fill="#1d4ed8" stroke="#60a5fa" stroke-width="1"/>
+
+  <!-- Extra heavy Box Table -->
+  <rect x="280" y="280" width="150" height="85" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <rect x="270" y="270" width="170" height="15" rx="2" fill="url(#col50)" stroke="#64748b" stroke-width="1"/>
+  <line x1="280" y1="277" x2="430" y2="277" stroke="#0f172a" stroke-width="2.5"/>
+
+  <!-- Heavy Arm Sleeve -->
+  <rect x="95" y="125" width="84" height="95" rx="6" fill="#1e293b" stroke="#00e5ff" stroke-width="1.5"/>
+
+  <!-- Arm Body -->
+  <path d="M175 130 L450 145 L450 195 L175 210 Z" fill="#1e293b" stroke="#2563eb" stroke-width="2"/>
+  <rect x="180" y="152" width="265" height="14" fill="url(#col50)"/>
+
+  <!-- Drill Headstock -->
+  <g transform="translate(310, 110)">
+    <rect x="0" y="0" width="110" height="115" rx="7" fill="#0f172a" stroke="#00e5ff" stroke-width="2"/>
+    <!-- Powerful Spindle Motor -->
+    <rect x="25" y="-45" width="60" height="46" rx="5" fill="#1e40af" stroke="#38bdf8" stroke-width="1"/>
+    
+    <!-- Heavy Gear Shift Controls -->
+    <circle cx="30" cy="40" r="8" fill="#334155" stroke="#f59e0b" stroke-width="1.5"/>
+    <circle cx="80" cy="40" r="8" fill="#334155" stroke="#f59e0b" stroke-width="1.5"/>
+
+    <!-- Star Feed Wheel -->
+    <circle cx="55" cy="75" r="11" fill="#475569"/>
+    <line x1="55" y1="50" x2="55" y2="100" stroke="#cbd5e1" stroke-width="3"/>
+    <line x1="30" y1="75" x2="80" y2="75" stroke="#cbd5e1" stroke-width="3"/>
+    <circle cx="55" cy="50" r="3" fill="#f59e0b"/>
+    <circle cx="55" cy="100" r="3" fill="#f59e0b"/>
+    <circle cx="30" cy="75" r="3" fill="#f59e0b"/>
+    <circle cx="80" cy="75" r="3" fill="#f59e0b"/>
+
+    <!-- MT-4 Spindle & Quill -->
+    <rect x="42" y="115" width="28" height="50" fill="url(#col50)" stroke="#334155" stroke-width="1"/>
+    <rect x="45" y="165" width="22" height="20" fill="#334155" stroke="#00e5ff" stroke-width="1"/>
+    <!-- Drill Bit with golden high-speed steel finish -->
+    <path d="M50 185 L62 185 L59 230 L56 242 L53 230 Z" fill="#f59e0b" stroke="#78350f" stroke-width="1"/>
+  </g>
+</svg>

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 110" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="drillMetalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="35%" stop-color="#38bdf8"/>
+      <stop offset="70%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+
+    <linearGradient id="cyanNeon" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f0ff"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+
+    <linearGradient id="goldAcc" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+
+    <linearGradient id="gearMetal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="50%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- Glow Filter -->
+    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- LOGO EMBLEM (Left side) -->
+  <g transform="translate(15, 8)">
+    <!-- Outer Gear Wheel -->
+    <circle cx="48" cy="48" r="42" fill="none" stroke="#1e293b" stroke-width="5"/>
+    <circle cx="48" cy="48" r="44" fill="none" stroke="url(#cyanNeon)" stroke-width="1.5" stroke-dasharray="4,6" opacity="0.8"/>
+    
+    <!-- Gear Teeth (8 precision industrial teeth) -->
+    <g fill="#334155" stroke="#00f0ff" stroke-width="0.75">
+      <rect x="44" y="2" width="8" height="8" rx="1.5" />
+      <rect x="44" y="86" width="8" height="8" rx="1.5" />
+      <rect x="2" y="44" width="8" height="8" rx="1.5" />
+      <rect x="86" y="44" width="8" height="8" rx="1.5" />
+      <rect x="16" y="16" width="8" height="8" rx="1.5" transform="rotate(45 20 20)"/>
+      <rect x="76" y="76" width="8" height="8" rx="1.5" transform="rotate(45 80 80)"/>
+      <rect x="16" y="76" width="8" height="8" rx="1.5" transform="rotate(-45 20 80)"/>
+      <rect x="76" y="16" width="8" height="8" rx="1.5" transform="rotate(-45 80 20)"/>
+    </g>
+
+    <!-- Inner Rotary Disc Background -->
+    <circle cx="48" cy="48" r="34" fill="#0b1120" stroke="#1e293b" stroke-width="2"/>
+
+    <!-- Stylized Drill Bit + 'V' Monogram Emblem -->
+    <!-- Left Wing of 'V' with drill flute groove -->
+    <path d="M26 26 L44 72 L48 72 L36 26 Z" fill="url(#drillMetalGrad)"/>
+    <path d="M26 26 L36 50 L42 26 Z" fill="#00f0ff" opacity="0.85"/>
+    <path d="M34 46 L45 72 L48 72 L41 46 Z" fill="#0284c7"/>
+
+    <!-- Right Wing of 'V' -->
+    <path d="M70 26 L52 72 L48 72 L60 26 Z" fill="url(#drillMetalGrad)"/>
+    <path d="M70 26 L60 50 L54 26 Z" fill="#0284c7" opacity="0.85"/>
+    <path d="M62 46 L51 72 L48 72 L55 46 Z" fill="#00f0ff"/>
+
+    <!-- Center Precision Drill Point / Cutting Chisel Apex -->
+    <polygon points="48,82 43,68 53,68" fill="url(#goldAcc)" filter="url(#neonGlow)"/>
+    <!-- Center Axis Crosshair Line -->
+    <line x1="48" y1="18" x2="48" y2="34" stroke="#00f0ff" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- Precision Calibration Ticks on Ring -->
+    <circle cx="48" cy="48" r="28" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="1,4"/>
+    
+    <!-- Central Accent Core -->
+    <circle cx="48" cy="48" r="4.5" fill="#f59e0b" filter="url(#neonGlow)"/>
+    <circle cx="48" cy="48" r="2" fill="#ffffff"/>
+  </g>
+
+  <!-- BRAND TYPOGRAPHY (Right side) -->
+  <g transform="translate(125, 0)">
+    <!-- Primary Brand Title: SHREE VARSHA -->
+    <text x="0" y="46" font-family="'Space Grotesk', 'Montserrat', 'Segoe UI', sans-serif" font-weight="800" font-size="33" letter-spacing="0.5" fill="#ffffff">
+      SHREE <tspan fill="url(#cyanNeon)">VARSHA</tspan>
+    </text>
+
+    <!-- Subtitle: ENGINEERING WORKS -->
+    <text x="2" y="72" font-family="'Space Grotesk', 'Inter', sans-serif" font-weight="700" font-size="14" letter-spacing="4.5" fill="#94a3b8">
+      ENGINEERING WORKS
+    </text>
+
+    <!-- Industrial Precision Tagline with Gold Pill -->
+    <g transform="translate(2, 82)">
+      <!-- Line separator with cyber notch -->
+      <line x1="0" y1="5" x2="16" y2="5" stroke="#f59e0b" stroke-width="2"/>
+      <text x="24" y="9" font-family="'Inter', sans-serif" font-weight="600" font-size="9.5" letter-spacing="1.5" fill="#38bdf8">
+        DRILL MACHINE MANUFACTURERS • ESTD. RAJKOT
+      </text>
+    </g>
+  </g>
+</svg>

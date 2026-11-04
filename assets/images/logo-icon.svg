@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="iconDrillMetal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="35%" stop-color="#38bdf8"/>
+      <stop offset="70%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+
+    <linearGradient id="iconCyanNeon" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f0ff"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+
+    <linearGradient id="iconGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+
+    <filter id="iconGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Dark Background Plate with Rounded Corners -->
+  <rect x="2" y="2" width="96" height="96" rx="20" fill="#0b1120" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- Outer Gear Wheel Structure -->
+  <circle cx="50" cy="50" r="42" fill="none" stroke="#1e293b" stroke-width="4"/>
+  <circle cx="50" cy="50" r="43" fill="none" stroke="url(#iconCyanNeon)" stroke-width="1.5" stroke-dasharray="3,5" opacity="0.85"/>
+  
+  <!-- Gear Teeth -->
+  <g fill="#334155" stroke="#00f0ff" stroke-width="0.75">
+    <rect x="46" y="5" width="8" height="7" rx="1.5" />
+    <rect x="46" y="88" width="8" height="7" rx="1.5" />
+    <rect x="5" y="46" width="7" height="8" rx="1.5" />
+    <rect x="88" y="46" width="7" height="8" rx="1.5" />
+    <rect x="18" y="18" width="7" height="7" rx="1.5" transform="rotate(45 22 22)"/>
+    <rect x="74" y="74" width="7" height="7" rx="1.5" transform="rotate(45 78 78)"/>
+    <rect x="18" y="74" width="7" height="7" rx="1.5" transform="rotate(-45 22 78)"/>
+    <rect x="74" y="18" width="7" height="7" rx="1.5" transform="rotate(-45 78 22)"/>
+  </g>
+
+  <!-- Drill Bit & 'V' Monogram Emblem -->
+  <path d="M28 28 L46 72 L50 72 L38 28 Z" fill="url(#iconDrillMetal)"/>
+  <path d="M28 28 L38 52 L44 28 Z" fill="#00f0ff" opacity="0.85"/>
+  <path d="M72 28 L54 72 L50 72 L62 28 Z" fill="url(#iconDrillMetal)"/>
+  <path d="M72 28 L62 52 L56 28 Z" fill="#0284c7" opacity="0.85"/>
+
+  <!-- High Precision Drill Point -->
+  <polygon points="50,83 45,70 55,70" fill="url(#iconGold)" filter="url(#iconGlow)"/>
+  <line x1="50" y1="20" x2="50" y2="35" stroke="#00f0ff" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Core Center Pivot -->
+  <circle cx="50" cy="50" r="4.5" fill="#f59e0b" filter="url(#iconGlow)"/>
+  <circle cx="50" cy="50" r="2" fill="#ffffff"/>
+</svg>
