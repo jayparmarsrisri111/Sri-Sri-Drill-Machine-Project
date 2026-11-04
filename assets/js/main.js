@@ -79,14 +79,18 @@ document.addEventListener('DOMContentLoaded', function () {
     if (modalMachineInput) modalMachineInput.value = machineName;
     if (modalMachineIdInput) modalMachineIdInput.value = machineId;
     modal.classList.add('active');
+    modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }
+  window.openQuoteModal = openModal;
 
   function closeModal() {
     if (!modal) return;
     modal.classList.remove('active');
+    modal.style.display = 'none';
     document.body.style.overflow = '';
   }
+  window.closeQuoteModal = closeModal;
 
   quoteBtns.forEach(btn => {
     btn.addEventListener('click', function (e) {
@@ -97,9 +101,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  if (modalClose) {
-    modalClose.addEventListener('click', closeModal);
-  }
+  // Attach close listener to all modal close triggers
+  document.querySelectorAll('.modal-close').forEach(closeBtn => {
+    closeBtn.addEventListener('click', function() {
+      const parentOverlay = this.closest('.modal-overlay');
+      if (parentOverlay) {
+        parentOverlay.classList.remove('active');
+        parentOverlay.style.display = 'none';
+        document.body.style.overflow = '';
+      } else {
+        closeModal();
+      }
+    });
+  });
 
   if (modal) {
     modal.addEventListener('click', function (e) {

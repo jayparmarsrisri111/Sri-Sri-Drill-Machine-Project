@@ -103,6 +103,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </p>
         </div>
 
+        <?php if (!empty($_GET['timeout'])): ?>
+            <div style="padding: 12px 16px; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 8px; color: #fbbf24; font-size: 13.5px; margin-bottom: 20px;">
+                🔒 Session expired due to inactivity. Please sign in again.
+            </div>
+        <?php endif; ?>
+        <?php if (!empty($_GET['logged_out'])): ?>
+            <div style="padding: 12px 16px; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: 8px; color: #34d399; font-size: 13.5px; margin-bottom: 20px;">
+                ✓ Successfully signed out from Factory Admin Portal.
+            </div>
+        <?php endif; ?>
+
         <?php if (!empty($errorMessage)): ?>
             <div style="padding: 12px 16px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; border-radius: 8px; color: #f87171; font-size: 13.5px; margin-bottom: 20px;">
                 <?= e($errorMessage) ?>

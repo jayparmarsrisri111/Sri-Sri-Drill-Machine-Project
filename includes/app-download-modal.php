@@ -107,6 +107,7 @@ function openAppDownloadModal() {
         document.body.style.overflow = 'hidden';
     }
 }
+window.openAppDownloadModal = openAppDownloadModal;
 
 function closeAppDownloadModal() {
     const modal = document.getElementById('appDownloadModal');
@@ -115,6 +116,7 @@ function closeAppDownloadModal() {
         document.body.style.overflow = '';
     }
 }
+window.closeAppDownloadModal = closeAppDownloadModal;
 
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('appDownloadModal');

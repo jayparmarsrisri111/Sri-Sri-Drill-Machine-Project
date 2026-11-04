@@ -40,6 +40,12 @@ $prefillCity = $custUser['city'] ?? 'Bhavnagar';
 $prefillPincode = $custUser['pincode'] ?? '364003';
 $prefillGst = $custUser['gstin'] ?? '24AAACS1234F1Z5';
 
+$rzpLogoUrl = assetUrl('assets/images/varsha-logo.png');
+// In case of localhost testing where external Razorpay iframe cannot fetch local HTTP images, point to public mirror
+if (strpos($rzpLogoUrl, 'localhost') !== false || strpos($rzpLogoUrl, '127.0.0.1') !== false) {
+    $rzpLogoUrl = 'https://varsha-drill-machines.onrender.com/assets/images/varsha-logo.png';
+}
+
 $pageTitle = 'Online Machine Booking & Tax Invoice | ' . BRAND_NAME;
 $pageDesc = 'Book your Varsha Brand Industrial Drill Machine online with Razorpay secure instant booking advance or full invoice payment.';
 $currentNav = 'checkout';
@@ -344,23 +350,25 @@ foreach ($products as $p) {
                     <input type="radio" name="payment_type" id="payTypeCustomAdvance" value="custom_advance" style="accent-color: var(--accent-cyan); width: 18px; height: 18px;">
                     <div style="flex: 1;">
                         <div style="font-weight: 700; color: #fff; font-size: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                            <span>Custom Online Advance (Up to ₹ 90,000)</span>
+                            <span>Custom Online Advance (Up to ₹ 4,00,000)</span>
                             <span style="color: #38bdf8; font-size: 16px; font-weight: 800;" id="customAdvanceDisplay">₹ 90,000</span>
                         </div>
                         <div style="font-size: 12px; color: var(--text-muted); margin: 4px 0 8px;">
-                            Pay custom advance booking online (up to ₹90,000). Remaining balance due upon delivery.
+                            Pay custom advance booking online (up to ₹4,00,000). Remaining balance due upon delivery.
                         </div>
                         <div id="customAdvanceBox" style="display: none; margin-top: 10px; padding: 10px 12px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px;">
                             <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
                                 <button type="button" class="btn-advance-chip" data-val="25000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 25,000</button>
                                 <button type="button" class="btn-advance-chip" data-val="50000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 50,000</button>
-                                <button type="button" class="btn-advance-chip" data-val="75000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 75,000</button>
-                                <button type="button" class="btn-advance-chip active-chip" data-val="90000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: #0284c7; border: 1px solid #38bdf8; color: #fff; cursor: pointer; font-weight: 700;">₹ 90,000 (Max Online Advance)</button>
+                                <button type="button" class="btn-advance-chip active-chip" data-val="90000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: #0284c7; border: 1px solid #38bdf8; color: #fff; cursor: pointer; font-weight: 700;">₹ 90,000</button>
+                                <button type="button" class="btn-advance-chip" data-val="150000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 1,50,000</button>
+                                <button type="button" class="btn-advance-chip" data-val="250000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 2,50,000</button>
+                                <button type="button" class="btn-advance-chip" data-val="400000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 4,00,000 (Max Advance)</button>
                             </div>
                             <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                                 <label style="font-size: 12px; color: #cbd5e1;">Or Enter Amount (₹):</label>
-                                <input type="number" id="inputCustomAdvance" min="5000" max="90000" step="1000" value="90000" class="form-control" style="max-width: 170px; height: 34px; font-size: 14px; font-weight: 700; color: #34d399; padding: 4px 10px;">
-                                <span style="font-size: 11px; color: #94a3b8;">(Min ₹5,000 - Max ₹90,000)</span>
+                                <input type="number" id="inputCustomAdvance" min="5000" max="400000" step="5000" value="90000" class="form-control" style="max-width: 170px; height: 34px; font-size: 14px; font-weight: 700; color: #34d399; padding: 4px 10px;">
+                                <span style="font-size: 11px; color: #94a3b8;">(Min ₹5,000 - Max ₹4,00,000)</span>
                             </div>
                         </div>
                     </div>
@@ -711,7 +719,7 @@ foreach ($products as $p) {
             return 25000;
         } else if (payTypeCustomAdvance && payTypeCustomAdvance.checked) {
             let val = parseFloat(inputCustomAdvance.value) || 90000;
-            if (val > 90000) val = 90000;
+            if (val > 400000) val = 400000;
             if (val < 5000) val = 5000;
             return val;
         } else {
@@ -719,7 +727,7 @@ foreach ($products as $p) {
         }
     }
 
-    // Quick chip handlers for custom advance up to ₹90,000
+    // Quick chip handlers for custom advance up to ₹4,00,000
     document.querySelectorAll('.btn-advance-chip').forEach(chip => {
         chip.addEventListener('click', function(e) {
             e.preventDefault();
@@ -741,7 +749,7 @@ foreach ($products as $p) {
     if (inputCustomAdvance) {
         inputCustomAdvance.addEventListener('input', function() {
             let val = parseFloat(this.value) || 0;
-            if (val > 90000) this.value = 90000;
+            if (val > 400000) this.value = 400000;
             if (payTypeCustomAdvance) payTypeCustomAdvance.checked = true;
             recalculate();
         });
@@ -805,7 +813,7 @@ foreach ($products as $p) {
             if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Booking Advance ₹25,000 (Razorpay)";
         } else if (payTypeCustomAdvance && payTypeCustomAdvance.checked && pType !== 'part') {
             let customVal = parseFloat(inputCustomAdvance.value) || 90000;
-            if (customVal > 90000) customVal = 90000;
+            if (customVal > 400000) customVal = 400000;
             if (customVal < 5000) customVal = 5000;
             payableNowNum = customVal;
             isAdvance = true;
@@ -1090,7 +1098,7 @@ foreach ($products as $p) {
                 "currency": "INR",
                 "name": "VARSHA BRAND",
                 "description": (isAdvance ? "Advance Booking (" + formatINR(payableAmount) + "): " : "Full Payment: ") + modelNumber + " (" + machineName + ")",
-                "image": "<?= assetUrl('assets/images/varsha-logo.png') ?>",
+                "image": "<?= $rzpLogoUrl ?>",
                 "prefill": {
                     "name": name,
                     "email": email,
@@ -1114,7 +1122,7 @@ foreach ($products as $p) {
                 }
             };
 
-            // Attach server-created order_id if available to unlock transactions up to ₹90,000+
+            // Attach server-created order_id if available to unlock transactions up to ₹4,00,000+
             if (serverOrderId && !serverOrderId.startsWith('order_svew_')) {
                 options.order_id = serverOrderId;
             }

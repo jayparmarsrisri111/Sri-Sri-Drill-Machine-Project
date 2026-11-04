@@ -193,8 +193,8 @@ try {
      ========================================================================== -->
 <div class="container" style="margin-top: 40px; margin-bottom: 25px;">
     <div class="catalog-cta-card" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(11, 17, 32, 0.9) 100%); border: 1.5px solid var(--border-cyan); border-radius: 16px; padding: 26px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 25px rgba(0,229,255,0.1);">
-        <div style="display: flex; align-items: center; gap: 18px;">
-            <div style="width: 58px; height: 58px; background: rgba(0, 229, 255, 0.1); border: 2px solid var(--accent-cyan); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent-cyan); flex-shrink: 0; box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);">
+        <div class="catalog-cta-info" style="display: flex; align-items: center; gap: 18px;">
+            <div class="catalog-cta-icon" style="width: 58px; height: 58px; background: rgba(0, 229, 255, 0.1); border: 2px solid var(--accent-cyan); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent-cyan); flex-shrink: 0; box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);">
                 <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
             </div>
             <div>
@@ -420,8 +420,8 @@ try {
         </div>
 
         <div class="features-grid">
-            <div class="feature-box">
-                <div class="feature-icon" style="color: #00e5ff;">
+            <div class="feature-box" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <div class="feature-icon" style="color: #00e5ff; margin: 0 auto 20px auto;">
                     <!-- Authentic Mechanical Industrial Gear -->
                     <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="3"/>
@@ -434,8 +434,8 @@ try {
                 </p>
             </div>
 
-            <div class="feature-box">
-                <div class="feature-icon" style="color: #38bdf8;">
+            <div class="feature-box" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <div class="feature-icon" style="color: #38bdf8; margin: 0 auto 20px auto;">
                     <!-- Heavy Industrial Base & Anvil Casting -->
                     <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M2 18h20v4H2zM4 18V8a2 2 0 012-2h12a2 2 0 012 2v10M7 6V4a1 1 0 011-1h8a1 1 0 011 1v2"/>
@@ -448,8 +448,8 @@ try {
                 </p>
             </div>
 
-            <div class="feature-box">
-                <div class="feature-icon" style="color: #34d399;">
+            <div class="feature-box" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <div class="feature-icon" style="color: #34d399; margin: 0 auto 20px auto;">
                     <!-- Precision Micrometer / Spindle Taper Tool -->
                     <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polygon points="12 2 15 8 12 14 9 8 12 2"/>
@@ -463,8 +463,8 @@ try {
                 </p>
             </div>
 
-            <div class="feature-box">
-                <div class="feature-icon" style="color: #fbbf24;">
+            <div class="feature-box" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <div class="feature-icon" style="color: #fbbf24; margin: 0 auto 20px auto;">
                     <!-- Centralized Pressure Oil Bath Lubrication -->
                     <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/>

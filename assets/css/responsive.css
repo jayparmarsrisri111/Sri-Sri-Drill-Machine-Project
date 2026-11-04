@@ -306,20 +306,71 @@ img, svg, video, canvas {
     padding-bottom: 95px !important;
   }
 
-  /* Catalog CTA banner on mobile */
+  /* Catalog CTA banner on mobile (Image 2 Fix) */
   .catalog-cta-card {
-    padding: 18px 16px !important;
+    padding: 22px 16px !important;
+    text-align: center !important;
+  }
+  .catalog-cta-info {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    gap: 14px !important;
+  }
+  .catalog-cta-icon {
+    margin: 0 auto !important;
+  }
+  .catalog-cta-info .pill-badge {
+    margin: 0 auto 8px auto !important;
+    display: inline-flex !important;
+  }
+  .catalog-cta-info h3 {
+    font-size: 18.5px !important;
+    line-height: 1.35 !important;
+    text-align: center !important;
+    margin: 6px 0 !important;
+  }
+  .catalog-cta-info p {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    text-align: center !important;
   }
   .catalog-cta-actions {
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
     gap: 10px !important;
+    margin-top: 8px !important;
   }
   .catalog-cta-actions .btn {
     width: 100% !important;
     justify-content: center !important;
     text-align: center !important;
+    padding: 12px 14px !important;
+    font-size: 13.5px !important;
+  }
+
+  /* Tech ticker bar mobile alignment (Image 2 top checklist) */
+  .tech-ticker-bar {
+    padding: 14px 10px !important;
+  }
+  .tech-ticker-list {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding: 0 10px !important;
+  }
+  .tech-ticker-item {
+    font-size: 12.5px !important;
+    gap: 10px !important;
+    line-height: 1.35 !important;
+  }
+  .tech-ticker-item svg {
+    width: 16px !important;
+    height: 16px !important;
+    flex-shrink: 0 !important;
   }
 
   /* Floating WhatsApp & Direct Call Buttons */
