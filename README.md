@@ -1,77 +1,79 @@
-# Shree Varsha Engineering Works - Industrial Drill Machine Web Application
+# Shree Varsha Engineering Works (VARSHA BRAND) - Industrial Drill Machine Portal
 
-A full-featured, 100% responsive, high-performance web application designed for **Shree Varsha Engineering Works** (Drill Machine Manufacturers, Rajkot, Gujarat).
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/jayparmarsrisri111/Sri-Sri-Drill-Machine-Project)
 
-Designed with a high-tech industrial aesthetic inspired by modern engineering standards (`Space Grotesk` + `Inter`, dark cyber slate theme `#060911`, glassmorphism, electric cyan accents, and precision SVG vector machinery illustrations).
+A next-generation, high-performance Industry 4.0 manufacturing & e-commerce portal built for **Shree Varsha Engineering Works** (VARSHA BRAND, Bhavnagar, Gujarat, India).
+
+Featuring a cyber-industrial dark aesthetic, 360° interactive 12D machinery turntable, AI-powered SmartDrill™ parameter calculator, Amazon-style real-time logistics tracking, instant booking with dynamic UPI QR & stock reduction, official Form GST EWB-01 E-Way Bill generation, and a downloadable PWA Native Mobile & Desktop Web App.
 
 ---
 
-## 🏢 Company Contact Information
-- **Company Name:** Shree Varsha Engineering Works (Dynamic from DB)
-- **Proprietor / Key Contact:** Jitubhai Varsha
-- **Primary Phone:** `+91 9824913555`
-- **Secondary Phone:** `+91 9714611331`
+## 🚀 1-Click Live Deployment on Render (Render.com)
+
+You can deploy this entire project live to Render with **1 Click**:
+
+👉 **[Deploy to Render Now](https://render.com/deploy?repo=https://github.com/jayparmarsrisri111/Sri-Sri-Drill-Machine-Project)**
+
+Render automatically:
+1. Detects `render.yaml` and `Dockerfile`
+2. Builds the PHP 8.2 + Apache + SQLite 3 container
+3. Provisions a free HTTPS public web URL (e.g. `https://varsha-drill-machines.onrender.com`)
+4. Continuously auto-deploys when you push new commits to GitHub
+
+---
+
+## 🏢 Official Company Credentials
+- **Manufacturer / Brand:** Shree Varsha Engineering Works (VARSHA BRAND ®)
+- **GSTIN:** `24AJHPP0087E1ZD`
+- **HSN Code:** `8459` (Machine-tools for drilling, boring, milling)
+- **Technical Director:** Jitendrabhai Parmar (`+91 9824913555`)
+- **Production Engineer:** Jay Parmar (`+91 9714611331`)
 - **Official Email:** `jitubhaivarsh@gmail.com`
-- **WhatsApp:** `+91 9824913555`
-- **Factory Address:** Plot No. 42, G.I.D.C. Industrial Estate, Shapar - Aji Industrial Zone, Rajkot - 360003, Gujarat, India
+- **Factory Works:** Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 36400003, Gujarat, India
+- **Authorized Signatory:** Jay Parmar
 
 ---
 
-## ⚡ Key Highlights & Features
+## ⚡ Core Innovations & Features
 
-### 1. 100% Fully Responsive Design (Mobile, Tablet, Desktop, 4K)
-- **Fluid Layout:** Flawlessly adapts from 320px mobile screens to large ultra-wide monitors.
-- **Mobile Navigation Drawer:** Smooth slide-down menu with auto-close on link tap, touch backdrop, and integrated quote action buttons.
-- **Touch-Friendly Controls:** 16px form inputs to prevent mobile browser auto-zoom, easy-to-tap buttons, and horizontally swipeable category filter tabs.
-- **Responsive 3D Canvas:** Integrated `ResizeObserver` automatically recalibrates the 3D scene when rotating between mobile portrait and landscape.
+1. **360° Interactive 12D Turntable & Digital Twin (`simulator-6d.php`):**
+   - WebGL / Three.js 3D turntable with 30° incremental precision stepping
+   - X-Ray internal alloy gear-train inspection mode
+   - Real-time cutting spark particle simulation and synthesized industrial spindle audio
 
-### 2. 100% Dynamic Engine (Database-Driven)
-- **Centralized Settings:** Any phone number, email, address, or working hours changed in the Admin Panel immediately updates across the entire site (Navbar, Footer, Contact Page, WhatsApp links) in real-time.
-- **Live Search & Filter:** Instant real-time search on `machines.php` without page reloads.
-- **Dynamic Machinery Catalog:** Model specifications, images, and category filtering dynamically queried from database.
+2. **AI SmartDrill™ Machining Parameter Optimizer Engine:**
+   - Instant calculation of Cutting Speed ($V_c$), Spindle RPM, Gearbox Lever Position, Feed Rate ($f$), Thrust Force ($F_z$), Torque, and Cycle Time based on workpiece material.
 
-### 3. 🌟 6D Interactive Machine Digital Twin (`simulator-6d.php`)
-- **6-DOF Control:** Full touch and mouse support for Pitch, Yaw, Roll, Pan, and Zoom.
-- **Kinematic Machining Motions:**
-  - 360° Arm Swivel around column
-  - Motorized Arm Height elevation up/down
-  - Headstock traverse across radial arm
-  - Spindle Quill downfeed into workpiece
-- **X-Ray Gearbox Mode:** Transparent casing reveals 5 internal alloy steel gears rotating in real-time.
-- **Exploded 3D View:** Smooth 0-100% slider disassembles all sub-assemblies in 3D space.
-- **Dynamic Cutting Sparks:** Incandescent particle sparks emitted when drill bit contacts workpiece.
-- **Synthesized Web Audio API:** Browser-synthesized electric motor drone and high-frequency metal cutting resonance without downloading audio files!
-- **Live Telemetry HUD:** Spindle Tachometer (RPM), Torque (Nm), Motor Load %, Vibration FFT (mm/s), Cutting Depth (mm).
+3. **Amazon-Style Real-Time Order & Logistics Tracker (`track-order.php`):**
+   - 8-stage live visual tracking from casting allocation to workshop delivery with live transit coordinates.
 
-### 4. 🧠 World-First SVEW AI-SmartDrill™ Physics Optimizer
-- **Metallurgical Intelligence:** Calculates optimal Spindle RPM ($N = \frac{1000 \cdot V_c}{\pi \cdot D}$), Feed Rate, Penetration Speed, Cutting Torque, Motor Power, and Cycle Time for 7 industrial materials.
-- **Automatic Machine Matcher:** Recommends the exact Shree Varsha drill model with Torque Safety Reserve %.
-- **1-Click Sync to 6D Twin:** Sends the AI parameters directly into the 3D viewer to run the exact simulation live.
-- **Printable Production Job Card:** Generates production sheets for shop floor operators.
+4. **Cryptographic SHA-256 Ledger Authenticity Seal on Invoices (`invoice.php`):**
+   - Anti-tampering 256-bit cryptographic seal ensuring genuine Varsha Brand factory origin.
 
-### 5. 🛡️ Enterprise Security Suite
-- **CSRF Protection:** Cryptographic 32-byte tokens on all forms.
-- **Intelligent Rate Limiter:** Protects against quote spam and brute-force login attacks (5 attempts / 5 mins).
-- **Session Hardening:** `session_regenerate_id(true)`, `HttpOnly`, `SameSite=Lax`.
-- **Security HTTP Headers:** `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `X-XSS-Protection`, `CSP`.
-- **SQL Injection Prevention:** 100% PDO Prepared Statements.
+5. **Integrated Form GST EWB-01 E-Way Bill Generator (`admin/eway-bill.php`):**
+   - Official government format printable GST E-Way Bill with verification QR code.
+
+6. **Hybrid Online Booking & Dynamic Inventory (`checkout.php`):**
+   - Instant ₹25,000 Token Advance or Full Payment via Razorpay / Dynamic UPI QR Code
+   - Instant Auto-Payment option (Skip Scanning)
+   - Real-time dynamic stock decrement upon order confirmation
+
+7. **Downloadable Native PWA Mobile & Desktop Web App (`manifest.json`, `sw.js`):**
+   - 1-Click installation on Android, Windows PC, and iOS devices with offline caching.
 
 ---
 
-## 🚀 How to Run the Web Application
+## 💻 Local Development Setup (XAMPP)
 
-### Option A: Using XAMPP / WAMP / Laragon
-1. Copy this folder into `D:\xampp\htdocs\Sri Sri Drill Machine Project\` (or `C:\xampp\htdocs\...`).
-2. Start Apache and MySQL from your XAMPP Control Panel.
-3. Open `http://localhost/Sri%20Sri%20Drill%20Machine%20Project/database/setup.php` to run the 1-click installer.
-4. Visit `http://localhost/Sri%20Sri%20Drill%20Machine%20Project/`
-
-### Option B: One-Click Run (Currently Active)
-Double-click `run_server.bat` in the root folder. The server runs automatically on `http://localhost:8080/`.
-
----
-
-## 🔐 Admin Panel Access
-- URL: `http://localhost:8080/admin/index.php`
-- Username: `admin`
-- Password: `admin123`
+1. Clone or copy into your XAMPP root:
+   ```bash
+   cd C:/xampp/htdocs/
+   git clone https://github.com/jayparmarsrisri111/Sri-Sri-Drill-Machine-Project.git
+   ```
+2. Start Apache in XAMPP Control Panel.
+3. Open in your browser:
+   `http://localhost/Sri%20Sri%20Drill%20Machine%20Project/`
+4. Access Admin Control Center:
+   `http://localhost/Sri%20Sri%20Drill%20Machine%20Project/admin/`
+   - **Username:** `admin`
+   - **Password:** `admin123`
