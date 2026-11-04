@@ -394,6 +394,132 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         }
 
         /* ==========================================================================
+           MOBILE & TABLET SCREEN RESPONSIVENESS (Flawless UX on all smartphones)
+           ========================================================================== */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px 8px 80px 8px;
+            }
+            .invoice-actions-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 12px 14px;
+            }
+            .invoice-actions-bar > div {
+                flex-direction: column;
+                width: 100%;
+                gap: 8px;
+            }
+            .btn-action {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+                padding: 10px 14px;
+            }
+            .invoice-paper {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-height: auto !important;
+                padding: 16px 12px !important;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            }
+            .inv-header {
+                flex-direction: column;
+                gap: 14px;
+                align-items: flex-start;
+                border-bottom: 1.5px solid #0f172a;
+                padding-bottom: 14px;
+                margin-bottom: 14px;
+            }
+            .company-branding {
+                flex-direction: row;
+                align-items: center;
+                gap: 12px;
+                width: 100%;
+            }
+            .company-logo-img {
+                width: 58px;
+                height: 58px;
+                flex-shrink: 0;
+                background: #ffffff;
+                padding: 2px;
+                border: 2px solid #0284c7;
+                border-radius: 50%;
+            }
+            .company-title {
+                font-size: 16.5px;
+                line-height: 1.25;
+            }
+            .invoice-title-block {
+                text-align: left;
+                width: 100%;
+                background: #f8fafc;
+                padding: 10px 12px;
+                border-radius: 6px;
+                border-left: 4px solid #0284c7;
+            }
+            .inv-meta-table {
+                text-align: left;
+                width: 100%;
+                margin-top: 6px;
+            }
+            .inv-meta-table td {
+                padding: 2px 4px;
+            }
+            .parties-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                padding: 12px;
+                margin-bottom: 16px;
+            }
+            .items-table-wrapper {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin-bottom: 18px;
+                border: 1px solid #e2e8f0;
+                border-radius: 6px;
+            }
+            .items-table {
+                min-width: 580px;
+                margin-bottom: 0;
+            }
+            .totals-section {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-bottom: 18px;
+            }
+            .sign-seal-row {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 20px;
+                margin-top: 20px;
+                padding-top: 16px;
+            }
+            .seal-box {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 8px;
+            }
+            .signature-box {
+                text-align: center;
+                width: 100%;
+            }
+            .signature-box .signature-line {
+                margin: 6px auto;
+            }
+            .crypto-proof-box {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+
+        /* ==========================================================================
            STRICT 1-PAGE A4 PRINT & PDF STYLES (Guaranteed Single Page Output)
            ========================================================================== */
         @page {
@@ -686,52 +812,54 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             </div>
         </div>
 
-        <!-- Items Table -->
-        <table class="items-table">
-            <thead>
-                <tr>
-                    <th style="width: 5%;">#</th>
-                    <th style="width: 45%;">Machinery Description &amp; Technical Specs</th>
-                    <th style="width: 12%;">HSN / SAC</th>
-                    <th style="width: 8%; text-align: center;">Qty</th>
-                    <th style="width: 15%; text-align: right;">Billed Amount (₹)</th>
-                    <th style="width: 15%; text-align: right;">Taxable Value (₹)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>
-                        <strong style="color: #0f172a; font-size: 13px;">
-                            <?= e($order['product_name']) ?>
-                        </strong>
-                        <div style="color: #0284c7; font-weight: 700; font-size: 11.5px; margin: 2px 0;">
-                            MODEL: <?= e($order['model_number']) ?> &nbsp;|&nbsp; BRAND: <?= BRAND_NAME ?>
-                        </div>
-                        <div style="font-size: 11px; color: #64748b; line-height: 1.35;">
-                            • Drilling Capacity: <?= e($order['drilling_capacity'] ?? 'Heavy Duty') ?><br>
-                            • Motor Drive: <?= e($order['motor_power'] ?? 'Standard 3-Phase') ?><br>
-                            • Grade-25 Cast Iron Hardened Column &amp; Arm Assembly
-                        </div>
+        <!-- Items Table (Responsive Scroll Wrapper for Mobile Screens) -->
+        <div class="items-table-wrapper">
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">#</th>
+                        <th style="width: 45%;">Machinery Description &amp; Technical Specs</th>
+                        <th style="width: 12%;">HSN / SAC</th>
+                        <th style="width: 8%; text-align: center;">Qty</th>
+                        <th style="width: 15%; text-align: right;">Billed Amount (₹)</th>
+                        <th style="width: 15%; text-align: right;">Taxable Value (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <strong style="color: #0f172a; font-size: 13px;">
+                                <?= e($order['product_name']) ?>
+                            </strong>
+                            <div style="color: #0284c7; font-weight: 700; font-size: 11.5px; margin: 2px 0;">
+                                MODEL: <?= e($order['model_number']) ?> &nbsp;|&nbsp; BRAND: <?= BRAND_NAME ?>
+                            </div>
+                            <div style="font-size: 11px; color: #64748b; line-height: 1.35;">
+                                • Drilling Capacity: <?= e($order['drilling_capacity'] ?? 'Heavy Duty') ?><br>
+                                • Motor Drive: <?= e($order['motor_power'] ?? 'Standard 3-Phase') ?><br>
+                                • Grade-25 Cast Iron Hardened Column &amp; Arm Assembly
+                            </div>
 
-                        <?php if ($isAdvance): ?>
-                            <div style="margin-top: 8px; padding: 6px 10px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 4px; font-size: 11.5px; color: #92400e;">
-                                <strong>★ ADVANCE PAYMENT CLAUSE:</strong> This invoice receipts the ₹ 25,000 token advance to lock production queue &amp; allocation of casting serial number.
-                                <br>Full Machine Price: <strong>₹ <?= number_format($order['machine_price'], 2) ?> (+18% GST = ₹ <?= number_format($fullMachineGross, 2) ?>)</strong>.
-                            </div>
-                        <?php else: ?>
-                            <div style="margin-top: 8px; padding: 6px 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px; font-size: 11.5px; color: #166534;">
-                                <strong>★ 100% PAID IN FULL:</strong> Full invoice value settled. Machine scheduled for direct freight dispatch.
-                            </div>
-                        <?php endif; ?>
-                    </td>
-                    <td>8459 29 10</td>
-                    <td style="text-align: center; font-weight: 700;">1 Unit</td>
-                    <td style="text-align: right;"><?= number_format($order['total_amount'], 2) ?></td>
-                    <td style="text-align: right; font-weight: 600;"><?= number_format($order['taxable_amount'], 2) ?></td>
-                </tr>
-            </tbody>
-        </table>
+                            <?php if ($isAdvance): ?>
+                                <div style="margin-top: 8px; padding: 6px 10px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 4px; font-size: 11.5px; color: #92400e;">
+                                    <strong>★ ADVANCE PAYMENT CLAUSE:</strong> This invoice receipts the ₹ 25,000 token advance to lock production queue &amp; allocation of casting serial number.
+                                    <br>Full Machine Price: <strong>₹ <?= number_format($order['machine_price'], 2) ?> (+18% GST = ₹ <?= number_format($fullMachineGross, 2) ?>)</strong>.
+                                </div>
+                            <?php else: ?>
+                                <div style="margin-top: 8px; padding: 6px 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px; font-size: 11.5px; color: #166534;">
+                                    <strong>★ 100% PAID IN FULL:</strong> Full invoice value settled. Machine scheduled for direct freight dispatch.
+                                </div>
+                            <?php endif; ?>
+                        </td>
+                        <td>8459 29 10</td>
+                        <td style="text-align: center; font-weight: 700;">1 Unit</td>
+                        <td style="text-align: right;"><?= number_format($order['total_amount'], 2) ?></td>
+                        <td style="text-align: right; font-weight: 600;"><?= number_format($order['taxable_amount'], 2) ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <!-- Totals & Terms Grid -->
         <div class="totals-section">
@@ -781,15 +909,16 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
 
         <!-- Official Seal and Authorized Signatory Row -->
         <div class="sign-seal-row">
-            <!-- Official Company Rubber Stamp / Sico -->
+            <!-- Official Company Rubber Stamp / Sico (શિકો) -->
             <div class="seal-box">
-                <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand Official Seal Stamp" class="seal-image" style="border-radius: 50%; object-fit: cover; border: 2px solid #7c3aed; box-shadow: 0 0 10px rgba(124, 58, 237, 0.25);" title="Official Seal of Varsha Brand">
+                <img src="<?= assetUrl('assets/images/varsha-brand-seal.svg') ?>" alt="Varsha Brand Official Stamp (શિકો)" class="seal-image" title="Official Rubber Stamp (શિકો) - Shree Varsha Engineering Works">
                 <div>
-                    <div style="font-size: 11px; font-weight: 800; color: #7c3aed; letter-spacing: 0.8px;">
-                        OFFICIAL COMPANY SEAL / SICO
+                    <div style="font-size: 11.5px; font-weight: 800; color: #7c3aed; letter-spacing: 0.8px;">
+                        OFFICIAL FACTORY STAMP / SICO (શિકો)
                     </div>
-                    <div style="font-size: 10.5px; color: #64748b; line-height: 1.3;">
-                        VARSHA BRAND (SVEW)<br>
+                    <div style="font-size: 10.5px; color: #64748b; line-height: 1.35; margin-top: 2px;">
+                        <strong>VARSHA BRAND (SVEW)</strong><br>
+                        Bhavnagar Factory Unit • ISO 9001:2015<br>
                         Quality Approved &amp; Certified
                     </div>
                 </div>

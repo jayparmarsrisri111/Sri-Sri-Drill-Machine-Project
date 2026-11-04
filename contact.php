@@ -162,7 +162,40 @@ require_once __DIR__ . '/includes/navbar.php';
             </div>
         </div>
 
-        <!-- Live Interactive Factory Map (Leaflet.js + OpenStreetMap - Zero localhost blocks) -->
+        <!-- Live Interactive Factory Map (Google Maps Bhavnagar Hub) -->
+        <style>
+        .map-floating-card {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(11, 17, 32, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid var(--accent-cyan);
+            border-radius: 12px;
+            padding: 16px 20px;
+            max-width: 360px;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.85);
+            z-index: 10;
+        }
+        @media (max-width: 768px) {
+            #factoryLiveMap {
+                height: 340px !important;
+            }
+            #googleMapIframe {
+                height: 340px !important;
+            }
+            .map-floating-card {
+                position: relative !important;
+                bottom: auto !important;
+                left: auto !important;
+                max-width: 100% !important;
+                margin: 12px !important;
+                border-radius: 10px !important;
+                padding: 14px 16px !important;
+            }
+        }
+        </style>
         <div style="margin-top: 60px; border-radius: var(--radius-lg); overflow: hidden; border: 1.5px solid var(--border-cyan); box-shadow: var(--shadow-card); background: #0b1120;">
             <div style="background: rgba(11, 17, 32, 0.98); padding: 18px 24px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
                 <div style="display: flex; align-items: center; gap: 12px;">
@@ -184,11 +217,11 @@ require_once __DIR__ . '/includes/navbar.php';
                 </div>
             </div>
 
-            <!-- 100% Guaranteed Live Google Maps & Interactive Directions -->
+            <!-- 100% Guaranteed Live Google Maps & Interactive Directions Centered on Bhavnagar -->
             <div id="factoryLiveMap" style="width: 100%; height: 440px; background: #0b1120; position: relative; z-index: 1; border-radius: 0 0 12px 12px; overflow: hidden;">
                 <iframe 
                     id="googleMapIframe"
-                    src="https://maps.google.com/maps?q=GIDC+Hadanagar+Bhavnagar+Gujarat+364003&t=m&z=15&ie=UTF8&iwloc=B&output=embed" 
+                    src="https://maps.google.com/maps?q=21.7645,72.1519+(Shree+Varsha+Engineering+Works+Hadanagar+GIDC+Bhavnagar)&t=m&z=14&ie=UTF8&iwloc=B&output=embed" 
                     width="100%" 
                     height="440" 
                     style="border: 0; display: block;" 
@@ -197,8 +230,8 @@ require_once __DIR__ . '/includes/navbar.php';
                     referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
                 
-                <!-- Floating Info Card on Map -->
-                <div style="position: absolute; bottom: 20px; left: 20px; background: rgba(11, 17, 32, 0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1.5px solid var(--accent-cyan); border-radius: 12px; padding: 16px 20px; max-width: 360px; box-shadow: 0 12px 36px rgba(0,0,0,0.85); z-index: 10;">
+                <!-- Info Card on Map (Floats on Desktop, Neatly Sits Below on Mobile) -->
+                <div class="map-floating-card">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
                         <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
                         <span style="font-family: 'Space Grotesk', sans-serif; font-size: 13.5px; font-weight: 800; color: #fff;">

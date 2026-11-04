@@ -191,8 +191,8 @@ try {
 <!-- ==========================================================================
      OFFICIAL 2026 DRILL MACHINE CATALOG & SPECIFICATIONS BROCHURE
      ========================================================================== -->
-<div class="container" style="margin-top: 40px; margin-bottom: 20px;">
-    <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(11, 17, 32, 0.9) 100%); border: 1.5px solid var(--border-cyan); border-radius: 16px; padding: 26px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 25px rgba(0,229,255,0.1);">
+<div class="container" style="margin-top: 40px; margin-bottom: 25px;">
+    <div class="catalog-cta-card" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(11, 17, 32, 0.9) 100%); border: 1.5px solid var(--border-cyan); border-radius: 16px; padding: 26px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 25px rgba(0,229,255,0.1);">
         <div style="display: flex; align-items: center; gap: 18px;">
             <div style="width: 58px; height: 58px; background: rgba(0, 229, 255, 0.1); border: 2px solid var(--accent-cyan); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent-cyan); flex-shrink: 0; box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);">
                 <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
@@ -204,20 +204,20 @@ try {
                 <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 21px; font-weight: 800; color: #fff; margin: 4px 0;">
                     Download Complete Drill Machine Catalog &amp; Technical Specifications
                 </h3>
-                <p style="font-size: 13.5px; color: var(--text-secondary); max-width: 620px;">
+                <p style="font-size: 13.5px; color: var(--text-secondary); max-width: 620px; margin: 0;">
                     Get full engineering dimensions, gear ratios, spindle speeds, motor ratings, and factory price list for all 8 <strong>VARSHA BRAND</strong> drill machines in high-resolution printable format.
                 </p>
             </div>
         </div>
 
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <div class="catalog-cta-actions" style="display: flex; gap: 12px; flex-wrap: wrap;">
             <a href="<?= BASE_URL ?>/catalog.php" class="btn btn-primary" style="background: linear-gradient(135deg, #00f0ff 0%, #2563eb 100%); color: #060911; font-weight: 800; padding: 11px 18px; font-size: 13.5px;">
                 📖 View &amp; Print Catalog (PDF)
             </a>
             <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; padding: 11px 16px; font-size: 13.5px;">
                 💳 Book Machine (Online)
             </a>
-            <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-outline" style="padding: 11px 14px; font-size: 13px; color: #facc15; border-color: rgba(250, 204, 21, 0.4);">
+            <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-outline" style="padding: 11px 16px; font-size: 13px; color: #facc15; border-color: rgba(250, 204, 21, 0.4);">
                 📄 View My Bill
             </a>
         </div>

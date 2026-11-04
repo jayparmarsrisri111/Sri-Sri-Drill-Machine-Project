@@ -301,6 +301,27 @@ img, svg, video, canvas {
     justify-content: center;
   }
 
+  /* Body bottom clearance on mobile to prevent floating widgets from overlapping actions */
+  body {
+    padding-bottom: 95px !important;
+  }
+
+  /* Catalog CTA banner on mobile */
+  .catalog-cta-card {
+    padding: 18px 16px !important;
+  }
+  .catalog-cta-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+  .catalog-cta-actions .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
   /* Floating WhatsApp & Direct Call Buttons */
   .floating-contact-bar {
     bottom: 14px;

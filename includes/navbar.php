@@ -148,6 +148,11 @@
     line-height: 1;
 }
 
+/* Hide mobile-drawer action buttons completely on desktop/laptop */
+.mobile-menu-actions {
+    display: none !important;
+}
+
 /* Tablet & Mobile Breakpoints */
 @media (max-width: 1200px) {
     .btn-nav-mobile-toggle {
@@ -157,11 +162,15 @@
         display: none;
     }
     .btn-nav-admin {
-        display: none; /* Move to mobile menu drawer */
+        display: inline-flex; /* Remain visible on tablet & mobile top bar */
+        padding: 0 9px;
+        font-size: 12px;
     }
     .mobile-menu-open .nav-links-center {
         display: flex;
         flex-direction: column;
+        align-items: stretch;
+        width: 100%;
         position: absolute;
         top: 68px;
         left: 0;
@@ -172,35 +181,48 @@
         padding: 16px 18px 30px;
         border-bottom: 2px solid var(--accent-cyan);
         box-shadow: 0 25px 60px rgba(0,0,0,0.95);
-        gap: 6px;
+        gap: 8px;
         z-index: 10002;
         max-height: calc(100vh - 72px);
         overflow-y: auto;
     }
+    .mobile-menu-open .nav-links-center > li {
+        width: 100%;
+        display: block;
+    }
     .mobile-menu-open .site-nav-link {
-        font-size: 14.5px;
-        padding: 11px 14px;
-        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 700;
+        padding: 12px 16px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        justify-content: space-between;
+        width: 100%;
+        box-sizing: border-box;
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #e2e8f0;
+        text-decoration: none;
+        transition: all 0.2s ease;
     }
     .mobile-menu-open .site-nav-link:hover,
     .mobile-menu-open .site-nav-link.active {
-        background: rgba(0, 229, 255, 0.1);
-        border-color: rgba(0, 229, 255, 0.4);
+        background: rgba(0, 229, 255, 0.12);
+        border-color: rgba(0, 229, 255, 0.45);
+        color: #00e5ff;
     }
     .mobile-menu-open .site-nav-link.active::after {
         display: none;
     }
-    .mobile-menu-actions {
-        display: flex;
+    .mobile-menu-open .mobile-menu-actions {
+        display: flex !important;
         flex-direction: column;
         gap: 10px;
         margin-top: 14px;
         padding-top: 14px;
         border-top: 1px solid rgba(255,255,255,0.1);
+        width: 100%;
     }
 }
 
@@ -223,10 +245,11 @@
     }
     .btn-nav-action {
         height: 35px;
-        padding: 0 9px;
+        padding: 0 8px;
         font-size: 12px;
     }
-    .btn-top-app span.btn-text-full {
+    .btn-top-app span.btn-text-full,
+    .btn-nav-admin span.btn-text-full {
         display: none;
     }
     .mobile-menu-open .nav-links-center {
@@ -321,8 +344,8 @@
                     <span>📲 Install Varsha App (Android/PC)</span>
                 </button>
 
-                <a href="<?= BASE_URL ?>/admin/index.php" style="font-size: 12px; color: #94a3b8; text-align: center; padding: 6px; text-decoration: none;">
-                    🔒 Factory Admin Portal
+                <a href="<?= BASE_URL ?>/admin/index.php" class="btn btn-outline" style="width: 100%; padding: 12px; font-size: 13.5px; font-weight: 800; border-color: #f59e0b; color: #fbbf24; background: rgba(245, 158, 11, 0.12); border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;">
+                    <span>🔒 Factory Admin Portal (Management)</span>
                 </a>
             </li>
         </ul>
@@ -369,9 +392,10 @@
                 <span>💳 Book<span class="btn-text-extra"> Online</span></span>
             </a>
 
-            <!-- Admin Button (Hidden on tablet/mobile, available in drawer) -->
-            <a href="<?= BASE_URL ?>/admin/index.php" class="btn-nav-action btn-nav-admin" title="Admin Control Center">
-                <span>🔒 Admin</span>
+            <!-- Admin Button (Accessible on both desktop and mobile top bar) -->
+            <a href="<?= BASE_URL ?>/admin/index.php" class="btn-nav-action btn-nav-admin" title="Factory Admin Control Center">
+                <span>🔒</span>
+                <span class="btn-text-full">Admin</span>
             </a>
 
             <!-- Mobile Hamburger Toggle -->
