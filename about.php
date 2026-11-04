@@ -31,7 +31,7 @@ require_once __DIR__ . '/includes/navbar.php';
 <!-- Company History & Overview -->
 <section class="section">
     <div class="container">
-        <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center;">
+        <div class="responsive-two-col" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center;">
             <div>
                 <div class="pill-badge">OUR HERITAGE &amp; FOUNDATION</div>
                 <h2 style="font-family: var(--font-heading); font-size: 32px; font-weight: 800; color: #fff; margin-bottom: 18px; line-height: 1.3;">

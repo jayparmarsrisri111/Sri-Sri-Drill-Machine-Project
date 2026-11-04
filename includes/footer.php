@@ -50,7 +50,7 @@
                     <li><a href="<?= BASE_URL ?>/faqs.php" style="display: inline-flex; align-items: center; gap: 8px;"><span style="font-size: 13px;">💡</span><span>Help &amp; FAQs</span></a></li>
                     <li><a href="<?= BASE_URL ?>/checkout.php" style="display: inline-flex; align-items: center; gap: 8px; color: #4ade80; font-weight: 600;"><span style="font-size: 13px;">💳</span><span>Online Machine Booking</span></a></li>
                     <li><a href="<?= BASE_URL ?>/invoice.php" style="display: inline-flex; align-items: center; gap: 8px; color: #facc15; font-weight: 600;"><span style="font-size: 13px;">📄</span><span>View Tax Invoice / Bill</span></a></li>
-                    <li><a href="#" class="btn-download-app-trigger" style="display: inline-flex; align-items: center; gap: 8px; color: #38bdf8; font-weight: 700;"><span style="font-size: 13px;">📲</span><span>Download Varsha App (Android/PC)</span></a></li>
+                    <li><a href="#" onclick="openAppDownloadModal(); return false;" class="btn-download-app-trigger" style="display: inline-flex; align-items: center; gap: 8px; color: #38bdf8; font-weight: 700;"><span style="font-size: 13px;">📲</span><span>Download Varsha App (Android/PC)</span></a></li>
                     <li><a href="<?= BASE_URL ?>/contact.php" style="display: inline-flex; align-items: center; gap: 8px;"><span style="font-size: 13px;">📍</span><span>Factory Contact &amp; Location</span></a></li>
                 </ul>
             </div>

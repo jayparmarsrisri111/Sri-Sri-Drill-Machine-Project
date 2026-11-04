@@ -378,28 +378,234 @@ function getMachineDatasheetSpecs($prod) {
     gap: 12px;
 }
 
-/* Print CSS */
+/* ==========================================================================
+   AUTHENTIC INDUSTRIAL DATASHEET PRINT & PDF STYLES
+   100% Preserved Colors, Badges, Borders & Proportional Layout
+   ========================================================================== */
+@page {
+    size: A4 portrait;
+    margin: 6mm 8mm;
+}
+
 @media print {
-    .site-header, .navbar, .site-footer, .floating-contact-bar, .catalog-hero-strip, .filter-tabs, .datasheet-actions-bar, #catalogSearchInput {
+    .site-navbar,
+    .site-footer,
+    .floating-contact-bar,
+    .catalog-hero-strip,
+    .filter-tabs,
+    .datasheet-actions-bar,
+    #catalogSearchInput,
+    #chatbotWidget,
+    .chatbot-widget,
+    .chatbot-fab,
+    #appDownloadModal,
+    #customerAuthModal,
+    #feedbackModal,
+    #quoteModal,
+    #modal360 {
         display: none !important;
     }
+
     body {
-        background: #fff !important;
-        color: #000 !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .container {
+        max-width: 100% !important;
         padding: 0 !important;
         margin: 0 !important;
     }
-    .industrial-datasheet-card {
-        border: 2px solid #000 !important;
-        box-shadow: none !important;
-        margin-bottom: 20px !important;
-        page-break-after: always !important;
+
+    .datasheets-wrapper {
+        margin: 0 !important;
+        gap: 0 !important;
     }
+
+    .datasheet-item {
+        display: block !important;
+        margin: 0 0 10px 0 !important;
+        padding: 0 !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    .datasheet-item.print-hidden-temp {
+        display: none !important;
+    }
+
+    .industrial-datasheet-card {
+        border: 2px solid #1e293b !important;
+        background: #fbf9f4 !important;
+        box-shadow: none !important;
+        margin: 0 auto !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        border-radius: 4px !important;
+        overflow: hidden !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    .datasheet-header {
+        padding: 10px 18px 8px !important;
+        border-bottom: 2px solid #e5e7eb !important;
+        background: #ffffff !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .datasheet-title-group h2 {
+        font-size: 24px !important;
+        color: #991b1b !important;
+        line-height: 1.1 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .datasheet-title-group .sub-type {
+        font-size: 13.5px !important;
+        color: #1f2937 !important;
+        margin-top: 2px !important;
+    }
+
+    .datasheet-emblem {
+        padding: 4px 12px 4px 8px !important;
+        gap: 8px !important;
+        border: 1.5px solid #dc2626 !important;
+        border-radius: 8px !important;
+        background: #ffffff !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .datasheet-emblem .emblem-logo-wrap {
+        width: 34px !important;
+        height: 34px !important;
+        border: 1.5px solid #dc2626 !important;
+    }
+
+    .datasheet-emblem .brand-text {
+        font-size: 14px !important;
+        color: #b91c1c !important;
+    }
+
+    .datasheet-emblem .city-text {
+        font-size: 8.5px !important;
+    }
+
+    .datasheet-emblem .since-text {
+        font-size: 8px !important;
+    }
+
+    .datasheet-body-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 16px !important;
+        padding: 10px 16px !important;
+        align-items: center !important;
+    }
+
+    .datasheet-body-grid > div:first-child {
+        flex: 1.35 !important;
+        width: 60% !important;
+    }
+
+    .datasheet-photo-wrap {
+        flex: 0.95 !important;
+        width: 40% !important;
+        padding: 4px !important;
+        text-align: center !important;
+    }
+
+    .datasheet-photo-wrap img {
+        max-height: 290px !important;
+        width: auto !important;
+        max-width: 100% !important;
+        object-fit: contain !important;
+        filter: none !important;
+    }
+
+    .datasheet-spec-table {
+        font-size: 9.5px !important;
+        border: 1.5px solid #111827 !important;
+        background: #ffffff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .datasheet-spec-table th {
+        background: #111827 !important;
+        color: #ffffff !important;
+        font-size: 10px !important;
+        padding: 4px 6px !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .datasheet-spec-table td {
+        padding: 3px 6px !important;
+        line-height: 1.25 !important;
+        border: 1px solid #9ca3af !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .datasheet-spec-table tr:nth-child(even) {
+        background: #f9fafb !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .datasheet-spec-table .col-no {
+        width: 24px !important;
+    }
+
+    .datasheet-meta-strip {
+        padding: 6px 16px !important;
+        font-size: 10px !important;
+        background: #f3f4f6 !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .datasheet-meta-strip strong {
+        font-size: 14px !important;
+        color: #047857 !important;
+    }
+
     .datasheet-footer-bar {
-        background: #000 !important;
-        color: #fff !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        background: #991b1b !important;
+        color: #ffffff !important;
+        padding: 8px 16px !important;
+        font-size: 11px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .datasheet-footer-bar strong {
+        font-size: 11.5px !important;
+        color: #ffffff !important;
     }
 }
 </style>
@@ -478,7 +684,7 @@ function getMachineDatasheetSpecs($prod) {
                     $filterGroup = 'pillar';
                 }
             ?>
-                <div class="datasheet-item" data-group="<?= $filterGroup ?>" data-search="<?= strtolower(e($prod['name'] . ' ' . $prod['model_number'] . ' ' . $prod['drilling_capacity'] . ' ' . $prod['category_name'])) ?>">
+                <div class="datasheet-item" id="datasheet-item-<?= $prod['id'] ?>" data-group="<?= $filterGroup ?>" data-search="<?= strtolower(e($prod['name'] . ' ' . $prod['model_number'] . ' ' . $prod['drilling_capacity'] . ' ' . $prod['category_name'])) ?>">
                     <!-- Industrial Datasheet Card (Image 4 Format) -->
                     <div class="industrial-datasheet-card">
                         <!-- Top Header Bar -->
@@ -576,9 +782,9 @@ function getMachineDatasheetSpecs($prod) {
                                 🔍 In-Depth Details &amp; Video
                             </a>
                         </div>
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <button onclick="window.print()" class="btn btn-outline" style="font-size: 12.5px;" title="Print this specification sheet">
-                                🖨️ Print Datasheet
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <button type="button" onclick="printSingleDatasheet('datasheet-item-<?= $prod['id'] ?>')" class="btn btn-outline" style="font-size: 12.5px; border-color: rgba(0, 229, 255, 0.4); color: var(--accent-cyan);" title="Print or download PDF for this machine only">
+                                🖨️ Print This Datasheet (PDF)
                             </button>
                             <a href="<?= BASE_URL ?>/checkout.php?product_id=<?= $prod['id'] ?>" class="btn btn-primary" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; font-weight: 800; font-size: 13px;">
                                 💳 <?= $isPart ? 'Buy Spare Part' : 'Book Machine Online (Token ₹25,000)' ?>
@@ -592,6 +798,22 @@ function getMachineDatasheetSpecs($prod) {
 </section>
 
 <script>
+function printSingleDatasheet(itemId) {
+    document.querySelectorAll('.datasheet-item').forEach(el => {
+        el.classList.add('print-hidden-temp');
+    });
+    const target = document.getElementById(itemId);
+    if (target) {
+        target.classList.remove('print-hidden-temp');
+    }
+    window.print();
+    setTimeout(() => {
+        document.querySelectorAll('.datasheet-item').forEach(el => {
+            el.classList.remove('print-hidden-temp');
+        });
+    }, 800);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('catalogSearchInput');
     const filterBtns = document.querySelectorAll('.catalog-filter-btn');

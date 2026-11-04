@@ -1,5 +1,6 @@
 <?php
 // Main Glassmorphic Navigation Bar - Clean, Balanced, High-Precision Industrial Styling
+// 100% Mobile & Tablet Optimized (Zero Horizontal Overflow)
 ?>
 <style>
 .site-navbar {
@@ -14,6 +15,7 @@
     height: 68px;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 .site-nav-container {
     display: flex;
@@ -22,7 +24,8 @@
     width: 100%;
     max-width: 1460px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 16px;
+    gap: 10px;
 }
 .brand-badge-wrap {
     display: flex;
@@ -46,7 +49,7 @@
 .nav-links-center {
     display: flex;
     align-items: center;
-    gap: 13px;
+    gap: 11px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -80,7 +83,7 @@
 .nav-actions-right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     flex-shrink: 0;
 }
 .btn-nav-action {
@@ -88,7 +91,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 0 14px;
+    padding: 0 12px;
     font-family: var(--font-heading);
     font-size: 12.5px;
     font-weight: 700;
@@ -132,21 +135,29 @@
 .btn-nav-mobile-toggle {
     display: none;
     background: rgba(15, 23, 42, 0.8);
-    border: 1px solid var(--border-subtle);
-    color: #fff;
-    padding: 8px 10px;
+    border: 1px solid var(--border-cyan);
+    color: var(--accent-cyan);
+    height: 38px;
+    width: 38px;
+    padding: 0;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;
     align-items: center;
     justify-content: center;
+    line-height: 1;
 }
-@media (max-width: 1180px) {
+
+/* Tablet & Mobile Breakpoints */
+@media (max-width: 1200px) {
     .btn-nav-mobile-toggle {
         display: inline-flex;
     }
     .nav-links-center {
         display: none;
+    }
+    .btn-nav-admin {
+        display: none; /* Move to mobile menu drawer */
     }
     .mobile-menu-open .nav-links-center {
         display: flex;
@@ -158,37 +169,85 @@
         background: rgba(9, 13, 22, 0.98);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        padding: 16px 20px 24px;
+        padding: 16px 18px 30px;
         border-bottom: 2px solid var(--accent-cyan);
         box-shadow: 0 25px 60px rgba(0,0,0,0.95);
         gap: 6px;
         z-index: 10002;
-        max-height: calc(100vh - 75px);
+        max-height: calc(100vh - 72px);
         overflow-y: auto;
     }
     .mobile-menu-open .site-nav-link {
         font-size: 14.5px;
-        padding: 10px 14px;
+        padding: 11px 14px;
         border-radius: 8px;
         display: flex;
         align-items: center;
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.05);
     }
-}
-@media (max-width: 540px) {
-    .btn-nav-action {
-        height: 34px;
-        padding: 0 10px;
-        font-size: 11.5px;
-        gap: 4px;
+    .mobile-menu-open .site-nav-link:hover,
+    .mobile-menu-open .site-nav-link.active {
+        background: rgba(0, 229, 255, 0.1);
+        border-color: rgba(0, 229, 255, 0.4);
     }
-    .brand-badge-wrap div span:last-child {
+    .mobile-menu-open .site-nav-link.active::after {
         display: none;
+    }
+    .mobile-menu-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+}
+
+@media (max-width: 768px) {
+    .site-navbar {
+        height: 62px;
+    }
+    .site-nav-container {
+        padding: 0 12px;
     }
     .brand-badge-wrap img {
         height: 36px;
         width: 36px;
+    }
+    .brand-subtitle-tag {
+        display: none;
+    }
+    .btn-top-auth {
+        display: none; /* Moved into mobile drawer */
+    }
+    .btn-nav-action {
+        height: 35px;
+        padding: 0 9px;
+        font-size: 12px;
+    }
+    .btn-top-app span.btn-text-full {
+        display: none;
+    }
+    .mobile-menu-open .nav-links-center {
+        top: 62px;
+        max-height: calc(100vh - 64px);
+    }
+}
+
+@media (max-width: 420px) {
+    .brand-title-main {
+        font-size: 14.5px !important;
+    }
+    .btn-top-app {
+        padding: 0 7px;
+    }
+    .btn-top-book {
+        padding: 0 9px;
+        font-size: 11.5px;
+    }
+    .btn-top-book span.btn-text-extra {
+        display: none;
     }
 }
 </style>
@@ -199,16 +258,16 @@
         <a href="<?= BASE_URL ?>/index.php" class="brand-badge-wrap" title="<?= APP_NAME ?> - <?= BRAND_NAME ?>">
             <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="<?= BRAND_NAME ?>">
             <div style="display: flex; flex-direction: column; line-height: 1.15;">
-                <span style="font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">
+                <span class="brand-title-main" style="font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">
                     VARSHA <span style="color: var(--accent-cyan);">BRAND</span>
                 </span>
-                <span style="font-size: 9.5px; font-weight: 700; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase;">
+                <span class="brand-subtitle-tag" style="font-size: 9.5px; font-weight: 700; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase;">
                     BHAVNAGAR • SVEW
                 </span>
             </div>
         </a>
 
-        <!-- Desktop Navigation Menu (Ordered as specified by User) -->
+        <!-- Desktop Navigation Menu (And Mobile Drawer on <= 1200px) -->
         <ul class="nav-links-center">
             <li><a href="<?= BASE_URL ?>/index.php" class="site-nav-link <?= ($currentNav === 'home') ? 'active' : '' ?>">Home</a></li>
             <li><a href="<?= BASE_URL ?>/about.php" class="site-nav-link <?= ($currentNav === 'about') ? 'active' : '' ?>">About Us</a></li>
@@ -224,17 +283,61 @@
             <li><a href="<?= BASE_URL ?>/track-order.php" class="site-nav-link <?= ($currentNav === 'tracking') ? 'active' : '' ?>" style="color: #34d399;">🚚 Live Tracking</a></li>
             <li><a href="<?= BASE_URL ?>/faqs.php" class="site-nav-link <?= ($currentNav === 'faqs') ? 'active' : '' ?>">FAQs</a></li>
             <li><a href="<?= BASE_URL ?>/contact.php" class="site-nav-link <?= ($currentNav === 'contact') ? 'active' : '' ?>">Contact</a></li>
-            <li><a href="#" class="site-nav-link btn-download-app-trigger" style="color: #38bdf8; font-weight: 700;">📲 Download App</a></li>
+            <li>
+                <a href="#" onclick="openAppDownloadModal(); return false;" class="site-nav-link btn-download-app-trigger" style="color: #38bdf8; font-weight: 700;">
+                    <span>📲 Download App</span>
+                </a>
+            </li>
+
+            <!-- Mobile Drawer Exclusive Action Buttons (Visible only when menu is open) -->
+            <li class="mobile-menu-actions">
+                <?php if (!empty($_SESSION['customer_user'])): ?>
+                    <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid #38bdf8; border-radius: 10px; padding: 12px 14px;">
+                        <div style="font-size: 11px; color: #94a3b8;">Signed in as:</div>
+                        <div style="font-weight: 700; color: #fff; font-size: 14px; margin-bottom: 8px;">👤 <?= e($_SESSION['customer_user']['full_name']) ?></div>
+                        <div style="display: flex; gap: 8px;">
+                            <a href="<?= BASE_URL ?>/track-order.php" class="btn btn-outline" style="flex: 1; padding: 6px 10px; font-size: 11.5px; border-color: #34d399; color: #34d399; text-align: center; text-decoration: none;">
+                                🚚 Orders
+                            </a>
+                            <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-outline" style="flex: 1; padding: 6px 10px; font-size: 11.5px; border-color: #cbd5e1; color: #cbd5e1; text-align: center; text-decoration: none;">
+                                📄 Bills
+                            </a>
+                            <a href="<?= BASE_URL ?>/logout-customer.php" class="btn btn-outline" style="padding: 6px 10px; font-size: 11.5px; border-color: #f87171; color: #f87171; text-align: center; text-decoration: none;">
+                                🚪 Out
+                            </a>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <button type="button" onclick="document.body.classList.remove('mobile-menu-open'); openCustomerAuthModal('Please sign in or register to manage your orders.');" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 13.5px; font-weight: 800; background: rgba(15, 23, 42, 0.9); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span>👤 Customer Sign In / Register</span>
+                    </button>
+                <?php endif; ?>
+
+                <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;">
+                    <span>💳 Book Machine Online (₹25,000 Advance)</span>
+                </a>
+
+                <button type="button" onclick="document.body.classList.remove('mobile-menu-open'); openAppDownloadModal();" class="btn btn-primary" style="width: 100%; padding: 11px; font-size: 13.5px; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; border-color: #00e5ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>📲 Install Varsha App (Android/PC)</span>
+                </button>
+
+                <a href="<?= BASE_URL ?>/admin/index.php" style="font-size: 12px; color: #94a3b8; text-align: center; padding: 6px; text-decoration: none;">
+                    🔒 Factory Admin Portal
+                </a>
+            </li>
         </ul>
 
-        <!-- Right Side CTA Actions -->
+        <!-- Right Side Quick Actions -->
         <div class="nav-actions-right">
             <!-- PWA App Download Button -->
-            <button type="button" class="btn-nav-action btn-download-app-trigger" title="Download Varsha Drill App for Android, PC &amp; iOS" style="border-color: #38bdf8; color: #38bdf8; background: rgba(56, 189, 248, 0.12); font-weight: 700;">
-                <span>📲 App</span>
+            <button type="button" onclick="openAppDownloadModal()" class="btn-nav-action btn-top-app btn-download-app-trigger" title="Download Varsha Drill App for Android, PC &amp; iOS" style="border-color: #38bdf8; color: #38bdf8; background: rgba(56, 189, 248, 0.12); font-weight: 700;">
+                <span>📲</span>
+                <span class="btn-text-full">App</span>
             </button>
+
+            <!-- Customer Sign In Button (Top bar) -->
             <?php if (!empty($_SESSION['customer_user'])): ?>
-                <div style="position: relative; display: inline-block;">
+                <div class="btn-top-auth" style="position: relative; display: inline-block;">
                     <button type="button" id="btnCustomerDropdown" class="btn-nav-action btn-nav-auth" style="border-color: #38bdf8;">
                         <span>👤 <?= e(explode(' ', $_SESSION['customer_user']['full_name'])[0]) ?></span>
                         <span style="font-size: 9px; margin-left: 2px;">▼</span>
@@ -256,19 +359,22 @@
                     </div>
                 </div>
             <?php else: ?>
-                <button type="button" onclick="openCustomerAuthModal('Please sign in or register to manage your orders.')" class="btn-nav-action btn-nav-auth">
+                <button type="button" onclick="openCustomerAuthModal('Please sign in or register to manage your orders.')" class="btn-nav-action btn-nav-auth btn-top-auth">
                     <span>👤 Sign In</span>
                 </button>
             <?php endif; ?>
 
-            <a href="<?= BASE_URL ?>/checkout.php" class="btn-nav-action btn-nav-book" title="Online Machine Booking">
-                <span>💳 Book Online</span>
+            <!-- Book Online CTA -->
+            <a href="<?= BASE_URL ?>/checkout.php" class="btn-nav-action btn-nav-book btn-top-book" title="Online Machine Booking">
+                <span>💳 Book<span class="btn-text-extra"> Online</span></span>
             </a>
 
+            <!-- Admin Button (Hidden on tablet/mobile, available in drawer) -->
             <a href="<?= BASE_URL ?>/admin/index.php" class="btn-nav-action btn-nav-admin" title="Admin Control Center">
                 <span>🔒 Admin</span>
             </a>
 
+            <!-- Mobile Hamburger Toggle -->
             <button type="button" class="btn-nav-mobile-toggle" onclick="document.body.classList.toggle('mobile-menu-open')" aria-label="Toggle Menu" title="Menu">
                 <span>☰</span>
             </button>
@@ -293,7 +399,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Auto-close mobile menu on navigation link click or click outside
     document.querySelectorAll('.site-nav-link').forEach(link => {
         link.addEventListener('click', function() {
-            document.body.classList.remove('mobile-menu-open');
+            if (!this.classList.contains('btn-download-app-trigger')) {
+                document.body.classList.remove('mobile-menu-open');
+            }
         });
     });
 

@@ -393,19 +393,160 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             margin-top: 2px;
         }
 
-        /* Print Media Styles */
+        /* ==========================================================================
+           STRICT 1-PAGE A4 PRINT & PDF STYLES (Guaranteed Single Page Output)
+           ========================================================================== */
+        @page {
+            size: A4 portrait;
+            margin: 4mm 6mm;
+        }
+
         @media print {
-            body {
-                background: #fff;
-                padding: 0;
+            html, body {
+                background: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                height: 100% !important;
+                width: 100% !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
             .invoice-actions-bar {
                 display: none !important;
             }
             .invoice-paper {
-                box-shadow: none;
-                padding: 20px 25px;
-                max-width: 100%;
+                box-shadow: none !important;
+                border: 1.5px solid #0f172a !important;
+                border-radius: 4px !important;
+                padding: 8px 12px !important;
+                margin: 0 auto !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                page-break-after: avoid !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            .inv-header {
+                padding-bottom: 6px !important;
+                margin-bottom: 6px !important;
+                border-bottom: 1.5px solid #0f172a !important;
+            }
+            .company-branding {
+                gap: 10px !important;
+            }
+            .company-logo-img {
+                width: 48px !important;
+                height: 48px !important;
+            }
+            .company-title {
+                font-size: 15px !important;
+                line-height: 1.15 !important;
+            }
+            .brand-badge {
+                font-size: 9.5px !important;
+                padding: 1px 6px !important;
+            }
+            .company-meta {
+                font-size: 9px !important;
+                margin-top: 2px !important;
+                line-height: 1.25 !important;
+            }
+            .inv-title {
+                font-size: 15px !important;
+                letter-spacing: 0.5px !important;
+            }
+            .status-badge {
+                font-size: 9px !important;
+                padding: 1px 6px !important;
+            }
+            .inv-meta-table {
+                font-size: 9.5px !important;
+                margin-top: 2px !important;
+            }
+            .inv-meta-table td {
+                padding: 1px 0 1px 4px !important;
+            }
+            .parties-grid {
+                padding: 6px 10px !important;
+                margin-bottom: 6px !important;
+                gap: 12px !important;
+                font-size: 9.5px !important;
+                line-height: 1.3 !important;
+            }
+            .party-heading {
+                font-size: 9px !important;
+                margin-bottom: 2px !important;
+                padding-bottom: 2px !important;
+            }
+            .items-table {
+                font-size: 9.5px !important;
+                margin-bottom: 6px !important;
+            }
+            .items-table th {
+                padding: 4px 6px !important;
+                font-size: 9px !important;
+            }
+            .items-table td {
+                padding: 4px 6px !important;
+                line-height: 1.25 !important;
+            }
+            .totals-section {
+                gap: 10px !important;
+                margin-bottom: 6px !important;
+            }
+            .terms-box {
+                font-size: 8.5px !important;
+                padding: 4px 6px !important;
+                line-height: 1.25 !important;
+            }
+            .totals-table {
+                font-size: 9.5px !important;
+            }
+            .totals-table td {
+                padding: 2px 4px !important;
+            }
+            .totals-table tr.grand-total td {
+                font-size: 11px !important;
+                padding: 4px 6px !important;
+            }
+            .amount-words-box {
+                font-size: 9.5px !important;
+                padding: 3px 6px !important;
+                margin-bottom: 6px !important;
+            }
+            .sign-seal-row {
+                margin-top: 4px !important;
+                padding-top: 4px !important;
+            }
+            .seal-image {
+                width: 52px !important;
+                height: 52px !important;
+            }
+            .signature-box {
+                width: 180px !important;
+            }
+            .signature-img {
+                height: 34px !important;
+                margin-bottom: 2px !important;
+            }
+            .signatory-name {
+                font-size: 10.5px !important;
+            }
+            .signatory-title {
+                font-size: 8.5px !important;
+            }
+            .crypto-proof-box {
+                margin-top: 6px !important;
+                padding: 4px 8px !important;
+            }
+            .crypto-proof-box div {
+                font-size: 8.5px !important;
+            }
+            .disclaimer-box {
+                margin-top: 4px !important;
+                padding-top: 2px !important;
+                font-size: 8px !important;
             }
         }
     </style>
@@ -634,7 +775,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             </div>
         </div>
 
-        <div style="font-size: 12px; color: #334155; margin-bottom: 24px; padding: 8px 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px;">
+        <div class="amount-words-box" style="font-size: 12px; color: #334155; margin-bottom: 20px; padding: 7px 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px;">
             <strong>Amount in Words:</strong> <?= amountInWords($order['total_amount']) ?>
         </div>
 
@@ -670,28 +811,28 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             $cryptoHash = $order['crypto_seal'] ?? hash('sha256', $order['order_number'] . '|' . $order['invoice_number'] . '|' . $order['razorpay_payment_id'] . '|' . $order['total_amount'] . '|' . COMPANY_GSTIN . '|' . RAZORPAY_KEY_SECRET);
         ?>
         <!-- World-First Cryptographic Invoice Integrity & Anti-Forgery Ledger Seal -->
-        <div style="margin-top: 24px; background: #f8fafc; border: 1.5px dashed #0284c7; border-radius: 8px; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="background: #0284c7; color: #fff; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">
+        <div class="crypto-proof-box" style="margin-top: 18px; background: #f8fafc; border: 1.5px dashed #0284c7; border-radius: 8px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="background: #0284c7; color: #fff; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0;">
                     🔒
                 </div>
                 <div>
-                    <div style="font-size: 11.5px; font-weight: 800; color: #0f172a; letter-spacing: 0.5px;">
+                    <div style="font-size: 11px; font-weight: 800; color: #0f172a; letter-spacing: 0.5px;">
                         CRYPTOGRAPHIC PROOF OF AUTHENTICITY (SHA-256 DIGITAL LEDGER SEAL)
                     </div>
-                    <div style="font-family: monospace; font-size: 10px; color: #475569; word-break: break-all; margin-top: 2px;">
+                    <div style="font-family: monospace; font-size: 9.5px; color: #475569; word-break: break-all; margin-top: 2px;">
                         PROVENANCE HASH: <?= $cryptoHash ?>
                     </div>
                 </div>
             </div>
             <div>
-                <span style="display: inline-block; background: #dcfce7; border: 1px solid #16a34a; color: #15803d; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 4px;">
+                <span style="display: inline-block; background: #dcfce7; border: 1px solid #16a34a; color: #15803d; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">
                     ✓ IMMUTABLE & VERIFIED
                 </span>
             </div>
         </div>
 
-        <div style="margin-top: 25px; padding-top: 15px; border-top: 1px dashed #cbd5e1; text-align: center; font-size: 10.5px; color: #94a3b8;">
+        <div class="disclaimer-box" style="margin-top: 16px; padding-top: 10px; border-top: 1px dashed #cbd5e1; text-align: center; font-size: 10px; color: #94a3b8;">
             This is an electronically generated and certified Tax Invoice with secure digital audit trail. Razorpay Payment ID: <?= e($order['razorpay_payment_id']) ?>. Certified by Shree Varsha Engineering Works.
         </div>
     </div>

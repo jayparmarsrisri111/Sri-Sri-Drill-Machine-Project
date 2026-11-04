@@ -49,14 +49,15 @@ $basePrice = floatval($_POST['base_price'] ?? 0);
 $payableAmount = floatval($_POST['payable_amount'] ?? 0);
 
 if ($paymentType === 'booking_advance') {
-    $totalAmount = 25000.00;
+    // Allows flexible advance payments up to ₹90,000 or custom amounts
+    $totalAmount = ($payableAmount > 0) ? $payableAmount : 25000.00;
     $taxableAmount = round($totalAmount / 1.18, 2);
     $cgstAmount = round(($totalAmount - $taxableAmount) / 2, 2);
     $sgstAmount = round($totalAmount - $taxableAmount - $cgstAmount, 2);
 } else {
-    $taxableAmount = $basePrice;
-    $cgstAmount = round($basePrice * 0.09, 2);
-    $sgstAmount = round($basePrice * 0.09, 2);
+    $taxableAmount = ($basePrice > 0) ? $basePrice : ($payableAmount / 1.18);
+    $cgstAmount = round($taxableAmount * 0.09, 2);
+    $sgstAmount = round($taxableAmount * 0.09, 2);
     $totalAmount = $taxableAmount + $cgstAmount + $sgstAmount;
 }
 

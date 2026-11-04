@@ -356,7 +356,7 @@ try {
      ========================================================================== -->
 <section class="section" style="background: linear-gradient(180deg, rgba(6, 9, 17, 0.9) 0%, rgba(15, 23, 42, 0.7) 100%); border-top: 1px solid var(--border-cyan); border-bottom: 1px solid var(--border-cyan);">
     <div class="container">
-        <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center;">
+        <div class="responsive-two-col" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center;">
             <div>
                 <div class="pill-badge" style="border-color: var(--accent-amber); color: #fbbf24;">
                     ★ WORLD-FIRST DRILL MACHINE INNOVATION
@@ -557,7 +557,7 @@ try {
             </p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 35px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 24px; margin-bottom: 35px;">
             <?php if (!empty($approvedFeedbacks)): ?>
                 <?php foreach ($approvedFeedbacks as $af): ?>
                     <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(251, 191, 36, 0.25); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 30px rgba(0,0,0,0.4); transition: transform 0.25s ease;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">

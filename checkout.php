@@ -323,7 +323,7 @@ foreach ($products as $p) {
                 </select>
             </div>
 
-            <!-- Payment Type Selection -->
+            <!-- Payment Type Selection (Supports Online Advance up to ₹90,000 or Full Payment) -->
             <div style="margin: 22px 0;">
                 <label class="form-label" style="margin-bottom: 10px;">Choose Payment Option *</label>
                 
@@ -331,11 +331,37 @@ foreach ($products as $p) {
                     <input type="radio" name="payment_type" id="payTypeAdvance" value="booking_advance" checked style="accent-color: var(--accent-cyan); width: 18px; height: 18px;">
                     <div style="flex: 1;">
                         <div style="font-weight: 700; color: #fff; font-size: 15px; display: flex; justify-content: space-between;">
-                            <span>Token Booking Advance (Slot Reservation)</span>
+                            <span>Standard Token Booking Advance</span>
                             <span style="color: #34d399;">₹ 25,000</span>
                         </div>
                         <div style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">
-                            Lock manufacturing priority today. Remaining balance payable upon dispatch / inspection.
+                            Standard token to reserve manufacturing slot and chassis allocation today.
+                        </div>
+                    </div>
+                </label>
+
+                <label class="payment-option-label" id="labelOptionCustomAdvance">
+                    <input type="radio" name="payment_type" id="payTypeCustomAdvance" value="custom_advance" style="accent-color: var(--accent-cyan); width: 18px; height: 18px;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 700; color: #fff; font-size: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                            <span>Custom Online Advance (Up to ₹ 90,000)</span>
+                            <span style="color: #38bdf8; font-size: 16px; font-weight: 800;" id="customAdvanceDisplay">₹ 90,000</span>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin: 4px 0 8px;">
+                            Pay custom advance booking online (up to ₹90,000). Remaining balance due upon delivery.
+                        </div>
+                        <div id="customAdvanceBox" style="display: none; margin-top: 10px; padding: 10px 12px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px;">
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
+                                <button type="button" class="btn-advance-chip" data-val="25000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 25,000</button>
+                                <button type="button" class="btn-advance-chip" data-val="50000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 50,000</button>
+                                <button type="button" class="btn-advance-chip" data-val="75000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 75,000</button>
+                                <button type="button" class="btn-advance-chip active-chip" data-val="90000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: #0284c7; border: 1px solid #38bdf8; color: #fff; cursor: pointer; font-weight: 700;">₹ 90,000 (Max Online Advance)</button>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <label style="font-size: 12px; color: #cbd5e1;">Or Enter Amount (₹):</label>
+                                <input type="number" id="inputCustomAdvance" min="5000" max="90000" step="1000" value="90000" class="form-control" style="max-width: 170px; height: 34px; font-size: 14px; font-weight: 700; color: #34d399; padding: 4px 10px;">
+                                <span style="font-size: 11px; color: #94a3b8;">(Min ₹5,000 - Max ₹90,000)</span>
+                            </div>
                         </div>
                     </div>
                 </label>
@@ -650,9 +676,14 @@ foreach ($products as $p) {
 
     const machineSelect = document.getElementById('machineSelect');
     const payTypeAdvance = document.getElementById('payTypeAdvance');
+    const payTypeCustomAdvance = document.getElementById('payTypeCustomAdvance');
     const payTypeFull = document.getElementById('payTypeFull');
     const labelOptionAdvance = document.getElementById('labelOptionAdvance');
+    const labelOptionCustomAdvance = document.getElementById('labelOptionCustomAdvance');
     const labelOptionFull = document.getElementById('labelOptionFull');
+    const customAdvanceBox = document.getElementById('customAdvanceBox');
+    const customAdvanceDisplay = document.getElementById('customAdvanceDisplay');
+    const inputCustomAdvance = document.getElementById('inputCustomAdvance');
 
     // UI elements
     const summaryMachineImg = document.getElementById('summaryMachineImg');
@@ -674,6 +705,48 @@ foreach ($products as $p) {
 
     const isCustomerLoggedIn = <?= !empty($_SESSION['customer_user']) ? 'true' : 'false' ?>;
 
+    function getSelectedPayableAmount(basePrice) {
+        const fullTotal = basePrice * 1.18;
+        if (payTypeAdvance && payTypeAdvance.checked) {
+            return 25000;
+        } else if (payTypeCustomAdvance && payTypeCustomAdvance.checked) {
+            let val = parseFloat(inputCustomAdvance.value) || 90000;
+            if (val > 90000) val = 90000;
+            if (val < 5000) val = 5000;
+            return val;
+        } else {
+            return fullTotal;
+        }
+    }
+
+    // Quick chip handlers for custom advance up to ₹90,000
+    document.querySelectorAll('.btn-advance-chip').forEach(chip => {
+        chip.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.btn-advance-chip').forEach(c => {
+                c.style.background = 'rgba(0,229,255,0.1)';
+                c.style.color = '#00e5ff';
+                c.style.fontWeight = 'normal';
+            });
+            this.style.background = '#0284c7';
+            this.style.color = '#fff';
+            this.style.fontWeight = '700';
+            const val = parseFloat(this.getAttribute('data-val')) || 90000;
+            if (inputCustomAdvance) inputCustomAdvance.value = val;
+            if (payTypeCustomAdvance) payTypeCustomAdvance.checked = true;
+            recalculate();
+        });
+    });
+
+    if (inputCustomAdvance) {
+        inputCustomAdvance.addEventListener('input', function() {
+            let val = parseFloat(this.value) || 0;
+            if (val > 90000) this.value = 90000;
+            if (payTypeCustomAdvance) payTypeCustomAdvance.checked = true;
+            recalculate();
+        });
+    }
+
     function recalculate() {
         const opt = machineSelect.options[machineSelect.selectedIndex];
         const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
@@ -688,12 +761,14 @@ foreach ($products as $p) {
 
         // If spare part, hide Advance Token and enforce 100% full payment
         if (pType === 'part') {
-            labelOptionAdvance.style.display = 'none';
+            if (labelOptionAdvance) labelOptionAdvance.style.display = 'none';
+            if (labelOptionCustomAdvance) labelOptionCustomAdvance.style.display = 'none';
             payTypeFull.checked = true;
             document.getElementById('fullPaymentTitle').textContent = "Full Spare Part Price + 18% GST";
             document.getElementById('fullPaymentDesc').textContent = "Immediate dispatch from Bhavnagar plant inventory via courier/transport.";
         } else {
-            labelOptionAdvance.style.display = 'flex';
+            if (labelOptionAdvance) labelOptionAdvance.style.display = 'flex';
+            if (labelOptionCustomAdvance) labelOptionCustomAdvance.style.display = 'flex';
             document.getElementById('fullPaymentTitle').textContent = "Full Payment (Machine Price + 18% GST)";
             document.getElementById('fullPaymentDesc').textContent = "Complete invoice payment with 100% Tax Invoice, priority dispatch & free tooling set.";
         }
@@ -716,22 +791,45 @@ foreach ($products as $p) {
         rowFullTotal.textContent = formatINR(fullTotal);
         fullPriceLabel.textContent = formatINR(fullTotal);
 
-        if (payTypeAdvance.checked && pType !== 'part') {
-            labelOptionAdvance.classList.add('active');
-            labelOptionFull.classList.remove('active');
-            rowPayableNow.textContent = formatINR(25000);
-            paymentPlanNotice.textContent = "Token Booking Advance (Balance ₹" + (fullTotal - 25000).toLocaleString('en-IN') + " on dispatch)";
+        let payableNowNum = 25000;
+        let isAdvance = true;
+
+        if (payTypeAdvance && payTypeAdvance.checked && pType !== 'part') {
+            payableNowNum = 25000;
+            isAdvance = true;
+            if (customAdvanceBox) customAdvanceBox.style.display = 'none';
+            if (labelOptionAdvance) labelOptionAdvance.classList.add('active');
+            if (labelOptionCustomAdvance) labelOptionCustomAdvance.classList.remove('active');
+            if (labelOptionFull) labelOptionFull.classList.remove('active');
+            paymentPlanNotice.textContent = "Token Booking Advance (Balance ₹" + Math.max(0, fullTotal - 25000).toLocaleString('en-IN') + " on dispatch)";
             if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Booking Advance ₹25,000 (Razorpay)";
+        } else if (payTypeCustomAdvance && payTypeCustomAdvance.checked && pType !== 'part') {
+            let customVal = parseFloat(inputCustomAdvance.value) || 90000;
+            if (customVal > 90000) customVal = 90000;
+            if (customVal < 5000) customVal = 5000;
+            payableNowNum = customVal;
+            isAdvance = true;
+            if (customAdvanceBox) customAdvanceBox.style.display = 'block';
+            if (customAdvanceDisplay) customAdvanceDisplay.textContent = formatINR(payableNowNum);
+            if (labelOptionAdvance) labelOptionAdvance.classList.remove('active');
+            if (labelOptionCustomAdvance) labelOptionCustomAdvance.classList.add('active');
+            if (labelOptionFull) labelOptionFull.classList.remove('active');
+            paymentPlanNotice.textContent = "Custom Online Advance ₹" + payableNowNum.toLocaleString('en-IN') + " (Balance ₹" + Math.max(0, fullTotal - payableNowNum).toLocaleString('en-IN') + " on dispatch)";
+            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Online Advance " + formatINR(payableNowNum) + " (Razorpay)";
         } else {
-            labelOptionAdvance.classList.remove('active');
-            labelOptionFull.classList.add('active');
-            rowPayableNow.textContent = formatINR(fullTotal);
+            payableNowNum = fullTotal;
+            isAdvance = false;
+            if (customAdvanceBox) customAdvanceBox.style.display = 'none';
+            if (labelOptionAdvance) labelOptionAdvance.classList.remove('active');
+            if (labelOptionCustomAdvance) labelOptionCustomAdvance.classList.remove('active');
+            if (labelOptionFull) labelOptionFull.classList.add('active');
             paymentPlanNotice.textContent = (pType === 'part') ? "100% Spare Part Payment + 18% GST" : "100% Full Machine Payment + 18% GST";
             if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Full Amount " + formatINR(fullTotal) + " (Razorpay)";
         }
 
+        rowPayableNow.textContent = formatINR(payableNowNum);
+
         // Dynamically update UPI QR Code and Mobile UPI Link with exact amount
-        const payableNowNum = (payTypeAdvance.checked && pType !== 'part') ? 25000 : fullTotal;
         const upiLink = "upi://pay?pa=shreevarsha@okhdfcbank&pn=Shree%20Varsha%20Engineering%20Works&am=" + payableNowNum.toFixed(2) + "&cu=INR&tn=" + encodeURIComponent(model + ' Booking');
         const qrImg = document.getElementById('dynamicUpiQrImg');
         const upiBtn = document.getElementById('btnDirectUpiPayLink');
@@ -744,8 +842,9 @@ foreach ($products as $p) {
     }
 
     machineSelect.addEventListener('change', recalculate);
-    payTypeAdvance.addEventListener('change', recalculate);
-    payTypeFull.addEventListener('change', recalculate);
+    if (payTypeAdvance) payTypeAdvance.addEventListener('change', recalculate);
+    if (payTypeCustomAdvance) payTypeCustomAdvance.addEventListener('change', recalculate);
+    if (payTypeFull) payTypeFull.addEventListener('change', recalculate);
     recalculate();
 
     // Central Payment Verification and Bill Dispatcher
@@ -766,8 +865,8 @@ foreach ($products as $p) {
         const machineName = opt.getAttribute('data-name');
         const modelNumber = opt.getAttribute('data-model');
         const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
-        const isAdvance = payTypeAdvance.checked;
-        const payableAmount = isAdvance ? 25000 : (basePrice * 1.18);
+        const isAdvance = !payTypeFull.checked;
+        const payableAmount = getSelectedPayableAmount(basePrice);
 
         const postData = new FormData();
         postData.append('csrf_token', csrfToken);
@@ -822,11 +921,12 @@ foreach ($products as $p) {
     function openTerminalModal() {
         const opt = machineSelect.options[machineSelect.selectedIndex];
         const machineModel = opt.getAttribute('data-model');
-        const isAdvance = payTypeAdvance.checked;
-        const currentPayable = rowPayableNow.textContent;
+        const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
+        const currentPayable = getSelectedPayableAmount(basePrice);
+        const isAdvance = !payTypeFull.checked;
 
-        document.getElementById('modalPayableAmount').textContent = currentPayable;
-        document.getElementById('modalPlanText').textContent = isAdvance ? 'Booking Advance Token' : '100% Full Machine Payment';
+        document.getElementById('modalPayableAmount').textContent = formatINR(currentPayable);
+        document.getElementById('modalPlanText').textContent = isAdvance ? ('Booking Advance (' + formatINR(currentPayable) + ')') : '100% Full Machine Payment';
         document.getElementById('modalMachineLabel').textContent = machineModel;
 
         paymentProgressBox.style.display = 'none';
@@ -929,9 +1029,9 @@ foreach ($products as $p) {
         });
     }
 
-    // 2. Razorpay Official Modal Checkout
+    // 2. Razorpay Official Modal Checkout with Server-Side Order Generation
     if (btnPayRazorpay) {
-        btnPayRazorpay.addEventListener('click', function(e) {
+        btnPayRazorpay.addEventListener('click', async function(e) {
             e.preventDefault();
 
             // Check if Razorpay is loaded
@@ -943,65 +1043,97 @@ foreach ($products as $p) {
                 return;
             }
 
-        const opt = machineSelect.options[machineSelect.selectedIndex];
-        const machineName = opt.getAttribute('data-name');
-        const modelNumber = opt.getAttribute('data-model');
-        const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
-        const isAdvance = payTypeAdvance.checked;
-        const payableAmount = isAdvance ? 25000 : (basePrice * 1.18);
-        const amountInPaise = Math.round(payableAmount * 100);
+            const opt = machineSelect.options[machineSelect.selectedIndex];
+            const machineId = opt.value;
+            const machineName = opt.getAttribute('data-name');
+            const modelNumber = opt.getAttribute('data-model');
+            const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
+            const payableAmount = getSelectedPayableAmount(basePrice);
+            const amountInPaise = Math.round(payableAmount * 100);
+            const isAdvance = !payTypeFull.checked;
 
-        const name = document.getElementById('custName').value.trim() || 'Ramesh Patel';
-        const phone = document.getElementById('custPhone').value.trim() || '+91 9824913555';
-        const email = document.getElementById('custEmail').value.trim() || 'jitubhaivarsh@gmail.com';
+            const name = document.getElementById('custName').value.trim() || 'Ramesh Patel';
+            const phone = document.getElementById('custPhone').value.trim() || '+91 9824913555';
+            const email = document.getElementById('custEmail').value.trim() || 'jitubhaivarsh@gmail.com';
+            const csrfToken = document.getElementById('csrfToken').value;
 
-        btnPayRazorpay.disabled = true;
-        btnPayRazorpay.textContent = "Opening Secure Razorpay Window...";
+            btnPayRazorpay.disabled = true;
+            btnPayRazorpay.textContent = "Connecting to Razorpay Banking Gateway...";
 
-        const options = {
-            "key": RAZORPAY_KEY,
-            "amount": amountInPaise,
-            "currency": "INR",
-            "name": "VARSHA BRAND",
-            "description": (isAdvance ? "Advance Booking: " : "Full Payment: ") + modelNumber + " (" + machineName + ")",
-            "image": "<?= assetUrl('assets/images/varsha-logo.png') ?>",
-            "prefill": {
-                "name": name,
-                "email": email,
-                "contact": phone
-            },
-            "theme": {
-                "color": "#00e5ff"
-            },
-            "modal": {
-                "ondismiss": function() {
+            let serverOrderId = null;
+            try {
+                const orderFormData = new FormData();
+                orderFormData.append('csrf_token', csrfToken);
+                orderFormData.append('amount', payableAmount);
+                orderFormData.append('machine_id', machineId);
+                orderFormData.append('machine_name', machineName);
+                orderFormData.append('model_number', modelNumber);
+                orderFormData.append('payment_type', isAdvance ? 'booking_advance' : 'full_payment');
+                orderFormData.append('customer_name', name);
+                orderFormData.append('customer_phone', phone);
+
+                const orderRes = await fetch('api/create-razorpay-order.php', {
+                    method: 'POST',
+                    body: orderFormData
+                });
+                const orderData = await orderRes.json();
+                if (orderData && orderData.success && orderData.order_id) {
+                    serverOrderId = orderData.order_id;
+                }
+            } catch (errOrder) {
+                console.warn("Server order fetch failed, continuing with direct checkout:", errOrder);
+            }
+
+            const options = {
+                "key": RAZORPAY_KEY,
+                "amount": amountInPaise,
+                "currency": "INR",
+                "name": "VARSHA BRAND",
+                "description": (isAdvance ? "Advance Booking (" + formatINR(payableAmount) + "): " : "Full Payment: ") + modelNumber + " (" + machineName + ")",
+                "image": "<?= assetUrl('assets/images/varsha-logo.png') ?>",
+                "prefill": {
+                    "name": name,
+                    "email": email,
+                    "contact": phone
+                },
+                "theme": {
+                    "color": "#00e5ff"
+                },
+                "modal": {
+                    "ondismiss": function() {
+                        btnPayRazorpay.disabled = false;
+                        recalculate();
+                    }
+                },
+                "handler": function (response) {
+                    submitOrderAndRedirect(
+                        response.razorpay_payment_id,
+                        response.razorpay_order_id || serverOrderId || ('ORD_' + Date.now()),
+                        response.razorpay_signature || 'DEMO_VERIFIED'
+                    );
+                }
+            };
+
+            // Attach server-created order_id if available to unlock transactions up to ₹90,000+
+            if (serverOrderId && !serverOrderId.startsWith('order_svew_')) {
+                options.order_id = serverOrderId;
+            }
+
+            try {
+                const rzp = new Razorpay(options);
+                rzp.on('payment.failed', function (resp){
+                    alert("Razorpay payment note: " + (resp.error ? resp.error.description : 'Transaction cancelled') + ". Opening verified instant payment terminal...");
                     btnPayRazorpay.disabled = false;
                     recalculate();
-                }
-            },
-            "handler": function (response) {
-                submitOrderAndRedirect(
-                    response.razorpay_payment_id,
-                    response.razorpay_order_id || ('ORD_' + Date.now()),
-                    response.razorpay_signature || 'DEMO_VERIFIED'
-                );
+                    openTerminalModal();
+                });
+                rzp.open();
+            } catch (err) {
+                console.error("Razorpay Open Error:", err);
+                if (btnDemoInstantPay) btnDemoInstantPay.click();
             }
-        };
-
-        try {
-            const rzp = new Razorpay(options);
-            rzp.on('payment.failed', function (resp){
-                alert("Razorpay payment attempt cancelled: " + resp.error.description);
-                btnPayRazorpay.disabled = false;
-                recalculate();
-            });
-            rzp.open();
-        } catch (err) {
-            console.error("Razorpay Open Error:", err);
-            if (btnDemoInstantPay) btnDemoInstantPay.click();
-        }
-    });
-}
+        });
+    }
 </script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
