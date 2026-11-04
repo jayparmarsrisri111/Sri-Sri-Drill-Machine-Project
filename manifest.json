@@ -1,0 +1,25 @@
+{
+  "name": "Varsha Brand Industrial Drill Machines",
+  "short_name": "Varsha Drill",
+  "description": "Shree Varsha Engineering Works - Heavy Duty Radial & Pillar Drill Machines, 360 Turntable & Live Order Tracking",
+  "start_url": "./index.php",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#060911",
+  "theme_color": "#00e5ff",
+  "icons": [
+    {
+      "src": "assets/images/varsha-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/varsha-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

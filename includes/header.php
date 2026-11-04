@@ -27,6 +27,15 @@ $currentNav = $currentNav ?? 'home';
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="<?= assetUrl('assets/images/varsha-logo.png') ?>">
 
+    <!-- PWA Progressive Web App Manifest & Mobile App Configuration -->
+    <link rel="manifest" href="<?= BASE_URL ?>/manifest.json">
+    <meta name="theme-color" content="#00e5ff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Varsha Drill">
+    <link rel="apple-touch-icon" href="<?= assetUrl('assets/images/varsha-logo.png') ?>">
+
     <!-- Google Fonts: Space Grotesk + Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -11,8 +11,11 @@ error_reporting(E_ALL);
 // Security engine & session
 require_once __DIR__ . '/security.php';
 
-// Site URL helper
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)) ? "https://" : "http://";
+// Site URL helper (Supports Localhost, XAMPP, Railway, Render and SSL proxies)
+$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+    || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)
+    || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+$protocol = $isHttps ? "https://" : "http://";
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $rawScript = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
 if (php_sapi_name() === 'cli' || preg_match('/^[a-zA-Z]:/', $rawScript)) {

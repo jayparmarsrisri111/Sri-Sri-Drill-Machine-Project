@@ -224,10 +224,15 @@
             <li><a href="<?= BASE_URL ?>/track-order.php" class="site-nav-link <?= ($currentNav === 'tracking') ? 'active' : '' ?>" style="color: #34d399;">🚚 Live Tracking</a></li>
             <li><a href="<?= BASE_URL ?>/faqs.php" class="site-nav-link <?= ($currentNav === 'faqs') ? 'active' : '' ?>">FAQs</a></li>
             <li><a href="<?= BASE_URL ?>/contact.php" class="site-nav-link <?= ($currentNav === 'contact') ? 'active' : '' ?>">Contact</a></li>
+            <li><a href="#" class="site-nav-link btn-download-app-trigger" style="color: #38bdf8; font-weight: 700;">📲 Download App</a></li>
         </ul>
 
         <!-- Right Side CTA Actions -->
         <div class="nav-actions-right">
+            <!-- PWA App Download Button -->
+            <button type="button" class="btn-nav-action btn-download-app-trigger" title="Download Varsha Drill App for Android, PC &amp; iOS" style="border-color: #38bdf8; color: #38bdf8; background: rgba(56, 189, 248, 0.12); font-weight: 700;">
+                <span>📲 App</span>
+            </button>
             <?php if (!empty($_SESSION['customer_user'])): ?>
                 <div style="position: relative; display: inline-block;">
                     <button type="button" id="btnCustomerDropdown" class="btn-nav-action btn-nav-auth" style="border-color: #38bdf8;">
