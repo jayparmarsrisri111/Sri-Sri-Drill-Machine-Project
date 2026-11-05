@@ -143,7 +143,7 @@ try {
         <!-- =====================================================================
              FINANCIAL & PRODUCTION ANALYTICS GRAPHS (Sales, Benefit/Loss, Demand)
              ===================================================================== -->
-        <div style="display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 24px; margin-bottom: 30px;">
+        <div class="admin-charts-grid" style="display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 24px; margin-bottom: 30px;">
             <!-- Graph 1: Factory Sales vs Benefit/Loss Analysis -->
             <div class="content-card" style="margin-bottom: 0;">
                 <div class="card-header-flex" style="margin-bottom: 15px;">
@@ -162,7 +162,7 @@ try {
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;">
+                <div class="chart-summary-metrics" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;">
                     <div style="background: rgba(11, 17, 32, 0.7); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 8px; padding: 10px 14px;">
                         <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Gross Sales (YTD)</div>
                         <div style="font-size: 18px; font-weight: 800; color: #00e5ff;">₹ 84.60 L</div>

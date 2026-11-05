@@ -29,7 +29,10 @@
         const costData  = (dynamicConfig && dynamicConfig.costs && dynamicConfig.costs.length) ? dynamicConfig.costs : [7.4, 9.1, 8.2, 10.6, 8.9, 10.1];
         const profitData = (dynamicConfig && dynamicConfig.profits && dynamicConfig.profits.length) ? dynamicConfig.profits : [4.1, 5.1, 4.6, 5.9, 5.0, 5.6];
 
-        const padding = { top: 35, right: 30, bottom: 40, left: 55 };
+        const isMobile = width < 520;
+        const padding = isMobile 
+            ? { top: 40, right: 14, bottom: 32, left: 42 } 
+            : { top: 35, right: 30, bottom: 40, left: 55 };
         const chartW = width - padding.left - padding.right;
         const chartH = height - padding.top - padding.bottom;
         const maxVal = Math.max(20, Math.ceil(Math.max(...salesData) * 1.25));
@@ -40,7 +43,7 @@
         // Draw Y-axis gridlines & labels
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
         ctx.fillStyle = '#94a3b8';
-        ctx.font = '11px Inter, sans-serif';
+        ctx.font = isMobile ? '10px Inter, sans-serif' : '11px Inter, sans-serif';
         ctx.textAlign = 'right';
 
         const ySteps = 5;
@@ -51,21 +54,21 @@
             ctx.moveTo(padding.left, y);
             ctx.lineTo(width - padding.right, y);
             ctx.stroke();
-            ctx.fillText('₹ ' + val + 'L', padding.left - 10, y + 4);
+            ctx.fillText((isMobile ? '' : '₹ ') + val + 'L', padding.left - 6, y + 4);
         }
 
         // Draw Bars
         const stepX = chartW / labels.length;
-        const barW = Math.min(stepX * 0.28, 20);
+        const barW = Math.min(stepX * (isMobile ? 0.24 : 0.28), isMobile ? 12 : 20);
 
         for (let i = 0; i < labels.length; i++) {
             const centerX = padding.left + stepX * i + stepX / 2;
 
             // X-axis Label
             ctx.fillStyle = '#cbd5e1';
-            ctx.font = '600 12px Inter, sans-serif';
+            ctx.font = isMobile ? '600 10.5px Inter, sans-serif' : '600 12px Inter, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(labels[i], centerX, height - 15);
+            ctx.fillText(labels[i], centerX, height - 12);
 
             // Bar 1: Gross Sales (Cyan gradient)
             const sVal = salesData[i];
@@ -236,33 +239,41 @@
         if (stroke) ctx.stroke();
     }
 
-    // Helper: Draw Legend
+    // Helper: Draw Legend (Responsive Wrapping for Mobile & Tablet)
     function drawLegend(ctx, x, y, items) {
         let curX = x;
-        ctx.font = '500 11.5px Inter, sans-serif';
+        let curY = y;
+        const maxW = ctx.canvas.width / (window.devicePixelRatio || 1) - 10;
+        ctx.font = '500 11px Inter, sans-serif';
         ctx.textBaseline = 'middle';
 
         items.forEach(item => {
+            const textW = ctx.measureText(item.label).width;
+            if (curX + textW + 24 > maxW && curX > x) {
+                curX = x;
+                curY += 16;
+            }
+
             if (item.isLine) {
                 ctx.strokeStyle = item.color;
                 ctx.lineWidth = 3;
                 ctx.beginPath();
-                ctx.moveTo(curX, y);
-                ctx.lineTo(curX + 16, y);
+                ctx.moveTo(curX, curY);
+                ctx.lineTo(curX + 14, curY);
                 ctx.stroke();
                 ctx.beginPath();
-                ctx.arc(curX + 8, y, 3, 0, Math.PI * 2);
+                ctx.arc(curX + 7, curY, 3, 0, Math.PI * 2);
                 ctx.fillStyle = item.color;
                 ctx.fill();
             } else {
                 ctx.fillStyle = item.color;
-                roundRect(ctx, curX, y - 5, 12, 10, 2, true);
+                roundRect(ctx, curX, curY - 5, 11, 10, 2, true);
             }
-            curX += 18;
+            curX += 16;
             ctx.fillStyle = '#cbd5e1';
             ctx.textAlign = 'left';
-            ctx.fillText(item.label, curX, y);
-            curX += ctx.measureText(item.label).width + 16;
+            ctx.fillText(item.label, curX, curY);
+            curX += textW + 14;
         });
     }
 

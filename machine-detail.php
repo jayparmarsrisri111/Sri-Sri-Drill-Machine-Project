@@ -220,10 +220,17 @@ if ($isSparePart) {
             position: static;
         }
         .main-gallery-view {
-            min-height: 300px;
+            min-height: 280px;
         }
         .main-gallery-view img {
-            max-height: 280px;
+            max-height: 260px;
+        }
+        #videoContainerGrid {
+            grid-template-columns: 1fr !important;
+        }
+        #videoContainerGrid > div:last-child {
+            border-left: none !important;
+            border-top: 1px solid rgba(0, 229, 255, 0.2) !important;
         }
     }
 </style>

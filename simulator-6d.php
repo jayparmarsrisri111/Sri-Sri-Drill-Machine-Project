@@ -213,6 +213,73 @@ require_once __DIR__ . '/includes/navbar.php';
             height: 420px;
         }
     }
+    @media (max-width: 768px) {
+        .twin-hero {
+            padding: 35px 0 20px;
+        }
+        .twin-container {
+            margin-top: 15px;
+            gap: 20px;
+            padding-bottom: 95px; /* Ensures full clearance above bottom floating WhatsApp/Chatbot buttons */
+        }
+        #machineCanvasContainer {
+            height: 360px !important;
+        }
+        .hud-overlay {
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            gap: 6px;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+        .hud-overlay::-webkit-scrollbar {
+            display: none;
+        }
+        .hud-pill {
+            padding: 5px 9px;
+            font-size: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            border-radius: 6px;
+        }
+        .hud-pill .val {
+            font-size: 12px;
+        }
+        .hud-pill .label {
+            font-size: 8.5px;
+        }
+        .controls-bar {
+            padding: 14px 12px;
+            gap: 10px;
+        }
+        .slider-row {
+            grid-template-columns: 108px 1fr 44px;
+            gap: 8px;
+            font-size: 11.5px;
+        }
+        .slider-row label {
+            font-size: 11.5px;
+        }
+        .action-btn-row {
+            gap: 6px;
+        }
+        .btn-tool {
+            padding: 6px 9px;
+            font-size: 11px;
+        }
+        #btnRunSimulation {
+            width: 100%;
+            margin-left: 0 !important;
+            margin-top: 6px;
+            text-align: center;
+            justify-content: center;
+        }
+    }
 </style>
 
 <!-- Page Header -->
