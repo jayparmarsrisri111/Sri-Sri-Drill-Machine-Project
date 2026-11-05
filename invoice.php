@@ -873,8 +873,8 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
 
                             <?php if ($isAdvance): ?>
                                 <div style="margin-top: 8px; padding: 6px 10px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 4px; font-size: 11.5px; color: #92400e;">
-                                    <strong>★ ADVANCE PAYMENT CLAUSE:</strong> This invoice receipts the ₹ 25,000 token advance to lock production queue &amp; allocation of casting serial number.
-                                    <br>Full Machine Price: <strong>₹ <?= number_format($order['machine_price'], 2) ?> (+18% GST = ₹ <?= number_format($fullMachineGross, 2) ?>)</strong>.
+                                    <strong>★ ADVANCE PAYMENT CLAUSE:</strong> This invoice receipts the ₹ <?= number_format($paidAmount, 2) ?> token advance (for <?= $invQty ?> unit<?= ($invQty > 1) ? 's' : '' ?>) to lock production queue &amp; allocation of casting serial numbers.
+                                    <br>Full Billed Value: <strong>₹ <?= number_format($order['machine_price'], 2) ?> (+18% GST = ₹ <?= number_format($fullMachineGross, 2) ?>)</strong>.
                                 </div>
                             <?php else: ?>
                                 <div style="margin-top: 8px; padding: 6px 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px; font-size: 11.5px; color: #166534;">
@@ -883,7 +883,8 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                             <?php endif; ?>
                         </td>
                         <td>8459 29 10</td>
-                        <td style="text-align: center; font-weight: 700;">1 Unit</td>
+                        <?php $invQty = max(1, intval($order['quantity'] ?? 1)); ?>
+                        <td style="text-align: center; font-weight: 700; color: #0284c7;"><?= $invQty ?> Unit<?= ($invQty > 1) ? 's' : '' ?></td>
                         <td style="text-align: right;"><?= number_format($paidAmount, 2) ?></td>
                         <td style="text-align: right; font-weight: 600;"><?= number_format($taxableAmount, 2) ?></td>
                     </tr>

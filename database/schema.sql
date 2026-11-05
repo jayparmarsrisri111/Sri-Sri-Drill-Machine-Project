@@ -165,6 +165,7 @@ CREATE TABLE `orders` (
   `customer_pincode` VARCHAR(20) NOT NULL,
   `customer_gst` VARCHAR(30) DEFAULT NULL,
   `payment_type` ENUM('booking_advance', 'full_payment') DEFAULT 'booking_advance',
+  `quantity` INT DEFAULT 1,
   `machine_price` DECIMAL(12,2) NOT NULL,
   `taxable_amount` DECIMAL(12,2) NOT NULL,
   `cgst_amount` DECIMAL(12,2) NOT NULL,

@@ -35,6 +35,27 @@ require_once __DIR__ . '/includes/navbar.php';
 // Parse key features
 $featuresList = !empty($machine['key_features']) ? explode(';', $machine['key_features']) : [];
 
+// Determine authentic working video demonstration ID for each machine/part
+$realVideoId = '3fuIpyX8mKQ'; // Default heavy industrial radial drill operation
+$realVideoTitle = 'Heavy-Duty Geared Radial Drill Machine Factory Workshop Demonstration';
+
+if (stripos($machine['name'], 'Pillar') !== false || stripos($machine['model_number'], 'PD') !== false) {
+    $realVideoId = 'kS5Fbgtayhg';
+    $realVideoTitle = '40mm Gear-Type Heavy Duty Pillar Drill Machine Operational Demonstration';
+} elseif (stripos($machine['name'], 'Bench') !== false || stripos($machine['model_number'], 'BD') !== false) {
+    $realVideoId = 'IcJc2JmNeV8';
+    $realVideoTitle = 'Precision High-Speed Bench Drilling Workshop Demonstration';
+} elseif (stripos($machine['name'], 'Tapping') !== false || stripos($machine['model_number'], 'TP') !== false) {
+    $realVideoId = '3fuIpyX8mKQ';
+    $realVideoTitle = 'Auto-Reversing Drilling & Tapping Machine Live Operation';
+} elseif (!empty($machine['product_type']) && $machine['product_type'] === 'part') {
+    $realVideoId = '3fuIpyX8mKQ';
+    $realVideoTitle = 'Precision Machine Part Assembly & Live Spindle Headstock Test Run';
+}
+
+$mStock = intval($machine['stock_quantity'] ?? 5);
+$mBasePrice = floatval($machine['price'] ?? getMachinePrice($machine['id']));
+
 // Multi-angle real images gallery configuration
 if ($isSparePart) {
     $galleryImages = [
@@ -243,9 +264,19 @@ if ($isSparePart) {
             <div class="machine-visual-box">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
                     <span class="pill-badge"><?= e($machine['category_name']) ?></span>
-                    <span class="badge-tag" style="background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #34d399; font-weight: 700;">
-                        READY FOR DISPATCH • <?= intval($machine['stock_quantity'] ?? 5) ?> UNITS IN STOCK
-                    </span>
+                    <?php if ($mStock > 3): ?>
+                        <span class="badge-tag" style="background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #34d399; font-weight: 700;">
+                            READY FOR DISPATCH • <?= $mStock ?> UNITS IN STOCK
+                        </span>
+                    <?php elseif ($mStock > 0): ?>
+                        <span class="badge-tag" style="background: rgba(245, 158, 11, 0.15); border-color: #f59e0b; color: #fbbf24; font-weight: 800;">
+                            ⚡ LIMITED STOCK • ONLY <?= $mStock ?> UNITS LEFT IN FACTORY!
+                        </span>
+                    <?php else: ?>
+                        <span class="badge-tag" style="background: rgba(239, 68, 68, 0.15); border-color: #ef4444; color: #f87171; font-weight: 700;">
+                            ⏳ OUT OF STOCK • 5-7 DAYS MANUFACTURING DISPATCH
+                        </span>
+                    <?php endif; ?>
                 </div>
 
                 <!-- Main Active Image -->
@@ -284,7 +315,7 @@ if ($isSparePart) {
                         <span>360° Interactive 12D Machine View</span>
                         <span class="turntable-step-pill">30° STEP</span>
                     </button>
-                    <a href="<?= BASE_URL ?>/checkout.php?machine_id=<?= $machine['id'] ?>" class="btn btn-primary" style="flex: 1 1 100%; text-align: center; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; font-weight: 700; padding: 13px; font-size: 15px;">
+                    <a id="btnBookOnlineTop" href="<?= BASE_URL ?>/checkout.php?machine_id=<?= $machine['id'] ?>&qty=1" class="btn btn-primary" style="flex: 1 1 100%; text-align: center; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; font-weight: 700; padding: 13px; font-size: 15px;">
                         💳 Book Machine Online (Razorpay)
                     </a>
                     <button type="button" class="btn btn-outline open-quote-modal" 
@@ -330,6 +361,46 @@ if ($isSparePart) {
                         <div style="font-size: 11px; color: #34d399; margin-top: 2px;">
                             ✔ Balance on factory dispatch
                         </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Dynamic Quantity & Stock Selector -->
+                <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(6, 10, 20, 0.95) 100%); border: 1.5px solid rgba(0, 229, 255, 0.35); border-radius: 10px; padding: 14px 18px; margin-bottom: 22px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <div style="font-family: var(--font-heading); font-size: 14px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px;">
+                                <span>📦 Order Quantity (જથ્થો / સંખ્યા):</span>
+                                <?php if ($mStock > 0): ?>
+                                    <span id="detailStockBadge" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px;">
+                                        <?= $mStock ?> Units In Factory Stock
+                                    </span>
+                                <?php else: ?>
+                                    <span id="detailStockBadge" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px;">
+                                        Made to Order (5-7 Days)
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                            <div style="font-size: 11.5px; color: #94a3b8; margin-top: 3px;" id="detailStockHelper">
+                                <?php if ($mStock > 0): ?>
+                                    Direct inventory allocation: Buying reduces factory inventory immediately in real-time.
+                                <?php else: ?>
+                                    Custom manufacturing queue allocation with fast dispatch.
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <!-- Stepper Controls -->
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button type="button" onclick="adjustDetailQty(-1)" style="width: 36px; height: 36px; border-radius: 6px; background: #060911; border: 1.5px solid var(--accent-cyan); color: #fff; font-size: 18px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center;">−</button>
+                            <input type="number" id="detailQtyInput" value="1" min="1" max="<?= max(1, $mStock) ?>" style="width: 60px; height: 36px; text-align: center; font-size: 17px; font-weight: 800; background: #060911; border: 1.5px solid #0284c7; color: #34d399; border-radius: 6px;" onchange="onDetailQtyChange()">
+                            <button type="button" onclick="adjustDetailQty(1)" style="width: 36px; height: 36px; border-radius: 6px; background: #060911; border: 1.5px solid var(--accent-cyan); color: #fff; font-size: 18px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center;">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Calculated Total Price for Selected Quantity -->
+                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+                        <span style="color: #cbd5e1;">Billed Value (<span id="lblSelectedQty" style="color: var(--accent-cyan); font-weight: 700;">1 Unit</span> + 18% GST):</span>
+                        <strong id="lblCalculatedTotal" style="font-size: 16px; color: #34d399;">₹ <?= number_format($mBasePrice * 1.18, 2) ?></strong>
                     </div>
                 </div>
                 
@@ -552,41 +623,52 @@ if ($isSparePart) {
 
             <!-- Video Player Display with Machining Telemetry HUD -->
             <div style="position: relative; border-radius: 12px; overflow: hidden; background: #020617; border: 1px solid rgba(0, 229, 255, 0.35); box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
-                <div style="display: grid; grid-template-columns: 1fr 320px; min-height: 400px;" id="videoContainerGrid">
-                    <!-- Video / Canvas Simulation Player -->
-                    <div style="position: relative; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; min-height: 380px;">
-                        <img src="<?= assetUrl($machine['image_url']) ?>" alt="Machinery Demonstration" style="max-height: 340px; width: auto; object-fit: contain; filter: drop-shadow(0 10px 25px rgba(0,229,255,0.25));">
-                        
-                        <!-- Video Controls Overlay -->
-                        <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(2, 6, 23, 0.85) 90%); display: flex; flex-direction: column; justify-content: space-between; padding: 18px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="background: rgba(15, 23, 42, 0.85); border: 1px solid #10b981; color: #34d399; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 6px;">
+                <div style="display: grid; grid-template-columns: 1fr 320px; min-height: 420px;" id="videoContainerGrid">
+                    <!-- Real Video Player Viewport -->
+                    <div id="videoPlayerViewport" style="position: relative; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; min-height: 400px;">
+                        <!-- Working YouTube Embed Player with Autoplay and Fullscreen Controls -->
+                        <iframe id="mainMachineIframe" 
+                                src="about:blank" 
+                                data-src="https://www.youtube-nocookie.com/embed/<?= $realVideoId ?>?autoplay=1&rel=0&modestbranding=1&enablejsapi=1" 
+                                title="<?= e($realVideoTitle) ?>" 
+                                style="display: none; width: 100%; height: 100%; min-height: 420px; border: none;" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                        </iframe>
+
+                        <!-- Video Preview Poster with Real Machine Image and 1-Click Play Overlay -->
+                        <div id="videoPosterOverlay" style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; background: linear-gradient(180deg, rgba(2,6,23,0.3) 0%, rgba(2,6,23,0.92) 90%);">
+                            <img src="<?= assetUrl($machine['image_url']) ?>" alt="<?= e($machine['name']) ?>" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0.45; filter: drop-shadow(0 10px 30px rgba(0,229,255,0.2)); pointer-events: none;">
+
+                            <div style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                                <span style="background: rgba(15, 23, 42, 0.9); border: 1.5px solid #10b981; color: #34d399; font-size: 11.5px; font-weight: 800; padding: 5px 12px; border-radius: 6px; box-shadow: 0 0 15px rgba(16,185,129,0.3);">
                                     ● 4K FACTORY WORKSHOP DEMO
                                 </span>
-                                <span style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(0, 229, 255, 0.4); color: #38bdf8; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px;">
+                                <span style="background: rgba(15, 23, 42, 0.9); border: 1.5px solid rgba(0, 229, 255, 0.5); color: #38bdf8; font-size: 11.5px; font-weight: 700; padding: 5px 12px; border-radius: 6px;">
                                     MODEL: <?= e($machine['model_number']) ?>
                                 </span>
                             </div>
 
-                            <!-- Center Play / Replay Trigger -->
-                            <div style="text-align: center;">
-                                <button type="button" id="btnPlayDemoVideo" onclick="toggleDemoState()" style="background: linear-gradient(135deg, #00e5ff 0%, #2563eb 100%); border: none; width: 68px; height: 68px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 30px rgba(0, 229, 255, 0.6); transition: transform 0.2s;">
-                                    <span id="demoPlayIcon" style="font-size: 26px; color: #060911; margin-left: 4px;">▶</span>
+                            <!-- Center Glowing Play Trigger Button -->
+                            <div style="position: relative; z-index: 2; text-align: center; margin: 25px 0;">
+                                <button type="button" id="btnPlayRealVideo" onclick="startRealMachineVideo()" style="background: linear-gradient(135deg, #00e5ff 0%, #2563eb 100%); border: none; width: 80px; height: 80px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 40px rgba(0, 229, 255, 0.7); transition: transform 0.25s, box-shadow 0.25s;">
+                                    <svg viewBox="0 0 24 24" width="36" height="36" fill="#060911" style="margin-left: 4px;"><path d="M8 5v14l11-7z"/></svg>
                                 </button>
-                                <div id="demoStatusText" style="color: #fff; font-size: 12.5px; font-weight: 700; margin-top: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">
-                                    Tap to Start Live Machining Simulation &amp; Audio
+                                <div style="color: #fff; font-size: 14.5px; font-weight: 800; margin-top: 14px; text-shadow: 0 2px 6px rgba(0,0,0,0.9);">
+                                    Click to Start Real Machine Video Demonstration
+                                </div>
+                                <div style="color: #94a3b8; font-size: 12px; margin-top: 4px;">
+                                    <?= e($realVideoTitle) ?>
                                 </div>
                             </div>
 
-                            <!-- Bottom Progress Bar & HUD -->
-                            <div>
-                                <div style="display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1; margin-bottom: 6px; font-family: monospace;">
-                                    <span>SPINDLE RUN: <span id="telemetryRpm" style="color: #10b981; font-weight: 700;">650 RPM</span></span>
-                                    <span>FEED: <span style="color: #38bdf8; font-weight: 700;">0.22 mm/rev</span></span>
-                                    <span>TORQUE: <span style="color: #facc15; font-weight: 700;">145 Nm</span></span>
-                                </div>
-                                <div style="height: 6px; width: 100%; background: rgba(255,255,255,0.15); border-radius: 3px; overflow: hidden;">
-                                    <div id="videoProgressBar" style="height: 100%; width: 45%; background: linear-gradient(90deg, #00e5ff, #10b981); transition: width 0.3s ease;"></div>
+                            <!-- Bottom Telemetry HUD Status -->
+                            <div style="position: relative; z-index: 2;">
+                                <div style="display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1; font-family: monospace; background: rgba(15,23,42,0.85); padding: 7px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);">
+                                    <span>SPINDLE: <strong style="color: #10b981;">650 RPM</strong></span>
+                                    <span>FEED: <strong style="color: #38bdf8;">0.22 mm/rev</strong></span>
+                                    <span>TORQUE: <strong style="color: #facc15;">145 Nm</strong></span>
+                                    <span>AUDIO: <strong style="color: #34d399;">Factory Sound</strong></span>
                                 </div>
                             </div>
                         </div>
@@ -614,10 +696,23 @@ if ($isSparePart) {
                                     <div style="font-size: 10.5px; color: #94a3b8; text-transform: uppercase;">Vibration Index</div>
                                     <div style="font-size: 14px; font-weight: 800; color: #facc15; margin-top: 2px;">0.003 mm (Zero Resonance)</div>
                                 </div>
+
+                                <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px;">
+                                    <div style="font-size: 10.5px; color: #94a3b8; text-transform: uppercase;">Dynamic Factory Inventory</div>
+                                    <div style="font-size: 14px; font-weight: 800; color: #38bdf8; margin-top: 2px;" id="sidePanelStock">
+                                        <?= ($mStock > 0) ? ($mStock . ' Units Ready in Stock') : '0 Units (Made to Order)' ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div style="margin-top: 18px;">
+                        <div style="margin-top: 18px; display: flex; flex-direction: column; gap: 8px;">
+                            <button type="button" onclick="startRealMachineVideo()" class="btn btn-primary" style="width: 100%; font-size: 12.5px; text-align: center; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; font-weight: 800; padding: 10px 12px;">
+                                ▶ Play Live Workshop Video
+                            </button>
+                            <a href="<?= getWhatsAppLink(COMPANY_WHATSAPP, 'Hello Jitendrabhai Parmar, please show me a live WhatsApp video call demonstration of ' . $machine['name'] . ' (' . $machine['model_number'] . ') in Bhavnagar workshop.') ?>" target="_blank" class="btn btn-whatsapp" style="width: 100%; font-size: 12px; text-align: center; padding: 9px 12px;">
+                                📹 Live Factory Video Call
+                            </a>
                             <a href="<?= BASE_URL ?>/simulator-6d.php" class="btn btn-outline" style="width: 100%; font-size: 12px; text-align: center; border-color: var(--accent-cyan); color: var(--accent-cyan);">
                                 🔄 Open 360° 12D Lab View
                             </a>
@@ -662,33 +757,53 @@ function switchGalleryAngle(index) {
     });
 }
 
-// Interactive Live Machinery Video Demonstration Toggle
-let isDemoPlaying = false;
-let demoInterval = null;
+// Start Real Machine Video Demonstration Function
+function startRealMachineVideo() {
+    const iframe = document.getElementById('mainMachineIframe');
+    const poster = document.getElementById('videoPosterOverlay');
+    if (iframe && poster) {
+        const targetSrc = iframe.getAttribute('data-src');
+        if (!iframe.src || iframe.src === 'about:blank' || iframe.src !== targetSrc) {
+            iframe.src = targetSrc;
+        }
+        poster.style.display = 'none';
+        iframe.style.display = 'block';
+    }
+}
 
-function toggleDemoState() {
-    isDemoPlaying = !isDemoPlaying;
-    const icon = document.getElementById('demoPlayIcon');
-    const statusText = document.getElementById('demoStatusText');
-    const rpmEl = document.getElementById('telemetryRpm');
-    const bar = document.getElementById('videoProgressBar');
+// Dynamic Quantity Stepper & Price Calculation
+const unitBasePrice = <?= json_encode($mBasePrice) ?>;
+const availableStock = <?= json_encode($mStock) ?>;
+const machineId = <?= json_encode($machine['id']) ?>;
 
-    if (isDemoPlaying) {
-        if (icon) icon.textContent = '⏸';
-        if (statusText) statusText.innerHTML = '<span style="color:#10b981;">● Machining in Progress • Coolant Flood Active</span>';
-        let progress = 45;
-        demoInterval = setInterval(() => {
-            progress = (progress + 3) % 100;
-            if (bar) bar.style.width = progress + '%';
-            if (rpmEl) {
-                const rpms = [550, 650, 720, 850, 920, 1100];
-                rpmEl.textContent = rpms[Math.floor(Math.random() * rpms.length)] + ' RPM';
-            }
-        }, 600);
-    } else {
-        if (icon) icon.textContent = '▶';
-        if (statusText) statusText.textContent = 'Tap to Resume Machining Demonstration';
-        if (demoInterval) clearInterval(demoInterval);
+function adjustDetailQty(delta) {
+    const input = document.getElementById('detailQtyInput');
+    if (!input) return;
+    let val = parseInt(input.value) || 1;
+    val += delta;
+    if (val < 1) val = 1;
+    if (availableStock > 0 && val > availableStock) val = availableStock;
+    input.value = val;
+    onDetailQtyChange();
+}
+
+function onDetailQtyChange() {
+    const input = document.getElementById('detailQtyInput');
+    if (!input) return;
+    let qty = parseInt(input.value) || 1;
+    if (qty < 1) qty = 1;
+    if (availableStock > 0 && qty > availableStock) qty = availableStock;
+    input.value = qty;
+
+    const lblQty = document.getElementById('lblSelectedQty');
+    const lblTotal = document.getElementById('lblCalculatedTotal');
+    const btnBook = document.getElementById('btnBookOnlineTop');
+
+    if (lblQty) lblQty.textContent = qty + (qty > 1 ? ' Units' : ' Unit');
+    const totalAmount = unitBasePrice * qty * 1.18;
+    if (lblTotal) lblTotal.textContent = '₹ ' + totalAmount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    if (btnBook) {
+        btnBook.href = '<?= BASE_URL ?>/checkout.php?machine_id=' + machineId + '&qty=' + qty;
     }
 }
 </script>

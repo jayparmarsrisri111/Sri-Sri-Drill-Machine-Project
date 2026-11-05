@@ -19,6 +19,7 @@ try {
 }
 
 $selectedId = intval($_GET['product_id'] ?? ($_GET['part_id'] ?? ($_GET['machine_id'] ?? ($products[0]['id'] ?? 1))));
+$initialQty = max(1, intval($_GET['qty'] ?? 1));
 $selectedMachine = null;
 foreach ($products as $p) {
     if ($p['id'] == $selectedId) {
@@ -329,6 +330,25 @@ foreach ($products as $p) {
                 </select>
             </div>
 
+            <!-- Quantity Selector with Live Stock Indicator -->
+            <div class="form-group" style="margin-top: 18px; background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.3); border-radius: 10px; padding: 14px 18px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <label class="form-label" style="margin-bottom: 2px; font-weight: 800; color: #fff; font-size: 14px;">
+                            Order Quantity (જથ્થો / Units) *
+                        </label>
+                        <div style="font-size: 12px; color: var(--text-muted);">
+                            Available in factory stock: <strong id="checkoutStockCount" style="color: #34d399; font-weight: 800;"><?= intval($selectedMachine['stock_quantity'] ?? 5) ?> Units</strong>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <button type="button" id="btnQtyMinus" style="width: 38px; height: 38px; border-radius: 6px; background: #060911; border: 1.5px solid var(--accent-cyan); color: #fff; font-size: 19px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center;">−</button>
+                        <input type="number" id="orderQuantity" name="quantity" class="form-control" style="width: 65px; height: 38px; text-align: center; font-size: 17px; font-weight: 800; color: #34d399; background: #060911; border: 1.5px solid #0284c7;" value="<?= $initialQty ?>" min="1" max="<?= max(1, intval($selectedMachine['stock_quantity'] ?? 5)) ?>">
+                        <button type="button" id="btnQtyPlus" style="width: 38px; height: 38px; border-radius: 6px; background: #060911; border: 1.5px solid var(--accent-cyan); color: #fff; font-size: 19px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center;">+</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Payment Type Selection (Supports Online Advance up to ₹90,000 or Full Payment) -->
             <div style="margin: 22px 0;">
                 <label class="form-label" style="margin-bottom: 10px;">Choose Payment Option *</label>
@@ -499,7 +519,11 @@ foreach ($products as $p) {
             </h4>
 
             <div class="price-row">
-                <span>Machine Base Price:</span>
+                <span>Selected Quantity:</span>
+                <span id="rowQuantity" style="color: var(--accent-cyan); font-weight: 700;">1 Unit</span>
+            </div>
+            <div class="price-row">
+                <span>Billed Base Value:</span>
                 <span id="rowBasePrice">₹ 0.00</span>
             </div>
             <div class="price-row">
@@ -714,13 +738,16 @@ foreach ($products as $p) {
     const isCustomerLoggedIn = <?= !empty($_SESSION['customer_user']) ? 'true' : 'false' ?>;
 
     function getSelectedPayableAmount(basePrice) {
-        const fullTotal = basePrice * 1.18;
+        const qtyInput = document.getElementById('orderQuantity');
+        const qty = parseInt(qtyInput ? qtyInput.value : 1) || 1;
+        const totalBase = basePrice * qty;
+        const fullTotal = totalBase * 1.18;
         if (payTypeAdvance && payTypeAdvance.checked) {
-            return 25000;
+            return 25000 * qty;
         } else if (payTypeCustomAdvance && payTypeCustomAdvance.checked) {
-            let val = parseFloat(inputCustomAdvance.value) || 90000;
-            if (val > 400000) val = 400000;
-            if (val < 5000) val = 5000;
+            let val = parseFloat(inputCustomAdvance.value) || (90000 * qty);
+            if (val > (400000 * qty)) val = 400000 * qty;
+            if (val < (5000 * qty)) val = 5000 * qty;
             return val;
         } else {
             return fullTotal;
@@ -755,6 +782,36 @@ foreach ($products as $p) {
         });
     }
 
+    const btnQtyMinus = document.getElementById('btnQtyMinus');
+    const btnQtyPlus = document.getElementById('btnQtyPlus');
+    const orderQuantity = document.getElementById('orderQuantity');
+
+    if (btnQtyMinus) {
+        btnQtyMinus.addEventListener('click', function() {
+            let v = parseInt(orderQuantity.value) || 1;
+            if (v > 1) {
+                orderQuantity.value = v - 1;
+                recalculate();
+            }
+        });
+    }
+
+    if (btnQtyPlus) {
+        btnQtyPlus.addEventListener('click', function() {
+            let v = parseInt(orderQuantity.value) || 1;
+            const max = parseInt(orderQuantity.max) || 999;
+            if (v < max) {
+                orderQuantity.value = v + 1;
+                recalculate();
+            }
+        });
+    }
+
+    if (orderQuantity) {
+        orderQuantity.addEventListener('input', recalculate);
+        orderQuantity.addEventListener('change', recalculate);
+    }
+
     function recalculate() {
         const opt = machineSelect.options[machineSelect.selectedIndex];
         const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
@@ -767,54 +824,74 @@ foreach ($products as $p) {
         summaryModelTag.textContent = model;
         summaryMachineName.textContent = name;
 
+        const stock = parseInt(opt.getAttribute('data-stock')) || 0;
+        const stockElem = document.getElementById('summaryStockQty');
+        const checkoutStockCount = document.getElementById('checkoutStockCount');
+        if (stockElem) {
+            stockElem.textContent = stock > 0 ? (stock + " Units in Factory Stock") : "Backorder / Custom Manufacturing (5-7 Days)";
+            stockElem.style.color = stock > 0 ? '#34d399' : '#f87171';
+        }
+        if (checkoutStockCount) {
+            checkoutStockCount.textContent = (stock > 0) ? (stock + " Units") : "0 Units (Custom Build)";
+            checkoutStockCount.style.color = (stock > 0) ? '#34d399' : '#f87171';
+        }
+
+        const qtyInput = document.getElementById('orderQuantity');
+        let qty = parseInt(qtyInput ? qtyInput.value : 1) || 1;
+        if (qty < 1) qty = 1;
+        if (stock > 0) {
+            qtyInput.max = stock;
+            if (qty > stock) {
+                qty = stock;
+                qtyInput.value = qty;
+            }
+        }
+
         // If spare part, hide Advance Token and enforce 100% full payment
         if (pType === 'part') {
             if (labelOptionAdvance) labelOptionAdvance.style.display = 'none';
             if (labelOptionCustomAdvance) labelOptionCustomAdvance.style.display = 'none';
             payTypeFull.checked = true;
-            document.getElementById('fullPaymentTitle').textContent = "Full Spare Part Price + 18% GST";
+            document.getElementById('fullPaymentTitle').textContent = "Full Spare Part Price (" + qty + " Unit" + (qty > 1 ? "s" : "") + ") + 18% GST";
             document.getElementById('fullPaymentDesc').textContent = "Immediate dispatch from Bhavnagar plant inventory via courier/transport.";
         } else {
             if (labelOptionAdvance) labelOptionAdvance.style.display = 'flex';
             if (labelOptionCustomAdvance) labelOptionCustomAdvance.style.display = 'flex';
-            document.getElementById('fullPaymentTitle').textContent = "Full Payment (Machine Price + 18% GST)";
+            document.getElementById('fullPaymentTitle').textContent = "Full Payment (" + qty + " Unit" + (qty > 1 ? "s" : "") + ") + 18% GST";
             document.getElementById('fullPaymentDesc').textContent = "Complete invoice payment with 100% Tax Invoice, priority dispatch & free tooling set.";
         }
 
-        const stock = parseInt(opt.getAttribute('data-stock')) || 0;
-        const stockElem = document.getElementById('summaryStockQty');
-        if (stockElem) {
-            stockElem.textContent = stock > 0 ? (stock + " Units in Factory Stock") : "Backorder / Custom Manufacturing (5-7 Days)";
-            stockElem.style.color = stock > 0 ? '#34d399' : '#f87171';
-        }
+        // Taxes (18% GST) on Total Base Price
+        const totalBasePrice = basePrice * qty;
+        const cgst = totalBasePrice * 0.09;
+        const sgst = totalBasePrice * 0.09;
+        const fullTotal = totalBasePrice + cgst + sgst;
 
-        // Taxes (18% GST)
-        const cgst = basePrice * 0.09;
-        const sgst = basePrice * 0.09;
-        const fullTotal = basePrice + cgst + sgst;
+        const rowQuantity = document.getElementById('rowQuantity');
+        if (rowQuantity) rowQuantity.textContent = qty + (qty > 1 ? " Units" : " Unit");
 
-        rowBasePrice.textContent = formatINR(basePrice);
+        rowBasePrice.textContent = formatINR(totalBasePrice) + " (" + qty + " × " + formatINR(basePrice) + ")";
         rowCgst.textContent = formatINR(cgst);
         rowSgst.textContent = formatINR(sgst);
         rowFullTotal.textContent = formatINR(fullTotal);
         fullPriceLabel.textContent = formatINR(fullTotal);
 
-        let payableNowNum = 25000;
+        let payableNowNum = 25000 * qty;
         let isAdvance = true;
 
         if (payTypeAdvance && payTypeAdvance.checked && pType !== 'part') {
-            payableNowNum = 25000;
+            payableNowNum = 25000 * qty;
             isAdvance = true;
             if (customAdvanceBox) customAdvanceBox.style.display = 'none';
             if (labelOptionAdvance) labelOptionAdvance.classList.add('active');
             if (labelOptionCustomAdvance) labelOptionCustomAdvance.classList.remove('active');
             if (labelOptionFull) labelOptionFull.classList.remove('active');
-            paymentPlanNotice.textContent = "Token Booking Advance (Balance ₹" + Math.max(0, fullTotal - 25000).toLocaleString('en-IN') + " on dispatch)";
-            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Booking Advance ₹25,000 (Razorpay)";
+            paymentPlanNotice.textContent = "Token Advance ₹25,000 × " + qty + " = ₹" + payableNowNum.toLocaleString('en-IN') + " (Balance ₹" + Math.max(0, fullTotal - payableNowNum).toLocaleString('en-IN') + " on dispatch)";
+            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Booking Advance " + formatINR(payableNowNum) + " (Razorpay)";
         } else if (payTypeCustomAdvance && payTypeCustomAdvance.checked && pType !== 'part') {
-            let customVal = parseFloat(inputCustomAdvance.value) || 90000;
-            if (customVal > 400000) customVal = 400000;
-            if (customVal < 5000) customVal = 5000;
+            let customVal = parseFloat(inputCustomAdvance.value) || (90000 * qty);
+            if (customVal > (400000 * qty)) customVal = (400000 * qty);
+            if (customVal < (5000 * qty)) customVal = (5000 * qty);
             payableNowNum = customVal;
             isAdvance = true;
             if (customAdvanceBox) customAdvanceBox.style.display = 'block';
@@ -831,14 +908,14 @@ foreach ($products as $p) {
             if (labelOptionAdvance) labelOptionAdvance.classList.remove('active');
             if (labelOptionCustomAdvance) labelOptionCustomAdvance.classList.remove('active');
             if (labelOptionFull) labelOptionFull.classList.add('active');
-            paymentPlanNotice.textContent = (pType === 'part') ? "100% Spare Part Payment + 18% GST" : "100% Full Machine Payment + 18% GST";
+            paymentPlanNotice.textContent = (pType === 'part') ? ("100% Spare Part Payment for " + qty + " Unit(s) + 18% GST") : ("100% Full Machine Payment for " + qty + " Unit(s) + 18% GST");
             if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Full Amount " + formatINR(fullTotal) + " (Razorpay)";
         }
 
         rowPayableNow.textContent = formatINR(payableNowNum);
 
         // Dynamically update UPI QR Code and Mobile UPI Link with exact amount
-        const upiLink = "upi://pay?pa=shreevarsha@okhdfcbank&pn=Shree%20Varsha%20Engineering%20Works&am=" + payableNowNum.toFixed(2) + "&cu=INR&tn=" + encodeURIComponent(model + ' Booking');
+        const upiLink = "upi://pay?pa=shreevarsha@okhdfcbank&pn=Shree%20Varsha%20Engineering%20Works&am=" + payableNowNum.toFixed(2) + "&cu=INR&tn=" + encodeURIComponent(model + ' ' + qty + ' Units Booking');
         const qrImg = document.getElementById('dynamicUpiQrImg');
         const upiBtn = document.getElementById('btnDirectUpiPayLink');
         if (qrImg) {
@@ -873,6 +950,8 @@ foreach ($products as $p) {
         const machineName = opt.getAttribute('data-name');
         const modelNumber = opt.getAttribute('data-model');
         const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
+        const qty = parseInt(document.getElementById('orderQuantity').value) || 1;
+        const totalBasePrice = basePrice * qty;
         const isAdvance = !payTypeFull.checked;
         const payableAmount = getSelectedPayableAmount(basePrice);
 
@@ -884,9 +963,11 @@ foreach ($products as $p) {
         postData.append('machine_id', machineId);
         postData.append('machine_name', machineName);
         postData.append('model_number', modelNumber);
+        postData.append('quantity', qty);
         postData.append('payment_type', isAdvance ? 'booking_advance' : 'full_payment');
         postData.append('payable_amount', payableAmount);
-        postData.append('base_price', basePrice);
+        postData.append('base_price', totalBasePrice);
+        postData.append('unit_price', basePrice);
         postData.append('customer_name', name);
         postData.append('company_name', company);
         postData.append('customer_phone', phone);

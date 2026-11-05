@@ -750,9 +750,16 @@ function getMachineDatasheetSpecs($prod) {
                                 <small style="color: #6b7280; font-size: 11.5px;">(+ 18% GST)</small>
                             </div>
                             <div>
-                                <span style="font-size: 11.5px; font-weight: 700; color: #047857; background: rgba(16, 185, 129, 0.15); padding: 4px 10px; border-radius: 9999px; border: 1px solid #10b981;">
-                                    ✔ Factory Ready: <?= intval($prod['stock_quantity'] ?? 5) ?> Units in Stock
-                                </span>
+                                <?php $cStock = intval($prod['stock_quantity'] ?? 0); ?>
+                                <?php if ($cStock > 0): ?>
+                                    <span style="font-size: 11.5px; font-weight: 700; color: #047857; background: rgba(16, 185, 129, 0.15); padding: 4px 10px; border-radius: 9999px; border: 1px solid #10b981;">
+                                        ✔ Factory Ready: <?= $cStock ?> Units in Stock
+                                    </span>
+                                <?php else: ?>
+                                    <span style="font-size: 11.5px; font-weight: 700; color: #b45309; background: rgba(245, 158, 11, 0.15); padding: 4px 10px; border-radius: 9999px; border: 1px solid #f59e0b;">
+                                        ⏳ Made to Order (5-7 Days Dispatch)
+                                    </span>
+                                <?php endif; ?>
                             </div>
                         </div>
 

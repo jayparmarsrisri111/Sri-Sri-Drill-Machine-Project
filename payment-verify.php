@@ -44,6 +44,7 @@ $notes = sanitizeString($_POST['notes'] ?? '');
 $machineId = intval($_POST['machine_id'] ?? 1);
 $machineName = sanitizeString($_POST['machine_name'] ?? '');
 $modelNumber = sanitizeString($_POST['model_number'] ?? '');
+$quantity = max(1, intval($_POST['quantity'] ?? 1));
 $paymentType = ($_POST['payment_type'] === 'full_payment') ? 'full_payment' : 'booking_advance';
 $basePrice = floatval($_POST['base_price'] ?? 0);
 $payableAmount = floatval($_POST['payable_amount'] ?? 0);
@@ -132,7 +133,7 @@ try {
 
     $stmt = $pdo->prepare("
         INSERT INTO `orders` (
-            `order_number`, `invoice_number`, `product_id`, `product_name`, `model_number`,
+            `order_number`, `invoice_number`, `product_id`, `product_name`, `model_number`, `quantity`,
             `customer_name`, `company_name`, `customer_email`, `customer_phone`, `customer_address`,
             `customer_city`, `customer_pincode`, `customer_gst`, `payment_type`,
             `machine_price`, `taxable_amount`, `cgst_amount`, `sgst_amount`, `total_amount`,
@@ -140,7 +141,7 @@ try {
             `payment_status`, `order_status`, `authorized_signatory`, `crypto_seal`, `notes`,
             `customer_id`, `delivery_status`, `transport_name`, `tracking_number`, `estimated_delivery`, `current_location`, `delivery_notes`
         ) VALUES (
-            :order_num, :inv_num, :prod_id, :prod_name, :model_num,
+            :order_num, :inv_num, :prod_id, :prod_name, :model_num, :qty,
             :cust_name, :company, :email, :phone, :address,
             :city, :pincode, :gst, :pay_type,
             :base_price, :taxable, :cgst, :sgst, :total,
@@ -156,6 +157,7 @@ try {
         ':prod_id'       => $machineId,
         ':prod_name'     => $machineName,
         ':model_num'     => $modelNumber,
+        ':qty'           => $quantity,
         ':cust_name'     => $custName,
         ':company'       => $custCompany,
         ':email'         => $custEmail,
@@ -185,22 +187,29 @@ try {
 
     $insertedId = $pdo->lastInsertId();
 
-    // 2. Dynamic Real-time Inventory Deduction
+    // 2. Dynamic Real-time Inventory Deduction by Ordered Quantity
+    $remainingStock = 0;
     try {
-        $updateStock = $pdo->prepare("UPDATE `products` SET `stock_quantity` = CASE WHEN stock_quantity > 0 THEN stock_quantity - 1 ELSE 0 END WHERE id = :mid");
-        $updateStock->execute([':mid' => $machineId]);
+        $updateStock = $pdo->prepare("UPDATE `products` SET `stock_quantity` = CASE WHEN stock_quantity >= :qty THEN stock_quantity - :qty ELSE 0 END WHERE id = :mid");
+        $updateStock->execute([':qty' => $quantity, ':mid' => $machineId]);
+
+        $stkCheck = $pdo->prepare("SELECT stock_quantity FROM `products` WHERE id = :mid");
+        $stkCheck->execute([':mid' => $machineId]);
+        $remainingStock = intval($stkCheck->fetchColumn() ?? 0);
     } catch (Exception $stkEx) {
-        // Stock column might not be supported in older schemas
+        // Stock column fallback
     }
 
     echo json_encode([
-        'success'        => true,
-        'order_id'       => $insertedId,
-        'order_number'   => $orderNumber,
-        'invoice_number' => $invoiceNumber,
-        'crypto_seal'    => $cryptoSeal,
-        'invoice_url'    => BASE_URL . '/invoice.php?order_id=' . $insertedId,
-        'tracking_url'   => BASE_URL . '/track-order.php?order_num=' . $orderNumber
+        'success'         => true,
+        'order_id'        => $insertedId,
+        'order_number'    => $orderNumber,
+        'invoice_number'  => $invoiceNumber,
+        'quantity'        => $quantity,
+        'remaining_stock' => $remainingStock,
+        'crypto_seal'     => $cryptoSeal,
+        'invoice_url'     => BASE_URL . '/invoice.php?order_id=' . $insertedId,
+        'tracking_url'    => BASE_URL . '/track-order.php?order_num=' . $orderNumber
     ]);
 } catch (Exception $e) {
     echo json_encode([

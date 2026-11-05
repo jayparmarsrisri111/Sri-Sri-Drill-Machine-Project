@@ -326,9 +326,14 @@ require_once __DIR__ . '/includes/sidebar.php';
                                         <div style="font-size: 11px; color: #64748b;"><?= e($ord['customer_city']) ?></div>
                                     </td>
                                     <td>
-                                        <span class="badge-tag" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">
-                                            <?= e($ord['model_number']) ?>
-                                        </span>
+                                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                                            <span class="badge-tag" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">
+                                                <?= e($ord['model_number']) ?>
+                                            </span>
+                                            <span style="background: rgba(0, 229, 255, 0.15); border: 1px solid var(--accent-cyan); color: #38bdf8; font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 4px;">
+                                                Qty: <?= intval($ord['quantity'] ?? 1) ?>
+                                            </span>
+                                        </div>
                                         <div style="font-size: 12px; color: var(--text-secondary); margin-top: 3px;">
                                             <?= e($ord['product_name']) ?>
                                         </div>

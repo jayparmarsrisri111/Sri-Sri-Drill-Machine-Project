@@ -263,10 +263,18 @@ try {
                                 <span class="badge-tag" style="border-color: var(--accent-cyan); color: var(--accent-cyan); font-weight: 700; font-size: 11px;">
                                     <?= e($p['model_number']) ?>
                                 </span>
-                                <span style="font-size: 11.5px; font-weight: 700; color: #34d399; display: flex; align-items: center; gap: 5px;">
-                                    <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#10b981;"></span>
-                                    <?= intval($p['stock_quantity'] ?? 5) ?> In Stock
-                                </span>
+                                <?php $iStock = intval($p['stock_quantity'] ?? 0); ?>
+                                <?php if ($iStock > 0): ?>
+                                    <span style="font-size: 11.5px; font-weight: 700; color: #34d399; display: flex; align-items: center; gap: 5px;">
+                                        <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#10b981;"></span>
+                                        <?= $iStock ?> In Stock
+                                    </span>
+                                <?php else: ?>
+                                    <span style="font-size: 11px; font-weight: 700; color: #fbbf24; display: flex; align-items: center; gap: 5px;">
+                                        <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#f59e0b;"></span>
+                                        Made to Order
+                                    </span>
+                                <?php endif; ?>
                             </div>
 
                             <span class="machine-category" style="font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 600; letter-spacing: 0.5px;"><?= e($p['category_name']) ?></span>

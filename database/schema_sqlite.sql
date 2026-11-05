@@ -161,6 +161,7 @@ CREATE TABLE IF NOT EXISTS orders (
   customer_pincode TEXT NOT NULL,
   customer_gst TEXT DEFAULT NULL,
   payment_type TEXT DEFAULT 'booking_advance',
+  quantity INTEGER DEFAULT 1,
   machine_price REAL NOT NULL,
   taxable_amount REAL NOT NULL,
   cgst_amount REAL NOT NULL,

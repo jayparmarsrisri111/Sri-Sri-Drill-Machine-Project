@@ -123,6 +123,12 @@ class Database {
                     ADD COLUMN `delivery_notes` TEXT DEFAULT NULL");
             }
 
+            // Ensure orders.quantity exists
+            $qtyCol = $pdo->query("SHOW COLUMNS FROM `orders` LIKE 'quantity'")->fetchAll();
+            if (empty($qtyCol)) {
+                $pdo->exec("ALTER TABLE `orders` ADD COLUMN `quantity` INT DEFAULT 1");
+            }
+
             // 5. Ensure real machine photos instead of legacy vector SVGs
             self::ensureRealMachineImages($pdo);
         } catch (Exception $e) {
@@ -172,9 +178,17 @@ class Database {
                 authorized_signatory TEXT DEFAULT 'Jay Parmar',
                 crypto_seal TEXT DEFAULT NULL,
                 notes TEXT DEFAULT NULL,
+                quantity INTEGER DEFAULT 1,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )");
+        } else {
+            try {
+                $cols = $pdo->query("PRAGMA table_info(orders)")->fetchAll(PDO::FETCH_COLUMN, 1);
+                if (!in_array('quantity', $cols)) {
+                    $pdo->exec("ALTER TABLE orders ADD COLUMN quantity INTEGER DEFAULT 1");
+                }
+            } catch (Exception $ex) {}
         }
 
         self::ensureRealMachineImages($pdo);
