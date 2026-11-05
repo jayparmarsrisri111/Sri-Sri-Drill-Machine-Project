@@ -681,13 +681,22 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
 
     <!-- Action Toolbar (hidden on print) -->
     <div class="invoice-actions-bar">
-        <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
             <a href="<?= BASE_URL ?>/index.php" class="btn-action btn-back">
                 ← Back to Home
             </a>
             <span style="color: #94a3b8; font-size: 13px;">
                 Order No: <strong style="color: #fff;"><?= e($order['order_number']) ?></strong>
             </span>
+            <!-- 1-Click Bill Type Switcher -->
+            <div style="display: inline-flex; gap: 6px; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                <a href="?order_id=<?= intval($order['id'] ?? 1) ?>&type=advance" class="btn-action" style="padding: 5px 10px; font-size: 11.5px; border-radius: 6px; text-decoration: none; <?= (($_GET['type'] ?? $order['payment_type']) !== 'full_payment' && ($_GET['type'] ?? '') !== 'full') ? 'background:#0284c7; color:#fff; font-weight:700;' : 'background:transparent; color:#94a3b8;' ?>">
+                    🪙 ₹25,000 Advance Token Bill
+                </a>
+                <a href="?order_id=<?= intval($order['id'] ?? 1) ?>&type=full" class="btn-action" style="padding: 5px 10px; font-size: 11.5px; border-radius: 6px; text-decoration: none; <?= (($_GET['type'] ?? '') === 'full' || ($order['payment_type'] === 'full_payment' && ($_GET['type'] ?? '') !== 'advance')) ? 'background:#10b981; color:#fff; font-weight:700;' : 'background:transparent; color:#94a3b8;' ?>">
+                    💳 100% Full Payment Bill
+                </a>
+            </div>
         </div>
         <div style="display: flex; gap: 10px;">
             <button onclick="window.print()" class="btn-action btn-print">
@@ -723,21 +732,42 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             </div>
 
             <?php 
-                $isAdvance = ($order['payment_type'] === 'booking_advance');
-                $fullMachineGross = floatval($order['machine_price'] ?? 0) * 1.18;
-                $balanceDue = max(0, $fullMachineGross - floatval($order['total_amount'] ?? 0));
+                $typeOverride = $_GET['type'] ?? '';
+                $orderType = $order['payment_type'] ?? 'booking_advance';
+                $isAdvance = ($typeOverride === 'advance') ? true : (($typeOverride === 'full') ? false : ($orderType === 'booking_advance'));
+
+                $machineBasePrice = floatval($order['machine_price'] ?? 285000.00);
+                if ($machineBasePrice <= 0) $machineBasePrice = 285000.00;
+                $fullMachineGross = round($machineBasePrice * 1.18, 2);
+
+                if ($isAdvance) {
+                    $paidAmount = floatval($order['total_amount'] ?? 25000.00);
+                    if ($paidAmount <= 0 || ($typeOverride === 'advance' && $paidAmount > 50000)) {
+                        $paidAmount = 25000.00;
+                    }
+                    $taxableAmount = round($paidAmount / 1.18, 2);
+                    $cgstAmount = round(($paidAmount - $taxableAmount) / 2, 2);
+                    $sgstAmount = round($paidAmount - $taxableAmount - $cgstAmount, 2);
+                    $balanceDue = max(0, $fullMachineGross - $paidAmount);
+                } else {
+                    $taxableAmount = $machineBasePrice;
+                    $cgstAmount = round($taxableAmount * 0.09, 2);
+                    $sgstAmount = round($taxableAmount * 0.09, 2);
+                    $paidAmount = $taxableAmount + $cgstAmount + $sgstAmount;
+                    $balanceDue = 0.00;
+                }
             ?>
 
             <div class="invoice-title-block">
-                <div class="inv-title"><?= $isAdvance ? 'ADVANCE BOOKING TAX INVOICE' : 'TAX INVOICE' ?></div>
+                <div class="inv-title"><?= $isAdvance ? 'ADVANCE BOOKING TAX INVOICE' : 'TAX INVOICE (100% PAID)' ?></div>
                 <div style="margin: 4px 0;">
                     <?php if ($isAdvance): ?>
                         <span class="status-badge" style="background: #fef3c7; color: #b45309; border-color: #fcd34d;">
-                            ✔ ADVANCE TOKEN PAID (SLOT RESERVED)
+                            ✔ ADVANCE TOKEN PAID (SLOT RESERVED) • ₹ <?= number_format($paidAmount, 2) ?>
                         </span>
                     <?php else: ?>
-                        <span class="status-badge">
-                            ✔ 100% FULL PAYMENT RECEIVED
+                        <span class="status-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac;">
+                            ✔ 100% FULL PAYMENT RECEIVED (NIL BALANCE) • ₹ <?= number_format($paidAmount, 2) ?>
                         </span>
                     <?php endif; ?>
                 </div>
@@ -854,8 +884,8 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                         </td>
                         <td>8459 29 10</td>
                         <td style="text-align: center; font-weight: 700;">1 Unit</td>
-                        <td style="text-align: right;"><?= number_format($order['total_amount'], 2) ?></td>
-                        <td style="text-align: right; font-weight: 600;"><?= number_format($order['taxable_amount'], 2) ?></td>
+                        <td style="text-align: right;"><?= number_format($paidAmount, 2) ?></td>
+                        <td style="text-align: right; font-weight: 600;"><?= number_format($taxableAmount, 2) ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -875,19 +905,19 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 <table class="totals-table">
                     <tr>
                         <td style="color: #64748b;">Taxable Value (This Invoice):</td>
-                        <td style="text-align: right; font-weight: 600;">₹ <?= number_format($order['taxable_amount'], 2) ?></td>
+                        <td style="text-align: right; font-weight: 600;">₹ <?= number_format($taxableAmount, 2) ?></td>
                     </tr>
                     <tr>
                         <td style="color: #64748b;">CGST (9.00%):</td>
-                        <td style="text-align: right; font-weight: 600;">₹ <?= number_format($order['cgst_amount'], 2) ?></td>
+                        <td style="text-align: right; font-weight: 600;">₹ <?= number_format($cgstAmount, 2) ?></td>
                     </tr>
                     <tr>
                         <td style="color: #64748b;">SGST (9.00%):</td>
-                        <td style="text-align: right; font-weight: 600;">₹ <?= number_format($order['sgst_amount'], 2) ?></td>
+                        <td style="text-align: right; font-weight: 600;">₹ <?= number_format($sgstAmount, 2) ?></td>
                     </tr>
                     <tr class="grand-total">
                         <td>TOTAL PAID TODAY (INR):</td>
-                        <td style="text-align: right; color: #15803d;">₹ <?= number_format($order['total_amount'], 2) ?></td>
+                        <td style="text-align: right; color: #15803d;">₹ <?= number_format($paidAmount, 2) ?></td>
                     </tr>
                     <?php if ($isAdvance): ?>
                     <tr>
@@ -898,13 +928,18 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                         <td style="color: #b91c1c; font-weight: 800; font-size: 12px; padding: 6px 8px;">PENDING BALANCE DUE ON DISPATCH:</td>
                         <td style="text-align: right; font-weight: 900; color: #b91c1c; font-size: 14px; padding: 6px 8px;">₹ <?= number_format($balanceDue, 2) ?></td>
                     </tr>
+                    <?php else: ?>
+                    <tr style="background: #f0fdf4; border: 1.5px solid #86efac;">
+                        <td style="color: #15803d; font-weight: 800; font-size: 12px; padding: 6px 8px;">BALANCE DUE (REMAINING):</td>
+                        <td style="text-align: right; font-weight: 900; color: #15803d; font-size: 13.5px; padding: 6px 8px;">₹ 0.00 (PAID IN FULL - NIL BALANCE)</td>
+                    </tr>
                     <?php endif; ?>
                 </table>
             </div>
         </div>
 
         <div class="amount-words-box" style="font-size: 12px; color: #334155; margin-bottom: 20px; padding: 7px 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px;">
-            <strong>Amount in Words:</strong> <?= amountInWords($order['total_amount']) ?>
+            <strong>Amount in Words:</strong> <?= amountInWords($paidAmount) ?>
         </div>
 
         <!-- Official Seal and Authorized Signatory Row -->

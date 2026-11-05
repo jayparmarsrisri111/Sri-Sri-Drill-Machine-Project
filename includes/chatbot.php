@@ -557,7 +557,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (q.includes('40mm') || q.includes('rd-40') || q.includes('rd 40') || q.includes('all geared radial')) {
             const rich = `
                 <div class="chat-rich-card">
-                    <img src="<?= assetUrl('assets/images/machinery/radial-drill-real.jpg') ?>" alt="RD-40 Real Photo">
+                    <img src="<?= assetUrl('assets/images/machinery/radial-drill-40-real.jpg') ?>" alt="RD-40 Real Photo">
                     <div class="chat-card-title">SVEW-RD-40 All-Geared Radial Drill</div>
                     <div class="chat-card-spec">Capacity: 40mm Steel / 50mm C.I. • 8 Speeds (50-1800 RPM)</div>
                     <div class="chat-card-price">Ex-Factory: ₹ 2,85,000 + 18% GST (Token: ₹25,000)</div>
@@ -573,25 +573,67 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         }
 
-        // 1.1 Spare Parts & Tooling Inquiries
-        if (q.includes('part') || q.includes('spares') || q.includes('spindle') || q.includes('gear') || q.includes('chuck') || q.includes('pump') || q.includes('table') || q.includes('accessories')) {
+        // 1.1 Spare Parts & Tooling Inquiries (Real Images & 100% Sachi Details)
+        if (q.includes('part') || q.includes('spares') || q.includes('spindle') || q.includes('gear') || q.includes('chuck') || q.includes('pump') || q.includes('table') || q.includes('accessories') || q.includes('સ્પેર') || q.includes('પાર્ટ')) {
             const rich = `
                 <div class="chat-rich-card">
+                    <img src="<?= assetUrl('assets/images/machinery/part-spindle-quill.jpg') ?>" alt="Genuine Spare Parts Real Photo">
                     <div class="chat-card-title">⚙️ Genuine Varsha Factory Spare Parts</div>
                     <div class="chat-card-spec">• MT-4 Alloy Spindle Sleeve: ₹ 14,500<br>• 8-Speed Headstock Gear Set: ₹ 22,000<br>• T-Slot Box Table (500x600): ₹ 18,500<br>• 1-16mm Keyless Chuck MT-4: ₹ 3,800<br>• Coolant Pump & Hose Kit: ₹ 4,200</div>
                     <div class="chat-card-actions" style="margin-top:6px;">
-                        <a href="<?= BASE_URL ?>/catalog.php" class="btn btn-outline" style="font-size:11px; flex:1;">Browse All Parts</a>
-                        <a href="<?= BASE_URL ?>/checkout.php?product_id=101" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">Order Parts Online</a>
+                        <a href="<?= BASE_URL ?>/machines.php?category=spindles-quills" class="btn btn-outline" style="font-size:11px; flex:1;">Browse All Parts</a>
+                        <a href="<?= BASE_URL ?>/machine-detail.php?id=101" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">View Real Photos & Specs</a>
                     </div>
                 </div>
             `;
             return {
-                text: `<p>હા, અમે તમામ <strong>Varsha Brand Radial & Pillar Drill Machines</strong> ના ૧૦૦% ઓરિજિનલ સ્પેરપાર્ટ્સ (Spindle, Gears, Worm Wheel, Coolant Pump, Chucks) સ્ટોક રાખીએ છીએ. તમે ઓનલાઇન પણ ઓર્ડર કરી શકો છો.</p>`,
+                text: `<p>હા, અમે તમામ <strong>Varsha Brand Radial & Pillar Drill Machines</strong> ના ૧૦૦% ઓરિજિનલ સ્પેરપાર્ટ્સ (Spindle Quill, Alloy Gears, Box Table, Coolant Pump, Chucks) સ્ટોક રાખીએ છીએ. દરેક પાર્ટના રિયલ ફોટો અને સ્પેશિફિકેશન તમે જોઈ શકો છો.</p>`,
                 rich: rich
             };
         }
 
-        // 1.2 Live Order & Delivery Tracking Inquiries
+        // 1.2 Advance Token (₹25,000) vs Full Payment Bill Inquiries
+        if (q.includes('25000') || q.includes('૨૫૦૦૦') || q.includes('advance') || q.includes('token') || q.includes('ટોકન') || q.includes('બીલ') || q.includes('bill') || q.includes('invoice') || q.includes('ઇન્વોઇસ') || q.includes('payment')) {
+            const rich = `
+                <div class="chat-rich-card">
+                    <div class="chat-card-title">💳 Flexible Billing Options (તમારી પસંદગી મુજબ)</div>
+                    <div class="chat-card-spec">
+                        • <strong>₹ 25,000 Advance Token Bill:</strong> મશીન બુક કરવા માટે ₹25,000 ટોકન રસીદ/બિલ નીકળશે અને બાકી રહેલ રકમ ડિસ્પેચ સમયે ચૂકવવાની દર્શાવશે.<br>
+                        • <strong>100% Full Payment Bill:</strong> પૂરેપૂરી રકમનું 100% પેઇડ GST ટેક્સ ઇન્વોઇસ નીકળશે જેમાં બાકી રકમ ₹0 રહેશે.
+                    </div>
+                    <div class="chat-card-actions" style="margin-top:8px;">
+                        <a href="<?= BASE_URL ?>/invoice.php?type=advance" class="btn btn-outline" style="font-size:10.5px; flex:1; border-color:#facc15; color:#facc15;">🪙 ₹25k Token Bill</a>
+                        <a href="<?= BASE_URL ?>/invoice.php?type=full" class="btn btn-primary" style="font-size:10.5px; flex:1; background:#10b981;">💳 100% Full Bill</a>
+                    </div>
+                </div>
+            `;
+            return {
+                text: `<p><strong>Billing &amp; Payment Options:</strong></p>
+                       <p>તમે માત્ર <strong>₹ 25,000</strong> ટોકન એડવાન્સ આપીને મશીન બુક કરી શકો છો, જેથી તમને ₹25,000 નું એડવાન્સ બુકિંગ બિલ અને બાકી રકમની ગણતરી મળશે. અથવા જો તમે સંપૂર્ણ ચુકવણી કરો છો, તો 100% પેઇડ પાકું GST ઇન્વોઇસ મળશે.</p>`,
+                rich: rich
+            };
+        }
+
+        // 1.3 Live Location & Satellite Map Inquiries
+        if (q.includes('live location') || q.includes('લાઈવ લોકેશન') || q.includes('location') || q.includes('નકશો') || q.includes('મેપ') || q.includes('map') || q.includes('satellite') || q.includes('સેટેલાઇટ') || q.includes('ક્યાં છે') || q.includes('સરનામું')) {
+            const rich = `
+                <div class="chat-rich-card">
+                    <div class="chat-card-title">📍 Live Satellite Location • Bhavnagar Plant</div>
+                    <div class="chat-card-spec">Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 36400003, Gujarat</div>
+                    <div class="chat-card-actions" style="margin-top:6px;">
+                        <a href="<?= BASE_URL ?>/contact.php#factoryLiveMap" class="btn btn-primary" style="font-size:11px; flex:1; background:linear-gradient(135deg, #00e5ff 0%, #2563eb 100%); color:#060911; font-weight:800;">🛰️ Open Live Satellite Map</a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=21.7645,72.1519" target="_blank" class="btn btn-outline" style="font-size:11px; flex:1;">🚗 Driving Directions</a>
+                    </div>
+                </div>
+            `;
+            return {
+                text: `<p><strong>📍 Factory Live Location (લાઈવ લોકેશન):</strong></p>
+                       <p>અમારી મેન્યુફેક્ચરિંગ ફેક્ટરી ભાવનગર (ગુજરાત) માં હાદાનગર GIDC ખાતે આવેલી છે. તમે Contact Us પેજ પર લાઈવ સેટેલાઇટ મેપ જોઈ શકો છો અને ડાયરેક્ટ નેવિગેશન શરૂ કરી શકો છો.</p>`,
+                rich: rich
+            };
+        }
+
+        // 1.4 Live Order & Delivery Tracking Inquiries
         if (q.includes('track') || q.includes('tracking') || q.includes('order status') || q.includes('where is my order') || q.includes('delivery status') || q.includes('amazon')) {
             return {
                 text: `<p><strong>🚚 Amazon-Style Live Order & Logistics Tracking:</strong></p>
@@ -600,8 +642,8 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         }
 
-        // 1.3 Gujarati Language Inquiries
-        if (q.includes('કેમ') || q.includes('ભાવ') || q.includes('કિંમત') || q.includes('મશીન') || q.includes('ઓર્ડર') || q.includes('નમસ્તે') || q.includes('ડ્રિલ') || q.includes('ક્યાં') || q.includes('સરનામું')) {
+        // 1.5 Gujarati Language General Inquiries
+        if (q.includes('કેમ') || q.includes('ભાવ') || q.includes('કિંમત') || q.includes('મશીન') || q.includes('ઓર્ડર') || q.includes('નમસ્તે') || q.includes('ડ્રિલ')) {
             return {
                 text: `<p><strong>નમસ્તે! શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સ (ભાવનગર) માં આપનું સ્વાગત છે.</strong></p>
                        <p>અમારા ઓલ-ગીયર્ડ રેડિયલ અને પિલર ડ્રિલ મશીનોના વાસ્તવિક ફેક્ટરી ભાવો:<br>
@@ -619,22 +661,22 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         }
 
-        // 2. 50mm Radial Drill
+        // 2. 50mm Radial Drill (Real Photo)
         if (q.includes('50mm') || q.includes('rd-50') || q.includes('rd 50')) {
             const rich = `
                 <div class="chat-rich-card">
-                    <img src="<?= assetUrl('assets/images/machinery/radial-drill-50.svg') ?>" alt="RD-50">
+                    <img src="<?= assetUrl('assets/images/machinery/radial-drill-50-real.jpg') ?>" alt="RD-50 Real Photo">
                     <div class="chat-card-title">SVEW-RD-50 Heavy Duty Radial Drill</div>
                     <div class="chat-card-spec">Capacity: 50mm Steel / 60mm C.I. • 12 Speeds</div>
-                    <div class="chat-card-price">Price: ₹ 3,95,000 + 18% GST</div>
+                    <div class="chat-card-price">Price: ₹ 3,95,000 + 18% GST (Token: ₹25,000)</div>
                     <div class="chat-card-actions">
                         <a href="<?= BASE_URL ?>/checkout.php?product_id=2" class="btn btn-primary" style="background:#10b981; font-size:11px;">💳 Book Now</a>
-                        <a href="<?= BASE_URL ?>/machine-detail.php?id=2" class="btn btn-outline" style="font-size:11px;">Specs</a>
+                        <a href="<?= BASE_URL ?>/machine-detail.php?id=2" class="btn btn-outline" style="font-size:11px;">Specs &amp; Video</a>
                     </div>
                 </div>
             `;
             return {
-                text: `<p><strong>SVEW-RD-50</strong> delivers immense torque for heavy steel fabrication, valve manufacturing, and railway jobs. Manufactured at our Bhavnagar plant.</p>`,
+                text: `<p><strong>SVEW-RD-50</strong> delivers immense torque for heavy steel fabrication, valve manufacturing, and railway jobs. Manufactured at our Bhavnagar plant with real inspection video demo.</p>`,
                 rich: rich
             };
         }

@@ -74,7 +74,7 @@ $orderColsToAdd = [
     'transport_name' => "TEXT DEFAULT 'VRL Logistics Industrial Freight'",
     'tracking_number' => "TEXT DEFAULT NULL",
     'estimated_delivery' => "TEXT DEFAULT NULL",
-    'current_location' => "TEXT DEFAULT 'Shapar Factory Warehouse, Rajkot'",
+    'current_location' => "TEXT DEFAULT 'Bhavnagar Factory Works, Shed L/786 GIDC, Bhavnagar'",
     'delivery_notes' => "TEXT DEFAULT NULL"
 ];
 
@@ -107,10 +107,10 @@ try {
     $pdo->exec("
         UPDATE orders SET 
             delivery_status = 'dispatched',
-            transport_name = 'VRL Logistics Heavy Freight (Rajkot Hub)',
-            tracking_number = 'VRL-RAJ-884210',
+            transport_name = 'VRL Logistics Heavy Freight (Bhavnagar Hub)',
+            tracking_number = 'VRL-BHV-884210',
             estimated_delivery = date('now', '+3 days'),
-            current_location = 'In Transit - Shapar-Veraval Highway Toll Plaza',
+            current_location = 'In Transit - Bhavnagar-Ahmedabad National Highway Toll Plaza',
             delivery_notes = 'Heavy Machinery Wooden Box Crate with shock-dampers. Driver Contact: +91 94280 11223'
         WHERE tracking_number IS NULL OR tracking_number = ''
     ");

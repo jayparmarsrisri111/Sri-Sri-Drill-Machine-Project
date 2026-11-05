@@ -66,7 +66,7 @@ try {
                 </div>
             </div>
 
-            <div style="overflow-x: auto;">
+            <div class="table-responsive">
                 <table class="admin-table">
                     <thead>
                         <tr>

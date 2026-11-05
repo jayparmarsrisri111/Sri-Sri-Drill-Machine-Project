@@ -160,29 +160,34 @@ class Machine6DViewer {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.container.appendChild(this.renderer.domElement);
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        // Enhanced Studio Lighting for High-Fidelity Visibility (Crystal Clear in Mobile & Dark Screens)
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.35);
         this.scene.add(ambientLight);
 
-        this.keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
-        this.keyLight.position.set(200, 300, 150);
+        this.keyLight = new THREE.DirectionalLight(0xffffff, 1.6);
+        this.keyLight.position.set(200, 320, 180);
         this.keyLight.castShadow = true;
         this.keyLight.shadow.mapSize.width = 1024;
         this.keyLight.shadow.mapSize.height = 1024;
         this.scene.add(this.keyLight);
 
-        // Cyan Fill Light (for technical glowing edges)
-        this.cyanLight = new THREE.PointLight(0x00f0ff, 1.5, 450);
-        this.cyanLight.position.set(-150, 100, 150);
+        // Frontal Studio Fill Light (Eliminates murky machine silhouettes)
+        const frontFillLight = new THREE.DirectionalLight(0xe0f2fe, 1.1);
+        frontFillLight.position.set(-60, 140, 240);
+        this.scene.add(frontFillLight);
+
+        // Cyan Fill Light (for technical glowing precision highlights)
+        this.cyanLight = new THREE.PointLight(0x00f0ff, 1.8, 500);
+        this.cyanLight.position.set(-160, 120, 160);
         this.scene.add(this.cyanLight);
 
-        // Amber Rim Light
-        this.amberLight = new THREE.PointLight(0xf59e0b, 1.0, 400);
-        this.amberLight.position.set(150, -50, -150);
+        // Amber Rim Light (for warm metallurgical gear accents)
+        this.amberLight = new THREE.PointLight(0xf59e0b, 1.2, 450);
+        this.amberLight.position.set(160, -40, -140);
         this.scene.add(this.amberLight);
 
-        // Grid floor
-        const gridHelper = new THREE.GridHelper(360, 36, 0x00e5ff, 0x1e293b);
+        // Circular Turntable Platform & High-Tech Ground Grid
+        const gridHelper = new THREE.GridHelper(380, 38, 0x00e5ff, 0x1e293b);
         gridHelper.position.y = -60;
         this.scene.add(gridHelper);
 
@@ -197,8 +202,13 @@ class Machine6DViewer {
         this.isDragging = false;
         this.isPanning = false;
         this.previousMousePosition = { x: 0, y: 0 };
-        this.spherical = { radius: 340, theta: Math.PI / 4, phi: Math.PI / 3 };
-        this.targetLookAt = new THREE.Vector3(0, 40, 0);
+        const isMobileScreen = (this.container.clientWidth < 640);
+        this.spherical = { 
+            radius: isMobileScreen ? 360 : 340, 
+            theta: Math.PI / 4, 
+            phi: Math.PI / 2.7 
+        };
+        this.targetLookAt = new THREE.Vector3(0, isMobileScreen ? 38 : 40, 0);
 
         const dom = this.renderer.domElement;
 
@@ -307,44 +317,44 @@ class Machine6DViewer {
         this.machineGroup = new THREE.Group();
         this.scene.add(this.machineGroup);
 
-        // Materials setup
+        // Premium Industrial Machinery Materials (High definition contrast)
         this.materials = {
             castIron: new THREE.MeshStandardMaterial({
-                color: 0x172554, // Deep Industrial Blue/Slate
-                metalness: 0.7,
-                roughness: 0.35
+                color: 0x1e3a8a, // Rich Industrial Precision Blue Enamel
+                metalness: 0.65,
+                roughness: 0.28
             }),
             darkBase: new THREE.MeshStandardMaterial({
-                color: 0x0f172a,
-                metalness: 0.8,
-                roughness: 0.4
+                color: 0x1e293b, // Heavy FG-260 Cast Iron Base
+                metalness: 0.75,
+                roughness: 0.35
             }),
             groundSteel: new THREE.MeshStandardMaterial({
-                color: 0xe2e8f0,
-                metalness: 0.95,
-                roughness: 0.15
+                color: 0xf8fafc, // Polished Hardened Chrome Column & Spindle
+                metalness: 0.98,
+                roughness: 0.12
             }),
             gearAlloy: new THREE.MeshStandardMaterial({
-                color: 0xf59e0b, // Amber Gold alloy gears
-                metalness: 0.9,
-                roughness: 0.25
+                color: 0xfbbf24, // High-visibility Amber-Gold 20MnCr5 Gears
+                metalness: 0.92,
+                roughness: 0.2
             }),
             brass: new THREE.MeshStandardMaterial({
-                color: 0xd97706,
-                metalness: 0.85,
-                roughness: 0.3
+                color: 0xf59e0b,
+                metalness: 0.88,
+                roughness: 0.25
             }),
             cyanGlow: new THREE.MeshStandardMaterial({
                 color: 0x00f0ff,
                 emissive: 0x00f0ff,
-                emissiveIntensity: 0.6,
+                emissiveIntensity: 0.7,
                 metalness: 0.5,
                 roughness: 0.2
             }),
             workpiece: new THREE.MeshStandardMaterial({
-                color: 0x475569,
+                color: 0x64748b,
                 metalness: 0.85,
-                roughness: 0.2
+                roughness: 0.22
             })
         };
 

@@ -162,8 +162,26 @@ require_once __DIR__ . '/includes/navbar.php';
             </div>
         </div>
 
-        <!-- Live Interactive Factory Map (Google Maps Bhavnagar Hub) -->
+        <!-- Live Interactive Factory Map (Google Maps Bhavnagar Hub) - Matching Live Location Reference -->
         <style>
+        .live-location-container {
+            margin-top: 45px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1.5px solid var(--border-cyan);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            background: #0b1120;
+        }
+        .live-location-header {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(6, 10, 20, 0.98) 100%);
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
         .map-floating-card {
             position: absolute;
             bottom: 20px;
@@ -178,12 +196,34 @@ require_once __DIR__ . '/includes/navbar.php';
             box-shadow: 0 12px 36px rgba(0,0,0,0.85);
             z-index: 10;
         }
+        .map-view-toggle-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .map-view-toggle-btn.active {
+            background: rgba(0, 229, 255, 0.2);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
         @media (max-width: 768px) {
+            .live-location-container {
+                margin-top: 30px;
+            }
+            .live-location-header {
+                padding: 16px 18px;
+            }
             #factoryLiveMap {
-                height: 340px !important;
+                height: 380px !important;
             }
             #googleMapIframe {
-                height: 340px !important;
+                height: 380px !important;
             }
             .map-floating-card {
                 position: relative !important;
@@ -196,34 +236,44 @@ require_once __DIR__ . '/includes/navbar.php';
             }
         }
         </style>
-        <div style="margin-top: 60px; border-radius: var(--radius-lg); overflow: hidden; border: 1.5px solid var(--border-cyan); box-shadow: var(--shadow-card); background: #0b1120;">
-            <div style="background: rgba(11, 17, 32, 0.98); padding: 18px 24px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <span style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: rgba(0, 229, 255, 0.15); border: 1px solid var(--accent-cyan); font-size: 20px;">📍</span>
-                    <div>
-                        <span style="font-family: var(--font-heading); font-size: 16px; font-weight: 800; color: #fff; display: block; line-height: 1.3;">
-                            Factory Location: Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 36400003, Gujarat
-                        </span>
-                        <span style="font-size: 13px; color: #38bdf8; font-weight: 600;">Shree Varsha Engineering Works • VARSHA BRAND Manufacturing Unit</span>
+
+        <div class="live-location-container">
+            <div class="live-location-header">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                        <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #10b981; box-shadow: 0 0 12px #10b981; animation: pulse 1.8s infinite;"></span>
+                        <h2 style="font-family: var(--font-heading); font-size: 24px; font-weight: 800; color: #fff; margin: 0; letter-spacing: 0.5px;">
+                            Live Location <span style="font-size: 16px; color: var(--accent-cyan); font-weight: 600;">(લાઈવ લોકેશન)</span>
+                        </h2>
                     </div>
+                    <span style="font-size: 13.5px; color: #94a3b8; display: block;">
+                        📍 Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 36400003, Gujarat, India
+                    </span>
                 </div>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Shed+No.+L%2F786%2C+GIDC%2C+Nr.+Hadanagar%2C+Bhavnagar+-+36400003%2C+Gujarat" target="_blank" class="btn btn-outline" style="font-size: 12.5px; padding: 7px 16px; border-color: #38bdf8; color: #38bdf8; font-weight: 700;">
-                        ↗ Open in Google Maps
+
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                    <button type="button" id="btnSatelliteMode" class="map-view-toggle-btn active" onclick="setMapMode('k')">
+                        🛰️ Satellite View
+                    </button>
+                    <button type="button" id="btnRoadmapMode" class="map-view-toggle-btn" onclick="setMapMode('m')">
+                        🗺️ Road Map
+                    </button>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Shed+No.+L%2F786%2C+GIDC%2C+Nr.+Hadanagar%2C+Bhavnagar+-+36400003%2C+Gujarat" target="_blank" class="btn btn-outline" style="font-size: 12px; padding: 6px 14px; border-color: #38bdf8; color: #38bdf8; font-weight: 700;">
+                        ↗ Open Fullscreen
                     </a>
-                    <a href="https://www.google.com/maps/dir/?api=1&destination=21.7645,72.1519" target="_blank" class="btn btn-primary" style="font-size: 12.5px; padding: 7px 16px; font-weight: 700;">
-                        🚗 Get Driving Directions
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=21.7645,72.1519" target="_blank" class="btn btn-primary" style="font-size: 12px; padding: 6px 16px; font-weight: 700;">
+                        🚗 Get Directions
                     </a>
                 </div>
             </div>
 
-            <!-- 100% Guaranteed Live Google Maps & Interactive Directions Centered on Bhavnagar -->
-            <div id="factoryLiveMap" style="width: 100%; height: 440px; background: #0b1120; position: relative; z-index: 1; border-radius: 0 0 12px 12px; overflow: hidden;">
+            <!-- 100% Guaranteed Live Google Maps & Satellite Directions Centered on Bhavnagar -->
+            <div id="factoryLiveMap" style="width: 100%; height: 460px; background: #0b1120; position: relative; z-index: 1; border-radius: 0 0 12px 12px; overflow: hidden;">
                 <iframe 
                     id="googleMapIframe"
-                    src="https://maps.google.com/maps?q=21.7645,72.1519+(Shree+Varsha+Engineering+Works+Hadanagar+GIDC+Bhavnagar)&t=m&z=14&ie=UTF8&iwloc=B&output=embed" 
+                    src="https://maps.google.com/maps?q=21.7645,72.1519+(Shree+Varsha+Engineering+Works+Hadanagar+GIDC+Bhavnagar)&t=k&z=15&ie=UTF8&iwloc=B&output=embed" 
                     width="100%" 
-                    height="440" 
+                    height="460" 
                     style="border: 0; display: block;" 
                     allowfullscreen="" 
                     loading="lazy" 
@@ -251,6 +301,24 @@ require_once __DIR__ . '/includes/navbar.php';
                 </div>
             </div>
         </div>
+
+        <script>
+        function setMapMode(mode) {
+            const iframe = document.getElementById('googleMapIframe');
+            const btnSat = document.getElementById('btnSatelliteMode');
+            const btnRoad = document.getElementById('btnRoadmapMode');
+            if (iframe) {
+                iframe.src = `https://maps.google.com/maps?q=21.7645,72.1519+(Shree+Varsha+Engineering+Works+Hadanagar+GIDC+Bhavnagar)&t=${mode}&z=15&ie=UTF8&iwloc=B&output=embed`;
+            }
+            if (mode === 'k') {
+                btnSat.classList.add('active');
+                btnRoad.classList.remove('active');
+            } else {
+                btnRoad.classList.add('active');
+                btnSat.classList.remove('active');
+            }
+        }
+        </script>
     </div>
 </section>
 

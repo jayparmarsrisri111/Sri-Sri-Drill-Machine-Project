@@ -1,38 +1,67 @@
 /**
  * Admin Panel JavaScript
- * Shree Varsha Engineering Works
+ * Shree Varsha Engineering Works - Varsha Brand
+ * Optimized for Desktop, Tablet, and Mobile UX
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Mobile Sidebar Toggle
+  // Mobile & Tablet Sidebar Navigation Drawer
   const sidebar = document.getElementById('adminSidebar');
   const toggleBtn = document.getElementById('adminSidebarToggle');
   const closeBtn = document.getElementById('adminSidebarClose');
+  const backdrop = document.getElementById('adminSidebarBackdrop');
 
-  if (toggleBtn && sidebar) {
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('active');
-    });
+  function openAdminSidebar() {
+    if (sidebar) sidebar.classList.add('active');
+    if (backdrop) backdrop.classList.add('active');
+    document.body.classList.add('admin-sidebar-open');
   }
 
-  if (closeBtn && sidebar) {
-    closeBtn.addEventListener('click', () => {
-      sidebar.classList.remove('active');
-    });
-    // Show close button on small screens
-    if (window.innerWidth <= 900) {
-      closeBtn.style.display = 'block';
-    }
+  function closeAdminSidebar() {
+    if (sidebar) sidebar.classList.remove('active');
+    if (backdrop) backdrop.classList.remove('active');
+    document.body.classList.remove('admin-sidebar-open');
   }
 
-  // Close when clicking outside on mobile
-  document.addEventListener('click', (e) => {
-    if (window.innerWidth <= 900 && sidebar && sidebar.classList.contains('active')) {
-      if (!sidebar.contains(e.target) && (!toggleBtn || !toggleBtn.contains(e.target))) {
-        sidebar.classList.remove('active');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (sidebar && sidebar.classList.contains('active')) {
+        closeAdminSidebar();
+      } else {
+        openAdminSidebar();
       }
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      closeAdminSidebar();
+    });
+  }
+
+  if (backdrop) {
+    backdrop.addEventListener('click', closeAdminSidebar);
+  }
+
+  // Close when clicking outside or pressing Escape
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      closeAdminSidebar();
     }
   });
+
+  // Automatically close sidebar when clicking a link on small viewports
+  if (sidebar) {
+    sidebar.querySelectorAll('.sidebar-link').forEach(link => {
+      link.addEventListener('click', function () {
+        if (window.innerWidth <= 1024) {
+          closeAdminSidebar();
+        }
+      });
+    });
+  }
 
   // Confirm Delete Dialog
   const deleteLinks = document.querySelectorAll('.confirm-delete');
@@ -49,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (tableSearchInput) {
     tableSearchInput.addEventListener('input', function () {
       const query = this.value.toLowerCase().trim();
-      const rows = document.querySelectorAll('.admin-table tbody tr');
+      const rows = document.querySelectorAll('.admin-table tbody tr, .tech-table tbody tr');
 
       rows.forEach(row => {
         const text = row.innerText.toLowerCase();

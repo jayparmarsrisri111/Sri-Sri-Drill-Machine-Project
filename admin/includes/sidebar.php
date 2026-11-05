@@ -8,7 +8,7 @@
                 <span style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase;">Control Center</span>
             </div>
         </a>
-        <button type="button" id="adminSidebarClose" style="display: none; background: transparent; border: none; color: #fff; font-size: 24px; cursor: pointer;">
+        <button type="button" id="adminSidebarClose" class="admin-sidebar-close-btn" aria-label="Close Sidebar">
             &times;
         </button>
     </div>
@@ -95,3 +95,5 @@
         </a>
     </div>
 </aside>
+<!-- Mobile & Tablet Sidebar Backdrop Overlay -->
+<div id="adminSidebarBackdrop" class="admin-sidebar-backdrop"></div>

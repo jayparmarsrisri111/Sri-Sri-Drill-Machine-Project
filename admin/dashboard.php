@@ -289,7 +289,7 @@ try {
                     No orders placed yet. <a href="<?= BASE_URL ?>/checkout.php" target="_blank" style="color: var(--accent-cyan);">Click here to test booking checkout</a>.
                 </div>
             <?php else: ?>
-                <div style="overflow-x: auto;">
+                <div class="table-responsive">
                     <table class="admin-table">
                         <thead>
                             <tr>
@@ -348,7 +348,7 @@ try {
                 </a>
             </div>
 
-            <div style="overflow-x: auto;">
+            <div class="table-responsive">
                 <table class="admin-table">
                     <thead>
                         <tr>

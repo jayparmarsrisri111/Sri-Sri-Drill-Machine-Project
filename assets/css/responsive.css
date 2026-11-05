@@ -351,25 +351,34 @@ img, svg, video, canvas {
     font-size: 13.5px !important;
   }
 
-  /* Tech ticker bar mobile alignment (Image 2 top checklist) */
+  /* Tech ticker bar mobile alignment (Clean 2x2 grid without button collision) */
   .tech-ticker-bar {
-    padding: 14px 10px !important;
+    padding: 16px 12px 32px !important;
+    background: rgba(11, 17, 32, 0.85) !important;
+    border-top: 1px solid rgba(0, 229, 255, 0.15) !important;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.15) !important;
+    margin-bottom: 15px !important;
   }
   .tech-ticker-list {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    align-items: stretch !important;
     gap: 10px !important;
-    padding: 0 10px !important;
+    padding: 0 4px !important;
   }
   .tech-ticker-item {
-    font-size: 12.5px !important;
-    gap: 10px !important;
+    font-size: 11.5px !important;
+    gap: 8px !important;
     line-height: 1.35 !important;
+    background: rgba(15, 23, 42, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 8px !important;
+    padding: 8px 10px !important;
+    font-weight: 600 !important;
   }
   .tech-ticker-item svg {
-    width: 16px !important;
-    height: 16px !important;
+    width: 15px !important;
+    height: 15px !important;
     flex-shrink: 0 !important;
   }
 
