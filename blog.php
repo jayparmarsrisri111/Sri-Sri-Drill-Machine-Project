@@ -8,7 +8,9 @@ require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/database.php';
 
 $pageTitle = 'Engineering Blog & Drilling Resources | ' . BRAND_NAME . ' Bhavnagar';
-$pageDesc = 'Technical guides, spindle speed charts, maintenance schedules, and machine selection tips from Shree Varsha Engineering Works.';
+$pageDesc = 'Technical guides, spindle speed charts, maintenance schedules, and machine selection tips from Shree Varsha Engineering Works Bhavnagar.';
+$pageKeywords = 'drill machine blog, radial drill machine guide, spindle speed chart, drill machine maintenance, Bhavnagar drill machinery';
+$canonicalUrl = 'https://varsha-drill-machines.onrender.com/blog.php';
 $currentNav = 'blog';
 
 require_once __DIR__ . '/includes/header.php';
@@ -94,7 +96,44 @@ $articles = [
         'tags' => ['Foundation', 'DIN 8625', 'Alignment']
     ]
 ];
+
+// Schema.org Blog / ItemList structured data
+$blogPostList = [];
+foreach ($articles as $idx => $art) {
+    $blogPostList[] = [
+        '@type' => 'BlogPosting',
+        'position' => $idx + 1,
+        'headline' => $art['title'],
+        'description' => $art['excerpt'],
+        'author' => [
+            '@type' => 'Person',
+            'name' => $art['author']
+        ],
+        'datePublished' => date('Y-m-d', strtotime($art['date'])),
+        'publisher' => [
+            '@type' => 'Organization',
+            'name' => 'Shree Varsha Engineering Works',
+            'logo' => [
+                '@type' => 'ImageObject',
+                'url' => 'https://varsha-drill-machines.onrender.com/assets/images/varsha-logo.png'
+            ]
+        ],
+        'mainEntityOfPage' => 'https://varsha-drill-machines.onrender.com/blog.php#article-' . $art['id']
+    ];
+}
+$blogSchema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'Blog',
+    'name' => 'Shree Varsha Engineering Technical Blog',
+    'url' => 'https://varsha-drill-machines.onrender.com/blog.php',
+    'description' => 'Technical machining and industrial drilling engineering resources, spindle speed formulas, and machine maintenance.',
+    'blogPost' => $blogPostList
+];
 ?>
+<!-- Blog Schema.org Structured Data -->
+<script type="application/ld+json">
+<?= json_encode($blogSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) ?>
+</script>
 
 <style>
 .blog-hero {

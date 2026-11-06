@@ -1,0 +1,38 @@
+# Robots.txt for Shree Varsha Engineering Works
+# Website: https://varsha-drill-machines.onrender.com/
+# Brand: VARSHA BRAND Industrial Drill Machines
+
+User-agent: *
+Allow: /
+Allow: /assets/
+Allow: /assets/css/
+Allow: /assets/js/
+Allow: /assets/images/
+
+# Disallow administrative and private operational directories
+Disallow: /admin/
+Disallow: /api/
+Disallow: /config/
+Disallow: /database/
+Disallow: /scratch/
+Disallow: /invoice.php*
+Disallow: /payment-verify.php*
+Disallow: /feedback-submit.php*
+Disallow: /auth-customer.php*
+Disallow: /logout-customer.php*
+Disallow: /*.sql$
+Disallow: /*.sqlite$
+Disallow: /*.bat$
+
+# Explicit Bot Allowances
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /assets/images/
+
+User-agent: Bingbot
+Allow: /
+
+# XML Sitemap location
+Sitemap: https://varsha-drill-machines.onrender.com/sitemap.xml

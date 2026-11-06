@@ -1,6 +1,8 @@
 <?php
 $pageTitle = 'About Us | Shree Varsha Engineering Works - Bhavnagar, Gujarat';
-$pageDesc = 'Learn about Shree Varsha Engineering Works, premier drill machine manufacturers with 25+ years experience in Bhavnagar, Gujarat.';
+$pageDesc = 'Learn about Shree Varsha Engineering Works (Varsha Brand), premier industrial drill machine manufacturers with 25+ years experience in Bhavnagar, Gujarat.';
+$pageKeywords = 'about Shree Varsha Engineering Works, Varsha Brand drill machine, Jitendrabhai Parmar, Bhavnagar machine manufacturer, drill machine history';
+$canonicalUrl = 'https://varsha-drill-machines.onrender.com/about.php';
 $currentNav = 'about';
 
 require_once __DIR__ . '/includes/header.php';

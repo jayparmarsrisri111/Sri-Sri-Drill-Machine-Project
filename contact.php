@@ -1,7 +1,31 @@
 <?php
-$pageTitle = 'Contact Us | Shree Varsha Engineering Works - Bhavnagar';
-$pageDesc = 'Contact Shree Varsha Engineering Works. Call +91 9824913555 / +91 9714611331 or email jitubhaivarsh@gmail.com for drill machine quotation and factory visits at Bhavnagar, Gujarat.';
+$pageTitle = 'Contact Factory & Inquiries | Shree Varsha Engineering Works Bhavnagar';
+$pageDesc = 'Contact Shree Varsha Engineering Works in Bhavnagar, Gujarat. Call +91 9824913555 / +91 9714611331 or email jitubhaivarsh@gmail.com for drill machine quotation, live trials, and factory visits.';
+$pageKeywords = 'contact Shree Varsha Engineering Works, drill machine manufacturer Bhavnagar contact, radial drill quotation, Jitendrabhai Parmar phone, Jay Parmar phone';
+$canonicalUrl = 'https://varsha-drill-machines.onrender.com/contact.php';
 $currentNav = 'contact';
+
+// Schema.org ContactPage
+$pageSchema = [
+    '@type' => 'ContactPage',
+    'name' => 'Contact Shree Varsha Engineering Works',
+    'description' => 'Direct factory assistance and contact details for industrial drill machine inquiries in Bhavnagar, Gujarat.',
+    'url' => 'https://varsha-drill-machines.onrender.com/contact.php',
+    'mainEntity' => [
+        '@type' => 'LocalBusiness',
+        'name' => 'Shree Varsha Engineering Works',
+        'telephone' => '+91-9824913555',
+        'email' => 'jitubhaivarsh@gmail.com',
+        'address' => [
+            '@type' => 'PostalAddress',
+            'streetAddress' => 'Shed No. L/786, GIDC, Nr. Hadanagar',
+            'addressLocality' => 'Bhavnagar',
+            'addressRegion' => 'Gujarat',
+            'postalCode' => '364003',
+            'addressCountry' => 'IN'
+        ]
+    ]
+];
 
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/navbar.php';

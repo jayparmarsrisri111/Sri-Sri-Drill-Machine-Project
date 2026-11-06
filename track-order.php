@@ -76,8 +76,10 @@ if (!empty($orders)) {
     $selectedOrder = $orders[0];
 }
 
-$pageTitle = 'Amazon-Style Live Order & Logistics Tracking | ' . BRAND_NAME;
+$pageTitle = 'Live Order & Logistics Tracking | ' . BRAND_NAME . ' Bhavnagar';
 $pageDesc = 'Track your Varsha Brand heavy-duty industrial drilling machine and spare parts delivery status in real-time with freight carrier updates.';
+$pageKeywords = 'track drill machine order, Varsha brand order tracking, freight carrier status, Shree Varsha logistics';
+$canonicalUrl = 'https://varsha-drill-machines.onrender.com/track-order.php';
 $currentNav = 'tracking';
 
 require_once __DIR__ . '/includes/header.php';

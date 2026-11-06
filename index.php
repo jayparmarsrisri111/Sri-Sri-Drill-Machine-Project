@@ -1,6 +1,8 @@
 <?php
-$pageTitle = 'Shree Varsha Engineering Works | Radial & Pillar Drill Machine Manufacturers';
-$pageDesc = 'Manufacturer of heavy duty Radial Drill Machines (40mm, 50mm, 65mm), Pillar Drill Machines, and High Speed Bench Drills in Bhavnagar, Gujarat. Call +91 9824913555.';
+$pageTitle = 'Radial Drill Machine Manufacturer in Bhavnagar, Gujarat | Shree Varsha Engineering Works';
+$pageDesc = 'Shree Varsha Engineering Works (Varsha Brand) is Gujarat\'s premier manufacturer of Heavy-Duty Radial Drill Machines (40mm, 50mm, 65mm), Pillar Drills & Bench Drills in Bhavnagar. 25+ Years Experience. Call +91 9824913555.';
+$pageKeywords = 'radial drill machine manufacturer in Bhavnagar, radial drill machine Gujarat, 40mm radial drill machine, 50mm radial drill, 65mm geared radial drill machine, pillar drill machine, bench drill, industrial drilling machinery India, Shree Varsha Engineering Works, Varsha Brand drill machine';
+$canonicalUrl = 'https://varsha-drill-machines.onrender.com/';
 $currentNav = 'home';
 
 require_once __DIR__ . '/includes/header.php';

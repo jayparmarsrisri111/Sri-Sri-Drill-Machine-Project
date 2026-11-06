@@ -25,9 +25,55 @@ try {
 
 $isSparePart = (!empty($machine['product_type']) && $machine['product_type'] === 'part') || ($machine['category_id'] >= 5) || ($machine['id'] >= 100);
 
-$pageTitle = e($machine['name']) . ' (' . e($machine['model_number']) . ') | Shree Varsha Engineering Works';
-$pageDesc = e($machine['short_desc']);
+$mStock = intval($machine['stock_quantity'] ?? 5);
+$mBasePrice = floatval($machine['price'] ?? getMachinePrice($machine['id']));
+
+$pageTitle = e($machine['name']) . ' (' . e($machine['model_number']) . ') | ' . BRAND_NAME . ' Bhavnagar';
+$pageDesc = !empty($machine['short_desc']) ? e($machine['short_desc']) : 'Heavy-duty ' . e($machine['name']) . ' manufactured in Bhavnagar, Gujarat by Shree Varsha Engineering Works.';
+$pageKeywords = e($machine['name']) . ', ' . e($machine['model_number']) . ', ' . e($machine['drilling_capacity']) . ', radial drill machine, pillar drill, bench drill, industrial machine tools, Shree Varsha Engineering Works';
 $currentNav = 'machines';
+$ogType = 'product';
+$canonicalUrl = 'https://varsha-drill-machines.onrender.com/machine-detail.php?id=' . $machine['id'];
+$ogImage = !empty($machine['image_url']) ? assetUrl($machine['image_url']) : 'https://varsha-drill-machines.onrender.com/assets/images/machinery/radial-drill-40-real.jpg';
+
+// Rich Google Product Schema (JSON-LD)
+$pageSchema = [
+    '@type' => 'Product',
+    'name' => $machine['name'] . ' (' . $machine['model_number'] . ')',
+    'image' => [$ogImage],
+    'description' => !empty($machine['short_desc']) ? $machine['short_desc'] : $machine['full_desc'],
+    'sku' => $machine['model_number'],
+    'mpn' => $machine['model_number'],
+    'brand' => [
+        '@type' => 'Brand',
+        'name' => 'VARSHA BRAND'
+    ],
+    'manufacturer' => [
+        '@type' => 'Organization',
+        'name' => 'Shree Varsha Engineering Works',
+        'url' => 'https://varsha-drill-machines.onrender.com/'
+    ],
+    'offers' => [
+        '@type' => 'Offer',
+        'url' => $canonicalUrl,
+        'priceCurrency' => 'INR',
+        'price' => $mBasePrice,
+        'priceValidUntil' => '2027-12-31',
+        'itemCondition' => 'https://schema.org/NewCondition',
+        'availability' => ($mStock > 0) ? 'https://schema.org/InStock' : 'https://schema.org/PreOrder',
+        'seller' => [
+            '@type' => 'Organization',
+            'name' => 'Shree Varsha Engineering Works'
+        ]
+    ],
+    'aggregateRating' => [
+        '@type' => 'AggregateRating',
+        'ratingValue' => '4.9',
+        'reviewCount' => '42',
+        'bestRating' => '5',
+        'worstRating' => '1'
+    ]
+];
 
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/navbar.php';

@@ -109,6 +109,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <title><?= e($pageTitle) ?></title>
     <link rel="icon" type="image/png" href="<?= assetUrl('assets/images/varsha-logo.png') ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -9,6 +9,8 @@ require_once __DIR__ . '/config/database.php';
 
 $pageTitle = 'Frequently Asked Questions (FAQs) | ' . BRAND_NAME . ' Bhavnagar';
 $pageDesc = 'Get answers to questions about booking Varsha Brand drill machines, ₹25,000 advance token payments, Amazon-style tracking, GST invoices, and warranty.';
+$pageKeywords = 'drill machine FAQ, radial drill machine questions, buy drill machine Bhavnagar, advance booking drill machine, Varsha brand FAQ';
+$canonicalUrl = 'https://varsha-drill-machines.onrender.com/faqs.php';
 $currentNav = 'faqs';
 
 require_once __DIR__ . '/includes/header.php';
@@ -111,7 +113,31 @@ $faqGroups = [
         ]
     ]
 ];
+
+// Google FAQPage Schema for SERP Accordion Rich Results
+$faqEntities = [];
+foreach ($faqGroups as $group) {
+    foreach ($group['faqs'] as $faq) {
+        $faqEntities[] = [
+            '@type' => 'Question',
+            'name' => strip_tags($faq['q']),
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => strip_tags($faq['a'])
+            ]
+        ];
+    }
+}
+$faqSchema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'FAQPage',
+    'mainEntity' => $faqEntities
+];
 ?>
+<!-- FAQ Rich Snippets Structured Data -->
+<script type="application/ld+json">
+<?= json_encode($faqSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) ?>
+</script>
 
 <style>
 .faqs-hero {

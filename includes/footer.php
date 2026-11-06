@@ -52,6 +52,7 @@
                     <li><a href="<?= BASE_URL ?>/invoice.php" style="display: inline-flex; align-items: center; gap: 8px; color: #facc15; font-weight: 600;"><span style="font-size: 13px;">📄</span><span>View Tax Invoice / Bill</span></a></li>
                     <li><a href="#" onclick="openAppDownloadModal(); return false;" class="btn-download-app-trigger" style="display: inline-flex; align-items: center; gap: 8px; color: #38bdf8; font-weight: 700;"><span style="font-size: 13px;">📲</span><span>Download Varsha App (Android/PC)</span></a></li>
                     <li><a href="<?= BASE_URL ?>/contact.php" style="display: inline-flex; align-items: center; gap: 8px;"><span style="font-size: 13px;">📍</span><span>Factory Contact &amp; Location</span></a></li>
+                    <li><a href="<?= BASE_URL ?>/sitemap.xml" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; color: #94a3b8;"><span style="font-size: 13px;">🗺️</span><span>XML Sitemap (Google)</span></a></li>
                 </ul>
             </div>
 

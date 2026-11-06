@@ -1,12 +1,42 @@
 <?php
-$pageTitle = 'All Drill Machines Catalog | Shree Varsha Engineering Works';
-$pageDesc = 'Explore our complete range of Radial Drill Machines, Pillar Drills, Bench Drills, and Auto-Reversing Tapping Machinery manufactured in Bhavnagar, Gujarat.';
+require_once __DIR__ . '/config/config.php';
+require_once __DIR__ . '/config/database.php';
+
+$selectedCategorySlug = $_GET['category'] ?? 'all';
+
+$categoryTitles = [
+    'radial-drill-machines' => 'Radial Drill Machines (40mm, 50mm, 65mm Heavy Duty) | Shree Varsha Engineering Works',
+    'pillar-drill-machines' => 'Pillar Drill Machines (25mm, 32mm, 40mm Column Drills) | Shree Varsha Engineering Works',
+    'bench-drill-machines' => 'High Speed Precision Bench Drill Machines (20mm) | Shree Varsha Engineering Works',
+    'tapping-special-purpose' => 'Auto-Reversing Drilling & Tapping Machines | Shree Varsha Engineering Works',
+    'spindles-quills' => 'Morse Taper Drill Spindles & Quills | Varsha Brand Bhavnagar',
+    'geared-head-gears' => 'Hardened Alloy Headstock Gear Sets | Varsha Brand Drill Parts',
+    'cast-iron-tables' => 'Cast Iron T-Slot Machine Box Tables | Shree Varsha Engineering Works',
+    'motors-electricals' => 'Flange Induction Motors & Electricals | Varsha Brand Machinery',
+    'chucks-sleeves' => 'Keyless Precision Drill Chucks & Sleeves | Industrial Tooling',
+    'coolant-lubrication' => 'High Flow Submerged Coolant Pumps & Kits | Varsha Machinery'
+];
+
+$categoryDescs = [
+    'radial-drill-machines' => 'Explore heavy-duty geared radial drill machines (40mm to 65mm) with hardened alloy gears, power elevation, and zero vibration casting in Bhavnagar, Gujarat.',
+    'pillar-drill-machines' => 'Industrial upright column pillar drill machines built with precision ground columns and multi-speed gearboxes for repetitive accurate workshop drilling.',
+    'bench-drill-machines' => 'Compact high-speed bench drill machines for precision tool rooms, fabrication shops, and educational institutes. Manufactured in Bhavnagar, Gujarat.',
+    'tapping-special-purpose' => 'Dual purpose drilling and tapping machines with instant automatic spindle reverse upon preset depth for clean, accurate thread cutting.'
+];
+
+$pageTitle = $categoryTitles[$selectedCategorySlug] ?? 'Industrial Drill Machines & Machinery Catalog | Shree Varsha Engineering Works';
+$pageDesc = $categoryDescs[$selectedCategorySlug] ?? 'Explore our complete range of Radial Drill Machines, Pillar Drills, Bench Drills, and Auto-Reversing Tapping Machinery manufactured in Bhavnagar, Gujarat.';
+$pageKeywords = 'radial drill machine catalog, pillar drill machine, bench drill, geared radial drill, drill machine manufacturer Bhavnagar, Gujarat machine tools, Shree Varsha Engineering Works';
 $currentNav = 'machines';
+
+if ($selectedCategorySlug !== 'all') {
+    $canonicalUrl = 'https://varsha-drill-machines.onrender.com/machines.php?category=' . urlencode($selectedCategorySlug);
+} else {
+    $canonicalUrl = 'https://varsha-drill-machines.onrender.com/machines.php';
+}
 
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/navbar.php';
-
-$selectedCategorySlug = $_GET['category'] ?? 'all';
 
 try {
     $pdo = Database::getConnection();

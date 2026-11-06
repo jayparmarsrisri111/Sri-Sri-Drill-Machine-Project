@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <!-- Homepage -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.00</priority>
+    <image:image>
+      <image:loc>https://varsha-drill-machines.onrender.com/assets/images/machinery/radial-drill-40-real.jpg</image:loc>
+      <image:title>Shree Varsha Engineering Works Radial Drill Machines</image:title>
+      <image:caption>Heavy Duty Industrial Radial Drill Machine Bhavnagar Gujarat</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://varsha-drill-machines.onrender.com/assets/images/varsha-logo.png</image:loc>
+      <image:title>Varsha Brand Emblem</image:title>
+    </image:image>
+  </url>
+
+  <!-- Machines Catalog (All Models) -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machines.php</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machines.php?category=radial-drill-machines</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machines.php?category=pillar-drill-machines</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machines.php?category=bench-drill-machines</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machines.php?category=tapping-special-purpose</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Individual Machine Details -->
+  <!-- 1: 40mm All-Geared Radial Drill -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=1</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://varsha-drill-machines.onrender.com/assets/images/machinery/radial-drill-40-real.jpg</image:loc>
+      <image:title>40mm All-Geared Radial Drill Machine (SVEW-RD-40)</image:title>
+      <image:caption>40mm Heavy Duty Geared Radial Drill Machine manufactured by Shree Varsha Engineering Works</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 2: 50mm Heavy Duty Precision Radial Drill -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=2</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://varsha-drill-machines.onrender.com/assets/images/machinery/radial-drill-50-real.jpg</image:loc>
+      <image:title>50mm Heavy Duty Precision Radial Drill (SVEW-RD-50)</image:title>
+      <image:caption>50mm Industrial Geared Radial Drill Machine Bhavnagar Gujarat</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 3: 65mm Extra Heavy Industrial Radial Drill -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=3</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://varsha-drill-machines.onrender.com/assets/images/machinery/heavy-duty-radial-65-real.jpg</image:loc>
+      <image:title>65mm Extra Heavy Industrial Radial Drill (SVEW-RD-65)</image:title>
+      <image:caption>65mm Extra Heavy Industrial Radial Drill Machine for Shipyards and Heavy Steel Fabrication</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 4: 25mm Heavy Duty Pillar Drill Machine -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=4</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://varsha-drill-machines.onrender.com/assets/images/machinery/pillar-drill-25-real.jpg</image:loc>
+      <image:title>25mm Heavy Duty Pillar Drill Machine (SVEW-PD-25)</image:title>
+      <image:caption>25mm Vertical Upright Column Pillar Drilling Machine</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 5: 32mm Geared Column Pillar Drill Machine -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=5</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://varsha-drill-machines.onrender.com/assets/images/machinery/pillar-drill-32-real.jpg</image:loc>
+      <image:title>32mm Geared Column Pillar Drill Machine (SVEW-PD-32)</image:title>
+      <image:caption>32mm All-Geared Head Upright Pillar Drilling Machine</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 6: 40mm Extra Heavy Pillar Drilling Machine -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=6</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://varsha-drill-machines.onrender.com/assets/images/machinery/pillar-drill-40-real.jpg</image:loc>
+      <image:title>40mm Extra Heavy Pillar Drilling Machine (SVEW-PD-40)</image:title>
+      <image:caption>40mm Heavy Column Upright Drilling Machine with Power Feed</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 7: 20mm High Speed Precision Bench Drill -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=7</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://varsha-drill-machines.onrender.com/assets/images/machinery/bench-drill-20-real.jpg</image:loc>
+      <image:title>20mm High Speed Precision Bench Drill (SVEW-BD-20)</image:title>
+      <image:caption>20mm Compact High Speed Bench Top Drilling Machine</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 8: 25mm Auto-Reversing Drilling & Tapping Machine -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=8</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://varsha-drill-machines.onrender.com/assets/images/machinery/tapping-drill-25-real.jpg</image:loc>
+      <image:title>25mm Auto-Reversing Drilling and Tapping Machine (SVEW-TP-25)</image:title>
+      <image:caption>Automatic Reversing Drill Tap Combination Machine</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Spare Parts & Tooling -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=101</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=102</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=103</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=104</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=105</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/machine-detail.php?id=106</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Technical Catalog & Datasheets -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/catalog.php</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- 360° Interactive 12D Simulator -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/simulator-6d.php</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- About Us -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/about.php</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Contact Us -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/contact.php</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Engineering Blog -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/blog.php</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- FAQs -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/faqs.php</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Live Order Tracking -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/track-order.php</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Online Machine Booking -->
+  <url>
+    <loc>https://varsha-drill-machines.onrender.com/checkout.php</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+</urlset>

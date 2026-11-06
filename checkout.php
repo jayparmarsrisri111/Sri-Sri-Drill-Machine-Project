@@ -47,8 +47,10 @@ if (strpos($rzpLogoUrl, 'localhost') !== false || strpos($rzpLogoUrl, '127.0.0.1
     $rzpLogoUrl = 'https://varsha-drill-machines.onrender.com/assets/images/varsha-logo.png';
 }
 
-$pageTitle = 'Online Machine Booking & Tax Invoice | ' . BRAND_NAME;
+$pageTitle = 'Online Machine Booking & Order Reservation | ' . BRAND_NAME . ' Bhavnagar';
 $pageDesc = 'Book your Varsha Brand Industrial Drill Machine online with Razorpay secure instant booking advance or full invoice payment.';
+$pageKeywords = 'book drill machine online, drill machine price India, Razorpay machinery token, Shree Varsha booking';
+$canonicalUrl = 'https://varsha-drill-machines.onrender.com/checkout.php';
 $currentNav = 'checkout';
 
 require_once __DIR__ . '/includes/header.php';

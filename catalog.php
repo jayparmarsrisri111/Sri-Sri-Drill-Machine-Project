@@ -23,8 +23,10 @@ try {
     //
 }
 
-$pageTitle = 'Industrial Drill Machine Catalog & Datasheets 2026 | ' . BRAND_NAME;
-$pageDesc = 'Authentic technical specification datasheets for Varsha Brand Radial Drills, Pillar Drills, Bench Drills and Industrial Machinery. Manufactured in Bhavnagar, Gujarat.';
+$pageTitle = 'Industrial Drill Machine Catalog & Datasheets 2026 | ' . BRAND_NAME . ' Bhavnagar';
+$pageDesc = 'Authentic technical specification datasheets for Varsha Brand Radial Drills (40mm-65mm), Pillar Drills, Bench Drills, and Spares. Manufactured in Bhavnagar, Gujarat.';
+$pageKeywords = 'drill machine catalog 2026, radial drill datasheet, drill machine technical specifications, Varsha Brand catalog PDF, Bhavnagar drill machinery';
+$canonicalUrl = 'https://varsha-drill-machines.onrender.com/catalog.php';
 $currentNav = 'catalog';
 
 require_once __DIR__ . '/includes/header.php';

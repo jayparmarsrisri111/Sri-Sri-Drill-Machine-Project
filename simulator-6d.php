@@ -1,7 +1,22 @@
 <?php
 $pageTitle = '360° Interactive 12D Machine Viewer & AI SmartDrill™ | Shree Varsha Engineering Works';
-$pageDesc = 'World-first 360° interactive drill machine turntable and AI machining parameter optimizer. Touch and rotate 360 degrees, inspect X-Ray alloy gears, simulate cutting sparks and audio.';
+$pageDesc = 'Interactive 360-degree digital twin drill machine viewer with X-Ray alloy gear inspection, live RPM torque calculator, and cutting simulation. Shree Varsha Engineering Works Bhavnagar.';
+$pageKeywords = 'drill machine 360 viewer, 3D drill machine simulator, AI SmartDrill machining optimizer, digital twin machine tools, Bhavnagar drill machinery';
+$canonicalUrl = 'https://varsha-drill-machines.onrender.com/simulator-6d.php';
 $currentNav = 'simulator';
+
+// WebApplication Schema
+$pageSchema = [
+    '@type' => 'WebApplication',
+    'name' => 'Varsha 360° Interactive 12D Machine Viewer & AI SmartDrill™',
+    'applicationCategory' => 'IndustrialEngineeringApplication',
+    'operatingSystem' => 'All Web Browsers (WebGL/Three.js)',
+    'offers' => [
+        '@type' => 'Offer',
+        'price' => '0',
+        'priceCurrency' => 'INR'
+    ]
+];
 
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/navbar.php';
