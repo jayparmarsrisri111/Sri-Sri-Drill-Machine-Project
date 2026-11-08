@@ -1,6 +1,10 @@
 <?php
 // Main Glassmorphic Navigation Bar - Clean, Balanced, High-Precision Industrial Styling
 // 100% Mobile & Tablet Optimized (Zero Horizontal Overflow, Standalone Slide Drawer)
+require_once __DIR__ . '/cart-helper.php';
+$navPdo = Database::getConnection();
+$navCartSummary = getCartSummary($navPdo);
+$navCartCount = intval($navCartSummary['total_qty'] ?? 0);
 ?>
 <style>
 .site-navbar {
@@ -120,6 +124,33 @@
 .btn-nav-book:hover {
     transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+}
+.btn-nav-cart {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1.5px solid #f59e0b;
+    color: #fbbf24;
+    position: relative;
+}
+.btn-nav-cart:hover {
+    background: rgba(245, 158, 11, 0.2);
+    border-color: #fbbf24;
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+}
+.cart-badge-count {
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 800;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    line-height: 1;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
 }
 .btn-nav-admin {
     background: rgba(15, 23, 42, 0.6);
@@ -418,6 +449,13 @@ body.mobile-menu-open #varshaChatbotWindow {
                 </button>
             <?php endif; ?>
 
+            <!-- JioMart-style Cart Button with Dynamic Badge -->
+            <a href="<?= BASE_URL ?>/cart.php" class="btn-nav-action btn-nav-cart" title="View Industrial Cart">
+                <span>🛒</span>
+                <span class="btn-text-full">Cart</span>
+                <span class="cart-badge-count" style="display: <?= ($navCartCount > 0) ? 'inline-flex' : 'none' ?>;"><?= $navCartCount ?></span>
+            </a>
+
             <!-- Book Online CTA -->
             <a href="<?= BASE_URL ?>/checkout.php" class="btn-nav-action btn-nav-book btn-top-book" title="Online Machine Booking">
                 <span>💳 Book<span class="btn-text-extra"> Online</span></span>
@@ -454,6 +492,15 @@ body.mobile-menu-open #varshaChatbotWindow {
 
     <!-- Drawer Navigation Links -->
     <ul class="drawer-nav-list">
+        <li class="drawer-nav-item">
+            <a href="<?= BASE_URL ?>/cart.php" class="<?= ($currentNav === 'cart') ? 'active' : '' ?>" style="color: #fbbf24; border-color: rgba(245,158,11,0.3); font-weight: 700;">
+                <span style="display:flex; align-items:center; gap:8px;">
+                    <span>🛒 My Cart</span>
+                    <span class="cart-badge-count" style="display: <?= ($navCartCount > 0) ? 'inline-flex' : 'none' ?>;"><?= $navCartCount ?></span>
+                </span>
+                <span>➔</span>
+            </a>
+        </li>
         <li class="drawer-nav-item"><a href="<?= BASE_URL ?>/index.php" class="<?= ($currentNav === 'home') ? 'active' : '' ?>"><span>🏠 Home</span><span>➔</span></a></li>
         <li class="drawer-nav-item"><a href="<?= BASE_URL ?>/about.php" class="<?= ($currentNav === 'about') ? 'active' : '' ?>"><span>🏭 About Us</span><span>➔</span></a></li>
         <li class="drawer-nav-item"><a href="<?= BASE_URL ?>/machines.php" class="<?= ($currentNav === 'machines') ? 'active' : '' ?>"><span>⚙️ All Machines</span><span>➔</span></a></li>
@@ -501,6 +548,129 @@ body.mobile-menu-open #varshaChatbotWindow {
 </aside>
 
 <script>
+<!-- JioMart-Style Floating Cart Notification Toast -->
+<div id="varshaCartToast" style="display: none; position: fixed; bottom: 25px; right: 25px; z-index: 10008; background: #0b1120; border: 1.5px solid var(--accent-cyan); border-radius: 12px; padding: 16px 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 229, 255, 0.25); max-width: 380px; width: calc(100vw - 40px); animation: varshaToastSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+    <div style="display: flex; align-items: flex-start; gap: 12px;">
+        <div style="width: 34px; height: 34px; border-radius: 50%; background: rgba(16, 185, 129, 0.2); border: 1.5px solid #10b981; color: #34d399; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            ✔
+        </div>
+        <div style="flex: 1;">
+            <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #34d399; letter-spacing: 0.5px;">
+                Added to Cart (કાર્ટમાં ઉમેરાયું)
+            </div>
+            <div id="varshaToastProductName" style="font-family: 'Space Grotesk', sans-serif; font-size: 13.5px; font-weight: 700; color: #ffffff; margin: 2px 0 8px; line-height: 1.3;">
+                Product Name
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <a href="<?= BASE_URL ?>/cart.php" class="btn btn-primary" style="padding: 6px 12px; font-size: 11.5px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; text-decoration: none;">
+                    🛒 View Cart &amp; Checkout
+                </a>
+                <button type="button" onclick="closeVarshaCartToast()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; font-size: 11.5px; padding: 6px 10px; border-radius: 6px; cursor: pointer;">
+                    Continue
+                </button>
+            </div>
+        </div>
+        <button type="button" onclick="closeVarshaCartToast()" style="background: none; border: none; color: #94a3b8; font-size: 18px; cursor: pointer; padding: 0; line-height: 1;">&times;</button>
+    </div>
+</div>
+
+<style>
+@keyframes varshaToastSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 600px) {
+    #varshaCartToast {
+        bottom: 75px !important;
+        right: 15px !important;
+        left: 15px !important;
+        width: auto !important;
+    }
+}
+</style>
+
+<script>
+let varshaCartToastTimer = null;
+
+function showVarshaCartToast(productName) {
+    const toast = document.getElementById('varshaCartToast');
+    const nameEl = document.getElementById('varshaToastProductName');
+    if (!toast) return;
+
+    if (nameEl) nameEl.textContent = productName || 'Industrial Equipment';
+    toast.style.display = 'block';
+
+    if (varshaCartToastTimer) clearTimeout(varshaCartToastTimer);
+    varshaCartToastTimer = setTimeout(() => {
+        closeVarshaCartToast();
+    }, 6000);
+}
+
+function closeVarshaCartToast() {
+    const toast = document.getElementById('varshaCartToast');
+    if (toast) toast.style.display = 'none';
+}
+
+// Global Reusable Add to Cart API Caller
+window.addToCart = function(productId, quantity, btnElement) {
+    quantity = quantity || 1;
+    let originalHtml = '';
+
+    if (btnElement) {
+        originalHtml = btnElement.innerHTML;
+        btnElement.disabled = true;
+        btnElement.innerHTML = '<span>⏳ Adding...</span>';
+    }
+
+    const formData = new FormData();
+    formData.append('action', 'add');
+    formData.append('product_id', productId);
+    formData.append('quantity', quantity);
+
+    fetch('<?= BASE_URL ?>/api/cart.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            // Update badges across page
+            document.querySelectorAll('.cart-badge-count').forEach(el => {
+                el.textContent = data.cart_count;
+                el.style.display = data.cart_count > 0 ? 'inline-flex' : 'none';
+            });
+
+            // Show JioMart Toast
+            showVarshaCartToast(data.product_name || 'Item');
+
+            if (btnElement) {
+                btnElement.innerHTML = '<span>✔ Added!</span>';
+                btnElement.style.background = '#059669';
+                btnElement.style.color = '#ffffff';
+                setTimeout(() => {
+                    btnElement.disabled = false;
+                    btnElement.innerHTML = originalHtml;
+                    btnElement.style.background = '';
+                    btnElement.style.color = '';
+                }, 1600);
+            }
+        } else {
+            alert(data.message || 'Error adding item to cart.');
+            if (btnElement) {
+                btnElement.disabled = false;
+                btnElement.innerHTML = originalHtml;
+            }
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        if (btnElement) {
+            btnElement.disabled = false;
+            btnElement.innerHTML = originalHtml;
+        }
+    });
+};
+
 function toggleSiteMobileDrawer() {
     document.body.classList.toggle('mobile-menu-open');
 }

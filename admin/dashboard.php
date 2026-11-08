@@ -24,6 +24,15 @@ try {
     $totalOrders = $pdo->query("SELECT COUNT(*) FROM orders")->fetchColumn();
     $totalRevenue = $pdo->query("SELECT COALESCE(SUM(total_amount), 0) FROM orders WHERE payment_status = 'paid'")->fetchColumn();
 
+    // Customer Carts Stats
+    $totalCartsCount = 0;
+    $totalCartPipeline = 0;
+    try {
+        $cartRow = $pdo->query("SELECT COUNT(DISTINCT COALESCE(customer_id, session_id)) as total_carts, COALESCE(SUM(ci.quantity * p.price), 0) as pipeline_value FROM cart_items ci JOIN products p ON ci.product_id = p.id")->fetch();
+        $totalCartsCount = intval($cartRow['total_carts'] ?? 0);
+        $totalCartPipeline = floatval($cartRow['pipeline_value'] ?? 0);
+    } catch (Exception $e) {}
+
     // Recent Orders
     $recentOrders = $pdo->query("SELECT * FROM orders ORDER BY id DESC LIMIT 5")->fetchAll();
 
@@ -136,6 +145,16 @@ try {
                 </div>
                 <div class="metric-icon icon-amber">
                     <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-info">
+                    <h4>Live Customer Carts</h4>
+                    <div class="metric-num" style="color: #fbbf24; font-size: 20px;"><?= $totalCartsCount ?> <span style="font-size: 12px; color: #94a3b8;">(₹ <?= number_format($totalCartPipeline, 0) ?>)</span></div>
+                </div>
+                <div class="metric-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
                 </div>
             </div>
         </div>

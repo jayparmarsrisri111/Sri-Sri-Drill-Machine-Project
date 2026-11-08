@@ -348,6 +348,9 @@ try {
                                         💳 Book Online
                                     </a>
                                 </div>
+                                <button type="button" class="btn btn-cart-quick" onclick="window.addToCart(<?= $p['id'] ?>, 1, this)" style="width: 100%; margin-top: 8px; height: 38px; background: rgba(245, 158, 11, 0.12); border: 1.5px solid #f59e0b; color: #fbbf24; font-size: 12.5px; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s ease;">
+                                    <span>🛒 Add to Cart (કાર્ટમાં ઉમેરો)</span>
+                                </button>
                             </div>
                         </div>
                     </div>

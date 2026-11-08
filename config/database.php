@@ -129,6 +129,36 @@ class Database {
                 $pdo->exec("ALTER TABLE `orders` ADD COLUMN `quantity` INT DEFAULT 1");
             }
 
+            // Ensure cart_items table exists
+            $pdo->exec("CREATE TABLE IF NOT EXISTS `cart_items` (
+                `id` INT AUTO_INCREMENT PRIMARY KEY,
+                `session_id` VARCHAR(100) NOT NULL,
+                `customer_id` INT DEFAULT NULL,
+                `product_id` INT NOT NULL,
+                `quantity` INT NOT NULL DEFAULT 1,
+                `user_ip` VARCHAR(45) DEFAULT NULL,
+                `user_agent` TEXT DEFAULT NULL,
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX (`session_id`),
+                INDEX (`customer_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+            // Ensure order_items table exists
+            $pdo->exec("CREATE TABLE IF NOT EXISTS `order_items` (
+                `id` INT AUTO_INCREMENT PRIMARY KEY,
+                `order_id` INT NOT NULL,
+                `product_id` INT NOT NULL,
+                `product_name` VARCHAR(255) NOT NULL,
+                `model_number` VARCHAR(100) NOT NULL,
+                `quantity` INT NOT NULL DEFAULT 1,
+                `unit_price` DECIMAL(12,2) NOT NULL,
+                `total_price` DECIMAL(12,2) NOT NULL,
+                `image_url` VARCHAR(255) DEFAULT NULL,
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                INDEX (`order_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
             // 5. Ensure real machine photos instead of legacy vector SVGs
             self::ensureRealMachineImages($pdo);
         } catch (Exception $e) {
@@ -190,6 +220,34 @@ class Database {
                 }
             } catch (Exception $ex) {}
         }
+
+        // Guarantee cart_items and order_items tables exist in SQLite
+        try {
+            $pdo->exec("CREATE TABLE IF NOT EXISTS cart_items (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                session_id TEXT NOT NULL,
+                customer_id INTEGER DEFAULT NULL,
+                product_id INTEGER NOT NULL,
+                quantity INTEGER NOT NULL DEFAULT 1,
+                user_ip TEXT DEFAULT NULL,
+                user_agent TEXT DEFAULT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )");
+
+            $pdo->exec("CREATE TABLE IF NOT EXISTS order_items (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                order_id INTEGER NOT NULL,
+                product_id INTEGER NOT NULL,
+                product_name TEXT NOT NULL,
+                model_number TEXT NOT NULL,
+                quantity INTEGER NOT NULL DEFAULT 1,
+                unit_price REAL NOT NULL,
+                total_price REAL NOT NULL,
+                image_url TEXT DEFAULT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )");
+        } catch (Exception $e) {}
 
         self::ensureRealMachineImages($pdo);
     }

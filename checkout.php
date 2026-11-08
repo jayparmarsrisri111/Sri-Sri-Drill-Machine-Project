@@ -6,8 +6,17 @@
 
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/cart-helper.php';
 
 $pdo = Database::getConnection();
+
+// Check if checking out from cart
+$isFromCart = !empty($_GET['from_cart']);
+$cartSummary = getCartSummary($pdo);
+$cartItems = $cartSummary['items'] ?? [];
+if ($isFromCart && empty($cartItems)) {
+    $isFromCart = false;
+}
 
 // Fetch active products for dropdown
 $products = [];
@@ -18,8 +27,8 @@ try {
     // fallback
 }
 
-$selectedId = intval($_GET['product_id'] ?? ($_GET['part_id'] ?? ($_GET['machine_id'] ?? ($products[0]['id'] ?? 1))));
-$initialQty = max(1, intval($_GET['qty'] ?? 1));
+$selectedId = intval($_GET['product_id'] ?? ($_GET['part_id'] ?? ($_GET['machine_id'] ?? ($isFromCart ? ($cartItems[0]['id'] ?? 1) : ($products[0]['id'] ?? 1)))));
+$initialQty = max(1, intval($_GET['qty'] ?? ($isFromCart ? ($cartItems[0]['quantity'] ?? 1) : 1)));
 $selectedMachine = null;
 foreach ($products as $p) {
     if ($p['id'] == $selectedId) {
@@ -279,6 +288,34 @@ foreach ($products as $p) {
                         <button type="button" onclick="openCustomerAuthModal('Please sign in or register to complete your order.')" class="btn btn-outline" style="border-color: #38bdf8; color: #38bdf8; font-size: 12.5px; padding: 6px 14px;">
                             👤 Sign In / Register
                         </button>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($isFromCart): ?>
+                <div style="background: linear-gradient(90deg, rgba(5, 150, 105, 0.2) 0%, rgba(15, 23, 42, 0.9) 100%); border: 1.5px solid #10b981; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 24px;">🛒</span>
+                            <div>
+                                <div style="font-size: 14.5px; font-weight: 800; color: #34d399;">
+                                    Checking out Combined Cart Order (<?= $cartSummary['total_qty'] ?> Units)
+                                </div>
+                                <div style="font-size: 12px; color: #94a3b8;">
+                                    Total Value: <strong>₹ <?= number_format($cartSummary['grand_total'], 2) ?></strong> (includes 18% GST &amp; Transit Freight)
+                                </div>
+                            </div>
+                        </div>
+                        <a href="<?= BASE_URL ?>/cart.php" class="btn btn-outline" style="font-size: 11.5px; padding: 6px 12px; border-color: var(--accent-cyan); color: var(--accent-cyan); text-decoration: none;">
+                            ✏️ Edit Cart
+                        </a>
+                    </div>
+                    <div style="margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 12px; color: #cbd5e1;">
+                        <?php foreach ($cartItems as $ci): ?>
+                            <span style="display: inline-block; background: rgba(0,0,0,0.4); padding: 3px 8px; border-radius: 4px; margin: 2px 4px 2px 0;">
+                                <?= e($ci['name']) ?> (<?= $ci['quantity'] ?>x) - ₹ <?= number_format($ci['subtotal'], 0) ?>
+                            </span>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             <?php endif; ?>
@@ -979,6 +1016,7 @@ foreach ($products as $p) {
         postData.append('customer_pincode', pincode);
         postData.append('customer_gst', gst);
         postData.append('notes', notes);
+        postData.append('from_cart', '<?= $isFromCart ? "1" : "0" ?>');
 
         fetch('payment-verify.php', {
             method: 'POST',

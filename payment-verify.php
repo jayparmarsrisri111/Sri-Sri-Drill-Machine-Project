@@ -8,6 +8,7 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/cart-helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
@@ -187,18 +188,69 @@ try {
 
     $insertedId = $pdo->lastInsertId();
 
-    // 2. Dynamic Real-time Inventory Deduction by Ordered Quantity
+    // 2. Populate order_items and Deduct Inventory
+    $fromCart = !empty($_POST['from_cart']);
+    $cartSummary = getCartSummary($pdo);
+
+    if ($fromCart && !empty($cartSummary['items'])) {
+        $insItemStmt = $pdo->prepare("
+            INSERT INTO `order_items` (`order_id`, `product_id`, `product_name`, `model_number`, `quantity`, `unit_price`, `total_price`, `image_url`)
+            VALUES (:oid, :pid, :pname, :model, :qty, :uprice, :tprice, :img)
+        ");
+        $updateStockStmt = $pdo->prepare("UPDATE `products` SET `stock_quantity` = CASE WHEN stock_quantity >= :qty THEN stock_quantity - :qty ELSE 0 END WHERE id = :mid");
+
+        foreach ($cartSummary['items'] as $cItem) {
+            $insItemStmt->execute([
+                ':oid'    => $insertedId,
+                ':pid'    => $cItem['id'],
+                ':pname'  => $cItem['name'],
+                ':model'  => $cItem['model_number'],
+                ':qty'    => $cItem['quantity'],
+                ':uprice' => $cItem['unit_price'],
+                ':tprice' => $cItem['subtotal'],
+                ':img'    => $cItem['image_url']
+            ]);
+            $updateStockStmt->execute([':qty' => $cItem['quantity'], ':mid' => $cItem['id']]);
+        }
+
+        // Clear user's cart now that order is confirmed
+        clearCart($pdo);
+    } else {
+        // Single product direct order
+        try {
+            $insItemStmt = $pdo->prepare("
+                INSERT INTO `order_items` (`order_id`, `product_id`, `product_name`, `model_number`, `quantity`, `unit_price`, `total_price`, `image_url`)
+                VALUES (:oid, :pid, :pname, :model, :qty, :uprice, :tprice, :img)
+            ");
+            $pImgStmt = $pdo->prepare("SELECT image_url FROM products WHERE id = :pid");
+            $pImgStmt->execute([':pid' => $machineId]);
+            $pImg = $pImgStmt->fetchColumn() ?: 'assets/images/machinery/radial-drill-40-real.jpg';
+
+            $insItemStmt->execute([
+                ':oid'    => $insertedId,
+                ':pid'    => $machineId,
+                ':pname'  => $machineName,
+                ':model'  => $modelNumber,
+                ':qty'    => $quantity,
+                ':uprice' => ($basePrice / $quantity),
+                ':tprice' => $basePrice,
+                ':img'    => $pImg
+            ]);
+        } catch (Exception $ie) {}
+
+        // Dynamic Real-time Inventory Deduction by Ordered Quantity
+        try {
+            $updateStock = $pdo->prepare("UPDATE `products` SET `stock_quantity` = CASE WHEN stock_quantity >= :qty THEN stock_quantity - :qty ELSE 0 END WHERE id = :mid");
+            $updateStock->execute([':qty' => $quantity, ':mid' => $machineId]);
+        } catch (Exception $stkEx) {}
+    }
+
     $remainingStock = 0;
     try {
-        $updateStock = $pdo->prepare("UPDATE `products` SET `stock_quantity` = CASE WHEN stock_quantity >= :qty THEN stock_quantity - :qty ELSE 0 END WHERE id = :mid");
-        $updateStock->execute([':qty' => $quantity, ':mid' => $machineId]);
-
         $stkCheck = $pdo->prepare("SELECT stock_quantity FROM `products` WHERE id = :mid");
         $stkCheck->execute([':mid' => $machineId]);
         $remainingStock = intval($stkCheck->fetchColumn() ?? 0);
-    } catch (Exception $stkEx) {
-        // Stock column fallback
-    }
+    } catch (Exception $stkEx) {}
 
     echo json_encode([
         'success'         => true,

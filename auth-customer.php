@@ -8,6 +8,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/cart-helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
@@ -53,6 +54,8 @@ if ($action === 'demo_login') {
             'city' => $cust['city'],
             'pincode' => $cust['pincode']
         ];
+
+        syncCustomerCart($pdo, intval($cust['id']));
 
         echo json_encode([
             'success' => true,
@@ -110,6 +113,8 @@ if ($action === 'login') {
                 'city' => $cust['city'],
                 'pincode' => $cust['pincode']
             ];
+
+            syncCustomerCart($pdo, intval($cust['id']));
 
             echo json_encode([
                 'success' => true,
@@ -193,6 +198,8 @@ if ($action === 'register') {
             'city' => $city,
             'pincode' => $pincode
         ];
+
+        syncCustomerCart($pdo, intval($newId));
 
         echo json_encode([
             'success' => true,

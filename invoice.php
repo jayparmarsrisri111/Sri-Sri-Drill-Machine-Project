@@ -27,6 +27,11 @@ try {
         $stmt = $pdo->query("SELECT o.*, p.image_url, p.drilling_capacity, p.spindle_speeds, p.motor_power FROM orders o LEFT JOIN products p ON o.product_id = p.id ORDER BY o.id DESC LIMIT 1");
         $order = $stmt->fetch();
     }
+    if ($order && !empty($order['id'])) {
+        $oiStmt = $pdo->prepare("SELECT * FROM order_items WHERE order_id = :oid ORDER BY id ASC");
+        $oiStmt->execute([':oid' => $order['id']]);
+        $orderItems = $oiStmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 } catch (Exception $e) {
     die("Database error: " . $e->getMessage());
 }
@@ -857,38 +862,67 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <strong style="color: #0f172a; font-size: 13px;">
-                                <?= e($order['product_name']) ?>
-                            </strong>
-                            <div style="color: #0284c7; font-weight: 700; font-size: 11.5px; margin: 2px 0;">
-                                MODEL: <?= e($order['model_number']) ?> &nbsp;|&nbsp; BRAND: <?= BRAND_NAME ?>
-                            </div>
-                            <div style="font-size: 11px; color: #64748b; line-height: 1.35;">
-                                • Drilling Capacity: <?= e($order['drilling_capacity'] ?? 'Heavy Duty') ?><br>
-                                • Motor Drive: <?= e($order['motor_power'] ?? 'Standard 3-Phase') ?><br>
-                                • Grade-25 Cast Iron Hardened Column &amp; Arm Assembly
-                            </div>
+                    <?php if (!empty($orderItems) && count($orderItems) > 1): ?>
+                        <?php foreach ($orderItems as $idx => $it): ?>
+                            <tr>
+                                <td><?= $idx + 1 ?></td>
+                                <td>
+                                    <strong style="color: #0f172a; font-size: 13px;">
+                                        <?= e($it['product_name']) ?>
+                                    </strong>
+                                    <div style="color: #0284c7; font-weight: 700; font-size: 11.5px; margin: 2px 0;">
+                                        MODEL: <?= e($it['model_number']) ?> &nbsp;|&nbsp; BRAND: <?= BRAND_NAME ?>
+                                    </div>
+                                    <div style="font-size: 11px; color: #64748b;">
+                                        Genuine Industrial Specification • Grade-25 Precision Cast / Alloy
+                                    </div>
+                                </td>
+                                <td>8459 29 10</td>
+                                <td style="text-align: center; font-weight: 700; color: #0284c7;">
+                                    <?= intval($it['quantity']) ?> Unit<?= (intval($it['quantity']) > 1) ? 's' : '' ?>
+                                </td>
+                                <td style="text-align: right;">
+                                    <?= number_format(floatval($it['total_price']) * 1.18, 2) ?>
+                                </td>
+                                <td style="text-align: right; font-weight: 600;">
+                                    <?= number_format(floatval($it['total_price']), 2) ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <strong style="color: #0f172a; font-size: 13px;">
+                                    <?= e($order['product_name']) ?>
+                                </strong>
+                                <div style="color: #0284c7; font-weight: 700; font-size: 11.5px; margin: 2px 0;">
+                                    MODEL: <?= e($order['model_number']) ?> &nbsp;|&nbsp; BRAND: <?= BRAND_NAME ?>
+                                </div>
+                                <div style="font-size: 11px; color: #64748b; line-height: 1.35;">
+                                    • Drilling Capacity: <?= e($order['drilling_capacity'] ?? 'Heavy Duty') ?><br>
+                                    • Motor Drive: <?= e($order['motor_power'] ?? 'Standard 3-Phase') ?><br>
+                                    • Grade-25 Cast Iron Hardened Column &amp; Arm Assembly
+                                </div>
 
-                            <?php if ($isAdvance): ?>
-                                <div style="margin-top: 8px; padding: 6px 10px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 4px; font-size: 11.5px; color: #92400e;">
-                                    <strong>★ ADVANCE PAYMENT CLAUSE:</strong> This invoice receipts the ₹ <?= number_format($paidAmount, 2) ?> token advance (for <?= $invQty ?> unit<?= ($invQty > 1) ? 's' : '' ?>) to lock production queue &amp; allocation of casting serial numbers.
-                                    <br>Full Billed Value: <strong>₹ <?= number_format($order['machine_price'], 2) ?> (+18% GST = ₹ <?= number_format($fullMachineGross, 2) ?>)</strong>.
-                                </div>
-                            <?php else: ?>
-                                <div style="margin-top: 8px; padding: 6px 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px; font-size: 11.5px; color: #166534;">
-                                    <strong>★ 100% PAID IN FULL:</strong> Full invoice value settled. Machine scheduled for direct freight dispatch.
-                                </div>
-                            <?php endif; ?>
-                        </td>
-                        <td>8459 29 10</td>
-                        <?php $invQty = max(1, intval($order['quantity'] ?? 1)); ?>
-                        <td style="text-align: center; font-weight: 700; color: #0284c7;"><?= $invQty ?> Unit<?= ($invQty > 1) ? 's' : '' ?></td>
-                        <td style="text-align: right;"><?= number_format($paidAmount, 2) ?></td>
-                        <td style="text-align: right; font-weight: 600;"><?= number_format($taxableAmount, 2) ?></td>
-                    </tr>
+                                <?php if ($isAdvance): ?>
+                                    <div style="margin-top: 8px; padding: 6px 10px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 4px; font-size: 11.5px; color: #92400e;">
+                                        <strong>★ ADVANCE PAYMENT CLAUSE:</strong> This invoice receipts the ₹ <?= number_format($paidAmount, 2) ?> token advance (for <?= $invQty ?> unit<?= ($invQty > 1) ? 's' : '' ?>) to lock production queue &amp; allocation of casting serial numbers.
+                                        <br>Full Billed Value: <strong>₹ <?= number_format($order['machine_price'], 2) ?> (+18% GST = ₹ <?= number_format($fullMachineGross, 2) ?>)</strong>.
+                                    </div>
+                                <?php else: ?>
+                                    <div style="margin-top: 8px; padding: 6px 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px; font-size: 11.5px; color: #166534;">
+                                        <strong>★ 100% PAID IN FULL:</strong> Full invoice value settled. Machine scheduled for direct freight dispatch.
+                                    </div>
+                                <?php endif; ?>
+                            </td>
+                            <td>8459 29 10</td>
+                            <?php $invQty = max(1, intval($order['quantity'] ?? 1)); ?>
+                            <td style="text-align: center; font-weight: 700; color: #0284c7;"><?= $invQty ?> Unit<?= ($invQty > 1) ? 's' : '' ?></td>
+                            <td style="text-align: right;"><?= number_format($paidAmount, 2) ?></td>
+                            <td style="text-align: right; font-weight: 600;"><?= number_format($taxableAmount, 2) ?></td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>

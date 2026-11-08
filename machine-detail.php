@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/cart-helper.php';
 
 $machineId = intval($_GET['id'] ?? 1);
 
@@ -27,6 +28,23 @@ $isSparePart = (!empty($machine['product_type']) && $machine['product_type'] ===
 
 $mStock = intval($machine['stock_quantity'] ?? 5);
 $mBasePrice = floatval($machine['price'] ?? getMachinePrice($machine['id']));
+
+// Fetch Amazon-style Frequently Bought Together bundle and smart recommendations
+$fbtData = getFrequentlyBoughtTogether($pdo, $machine['id']);
+$smartRecs = getSmartRecommendations($pdo, $machine['id'], $mBasePrice, 4);
+
+// Fetch compatible spare parts & tooling accessories
+$compatParts = [];
+try {
+    $cpStmt = $pdo->query("
+        SELECT p.*, c.name as category_name 
+        FROM products p 
+        JOIN categories c ON p.category_id = c.id 
+        WHERE (p.product_type = 'part' OR p.id >= 100) AND p.is_active = 1 
+        ORDER BY p.id ASC LIMIT 6
+    ");
+    $compatParts = $cpStmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {}
 
 $pageTitle = e($machine['name']) . ' (' . e($machine['model_number']) . ') | ' . BRAND_NAME . ' Bhavnagar';
 $pageDesc = !empty($machine['short_desc']) ? e($machine['short_desc']) : 'Heavy-duty ' . e($machine['name']) . ' manufactured in Bhavnagar, Gujarat by Shree Varsha Engineering Works.';
@@ -364,6 +382,9 @@ if ($isSparePart) {
                     <a id="btnBookOnlineTop" href="<?= BASE_URL ?>/checkout.php?machine_id=<?= $machine['id'] ?>&qty=1" class="btn btn-primary" style="flex: 1 1 100%; text-align: center; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; font-weight: 700; padding: 13px; font-size: 15px;">
                         💳 Book Machine Online (Razorpay)
                     </a>
+                    <button type="button" class="btn btn-cart-detail" onclick="window.addToCart(<?= $machine['id'] ?>, parseInt(document.getElementById('detailQtyInput').value) || 1, this)" style="flex: 1 1 100%; text-align: center; background: rgba(245, 158, 11, 0.16); border: 1.5px solid #f59e0b; color: #fbbf24; font-weight: 800; padding: 13px; font-size: 15px; border-radius: 8px; cursor: pointer; transition: all 0.25s;">
+                        <span>🛒 Add to Cart (કાર્ટમાં ઉમેરો)</span>
+                    </button>
                     <button type="button" class="btn btn-outline open-quote-modal" 
                             style="flex: 1 1 170px;"
                             data-machine-id="<?= $machine['id'] ?>"
@@ -440,6 +461,9 @@ if ($isSparePart) {
                             <button type="button" onclick="adjustDetailQty(-1)" style="width: 36px; height: 36px; border-radius: 6px; background: #060911; border: 1.5px solid var(--accent-cyan); color: #fff; font-size: 18px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center;">−</button>
                             <input type="number" id="detailQtyInput" value="1" min="1" max="<?= max(1, $mStock) ?>" style="width: 60px; height: 36px; text-align: center; font-size: 17px; font-weight: 800; background: #060911; border: 1.5px solid #0284c7; color: #34d399; border-radius: 6px;" onchange="onDetailQtyChange()">
                             <button type="button" onclick="adjustDetailQty(1)" style="width: 36px; height: 36px; border-radius: 6px; background: #060911; border: 1.5px solid var(--accent-cyan); color: #fff; font-size: 18px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center;">+</button>
+                            <button type="button" onclick="window.addToCart(<?= $machine['id'] ?>, parseInt(document.getElementById('detailQtyInput').value) || 1, this)" style="height: 36px; padding: 0 14px; background: rgba(245, 158, 11, 0.18); border: 1.5px solid #f59e0b; color: #fbbf24; font-size: 12.5px; font-weight: 800; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s;">
+                                <span>🛒 Add to Cart</span>
+                            </button>
                         </div>
                     </div>
 
@@ -770,6 +794,247 @@ if ($isSparePart) {
     </div>
 </section>
 
+<!-- =========================================================================
+     1. AMAZON-STYLE FREQUENTLY BOUGHT TOGETHER (વારંવાર સાથે ખરીદાતા સ્પેર પાર્ટ્સ)
+     ========================================================================= -->
+<?php if (!empty($fbtData['parts'])): ?>
+<section class="section" style="padding: 40px 0; background: linear-gradient(180deg, rgba(6, 9, 17, 0.98) 0%, rgba(11, 17, 32, 0.95) 100%); border-top: 1px solid rgba(0, 229, 255, 0.2); border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+    <div class="container">
+        <div style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.35); border-radius: 16px; padding: 26px 28px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 229, 255, 0.06);">
+            
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 22px;">
+                <div>
+                    <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; color: #fbbf24; text-transform: uppercase; letter-spacing: 1px;">
+                        <span>⚡ AMAZON-STYLE COMBO BUNDLE</span>
+                        <span style="background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; padding: 2px 8px; border-radius: 9999px; font-size: 10px;">COMBO 5% SAVINGS</span>
+                    </div>
+                    <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 23px; font-weight: 800; color: #fff; margin: 4px 0 0;">
+                        Frequently Bought Together (વારંવાર સાથે ખરીદાતી વસ્તુઓ)
+                    </h2>
+                    <p style="color: #94a3b8; font-size: 13.5px; margin: 4px 0 0;">
+                        આ ડ્રિલ મશીન ખરીદતા ગ્રાહકો સાથે નીચે આપેલા ઓરિજિનલ સ્પેર પાર્ટ્સ અને ટૂલિંગ એક્સેસરીઝ પણ ઓર્ડર કરે છે:
+                    </p>
+                </div>
+            </div>
+
+            <!-- FBT Grid -->
+            <div style="display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 28px; align-items: center;" id="fbtGridWrapper">
+                
+                <!-- Left: Product Photos with Plus (+) connectors -->
+                <div>
+                    <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 20px;">
+                        <!-- Main Machine Thumbnail -->
+                        <div style="width: 110px; height: 100px; border-radius: 10px; background: #060911; border: 2px solid var(--accent-cyan); overflow: hidden; position: relative; flex-shrink: 0;" title="<?= e($machine['name']) ?>">
+                            <img src="<?= assetUrl($machine['image_url']) ?>" alt="<?= e($machine['name']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                            <span style="position: absolute; bottom: 3px; left: 3px; font-size: 9px; font-weight: 800; background: rgba(0,0,0,0.8); color: var(--accent-cyan); padding: 1px 4px; border-radius: 3px;">MAIN</span>
+                        </div>
+
+                        <?php foreach ($fbtData['parts'] as $idx => $part): ?>
+                            <span style="font-size: 22px; font-weight: 900; color: var(--accent-cyan);">+</span>
+                            <div style="width: 110px; height: 100px; border-radius: 10px; background: #060911; border: 1.5px solid rgba(255,255,255,0.15); overflow: hidden; position: relative; flex-shrink: 0;" title="<?= e($part['name']) ?>" id="fbtThumb_<?= $part['id'] ?>">
+                                <img src="<?= assetUrl($part['image_url']) ?>" alt="<?= e($part['name']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                <span style="position: absolute; bottom: 3px; left: 3px; font-size: 9px; font-weight: 800; background: rgba(0,0,0,0.8); color: #34d399; padding: 1px 4px; border-radius: 3px;">PART</span>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <!-- Checkbox List -->
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <!-- Main Item Checkbox (Locked Checked) -->
+                        <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: #cbd5e1; cursor: pointer;">
+                            <input type="checkbox" id="fbtCheck_main" checked disabled style="margin-top: 3px; accent-color: #00e5ff;">
+                            <div>
+                                <strong style="color: #ffffff;">This Item:</strong> <?= e($machine['name']) ?> (<?= e($machine['model_number']) ?>)
+                                <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: #34d399; margin-left: 6px;">₹ <?= number_format($mBasePrice, 2) ?></span>
+                            </div>
+                        </label>
+
+                        <!-- Parts Checkboxes -->
+                        <?php foreach ($fbtData['parts'] as $part): ?>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: #cbd5e1; cursor: pointer;">
+                                <input type="checkbox" class="fbt-part-checkbox" id="fbtCheck_<?= $part['id'] ?>" value="<?= $part['id'] ?>" data-price="<?= floatval($part['price']) ?>" checked onchange="recalculateFbtBundle()">
+                                <div>
+                                    <strong style="color: #38bdf8;"><?= e($part['category_name']) ?>:</strong> <?= e($part['name']) ?>
+                                    <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: #34d399; margin-left: 6px;">₹ <?= number_format($part['price'], 2) ?></span>
+                                </div>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Right: Bundle Summary & 1-Click Add All to Cart -->
+                <div style="background: rgba(6, 9, 17, 0.95); border: 1.5px solid rgba(0, 229, 255, 0.3); border-radius: 12px; padding: 22px;">
+                    <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #94a3b8; letter-spacing: 0.8px;">
+                        TOTAL COMBO BUNDLE PRICE:
+                    </div>
+                    
+                    <div style="margin: 6px 0 12px;">
+                        <div style="display: flex; align-items: baseline; gap: 10px;">
+                            <span id="fbtBundlePriceDisplay" style="font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 900; color: #34d399;">
+                                ₹ <?= number_format($fbtData['bundle_price'], 2) ?>
+                            </span>
+                            <span id="fbtOriginalPriceDisplay" style="font-size: 14px; color: #94a3b8; text-decoration: line-through;">
+                                ₹ <?= number_format($fbtData['total_original'], 2) ?>
+                            </span>
+                        </div>
+                        <div style="font-size: 12px; color: #38bdf8; margin-top: 3px;">
+                            + 18% GST • Includes Machine + <span id="fbtCheckedPartsCount"><?= count($fbtData['parts']) ?></span> Genuine Spare Parts
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 8px; padding: 8px 12px; margin-bottom: 16px; font-size: 12px; color: #34d399; font-weight: 700;">
+                        ✔ Save ₹ <span id="fbtSavingsDisplay"><?= number_format($fbtData['bundle_discount'], 2) ?></span> with Combo Purchase!
+                    </div>
+
+                    <button type="button" id="btnFbtAddToCart" onclick="addFbtBundleToCart(this)" class="btn btn-primary" style="width: 100%; padding: 13px; font-size: 14.5px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);">
+                        <span>🛒 Add All Selected to Cart (તમામ કાર્ટમાં ઉમેરો)</span>
+                    </button>
+                    
+                    <div style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 10px;">
+                        Instant 1-Click addition to cart with full warranty coverage.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
+<!-- =========================================================================
+     2. COMPATIBLE GENUINE SPARE PARTS FOR THIS MACHINE (ઓરિજિનલ સ્પેર પાર્ટ્સ)
+     ========================================================================= -->
+<?php if (!empty($compatParts)): ?>
+<section class="section" style="padding: 45px 0 35px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
+            <div>
+                <div style="font-size: 11px; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px;">
+                    GENUINE SVEW SPARE PARTS &amp; TOOLING
+                </div>
+                <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 800; color: #fff; margin: 4px 0 0;">
+                    આ મશીન સાથે વપરાતા ઓરિજિનલ સ્પેર પાર્ટ્સ (Compatible Parts)
+                </h2>
+                <p style="color: #94a3b8; font-size: 13.5px; margin: 4px 0 0;">
+                    હાઈ-ગ્રેડ એલોય સ્ટીલ ગિયર્સ, મોર્સ ટેપર સ્પિન્ડલ, કી-લેસ ચક અને કૂલન્ટ પંપ કીટ - ફેક્ટરી ભાવે સીધા ઉપલબ્ધ.
+                </p>
+            </div>
+            <a href="<?= BASE_URL ?>/catalog.php" style="color: #38bdf8; font-size: 13px; font-weight: 700; text-decoration: none;">
+                View Spare Parts Catalog →
+            </a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;">
+            <?php foreach ($compatParts as $cp): ?>
+                <div style="background: rgba(11, 17, 32, 0.9); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.25s;" onmouseover="this.style.borderColor='var(--accent-cyan)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(0, 229, 255, 0.2)'; this.style.transform='none';">
+                    <div>
+                        <div style="height: 150px; border-radius: 8px; overflow: hidden; background: #060911; margin-bottom: 12px; position: relative;">
+                            <a href="<?= BASE_URL ?>/machine-detail.php?id=<?= $cp['id'] ?>">
+                                <img src="<?= assetUrl($cp['image_url']) ?>" alt="<?= e($cp['name']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                            </a>
+                            <span style="position: absolute; top: 8px; left: 8px; background: rgba(0, 229, 255, 0.2); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 4px;">
+                                <?= e($cp['model_number']) ?>
+                            </span>
+                        </div>
+                        <div style="font-size: 10.5px; font-weight: 700; color: #38bdf8; text-transform: uppercase;">
+                            <?= e($cp['category_name']) ?>
+                        </div>
+                        <a href="<?= BASE_URL ?>/machine-detail.php?id=<?= $cp['id'] ?>" style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; color: #ffffff; text-decoration: none; display: block; margin: 4px 0 8px; line-height: 1.35;">
+                            <?= e($cp['name']) ?>
+                        </a>
+                        <p style="font-size: 12px; color: #94a3b8; line-height: 1.4; margin-bottom: 12px;">
+                            <?= e($cp['short_desc']) ?>
+                        </p>
+                    </div>
+
+                    <div>
+                        <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; background: rgba(6, 9, 17, 0.7); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+                            <span style="font-size: 11px; color: #94a3b8;">Factory Price:</span>
+                            <span style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 900; color: #34d399;">
+                                ₹ <?= number_format($cp['price'], 2) ?>
+                            </span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <button type="button" class="btn btn-outline" onclick="window.addToCart(<?= $cp['id'] ?>, 1, this)" style="padding: 8px; font-size: 11.5px; font-weight: 700; border-color: #f59e0b; color: #fbbf24; background: rgba(245, 158, 11, 0.1);">
+                                🛒 Add to Cart
+                            </button>
+                            <a href="<?= BASE_URL ?>/checkout.php?product_id=<?= $cp['id'] ?>" class="btn btn-primary" style="padding: 8px; font-size: 11.5px; font-weight: 700; text-align: center; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399;">
+                                💳 Buy Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
+<!-- =========================================================================
+     3. SMART RECOMMENDATIONS IN THIS CATEGORY & PRICE BRACKET
+     ========================================================================= -->
+<?php if (!empty($smartRecs)): ?>
+<section class="section" style="padding: 45px 0 55px; background: radial-gradient(circle at 50% 100%, rgba(0, 229, 255, 0.05) 0%, rgba(6, 9, 17, 0.98) 70%);">
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
+            <div>
+                <div style="font-size: 11px; font-weight: 800; color: #34d399; text-transform: uppercase; letter-spacing: 1px;">
+                    PRODUCT &amp; PRICE RECOMMENDATIONS
+                </div>
+                <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 800; color: #fff; margin: 4px 0 0;">
+                    આ બજેટ અને કેપેસિટીમાં અન્ય ભલામણ કરેલ ડ્રિલ મશીનો
+                </h2>
+                <p style="color: #94a3b8; font-size: 13.5px; margin: 4px 0 0;">
+                    આ મશીનની સમકક્ષ ક્ષમતા અને કિંમતમાં અન્ય ઔદ્યોગિક મોડલ્સ:
+                </p>
+            </div>
+            <a href="<?= BASE_URL ?>/machines.php" style="color: #38bdf8; font-size: 13px; font-weight: 700; text-decoration: none;">
+                View All Range →
+            </a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;">
+            <?php foreach ($smartRecs as $srec): ?>
+                <div style="background: rgba(11, 17, 32, 0.9); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.25s;" onmouseover="this.style.borderColor='var(--accent-cyan)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(0, 229, 255, 0.2)'; this.style.transform='none';">
+                    <div>
+                        <div style="height: 160px; border-radius: 8px; overflow: hidden; background: #060911; margin-bottom: 12px; position: relative;">
+                            <a href="<?= BASE_URL ?>/machine-detail.php?id=<?= $srec['id'] ?>">
+                                <img src="<?= assetUrl($srec['image_url']) ?>" alt="<?= e($srec['name']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                            </a>
+                            <span style="position: absolute; top: 8px; right: 8px; background: rgba(6, 9, 17, 0.85); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-size: 10.5px; font-weight: 800; padding: 2px 7px; border-radius: 4px;">
+                                <?= e($srec['model_number']) ?>
+                            </span>
+                        </div>
+                        <div style="font-size: 10.5px; font-weight: 700; color: #94a3b8; text-transform: uppercase;">
+                            <?= e($srec['category_name']) ?>
+                        </div>
+                        <a href="<?= BASE_URL ?>/machine-detail.php?id=<?= $srec['id'] ?>" style="font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #ffffff; text-decoration: none; display: block; margin: 4px 0 6px; line-height: 1.3;">
+                            <?= e($srec['name']) ?>
+                        </a>
+                        <div style="font-size: 12px; color: #cbd5e1; margin-bottom: 10px;">
+                            Capacity: <strong style="color: #38bdf8;"><?= e($srec['drilling_capacity']) ?></strong>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 900; color: #34d399; margin-bottom: 12px;">
+                            ₹ <?= number_format($srec['price'], 2) ?>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <button type="button" class="btn btn-outline" onclick="window.addToCart(<?= $srec['id'] ?>, 1, this)" style="padding: 8px; font-size: 11.5px; font-weight: 700; border-color: #f59e0b; color: #fbbf24; background: rgba(245, 158, 11, 0.1);">
+                                🛒 Add to Cart
+                            </button>
+                            <a href="<?= BASE_URL ?>/machine-detail.php?id=<?= $srec['id'] ?>" class="btn btn-primary" style="padding: 8px; font-size: 11.5px; font-weight: 700; text-align: center; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911;">
+                                View Specs
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
 <script>
 // Multi-Angle Real Image Switcher
 const galleryAngles = <?= json_encode($galleryImages) ?>;
@@ -851,6 +1116,85 @@ function onDetailQtyChange() {
     if (btnBook) {
         btnBook.href = '<?= BASE_URL ?>/checkout.php?machine_id=' + machineId + '&qty=' + qty;
     }
+}
+
+// Amazon-Style Frequently Bought Together Handlers
+function recalculateFbtBundle() {
+    let originalTotal = unitBasePrice;
+    let checkedCount = 0;
+
+    document.querySelectorAll('.fbt-part-checkbox').forEach(cb => {
+        const partPrice = parseFloat(cb.getAttribute('data-price')) || 0;
+        const thumb = document.getElementById('fbtThumb_' + cb.value);
+        if (cb.checked) {
+            checkedCount++;
+            originalTotal += partPrice;
+            if (thumb) thumb.style.opacity = '1';
+        } else {
+            if (thumb) thumb.style.opacity = '0.35';
+        }
+    });
+
+    const comboSavings = Math.round((originalTotal * 0.05) / 10) * 10;
+    const bundlePrice = originalTotal - comboSavings;
+
+    const priceEl = document.getElementById('fbtBundlePriceDisplay');
+    const origEl = document.getElementById('fbtOriginalPriceDisplay');
+    const saveEl = document.getElementById('fbtSavingsDisplay');
+    const countEl = document.getElementById('fbtCheckedPartsCount');
+
+    if (priceEl) priceEl.textContent = '₹ ' + bundlePrice.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    if (origEl) origEl.textContent = '₹ ' + originalTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    if (saveEl) saveEl.textContent = comboSavings.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    if (countEl) countEl.textContent = checkedCount;
+}
+
+function addFbtBundleToCart(btn) {
+    const productIds = [machineId];
+    document.querySelectorAll('.fbt-part-checkbox:checked').forEach(cb => {
+        productIds.push(parseInt(cb.value));
+    });
+
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳ Adding ' + productIds.length + ' Items to Cart...</span>';
+
+    const formData = new FormData();
+    formData.append('action', 'add');
+    productIds.forEach(id => formData.append('product_ids[]', id));
+
+    fetch('<?= BASE_URL ?>/api/cart.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            document.querySelectorAll('.cart-badge-count').forEach(el => {
+                el.textContent = data.cart_count;
+                el.style.display = data.cart_count > 0 ? 'inline-flex' : 'none';
+            });
+            if (typeof showVarshaCartToast === 'function') {
+                showVarshaCartToast(productIds.length + ' Combo Bundle Items Added');
+            }
+            btn.innerHTML = '<span>✔ All ' + productIds.length + ' Items Added to Cart!</span>';
+            btn.style.background = '#059669';
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 2500);
+        } else {
+            alert(data.message || 'Error adding combo bundle.');
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    });
 }
 </script>
 
