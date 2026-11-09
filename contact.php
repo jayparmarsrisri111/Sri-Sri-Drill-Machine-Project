@@ -44,7 +44,7 @@ require_once __DIR__ . '/includes/navbar.php';
         </div>
         <h1 class="section-title">Contact <span>Shree Varsha Engineering</span></h1>
         <p class="section-desc" style="max-width: 720px; margin: 0 auto; color: #cbd5e1; font-size: 15.5px; line-height: 1.6;">
-            Reach out directly to <strong>Jitendrabhai Parmar</strong> for technical queries, price quotations, machine customization, or spare parts dispatch.
+            Reach out directly to <strong><?= COMPANY_CONTACT_PERSON ?></strong> for technical queries, price quotations, machine customization, or spare parts dispatch.
         </p>
     </div>
 </section>
@@ -102,7 +102,7 @@ require_once __DIR__ . '/includes/navbar.php';
                         </div>
                         <div class="channel-content">
                             <h4>Working Hours</h4>
-                            <p>Monday - Saturday: 8:30 AM to 8:00 PM</p>
+                            <p><?= getSetting('working_hours', 'Monday - Saturday: 8:30 AM to 7:30 PM (Sunday Closed)') ?></p>
                             <p style="color: var(--text-muted); font-size: 13px;">Sunday: Prior Appointment Only</p>
                         </div>
                     </div>

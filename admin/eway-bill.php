@@ -76,7 +76,7 @@ if ($orderId === 0 && empty($orderNum)) {
                             FORM GST EWB-01 COMPLIANT
                         </span>
                         <span style="font-size: 11.5px; color: #94a3b8;">
-                            Supplier GSTIN: <strong style="color: #fff;">24AJHPP0087E1ZD</strong> (Bhavnagar)
+                            Supplier GSTIN: <strong style="color: #fff;"><?= COMPANY_GSTIN ?></strong> (<?= COMPANY_CITY ?>)
                         </span>
                     </div>
                     <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; color: #fff; margin: 0;">

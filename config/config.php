@@ -60,7 +60,7 @@ function getSetting(string $key, string $default = ''): string {
     return SiteSettings::get($key, $default);
 }
 
-// Global dynamically-computed constants with DB priority
+// Global dynamically-computed constants with DB priority (Updates in real-time from Admin Company Settings)
 define('APP_NAME', getSetting('company_name', 'Shree Varsha Engineering Works'));
 define('APP_TAGLINE', getSetting('tagline', 'Precision Drilling Machine Specialists & Heavy Duty Machinery'));
 define('COMPANY_PHONE_1', getSetting('phone_1', '+91 9824913555'));
@@ -69,15 +69,24 @@ define('COMPANY_PHONE_2', getSetting('phone_2', '+91 9714611331'));
 define('COMPANY_PHONE_2_CLEAN', preg_replace('/[^0-9]/', '', COMPANY_PHONE_2));
 define('COMPANY_EMAIL', getSetting('email', 'jitubhaivarsh@gmail.com'));
 define('COMPANY_WHATSAPP', getSetting('whatsapp', '919824913555'));
-define('COMPANY_CONTACT_PERSON', 'Jitendrabhai Parmar');
-define('COMPANY_ADDRESS', getSetting('address', 'Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 36400003, Gujarat, India'));
+define('COMPANY_CONTACT_PERSON', getSetting('contact_person', 'Jitendrabhai Parmar'));
+define('COMPANY_ADDRESS', getSetting('address', 'Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 364003, Gujarat, India'));
+define('COMPANY_CITY', getSetting('city', 'Bhavnagar'));
+define('COMPANY_STATE', getSetting('state', 'Gujarat'));
+define('COMPANY_PINCODE', getSetting('pincode', '364003'));
 
 // Brand and Signatory constants
-define('BRAND_NAME', 'VARSHA BRAND');
-define('AUTHORIZED_SIGNATORY', 'Jay Parmar');
+define('BRAND_NAME', getSetting('brand_name', 'VARSHA BRAND'));
+define('AUTHORIZED_SIGNATORY', getSetting('authorized_signatory', 'Jay Parmar'));
 define('COMPANY_GSTIN', getSetting('gstin', '24AJHPP0087E1ZD'));
 
-// Standard machine catalog pricing helper
+// Banking & UPI Payment Gateway Settings
+define('COMPANY_BANK_NAME', getSetting('bank_name', 'State Bank of India'));
+define('COMPANY_BANK_ACC', getSetting('bank_account_no', '384910284729'));
+define('COMPANY_BANK_IFSC', getSetting('bank_ifsc', 'SBIN0001234'));
+define('COMPANY_UPI_ID', getSetting('upi_id', '9824913555@okbizaxis'));
+
+// Standard machine catalog pricing helper (with new models)
 function getMachinePrice(int $id): float {
     static $prices = [
         1 => 285000.00,
@@ -88,8 +97,18 @@ function getMachinePrice(int $id): float {
         6 => 195000.00,
         7 => 48000.00,
         8 => 125000.00,
+        9 => 23500.00,
+        10 => 73000.00,
+        11 => 25000.00,
+        12 => 48500.00,
+        101 => 14500.00,
+        102 => 22000.00,
+        103 => 18500.00,
+        104 => 12500.00,
+        105 => 3800.00,
+        106 => 4200.00,
     ];
-    return $prices[$id] ?? 250000.00;
+    return $prices[$id] ?? 25000.00;
 }
 
 // Razorpay Credentials (Test / Live credentials from user provided rzp-key.csv)

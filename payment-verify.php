@@ -5,6 +5,9 @@
  */
 
 header('Content-Type: application/json');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('X-XSS-Protection: 1; mode=block');
 
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/database.php';
@@ -84,23 +87,38 @@ if ($fromCart && !empty($cartSummary['items'])) {
     $paymentType = 'full_payment';
 } else {
     $machineId = intval($_POST['machine_id'] ?? 1);
-    $machineName = sanitizeString($_POST['machine_name'] ?? '');
-    $modelNumber = sanitizeString($_POST['model_number'] ?? '');
     $quantity = max(1, intval($_POST['quantity'] ?? 1));
-    $basePrice = floatval($_POST['base_price'] ?? 0);
-    $payableAmount = floatval($_POST['payable_amount'] ?? 0);
 
-    if ($paymentType === 'booking_advance') {
-        // Allows flexible advance payments up to ₹90,000 or custom amounts
-        $totalAmount = ($payableAmount > 0) ? $payableAmount : 25000.00;
+    // High-Security: Verify authentic price directly from DB, preventing client tampering
+    $prodStmt = $pdo->prepare("SELECT id, name, model_number, price, stock_quantity FROM products WHERE id = :id LIMIT 1");
+    $prodStmt->execute([':id' => $machineId]);
+    $dbProd = $prodStmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($dbProd) {
+        $machineName = $dbProd['name'];
+        $modelNumber = $dbProd['model_number'];
+        $unitPrice = floatval($dbProd['price']);
+    } else {
+        $machineName = sanitizeString($_POST['machine_name'] ?? 'Varsha Drill Machine');
+        $modelNumber = sanitizeString($_POST['model_number'] ?? 'SVEW-RD-40');
+        $unitPrice = getMachinePrice($machineId);
+    }
+
+    if ($paymentType === 'full_payment') {
+        $taxableAmount = round($unitPrice * $quantity, 2);
+        $cgstAmount = round($taxableAmount * 0.09, 2);
+        $sgstAmount = round($taxableAmount * 0.09, 2);
+        $totalAmount = round($taxableAmount + $cgstAmount + $sgstAmount, 2);
+        $basePrice = $taxableAmount;
+    } else {
+        // Token booking advance (standard ₹25,000/unit or verified custom advance)
+        $standardAdvance = 25000.00 * $quantity;
+        $submittedPayable = floatval($_POST['payable_amount'] ?? $standardAdvance);
+        $totalAmount = ($submittedPayable >= 1000.00) ? $submittedPayable : $standardAdvance;
         $taxableAmount = round($totalAmount / 1.18, 2);
         $cgstAmount = round(($totalAmount - $taxableAmount) / 2, 2);
         $sgstAmount = round($totalAmount - $taxableAmount - $cgstAmount, 2);
-    } else {
-        $taxableAmount = ($basePrice > 0) ? $basePrice : ($payableAmount / 1.18);
-        $cgstAmount = round($taxableAmount * 0.09, 2);
-        $sgstAmount = round($taxableAmount * 0.09, 2);
-        $totalAmount = $taxableAmount + $cgstAmount + $sgstAmount;
+        $basePrice = round($unitPrice * $quantity, 2);
     }
 }
 

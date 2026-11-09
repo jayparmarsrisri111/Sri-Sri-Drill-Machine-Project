@@ -10,8 +10,8 @@
                 <a href="<?= BASE_URL ?>/index.php" style="display:flex; align-items:center; gap:12px; margin-bottom:15px; text-decoration:none;">
                     <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="<?= BRAND_NAME ?>" style="height:52px; width:52px; object-fit:contain; border-radius:50%; border:2px solid rgba(0, 229, 255, 0.6); filter:drop-shadow(0 0 12px rgba(0, 229, 255, 0.4)); flex-shrink:0;">
                     <div style="display:flex; flex-direction:column; line-height:1.2;">
-                        <span style="font-family:'Space Grotesk', sans-serif; font-size:18px; font-weight:800; color:#fff; letter-spacing:0.8px;">VARSHA BRAND</span>
-                        <span style="font-size:11px; font-weight:700; color:#00e5ff; letter-spacing:1px;">SHREE VARSHA ENGINEERING WORKS</span>
+                        <span style="font-family:'Space Grotesk', sans-serif; font-size:18px; font-weight:800; color:#fff; letter-spacing:0.8px;"><?= BRAND_NAME ?></span>
+                        <span style="font-size:11px; font-weight:700; color:#00e5ff; letter-spacing:1px; text-transform: uppercase;"><?= APP_NAME ?></span>
                     </div>
                 </a>
                 <p>
@@ -73,13 +73,13 @@
                         <svg viewBox="0 0 24 24" style="flex-shrink: 0; margin-top: 3px; fill: #34d399; width: 18px; height: 18px;"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
                         <div style="display: flex; flex-direction: column; gap: 4px;">
                             <div>
-                                <span style="color: #94a3b8; font-size: 12.5px;">Jitendrabhai Parmar: </span>
+                                <span style="color: #94a3b8; font-size: 12.5px;"><?= COMPANY_CONTACT_PERSON ?>: </span>
                                 <a href="tel:<?= COMPANY_PHONE_1_CLEAN ?>" style="color: #ffffff; font-weight: 700; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#34d399'" onmouseout="this.style.color='#ffffff'">
                                     <?= COMPANY_PHONE_1 ?>
                                 </a>
                             </div>
                             <div>
-                                <span style="color: #94a3b8; font-size: 12.5px;">Jay Parmar: </span>
+                                <span style="color: #94a3b8; font-size: 12.5px;"><?= AUTHORIZED_SIGNATORY ?>: </span>
                                 <a href="tel:<?= COMPANY_PHONE_2_CLEAN ?>" style="color: #ffffff; font-weight: 700; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='#ffffff'">
                                     <?= COMPANY_PHONE_2 ?>
                                 </a>
@@ -94,7 +94,7 @@
                     </div>
                     <div class="footer-contact-item" style="font-size: 12px; color: #94a3b8;">
                         <span style="color: #34d399; font-size: 14px;">●</span>
-                        <span>Working Hours: Mon - Sat: 8:30 AM - 8:00 PM</span>
+                        <span>Working Hours: <?= getSetting('working_hours', 'Monday - Saturday: 8:30 AM - 7:30 PM (Sunday Closed)') ?></span>
                     </div>
                 </div>
             </div>

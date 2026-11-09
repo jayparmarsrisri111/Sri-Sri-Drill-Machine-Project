@@ -726,11 +726,10 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             <div class="company-branding">
                 <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand" class="company-logo-img">
                 <div>
-                    <h1 class="company-title">SHREE VARSHA ENGINEERING WORKS</h1>
-                    <span class="brand-badge">★ VARSHA BRAND ★ INDUSTRIAL MACHINERY</span>
+                    <h1 class="company-title"><?= APP_NAME ?></h1>
+                    <span class="brand-badge">★ <?= BRAND_NAME ?> ★ INDUSTRIAL MACHINERY</span>
                     <div class="company-meta">
-                        Shed No. L/786, GIDC, Nr. Hadanagar,<br>
-                        Bhavnagar - 36400003, Gujarat, India<br>
+                        <?= COMPANY_ADDRESS ?><br>
                         <strong>GSTIN:</strong> <?= COMPANY_GSTIN ?> &nbsp;|&nbsp; <strong>State Code:</strong> 24 (Gujarat)<br>
                         <strong>Phone:</strong> <?= COMPANY_PHONE_1 ?> &nbsp;|&nbsp; <strong>Email:</strong> <?= COMPANY_EMAIL ?>
                     </div>

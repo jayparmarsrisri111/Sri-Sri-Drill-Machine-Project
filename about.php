@@ -23,9 +23,9 @@ require_once __DIR__ . '/includes/navbar.php';
                 </span>
             </div>
         </div>
-        <h1 class="section-title">25+ Years of <span>Industrial Excellence</span></h1>
+        <h1 class="section-title"><?= getSetting('experience_years', '25+') ?> Years of <span>Industrial Excellence</span></h1>
         <p class="section-desc" style="max-width: 720px; margin: 0 auto; color: #cbd5e1; font-size: 15px; line-height: 1.6;">
-            Shree Varsha Engineering Works is recognized across India for manufacturing heavy-duty, high-rigidity Radial and Pillar Drill Machines built to perform under extreme production cycles.
+            <?= APP_NAME ?> is recognized across India for manufacturing heavy-duty, high-rigidity Radial and Pillar Drill Machines built to perform under extreme production cycles.
         </p>
     </div>
 </section>
@@ -40,10 +40,10 @@ require_once __DIR__ . '/includes/navbar.php';
                     Pioneering High Precision <span style="color: var(--accent-cyan);">Drill Machine Manufacturing</span> in Bhavnagar
                 </h2>
                 <p style="font-size: 15.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px;">
-                    Founded under the visionary leadership of <strong>Jitendrabhai Parmar</strong>, <strong>Shree Varsha Engineering Works</strong> began with a single mission: to build drill machines that match global European benchmarks in structural stability, gear longevity, and drilling accuracy, while delivering outstanding value to Indian workshops and fabricators.
+                    Founded under the visionary leadership of <strong><?= COMPANY_CONTACT_PERSON ?></strong>, <strong><?= APP_NAME ?></strong> began with a single mission: to build drill machines that match global European benchmarks in structural stability, gear longevity, and drilling accuracy, while delivering outstanding value to Indian workshops and fabricators.
                 </p>
                 <p style="font-size: 15.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 24px;">
-                    Over two and a half decades, we have continuously upgraded our foundry metallurgy, machining infrastructure, and quality control systems. Today, more than <strong>1,800+</strong> Shree Varsha drill machines operate continuously in steel fabrication units, automotive ancillary plants, railway component workshops, and heavy engineering facilities across India.
+                    Over two and a half decades, we have continuously upgraded our foundry metallurgy, machining infrastructure, and quality control systems. Today, more than <strong><?= getSetting('machines_built', '1,800+') ?></strong> <?= BRAND_NAME ?> drill machines operate continuously in steel fabrication units, automotive ancillary plants, railway component workshops, and heavy engineering facilities across India.
                 </p>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px;">
@@ -102,7 +102,7 @@ require_once __DIR__ . '/includes/navbar.php';
                 <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <span style="font-size: 12px; color: var(--text-muted); display: block;">Contact Person</span>
-                        <strong style="color: #fff; font-size: 15px;">Jitendrabhai Parmar</strong>
+                        <strong style="color: #fff; font-size: 15px;"><?= COMPANY_CONTACT_PERSON ?></strong>
                     </div>
                     <a href="tel:<?= COMPANY_PHONE_1_CLEAN ?>" class="btn btn-primary" style="padding: 8px 16px; font-size: 12px;">
                         <?= COMPANY_PHONE_1 ?>
