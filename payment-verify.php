@@ -26,9 +26,29 @@ $paymentId = sanitizeString($_POST['razorpay_payment_id'] ?? '');
 $orderId = sanitizeString($_POST['razorpay_order_id'] ?? '');
 $signature = sanitizeString($_POST['razorpay_signature'] ?? '');
 
+$paymentMethod = sanitizeString($_POST['payment_method'] ?? 'online');
+if (!in_array($paymentMethod, ['online', 'cod', 'bank_transfer', 'cheque'])) {
+    $paymentMethod = 'online';
+}
+
+// Generate unique transaction references for offline / direct methods if paymentId is empty
 if (empty($paymentId)) {
-    echo json_encode(['success' => false, 'message' => 'Payment ID missing.']);
-    exit;
+    if ($paymentMethod === 'cod') {
+        $paymentId = 'COD_' . strtoupper(bin2hex(random_bytes(4)));
+        $orderId = 'ORD_COD_' . date('Ymd_His');
+        $signature = 'COD_AUTO_ACK_' . time();
+    } elseif ($paymentMethod === 'bank_transfer') {
+        $paymentId = 'NEFT_' . strtoupper(bin2hex(random_bytes(4)));
+        $orderId = 'ORD_BANK_' . date('Ymd_His');
+        $signature = 'BANK_AUTO_ACK_' . time();
+    } elseif ($paymentMethod === 'cheque') {
+        $paymentId = 'CHQ_' . strtoupper(bin2hex(random_bytes(4)));
+        $orderId = 'ORD_CHQ_' . date('Ymd_His');
+        $signature = 'CHQ_AUTO_ACK_' . time();
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Online payment ID missing. Please retry online payment.']);
+        exit;
+    }
 }
 
 // Customer details
@@ -42,25 +62,46 @@ $custPincode = sanitizeString($_POST['customer_pincode'] ?? '');
 $custGst = strtoupper(sanitizeString($_POST['customer_gst'] ?? ''));
 $notes = sanitizeString($_POST['notes'] ?? '');
 
-$machineId = intval($_POST['machine_id'] ?? 1);
-$machineName = sanitizeString($_POST['machine_name'] ?? '');
-$modelNumber = sanitizeString($_POST['model_number'] ?? '');
-$quantity = max(1, intval($_POST['quantity'] ?? 1));
-$paymentType = ($_POST['payment_type'] === 'full_payment') ? 'full_payment' : 'booking_advance';
-$basePrice = floatval($_POST['base_price'] ?? 0);
-$payableAmount = floatval($_POST['payable_amount'] ?? 0);
+$pdo = Database::getConnection();
 
-if ($paymentType === 'booking_advance') {
-    // Allows flexible advance payments up to ₹90,000 or custom amounts
-    $totalAmount = ($payableAmount > 0) ? $payableAmount : 25000.00;
-    $taxableAmount = round($totalAmount / 1.18, 2);
-    $cgstAmount = round(($totalAmount - $taxableAmount) / 2, 2);
-    $sgstAmount = round($totalAmount - $taxableAmount - $cgstAmount, 2);
+// Check if checking out from cart
+$fromCart = !empty($_POST['from_cart']);
+$cartSummary = getCartSummary($pdo);
+
+$paymentType = ($_POST['payment_type'] === 'full_payment') ? 'full_payment' : 'booking_advance';
+
+if ($fromCart && !empty($cartSummary['items'])) {
+    // Multi-item cart checkout calculations
+    $machineId = intval($cartSummary['items'][0]['id'] ?? 1);
+    $machineName = 'Combined Cart Order (' . count($cartSummary['items']) . ' Products)';
+    $modelNumber = 'CART-' . $cartSummary['total_qty'] . 'U';
+    $quantity = intval($cartSummary['total_qty']);
+    $basePrice = floatval($cartSummary['subtotal']);
+    $taxableAmount = floatval($cartSummary['subtotal']);
+    $cgstAmount = floatval($cartSummary['cgst']);
+    $sgstAmount = floatval($cartSummary['sgst']);
+    $totalAmount = floatval($cartSummary['grand_total']);
+    $paymentType = 'full_payment';
 } else {
-    $taxableAmount = ($basePrice > 0) ? $basePrice : ($payableAmount / 1.18);
-    $cgstAmount = round($taxableAmount * 0.09, 2);
-    $sgstAmount = round($taxableAmount * 0.09, 2);
-    $totalAmount = $taxableAmount + $cgstAmount + $sgstAmount;
+    $machineId = intval($_POST['machine_id'] ?? 1);
+    $machineName = sanitizeString($_POST['machine_name'] ?? '');
+    $modelNumber = sanitizeString($_POST['model_number'] ?? '');
+    $quantity = max(1, intval($_POST['quantity'] ?? 1));
+    $basePrice = floatval($_POST['base_price'] ?? 0);
+    $payableAmount = floatval($_POST['payable_amount'] ?? 0);
+
+    if ($paymentType === 'booking_advance') {
+        // Allows flexible advance payments up to ₹90,000 or custom amounts
+        $totalAmount = ($payableAmount > 0) ? $payableAmount : 25000.00;
+        $taxableAmount = round($totalAmount / 1.18, 2);
+        $cgstAmount = round(($totalAmount - $taxableAmount) / 2, 2);
+        $sgstAmount = round($totalAmount - $taxableAmount - $cgstAmount, 2);
+    } else {
+        $taxableAmount = ($basePrice > 0) ? $basePrice : ($payableAmount / 1.18);
+        $cgstAmount = round($taxableAmount * 0.09, 2);
+        $sgstAmount = round($taxableAmount * 0.09, 2);
+        $totalAmount = $taxableAmount + $cgstAmount + $sgstAmount;
+    }
 }
 
 // Generate human-friendly Unique Order and Invoice Numbers
@@ -132,6 +173,8 @@ try {
         exit;
     }
 
+    $paymentStatus = ($paymentMethod === 'online') ? 'paid' : 'pending';
+
     $stmt = $pdo->prepare("
         INSERT INTO `orders` (
             `order_number`, `invoice_number`, `product_id`, `product_name`, `model_number`, `quantity`,
@@ -139,7 +182,7 @@ try {
             `customer_city`, `customer_pincode`, `customer_gst`, `payment_type`,
             `machine_price`, `taxable_amount`, `cgst_amount`, `sgst_amount`, `total_amount`,
             `razorpay_order_id`, `razorpay_payment_id`, `razorpay_signature`,
-            `payment_status`, `order_status`, `authorized_signatory`, `crypto_seal`, `notes`,
+            `payment_status`, `payment_method`, `order_status`, `authorized_signatory`, `crypto_seal`, `notes`,
             `customer_id`, `delivery_status`, `transport_name`, `tracking_number`, `estimated_delivery`, `current_location`, `delivery_notes`
         ) VALUES (
             :order_num, :inv_num, :prod_id, :prod_name, :model_num, :qty,
@@ -147,7 +190,7 @@ try {
             :city, :pincode, :gst, :pay_type,
             :base_price, :taxable, :cgst, :sgst, :total,
             :rzp_order_id, :rzp_pay_id, :rzp_sig,
-            'paid', 'confirmed', :signatory, :seal, :notes,
+            :pay_status, :pay_method, 'confirmed', :signatory, :seal, :notes,
             :cust_id, 'order_placed', 'VRL Logistics Surface Express', :track_no, :est_del, :loc, :del_notes
         )
     ");
@@ -176,6 +219,8 @@ try {
         ':rzp_order_id'  => $orderId,
         ':rzp_pay_id'    => $paymentId,
         ':rzp_sig'       => $signature,
+        ':pay_status'    => $paymentStatus,
+        ':pay_method'    => $paymentMethod,
         ':signatory'     => AUTHORIZED_SIGNATORY,
         ':seal'          => $cryptoSeal,
         ':notes'         => $notes,
@@ -189,9 +234,6 @@ try {
     $insertedId = $pdo->lastInsertId();
 
     // 2. Populate order_items and Deduct Inventory
-    $fromCart = !empty($_POST['from_cart']);
-    $cartSummary = getCartSummary($pdo);
-
     if ($fromCart && !empty($cartSummary['items'])) {
         $insItemStmt = $pdo->prepare("
             INSERT INTO `order_items` (`order_id`, `product_id`, `product_name`, `model_number`, `quantity`, `unit_price`, `total_price`, `image_url`)

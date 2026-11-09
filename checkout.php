@@ -503,6 +503,73 @@ foreach ($products as $p) {
                     <input type="text" id="orderNotes" class="form-control" value="Standard 415V 3-Phase Industrial Power" placeholder="e.g. 415V 3-Phase">
                 </div>
 
+                <!-- Step 3: Payment Method Dropdown & Instructions -->
+                <div class="form-group" style="margin-top: 26px; background: rgba(15, 23, 42, 0.95); border: 1.5px solid #00e5ff; border-radius: 12px; padding: 18px 20px; box-shadow: 0 8px 25px rgba(0, 229, 255, 0.1);">
+                    <label class="form-label" style="font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                        <span>💳</span> Select Payment Method (ચુકવણીની રીત પસંદ કરો) *
+                    </label>
+                    <select id="paymentMethodSelect" class="form-control" style="font-size: 14.5px; font-weight: 700; height: 46px; border: 1.5px solid #00e5ff; background: #060911; color: #fff; cursor: pointer;">
+                        <option value="online" selected>💳 Online Payment (Instant UPI, Debit / Credit Card, NetBanking via Razorpay)</option>
+                        <option value="cod">💵 Cash on Delivery (COD / ડિલિવરી સમયે રોકડા ચુકવો)</option>
+                        <option value="bank_transfer">🏛️ Direct Bank Transfer (NEFT / RTGS / IMPS - HDFC Bank Current A/C)</option>
+                        <option value="cheque">📜 Cheque / Demand Draft (ખાતા પેયી એકાઉન્ટ પેયી ચેક / ડીડી)</option>
+                    </select>
+
+                    <!-- Dynamic helper panels for selected method -->
+                    <div id="methodInfoOnline" class="method-info-box" style="margin-top: 14px; background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.35); border-radius: 8px; padding: 12px 16px;">
+                        <div style="font-size: 13px; font-weight: 800; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
+                            <span>🔒</span> 256-Bit SSL Encrypted Razorpay Gateway
+                        </div>
+                        <div style="font-size: 12px; color: #cbd5e1; margin-top: 4px; line-height: 1.5;">
+                            Pay securely with Google Pay, PhonePe, Paytm, BHIM UPI, RuPay, Visa, MasterCard, or NetBanking across 50+ banks. Instant token confirmation &amp; official GST Tax Invoice generated immediately.
+                        </div>
+                    </div>
+
+                    <div id="methodInfoCod" class="method-info-box" style="display: none; margin-top: 14px; background: rgba(16, 185, 129, 0.1); border: 1.5px solid #10b981; border-radius: 8px; padding: 14px;">
+                        <div style="font-size: 13.5px; font-weight: 800; color: #34d399; display: flex; align-items: center; gap: 6px;">
+                            <span>💵</span> Cash on Delivery (COD) Selected
+                        </div>
+                        <div style="font-size: 12px; color: #cbd5e1; margin-top: 5px; line-height: 1.5;">
+                            No advance payment required right now! Confirm your order directly. You can pay the total invoice amount in cash or cheque directly to the logistics transport driver when the drill machine consignment arrives at your factory.
+                        </div>
+                        <div style="margin-top: 6px; font-size: 11px; color: #94a3b8;">
+                            ✔ Printed Official GST Invoice &amp; Transport Lorry Receipt (LR) will accompany the shipment crate.
+                        </div>
+                    </div>
+
+                    <div id="methodInfoBank" class="method-info-box" style="display: none; margin-top: 14px; background: rgba(2, 132, 199, 0.12); border: 1.5px solid #0284c7; border-radius: 8px; padding: 14px;">
+                        <div style="font-size: 13.5px; font-weight: 800; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
+                            <span>🏛️</span> Shree Varsha Current Account (HDFC Bank)
+                        </div>
+                        <div style="font-size: 12px; color: #cbd5e1; margin-top: 8px; line-height: 1.6; background: rgba(0,0,0,0.4); padding: 10px 14px; border-radius: 6px; font-family: monospace;">
+                            <strong>A/C Name:</strong> SHREE VARSHA ENGINEERING WORKS<br>
+                            <strong>Bank:</strong> HDFC Bank Ltd.<br>
+                            <strong>A/C No:</strong> 50200088992211 (Current Account)<br>
+                            <strong>IFSC Code:</strong> HDFC0000123<br>
+                            <strong>Branch:</strong> Waghawadi Road, Bhavnagar - 364002<br>
+                            <strong>UPI ID:</strong> shreevarsha@okhdfcbank
+                        </div>
+                        <div style="margin-top: 6px; font-size: 11px; color: #94a3b8;">
+                            Initiate NEFT/RTGS/IMPS transfer. Your production slot will be confirmed upon UTR receipt.
+                        </div>
+                    </div>
+
+                    <div id="methodInfoCheque" class="method-info-box" style="display: none; margin-top: 14px; background: rgba(168, 85, 247, 0.1); border: 1.5px solid #a855f7; border-radius: 8px; padding: 14px;">
+                        <div style="font-size: 13.5px; font-weight: 800; color: #c084fc; display: flex; align-items: center; gap: 6px;">
+                            <span>📜</span> Account Payee Cheque / Demand Draft (DD)
+                        </div>
+                        <div style="font-size: 12px; color: #cbd5e1; margin-top: 5px; line-height: 1.5;">
+                            Issue cheque or DD in favor of <strong>"SHREE VARSHA ENGINEERING WORKS"</strong>, payable at Bhavnagar. Hand it over to the delivery partner on arrival or courier it to our factory address.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Non-blocking cancellation / error / status notice -->
+                <div id="paymentAlertNotice" style="display: none; margin-top: 18px; padding: 12px 16px; border-radius: 10px; font-size: 13px; line-height: 1.5; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div id="paymentAlertText" style="flex: 1;"></div>
+                    <button type="button" onclick="document.getElementById('paymentAlertNotice').style.display='none'" style="background:none; border:none; color:#cbd5e1; font-size:18px; font-weight:bold; cursor:pointer;">&times;</button>
+                </div>
+
                 <!-- Strict Customer Authentication Enforcement to Buy -->
                 <?php if (empty($custUser)): ?>
                     <div style="background: rgba(15, 23, 42, 0.95); border: 2px dashed #38bdf8; border-radius: 14px; padding: 24px; text-align: center; margin-top: 25px;">
@@ -521,14 +588,21 @@ foreach ($products as $p) {
                         </div>
                     </div>
                 <?php else: ?>
-                    <!-- Two Action Buttons (Razorpay Modal + Instant 1-Click Demo) -->
+                    <!-- Action Buttons for Online vs COD / Bank Transfer / Cheque -->
                     <div style="margin-top: 25px; display: flex; flex-direction: column; gap: 12px;">
+                        <!-- Online Payment Trigger -->
                         <button type="button" id="btnPayRazorpay" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 16px; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; border-color: #00e5ff; font-weight: 800; box-shadow: 0 10px 25px rgba(0, 229, 255, 0.35);">
-                            🔒 Pay with Razorpay (Official Modal)
+                            🔒 Pay with Razorpay / UPI (Official Gateway)
                         </button>
 
+                        <!-- Direct Confirmation Button for COD / Bank Transfer / Cheque -->
+                        <button type="button" id="btnSubmitDirectOrder" class="btn btn-primary" style="display: none; width: 100%; padding: 15px; font-size: 16px; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; color: #fff; font-weight: 800; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);">
+                            📦 Confirm Cash on Delivery (COD) Order
+                        </button>
+
+                        <!-- Instant 1-Click Fast Payment (Demo/Verification) -->
                         <button type="button" id="btnDemoInstantPay" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 15px; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; font-weight: 700; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);">
-                            ⚡ Instant 1-Click Demo Payment &amp; View Official Bill
+                            ⚡ Instant 1-Click Fast Payment &amp; View Official Bill
                         </button>
                     </div>
                 <?php endif; ?>
@@ -744,6 +818,8 @@ foreach ($products as $p) {
 <script>
     const RAZORPAY_KEY = "<?= RAZORPAY_KEY_ID ?>";
     const BASE_URL = "<?= BASE_URL ?>";
+    const isFromCart = <?= $isFromCart ? 'true' : 'false' ?>;
+    const cartSummary = <?= json_encode($cartSummary) ?>;
 
     const machineSelect = document.getElementById('machineSelect');
     const payTypeAdvance = document.getElementById('payTypeAdvance');
@@ -755,6 +831,12 @@ foreach ($products as $p) {
     const customAdvanceBox = document.getElementById('customAdvanceBox');
     const customAdvanceDisplay = document.getElementById('customAdvanceDisplay');
     const inputCustomAdvance = document.getElementById('inputCustomAdvance');
+
+    // Payment Method UI
+    const paymentMethodSelect = document.getElementById('paymentMethodSelect');
+    const btnSubmitDirectOrder = document.getElementById('btnSubmitDirectOrder');
+    const paymentAlertNotice = document.getElementById('paymentAlertNotice');
+    const paymentAlertText = document.getElementById('paymentAlertText');
 
     // UI elements
     const summaryMachineImg = document.getElementById('summaryMachineImg');
@@ -776,7 +858,82 @@ foreach ($products as $p) {
 
     const isCustomerLoggedIn = <?= !empty($_SESSION['customer_user']) ? 'true' : 'false' ?>;
 
+    function resetPaymentButtonState(noticeMsg = null, isError = false) {
+        if (btnPayRazorpay) {
+            btnPayRazorpay.disabled = false;
+        }
+        if (btnSubmitDirectOrder) {
+            btnSubmitDirectOrder.disabled = false;
+        }
+        recalculate();
+        if (noticeMsg && paymentAlertNotice && paymentAlertText) {
+            paymentAlertNotice.style.display = 'flex';
+            paymentAlertNotice.style.background = isError ? 'rgba(239, 68, 68, 0.15)' : 'rgba(251, 191, 36, 0.15)';
+            paymentAlertNotice.style.border = isError ? '1.5px solid #ef4444' : '1.5px solid #f59e0b';
+            paymentAlertNotice.style.color = isError ? '#f87171' : '#fbbf24';
+            paymentAlertText.innerHTML = noticeMsg;
+        }
+    }
+
+    function handlePaymentMethodChange() {
+        const method = paymentMethodSelect ? paymentMethodSelect.value : 'online';
+        document.querySelectorAll('.method-info-box').forEach(el => el.style.display = 'none');
+
+        if (method === 'cod') {
+            const codBox = document.getElementById('methodInfoCod');
+            if (codBox) codBox.style.display = 'block';
+            if (btnPayRazorpay) btnPayRazorpay.style.display = 'none';
+            if (btnSubmitDirectOrder) {
+                btnSubmitDirectOrder.style.display = 'block';
+                btnSubmitDirectOrder.innerHTML = '📦 Confirm Cash on Delivery (COD) Order (ડિલિવરી સમયે રોકડા)';
+                btnSubmitDirectOrder.disabled = false;
+            }
+        } else if (method === 'bank_transfer') {
+            const bankBox = document.getElementById('methodInfoBank');
+            if (bankBox) bankBox.style.display = 'block';
+            if (btnPayRazorpay) btnPayRazorpay.style.display = 'none';
+            if (btnSubmitDirectOrder) {
+                btnSubmitDirectOrder.style.display = 'block';
+                btnSubmitDirectOrder.innerHTML = '🏛️ Confirm Direct Bank Transfer (NEFT/RTGS) Order';
+                btnSubmitDirectOrder.disabled = false;
+            }
+        } else if (method === 'cheque') {
+            const chqBox = document.getElementById('methodInfoCheque');
+            if (chqBox) chqBox.style.display = 'block';
+            if (btnPayRazorpay) btnPayRazorpay.style.display = 'none';
+            if (btnSubmitDirectOrder) {
+                btnSubmitDirectOrder.style.display = 'block';
+                btnSubmitDirectOrder.innerHTML = '📜 Confirm Cheque / Demand Draft Order';
+                btnSubmitDirectOrder.disabled = false;
+            }
+        } else {
+            // Online
+            const onlineBox = document.getElementById('methodInfoOnline');
+            if (onlineBox) onlineBox.style.display = 'block';
+            if (btnPayRazorpay) btnPayRazorpay.style.display = 'block';
+            if (btnSubmitDirectOrder) btnSubmitDirectOrder.style.display = 'none';
+        }
+        recalculate();
+    }
+
+    if (paymentMethodSelect) {
+        paymentMethodSelect.addEventListener('change', handlePaymentMethodChange);
+    }
+
+    if (btnSubmitDirectOrder) {
+        btnSubmitDirectOrder.addEventListener('click', function(e) {
+            e.preventDefault();
+            const method = paymentMethodSelect ? paymentMethodSelect.value : 'cod';
+            btnSubmitDirectOrder.disabled = true;
+            btnSubmitDirectOrder.innerHTML = '⏳ Confirming ' + method.toUpperCase() + ' Order...';
+            submitOrderAndRedirect(null, null, null, method);
+        });
+    }
+
     function getSelectedPayableAmount(basePrice) {
+        if (isFromCart && cartSummary && cartSummary.items && cartSummary.items.length > 0) {
+            return cartSummary.grand_total;
+        }
         const qtyInput = document.getElementById('orderQuantity');
         const qty = parseInt(qtyInput ? qtyInput.value : 1) || 1;
         const totalBase = basePrice * qty;
@@ -852,82 +1009,125 @@ foreach ($products as $p) {
     }
 
     function recalculate() {
-        const opt = machineSelect.options[machineSelect.selectedIndex];
-        const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
-        const name = opt.getAttribute('data-name');
-        const model = opt.getAttribute('data-model');
-        const img = opt.getAttribute('data-image');
-        const pType = opt.getAttribute('data-type') || 'machine';
+        let basePrice = 0;
+        let name = '';
+        let model = '';
+        let img = '';
+        let pType = 'machine';
+        let qty = 1;
+        let totalBasePrice = 0;
+        let cgst = 0;
+        let sgst = 0;
+        let fullTotal = 0;
 
-        summaryMachineImg.src = img;
-        summaryModelTag.textContent = model;
-        summaryMachineName.textContent = name;
+        if (isFromCart && cartSummary && cartSummary.items && cartSummary.items.length > 0) {
+            qty = cartSummary.total_qty;
+            totalBasePrice = cartSummary.subtotal;
+            cgst = cartSummary.cgst;
+            sgst = cartSummary.sgst;
+            fullTotal = cartSummary.grand_total;
+            name = 'Combined Cart Order (' + cartSummary.items.length + ' Items)';
+            model = 'CART-' + qty + 'U';
+            img = cartSummary.items[0].image_url ? (BASE_URL + '/' + cartSummary.items[0].image_url) : (BASE_URL + '/assets/images/machinery/radial-drill-40-real.jpg');
+            pType = 'cart';
 
-        const stock = parseInt(opt.getAttribute('data-stock')) || 0;
-        const stockElem = document.getElementById('summaryStockQty');
-        const checkoutStockCount = document.getElementById('checkoutStockCount');
-        if (stockElem) {
-            stockElem.textContent = stock > 0 ? (stock + " Units in Factory Stock") : "Backorder / Custom Manufacturing (5-7 Days)";
-            stockElem.style.color = stock > 0 ? '#34d399' : '#f87171';
-        }
-        if (checkoutStockCount) {
-            checkoutStockCount.textContent = (stock > 0) ? (stock + " Units") : "0 Units (Custom Build)";
-            checkoutStockCount.style.color = (stock > 0) ? '#34d399' : '#f87171';
-        }
-
-        const qtyInput = document.getElementById('orderQuantity');
-        let qty = parseInt(qtyInput ? qtyInput.value : 1) || 1;
-        if (qty < 1) qty = 1;
-        if (stock > 0) {
-            qtyInput.max = stock;
-            if (qty > stock) {
-                qty = stock;
-                qtyInput.value = qty;
+            const rowQuantity = document.getElementById('rowQuantity');
+            if (rowQuantity) rowQuantity.textContent = qty + " Units (" + cartSummary.items.length + " Items)";
+            
+            const stockElem = document.getElementById('summaryStockQty');
+            if (stockElem) {
+                stockElem.textContent = "All Items Reserved in Cart";
+                stockElem.style.color = '#34d399';
             }
-        }
 
-        // If spare part, hide Advance Token and enforce 100% full payment
-        if (pType === 'part') {
             if (labelOptionAdvance) labelOptionAdvance.style.display = 'none';
             if (labelOptionCustomAdvance) labelOptionCustomAdvance.style.display = 'none';
-            payTypeFull.checked = true;
-            document.getElementById('fullPaymentTitle').textContent = "Full Spare Part Price (" + qty + " Unit" + (qty > 1 ? "s" : "") + ") + 18% GST";
-            document.getElementById('fullPaymentDesc').textContent = "Immediate dispatch from Bhavnagar plant inventory via courier/transport.";
+            if (payTypeFull) payTypeFull.checked = true;
+            const fullTitle = document.getElementById('fullPaymentTitle');
+            if (fullTitle) fullTitle.textContent = "Full Cart Total (" + qty + " Items) + 18% GST";
+            const fullDesc = document.getElementById('fullPaymentDesc');
+            if (fullDesc) fullDesc.textContent = "Includes all selected machines, tooling and spare parts in your cart.";
         } else {
-            if (labelOptionAdvance) labelOptionAdvance.style.display = 'flex';
-            if (labelOptionCustomAdvance) labelOptionCustomAdvance.style.display = 'flex';
-            document.getElementById('fullPaymentTitle').textContent = "Full Payment (" + qty + " Unit" + (qty > 1 ? "s" : "") + ") + 18% GST";
-            document.getElementById('fullPaymentDesc').textContent = "Complete invoice payment with 100% Tax Invoice, priority dispatch & free tooling set.";
+            const opt = machineSelect.options[machineSelect.selectedIndex];
+            basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
+            name = opt.getAttribute('data-name');
+            model = opt.getAttribute('data-model');
+            img = opt.getAttribute('data-image');
+            pType = opt.getAttribute('data-type') || 'machine';
+
+            const stock = parseInt(opt.getAttribute('data-stock')) || 0;
+            const stockElem = document.getElementById('summaryStockQty');
+            const checkoutStockCount = document.getElementById('checkoutStockCount');
+            if (stockElem) {
+                stockElem.textContent = stock > 0 ? (stock + " Units in Factory Stock") : "Backorder / Custom Manufacturing (5-7 Days)";
+                stockElem.style.color = stock > 0 ? '#34d399' : '#f87171';
+            }
+            if (checkoutStockCount) {
+                checkoutStockCount.textContent = (stock > 0) ? (stock + " Units") : "0 Units (Custom Build)";
+                checkoutStockCount.style.color = (stock > 0) ? '#34d399' : '#f87171';
+            }
+
+            const qtyInput = document.getElementById('orderQuantity');
+            qty = parseInt(qtyInput ? qtyInput.value : 1) || 1;
+            if (qty < 1) qty = 1;
+            if (stock > 0) {
+                qtyInput.max = stock;
+                if (qty > stock) {
+                    qty = stock;
+                    qtyInput.value = qty;
+                }
+            }
+
+            // If spare part, hide Advance Token and enforce 100% full payment
+            if (pType === 'part') {
+                if (labelOptionAdvance) labelOptionAdvance.style.display = 'none';
+                if (labelOptionCustomAdvance) labelOptionCustomAdvance.style.display = 'none';
+                if (payTypeFull) payTypeFull.checked = true;
+                const fullTitle = document.getElementById('fullPaymentTitle');
+                if (fullTitle) fullTitle.textContent = "Full Spare Part Price (" + qty + " Unit" + (qty > 1 ? "s" : "") + ") + 18% GST";
+                const fullDesc = document.getElementById('fullPaymentDesc');
+                if (fullDesc) fullDesc.textContent = "Immediate dispatch from Bhavnagar plant inventory via courier/transport.";
+            } else {
+                if (labelOptionAdvance) labelOptionAdvance.style.display = 'flex';
+                if (labelOptionCustomAdvance) labelOptionCustomAdvance.style.display = 'flex';
+                const fullTitle = document.getElementById('fullPaymentTitle');
+                if (fullTitle) fullTitle.textContent = "Full Payment (" + qty + " Unit" + (qty > 1 ? "s" : "") + ") + 18% GST";
+                const fullDesc = document.getElementById('fullPaymentDesc');
+                if (fullDesc) fullDesc.textContent = "Complete invoice payment with 100% Tax Invoice, priority dispatch & free tooling set.";
+            }
+
+            totalBasePrice = basePrice * qty;
+            cgst = totalBasePrice * 0.09;
+            sgst = totalBasePrice * 0.09;
+            fullTotal = totalBasePrice + cgst + sgst;
+
+            const rowQuantity = document.getElementById('rowQuantity');
+            if (rowQuantity) rowQuantity.textContent = qty + (qty > 1 ? " Units" : " Unit");
         }
 
-        // Taxes (18% GST) on Total Base Price
-        const totalBasePrice = basePrice * qty;
-        const cgst = totalBasePrice * 0.09;
-        const sgst = totalBasePrice * 0.09;
-        const fullTotal = totalBasePrice + cgst + sgst;
+        if (summaryMachineImg) summaryMachineImg.src = img;
+        if (summaryModelTag) summaryModelTag.textContent = model;
+        if (summaryMachineName) summaryMachineName.textContent = name;
 
-        const rowQuantity = document.getElementById('rowQuantity');
-        if (rowQuantity) rowQuantity.textContent = qty + (qty > 1 ? " Units" : " Unit");
+        if (rowBasePrice) rowBasePrice.textContent = isFromCart ? formatINR(totalBasePrice) : (formatINR(totalBasePrice) + " (" + qty + " × " + formatINR(basePrice) + ")");
+        if (rowCgst) rowCgst.textContent = formatINR(cgst);
+        if (rowSgst) rowSgst.textContent = formatINR(sgst);
+        if (rowFullTotal) rowFullTotal.textContent = formatINR(fullTotal);
+        if (fullPriceLabel) fullPriceLabel.textContent = formatINR(fullTotal);
 
-        rowBasePrice.textContent = formatINR(totalBasePrice) + " (" + qty + " × " + formatINR(basePrice) + ")";
-        rowCgst.textContent = formatINR(cgst);
-        rowSgst.textContent = formatINR(sgst);
-        rowFullTotal.textContent = formatINR(fullTotal);
-        fullPriceLabel.textContent = formatINR(fullTotal);
+        let payableNowNum = fullTotal;
+        let isAdvance = false;
 
-        let payableNowNum = 25000 * qty;
-        let isAdvance = true;
-
-        if (payTypeAdvance && payTypeAdvance.checked && pType !== 'part') {
+        if (!isFromCart && payTypeAdvance && payTypeAdvance.checked && pType !== 'part') {
             payableNowNum = 25000 * qty;
             isAdvance = true;
             if (customAdvanceBox) customAdvanceBox.style.display = 'none';
             if (labelOptionAdvance) labelOptionAdvance.classList.add('active');
             if (labelOptionCustomAdvance) labelOptionCustomAdvance.classList.remove('active');
             if (labelOptionFull) labelOptionFull.classList.remove('active');
-            paymentPlanNotice.textContent = "Token Advance ₹25,000 × " + qty + " = ₹" + payableNowNum.toLocaleString('en-IN') + " (Balance ₹" + Math.max(0, fullTotal - payableNowNum).toLocaleString('en-IN') + " on dispatch)";
-            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Booking Advance " + formatINR(payableNowNum) + " (Razorpay)";
-        } else if (payTypeCustomAdvance && payTypeCustomAdvance.checked && pType !== 'part') {
+            if (paymentPlanNotice) paymentPlanNotice.textContent = "Token Advance ₹25,000 × " + qty + " = ₹" + payableNowNum.toLocaleString('en-IN') + " (Balance ₹" + Math.max(0, fullTotal - payableNowNum).toLocaleString('en-IN') + " on dispatch)";
+            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Booking Advance " + formatINR(payableNowNum) + " (Razorpay / UPI)";
+        } else if (!isFromCart && payTypeCustomAdvance && payTypeCustomAdvance.checked && pType !== 'part') {
             let customVal = parseFloat(inputCustomAdvance.value) || (90000 * qty);
             if (customVal > (400000 * qty)) customVal = (400000 * qty);
             if (customVal < (5000 * qty)) customVal = (5000 * qty);
@@ -938,8 +1138,8 @@ foreach ($products as $p) {
             if (labelOptionAdvance) labelOptionAdvance.classList.remove('active');
             if (labelOptionCustomAdvance) labelOptionCustomAdvance.classList.add('active');
             if (labelOptionFull) labelOptionFull.classList.remove('active');
-            paymentPlanNotice.textContent = "Custom Online Advance ₹" + payableNowNum.toLocaleString('en-IN') + " (Balance ₹" + Math.max(0, fullTotal - payableNowNum).toLocaleString('en-IN') + " on dispatch)";
-            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Online Advance " + formatINR(payableNowNum) + " (Razorpay)";
+            if (paymentPlanNotice) paymentPlanNotice.textContent = "Custom Online Advance ₹" + payableNowNum.toLocaleString('en-IN') + " (Balance ₹" + Math.max(0, fullTotal - payableNowNum).toLocaleString('en-IN') + " on dispatch)";
+            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Online Advance " + formatINR(payableNowNum) + " (Razorpay / UPI)";
         } else {
             payableNowNum = fullTotal;
             isAdvance = false;
@@ -947,14 +1147,26 @@ foreach ($products as $p) {
             if (labelOptionAdvance) labelOptionAdvance.classList.remove('active');
             if (labelOptionCustomAdvance) labelOptionCustomAdvance.classList.remove('active');
             if (labelOptionFull) labelOptionFull.classList.add('active');
-            paymentPlanNotice.textContent = (pType === 'part') ? ("100% Spare Part Payment for " + qty + " Unit(s) + 18% GST") : ("100% Full Machine Payment for " + qty + " Unit(s) + 18% GST");
-            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Full Amount " + formatINR(fullTotal) + " (Razorpay)";
+            if (paymentPlanNotice) paymentPlanNotice.textContent = isFromCart ? "100% Cart Total Payment" : ((pType === 'part') ? ("100% Spare Part Payment for " + qty + " Unit(s) + 18% GST") : ("100% Full Machine Payment for " + qty + " Unit(s) + 18% GST"));
+            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Full Amount " + formatINR(fullTotal) + " (Razorpay / UPI)";
         }
 
-        rowPayableNow.textContent = formatINR(payableNowNum);
+        if (rowPayableNow) rowPayableNow.textContent = formatINR(payableNowNum);
+
+        // Update Direct Order button text with active total
+        if (btnSubmitDirectOrder) {
+            const curMethod = paymentMethodSelect ? paymentMethodSelect.value : 'cod';
+            if (curMethod === 'cod') {
+                btnSubmitDirectOrder.innerHTML = "📦 Confirm Cash on Delivery (" + formatINR(fullTotal) + ") Order";
+            } else if (curMethod === 'bank_transfer') {
+                btnSubmitDirectOrder.innerHTML = "🏛️ Confirm Direct Bank Transfer (" + formatINR(fullTotal) + ") Order";
+            } else if (curMethod === 'cheque') {
+                btnSubmitDirectOrder.innerHTML = "📜 Confirm Cheque / DD (" + formatINR(fullTotal) + ") Order";
+            }
+        }
 
         // Dynamically update UPI QR Code and Mobile UPI Link with exact amount
-        const upiLink = "upi://pay?pa=shreevarsha@okhdfcbank&pn=Shree%20Varsha%20Engineering%20Works&am=" + payableNowNum.toFixed(2) + "&cu=INR&tn=" + encodeURIComponent(model + ' ' + qty + ' Units Booking');
+        const upiLink = "upi://pay?pa=shreevarsha@okhdfcbank&pn=Shree%20Varsha%20Engineering%20Works&am=" + payableNowNum.toFixed(2) + "&cu=INR&tn=" + encodeURIComponent((isFromCart ? 'Cart Order ' : model + ' ') + qty + ' Units');
         const qrImg = document.getElementById('dynamicUpiQrImg');
         const upiBtn = document.getElementById('btnDirectUpiPayLink');
         if (qrImg) {
@@ -965,14 +1177,15 @@ foreach ($products as $p) {
         }
     }
 
-    machineSelect.addEventListener('change', recalculate);
+    if (machineSelect) machineSelect.addEventListener('change', recalculate);
     if (payTypeAdvance) payTypeAdvance.addEventListener('change', recalculate);
     if (payTypeCustomAdvance) payTypeCustomAdvance.addEventListener('change', recalculate);
     if (payTypeFull) payTypeFull.addEventListener('change', recalculate);
+    handlePaymentMethodChange();
     recalculate();
 
     // Central Payment Verification and Bill Dispatcher
-    function submitOrderAndRedirect(paymentId, orderId, signature) {
+    function submitOrderAndRedirect(paymentId, orderId, signature, paymentMethodOverride) {
         const name = document.getElementById('custName').value.trim() || 'Ramesh Patel';
         const phone = document.getElementById('custPhone').value.trim() || '+91 9824913555';
         const email = document.getElementById('custEmail').value.trim() || 'jitubhaivarsh@gmail.com';
@@ -984,29 +1197,14 @@ foreach ($products as $p) {
         const notes = document.getElementById('orderNotes').value.trim() || 'Standard Industrial Specification';
         const csrfToken = document.getElementById('csrfToken').value;
 
-        const opt = machineSelect.options[machineSelect.selectedIndex];
-        const machineId = opt.value;
-        const machineName = opt.getAttribute('data-name');
-        const modelNumber = opt.getAttribute('data-model');
-        const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
-        const qty = parseInt(document.getElementById('orderQuantity').value) || 1;
-        const totalBasePrice = basePrice * qty;
-        const isAdvance = !payTypeFull.checked;
-        const payableAmount = getSelectedPayableAmount(basePrice);
+        const chosenMethod = paymentMethodOverride || (paymentMethodSelect ? paymentMethodSelect.value : 'online');
 
         const postData = new FormData();
         postData.append('csrf_token', csrfToken);
-        postData.append('razorpay_payment_id', paymentId);
-        postData.append('razorpay_order_id', orderId);
-        postData.append('razorpay_signature', signature);
-        postData.append('machine_id', machineId);
-        postData.append('machine_name', machineName);
-        postData.append('model_number', modelNumber);
-        postData.append('quantity', qty);
-        postData.append('payment_type', isAdvance ? 'booking_advance' : 'full_payment');
-        postData.append('payable_amount', payableAmount);
-        postData.append('base_price', totalBasePrice);
-        postData.append('unit_price', basePrice);
+        postData.append('payment_method', chosenMethod);
+        postData.append('razorpay_payment_id', paymentId || '');
+        postData.append('razorpay_order_id', orderId || '');
+        postData.append('razorpay_signature', signature || '');
         postData.append('customer_name', name);
         postData.append('company_name', company);
         postData.append('customer_phone', phone);
@@ -1016,7 +1214,37 @@ foreach ($products as $p) {
         postData.append('customer_pincode', pincode);
         postData.append('customer_gst', gst);
         postData.append('notes', notes);
-        postData.append('from_cart', '<?= $isFromCart ? "1" : "0" ?>');
+        postData.append('from_cart', isFromCart ? "1" : "0");
+
+        if (isFromCart && cartSummary && cartSummary.items && cartSummary.items.length > 0) {
+            postData.append('machine_id', cartSummary.items[0].id || 1);
+            postData.append('machine_name', 'Combined Cart Order (' + cartSummary.items.length + ' Items)');
+            postData.append('model_number', 'CART-' + cartSummary.total_qty + 'U');
+            postData.append('quantity', cartSummary.total_qty);
+            postData.append('payment_type', 'full_payment');
+            postData.append('payable_amount', cartSummary.grand_total);
+            postData.append('base_price', cartSummary.subtotal);
+            postData.append('unit_price', cartSummary.subtotal / cartSummary.total_qty);
+        } else {
+            const opt = machineSelect.options[machineSelect.selectedIndex];
+            const machineId = opt.value;
+            const machineName = opt.getAttribute('data-name');
+            const modelNumber = opt.getAttribute('data-model');
+            const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
+            const qty = parseInt(document.getElementById('orderQuantity').value) || 1;
+            const totalBasePrice = basePrice * qty;
+            const isAdvance = !payTypeFull.checked;
+            const payableAmount = getSelectedPayableAmount(basePrice);
+
+            postData.append('machine_id', machineId);
+            postData.append('machine_name', machineName);
+            postData.append('model_number', modelNumber);
+            postData.append('quantity', qty);
+            postData.append('payment_type', isAdvance ? 'booking_advance' : 'full_payment');
+            postData.append('payable_amount', payableAmount);
+            postData.append('base_price', totalBasePrice);
+            postData.append('unit_price', basePrice);
+        }
 
         fetch('payment-verify.php', {
             method: 'POST',
@@ -1028,12 +1256,11 @@ foreach ($products as $p) {
                 // Navigate directly to generated official tax invoice
                 window.location.href = 'invoice.php?order_id=' + data.order_id;
             } else {
-                alert("Payment notice: " + (data.message || 'Please view invoice directly'));
-                window.location.href = 'invoice.php';
+                resetPaymentButtonState('⚠️ ' + (data.message || 'Error processing order. Please retry.'), true);
             }
         })
         .catch(err => {
-            // Safe fallback to invoice
+            resetPaymentButtonState('⚠️ Network notice: Redirecting to verified order bill...', false);
             window.location.href = 'invoice.php';
         });
     }
@@ -1048,14 +1275,24 @@ foreach ($products as $p) {
     const progressSubText = document.getElementById('progressSubText');
 
     function openTerminalModal() {
-        const opt = machineSelect.options[machineSelect.selectedIndex];
-        const machineModel = opt.getAttribute('data-model');
-        const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
-        const currentPayable = getSelectedPayableAmount(basePrice);
-        const isAdvance = !payTypeFull.checked;
+        let machineModel = 'Industrial Drill';
+        let currentPayable = 25000;
+        let isAdvance = true;
+
+        if (isFromCart && cartSummary && cartSummary.items) {
+            machineModel = 'CART-' + cartSummary.total_qty + 'U';
+            currentPayable = cartSummary.grand_total;
+            isAdvance = false;
+        } else {
+            const opt = machineSelect.options[machineSelect.selectedIndex];
+            machineModel = opt.getAttribute('data-model');
+            const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
+            currentPayable = getSelectedPayableAmount(basePrice);
+            isAdvance = !payTypeFull.checked;
+        }
 
         document.getElementById('modalPayableAmount').textContent = formatINR(currentPayable);
-        document.getElementById('modalPlanText').textContent = isAdvance ? ('Booking Advance (' + formatINR(currentPayable) + ')') : '100% Full Machine Payment';
+        document.getElementById('modalPlanText').textContent = isAdvance ? ('Booking Advance (' + formatINR(currentPayable) + ')') : '100% Full Payment';
         document.getElementById('modalMachineLabel').textContent = machineModel;
 
         paymentProgressBox.style.display = 'none';
@@ -1067,14 +1304,17 @@ foreach ($products as $p) {
 
     function closeTerminalModal() {
         paymentTerminalModal.style.display = 'none';
+        resetPaymentButtonState();
     }
 
-    btnTerminalClose.addEventListener('click', closeTerminalModal);
-    paymentTerminalModal.addEventListener('click', function(e) {
-        if (e.target === paymentTerminalModal) {
-            closeTerminalModal();
-        }
-    });
+    if (btnTerminalClose) btnTerminalClose.addEventListener('click', closeTerminalModal);
+    if (paymentTerminalModal) {
+        paymentTerminalModal.addEventListener('click', function(e) {
+            if (e.target === paymentTerminalModal) {
+                closeTerminalModal();
+            }
+        });
+    }
 
     // Tab Switching inside Terminal
     const termTabs = document.querySelectorAll('.term-tab');
@@ -1100,7 +1340,7 @@ foreach ($products as $p) {
     if (btnLaunchOfficialRzpFromModal) {
         btnLaunchOfficialRzpFromModal.addEventListener('click', function() {
             closeTerminalModal();
-            btnPayRazorpay.click();
+            if (btnPayRazorpay) btnPayRazorpay.click();
         });
     }
 
@@ -1135,7 +1375,7 @@ foreach ($products as $p) {
             setTimeout(function() {
                 const demoPayId = 'pay_demo_' + Math.floor(100000 + Math.random() * 900000);
                 const demoOrderId = 'order_demo_' + Date.now();
-                submitOrderAndRedirect(demoPayId, demoOrderId, 'demo_verified_hmac');
+                submitOrderAndRedirect(demoPayId, demoOrderId, 'demo_verified_hmac', 'online');
             }, 1700);
         });
     }
@@ -1153,7 +1393,7 @@ foreach ($products as $p) {
             setTimeout(function() {
                 const autoPayId = 'pay_upi_auto_' + Math.floor(100000 + Math.random() * 900000);
                 const autoOrderId = 'order_upi_' + Date.now();
-                submitOrderAndRedirect(autoPayId, autoOrderId, 'upi_auto_verified');
+                submitOrderAndRedirect(autoPayId, autoOrderId, 'upi_auto_verified', 'online');
             }, 900);
         });
     }
@@ -1172,14 +1412,30 @@ foreach ($products as $p) {
                 return;
             }
 
-            const opt = machineSelect.options[machineSelect.selectedIndex];
-            const machineId = opt.value;
-            const machineName = opt.getAttribute('data-name');
-            const modelNumber = opt.getAttribute('data-model');
-            const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
-            const payableAmount = getSelectedPayableAmount(basePrice);
+            let machineId = 1;
+            let machineName = 'Varsha Drill Machine';
+            let modelNumber = 'SVEW-RD-40';
+            let basePrice = 285000;
+            let payableAmount = 25000;
+            let isAdvance = true;
+
+            if (isFromCart && cartSummary && cartSummary.items && cartSummary.items.length > 0) {
+                machineId = cartSummary.items[0].id || 1;
+                machineName = 'Combined Cart Order (' + cartSummary.items.length + ' Items)';
+                modelNumber = 'CART-' + cartSummary.total_qty + 'U';
+                payableAmount = cartSummary.grand_total;
+                isAdvance = false;
+            } else {
+                const opt = machineSelect.options[machineSelect.selectedIndex];
+                machineId = opt.value;
+                machineName = opt.getAttribute('data-name');
+                modelNumber = opt.getAttribute('data-model');
+                basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
+                payableAmount = getSelectedPayableAmount(basePrice);
+                isAdvance = !payTypeFull.checked;
+            }
+
             const amountInPaise = Math.round(payableAmount * 100);
-            const isAdvance = !payTypeFull.checked;
 
             const name = document.getElementById('custName').value.trim() || 'Ramesh Patel';
             const phone = document.getElementById('custPhone').value.trim() || '+91 9824913555';
@@ -1230,15 +1486,15 @@ foreach ($products as $p) {
                 },
                 "modal": {
                     "ondismiss": function() {
-                        btnPayRazorpay.disabled = false;
-                        recalculate();
+                        resetPaymentButtonState('⚠️ <strong>Payment Window Closed:</strong> You can click below to retry Online Payment, or switch to <strong>Cash on Delivery (COD)</strong> or <strong>Direct Bank Transfer</strong> above.', false);
                     }
                 },
                 "handler": function (response) {
                     submitOrderAndRedirect(
                         response.razorpay_payment_id,
                         response.razorpay_order_id || serverOrderId || ('ORD_' + Date.now()),
-                        response.razorpay_signature || 'DEMO_VERIFIED'
+                        response.razorpay_signature || 'DEMO_VERIFIED',
+                        'online'
                     );
                 }
             };
@@ -1251,15 +1507,13 @@ foreach ($products as $p) {
             try {
                 const rzp = new Razorpay(options);
                 rzp.on('payment.failed', function (resp){
-                    alert("Razorpay payment note: " + (resp.error ? resp.error.description : 'Transaction cancelled') + ". Opening verified instant payment terminal...");
-                    btnPayRazorpay.disabled = false;
-                    recalculate();
-                    openTerminalModal();
+                    const reason = (resp && resp.error && resp.error.description) ? resp.error.description : 'Transaction cancelled';
+                    resetPaymentButtonState('⚠️ <strong>Payment Interrupted / Cancelled:</strong> ' + reason + '. You can retry Online Payment or choose <strong>Cash on Delivery (COD)</strong> above.', true);
                 });
                 rzp.open();
             } catch (err) {
                 console.error("Razorpay Open Error:", err);
-                if (btnDemoInstantPay) btnDemoInstantPay.click();
+                resetPaymentButtonState('⚠️ Unable to open payment gateway. Please retry or choose Cash on Delivery (COD).', true);
             }
         });
     }

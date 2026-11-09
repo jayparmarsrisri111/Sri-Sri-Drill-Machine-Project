@@ -129,6 +129,12 @@ class Database {
                 $pdo->exec("ALTER TABLE `orders` ADD COLUMN `quantity` INT DEFAULT 1");
             }
 
+            // Ensure orders.payment_method exists (online, cod, bank_transfer, cheque)
+            $pmCol = $pdo->query("SHOW COLUMNS FROM `orders` LIKE 'payment_method'")->fetchAll();
+            if (empty($pmCol)) {
+                $pdo->exec("ALTER TABLE `orders` ADD COLUMN `payment_method` VARCHAR(50) DEFAULT 'online'");
+            }
+
             // Ensure cart_items table exists
             $pdo->exec("CREATE TABLE IF NOT EXISTS `cart_items` (
                 `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -204,6 +210,7 @@ class Database {
                 razorpay_payment_id TEXT DEFAULT NULL,
                 razorpay_signature TEXT DEFAULT NULL,
                 payment_status TEXT DEFAULT 'pending',
+                payment_method TEXT DEFAULT 'online',
                 order_status TEXT DEFAULT 'confirmed',
                 authorized_signatory TEXT DEFAULT 'Jay Parmar',
                 crypto_seal TEXT DEFAULT NULL,
@@ -217,6 +224,9 @@ class Database {
                 $cols = $pdo->query("PRAGMA table_info(orders)")->fetchAll(PDO::FETCH_COLUMN, 1);
                 if (!in_array('quantity', $cols)) {
                     $pdo->exec("ALTER TABLE orders ADD COLUMN quantity INTEGER DEFAULT 1");
+                }
+                if (!in_array('payment_method', $cols)) {
+                    $pdo->exec("ALTER TABLE orders ADD COLUMN payment_method TEXT DEFAULT 'online'");
                 }
             } catch (Exception $ex) {}
         }

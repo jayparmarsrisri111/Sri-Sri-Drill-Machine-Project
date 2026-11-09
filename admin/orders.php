@@ -361,6 +361,20 @@ require_once __DIR__ . '/includes/sidebar.php';
                                                     ⏳ PENDING
                                                 </span>
                                             <?php endif; ?>
+
+                                            <!-- Payment Method Badge -->
+                                            <?php
+                                                $pmMethod = $ord['payment_method'] ?? 'online';
+                                                if ($pmMethod === 'cod') {
+                                                    echo '<span style="font-size: 9px; background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid #f59e0b; padding: 2px 6px; border-radius: 4px; font-weight: 700; display: inline-block; margin-top: 3px;">💵 Cash on Delivery</span>';
+                                                } elseif ($pmMethod === 'bank_transfer') {
+                                                    echo '<span style="font-size: 9px; background: rgba(2, 132, 199, 0.15); color: #38bdf8; border: 1px solid #0284c7; padding: 2px 6px; border-radius: 4px; font-weight: 700; display: inline-block; margin-top: 3px;">🏛️ Bank Transfer</span>';
+                                                } elseif ($pmMethod === 'cheque') {
+                                                    echo '<span style="font-size: 9px; background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid #a855f7; padding: 2px 6px; border-radius: 4px; font-weight: 700; display: inline-block; margin-top: 3px;">📜 Cheque/DD</span>';
+                                                } else {
+                                                    echo '<span style="font-size: 9px; background: rgba(0, 229, 255, 0.1); color: #00e5ff; border: 1px solid rgba(0, 229, 255, 0.4); padding: 2px 6px; border-radius: 4px; font-weight: 700; display: inline-block; margin-top: 3px;">💳 Online / UPI</span>';
+                                                }
+                                            ?>
                                         </div>
                                     </td>
                                     <td>

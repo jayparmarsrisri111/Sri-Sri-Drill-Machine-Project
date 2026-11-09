@@ -764,10 +764,38 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 }
             ?>
 
+            <?php 
+                $pm = $order['payment_method'] ?? 'online';
+                $payMethodLabel = 'Razorpay 256-Bit SSL';
+                $payMethodColor = '#10b981';
+                if ($pm === 'cod') {
+                    $payMethodLabel = 'Cash on Delivery (COD)';
+                    $payMethodColor = '#d97706';
+                } elseif ($pm === 'bank_transfer') {
+                    $payMethodLabel = 'Direct Bank Transfer (NEFT/RTGS)';
+                    $payMethodColor = '#0284c7';
+                } elseif ($pm === 'cheque') {
+                    $payMethodLabel = 'Account Payee Cheque / DD';
+                    $payMethodColor = '#7e22ce';
+                }
+            ?>
+
             <div class="invoice-title-block">
-                <div class="inv-title"><?= $isAdvance ? 'ADVANCE BOOKING TAX INVOICE' : 'TAX INVOICE (100% PAID)' ?></div>
+                <div class="inv-title"><?= ($pm === 'cod') ? 'TAX INVOICE (CASH ON DELIVERY)' : ($isAdvance ? 'ADVANCE BOOKING TAX INVOICE' : 'TAX INVOICE (100% PAID)') ?></div>
                 <div style="margin: 4px 0;">
-                    <?php if ($isAdvance): ?>
+                    <?php if ($pm === 'cod'): ?>
+                        <span class="status-badge" style="background: #fef3c7; color: #b45309; border-color: #fcd34d;">
+                            ✔ CASH ON DELIVERY CONFIRMED (PAYABLE AT DELIVERY) • ₹ <?= number_format($paidAmount, 2) ?>
+                        </span>
+                    <?php elseif ($pm === 'bank_transfer'): ?>
+                        <span class="status-badge" style="background: #e0f2fe; color: #0369a1; border-color: #7dd3fc;">
+                            ✔ DIRECT BANK TRANSFER (NEFT/RTGS ORDER RESERVED) • ₹ <?= number_format($paidAmount, 2) ?>
+                        </span>
+                    <?php elseif ($pm === 'cheque'): ?>
+                        <span class="status-badge" style="background: #f3e8ff; color: #7e22ce; border-color: #d8b4fe;">
+                            ✔ CHEQUE / DD ORDER (VERIFICATION AT RECEIPT) • ₹ <?= number_format($paidAmount, 2) ?>
+                        </span>
+                    <?php elseif ($isAdvance): ?>
                         <span class="status-badge" style="background: #fef3c7; color: #b45309; border-color: #fcd34d;">
                             ✔ ADVANCE TOKEN PAID (SLOT RESERVED) • ₹ <?= number_format($paidAmount, 2) ?>
                         </span>
@@ -796,7 +824,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                     </tr>
                     <tr>
                         <td style="color: #64748b; font-weight: 600;">Payment Method:</td>
-                        <td><span style="color: #10b981; font-weight: 700;">Razorpay 256-Bit SSL</span></td>
+                        <td><span style="color: <?= $payMethodColor ?>; font-weight: 800;"><?= e($payMethodLabel) ?></span></td>
                     </tr>
                     <tr>
                         <td style="color: #64748b; font-weight: 600;">Transaction ID:</td>
