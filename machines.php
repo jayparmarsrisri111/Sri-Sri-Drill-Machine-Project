@@ -61,22 +61,43 @@ try {
 ?>
 
 <!-- Page Header Banner -->
-<section style="padding: 55px 0 35px; background: radial-gradient(circle at 50% 20%, rgba(0, 229, 255, 0.1) 0%, rgba(6, 9, 17, 0.98) 75%); border-bottom: 1px solid var(--border-subtle);">
-    <div class="container" style="text-align: center;">
-        <div style="display: inline-flex; align-items: center; gap: 12px; margin-bottom: 14px;">
-            <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand" style="height: 60px; width: 60px; border-radius: 50%; border: 2px solid var(--accent-cyan); box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);">
+<section style="padding: 48px 0 32px; background: radial-gradient(circle at 50% 15%, rgba(0, 229, 255, 0.12) 0%, rgba(6, 9, 17, 0.98) 70%); border-bottom: 1px solid var(--border-subtle); position: relative; overflow: hidden;">
+    <div class="container" style="text-align: center; max-width: 900px; margin: 0 auto; position: relative; z-index: 2;">
+        
+        <!-- Integrated Brand Header Badge -->
+        <div style="display: inline-flex; align-items: center; gap: 12px; background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.4); border-radius: 9999px; padding: 6px 20px 6px 8px; margin-bottom: 18px; box-shadow: 0 8px 25px rgba(0, 229, 255, 0.18);">
+            <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand" style="height: 42px; width: 42px; border-radius: 50%; border: 2px solid var(--accent-cyan); object-fit: contain;">
+            <div style="text-align: left; line-height: 1.2;">
+                <div style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">VARSHA BRAND • BHAVNAGAR</div>
+                <div style="font-size: 10.5px; font-weight: 700; color: var(--accent-cyan); letter-spacing: 1.2px; text-transform: uppercase;">Heavy-Duty Machinery Catalog</div>
+            </div>
         </div>
-        <div class="pill-badge">INDUSTRIAL MACHINERY CATALOG</div>
-        <h1 class="section-title">Drill Machine <span>Product Range</span></h1>
-        <p class="section-desc" style="max-width: 680px; margin: 0 auto;">
-            Engineered for high torque, zero-vibration drilling, reaming, and tapping. View complete technical specifications or request a custom quote.
+
+        <h1 class="section-title" style="margin-bottom: 12px; font-size: clamp(26px, 4vw, 38px);">
+            Industrial Drill Machine <span style="color: var(--accent-cyan);">Product Range</span>
+        </h1>
+        <p class="section-desc" style="max-width: 720px; margin: 0 auto 20px; font-size: 15px; color: #cbd5e1; line-height: 1.6;">
+            Heavy-duty Geared Radial Drills, Upright Column Pillar Drills, and Precision Spares engineered with hardened alloy gears, heavy ribbed cast iron bases, and vibration-free drilling accuracy from 20mm to 65mm.
         </p>
 
+        <!-- Trust Badges Row -->
+        <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 22px;">
+            <span style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; color: #34d399; font-size: 11.5px; font-weight: 700; padding: 4px 12px; border-radius: 9999px;">
+                ✔ ISO 9001:2015 Certified
+            </span>
+            <span style="background: rgba(0, 229, 255, 0.1); border: 1px solid var(--border-cyan); color: #38bdf8; font-size: 11.5px; font-weight: 700; padding: 4px 12px; border-radius: 9999px;">
+                ⚡ 14+ Models &amp; Spares
+            </span>
+            <span style="background: rgba(245, 158, 11, 0.12); border: 1px solid #f59e0b; color: #fbbf24; font-size: 11.5px; font-weight: 700; padding: 4px 12px; border-radius: 9999px;">
+                🚚 Fast Bhavnagar Dispatch
+            </span>
+        </div>
+
         <!-- Live Instant Search Bar -->
-        <div style="max-width: 520px; margin: 24px auto 0; position: relative;">
+        <div style="max-width: 560px; margin: 0 auto; position: relative;">
             <input type="text" id="liveMachineSearch" class="form-control" 
-                   placeholder="🔍 Type model or capacity (e.g. 40mm, Radial, SVEW-RD-50)..." 
-                   style="padding: 14px 20px; font-size: 15px; border-radius: 9999px; background: rgba(15, 23, 42, 0.85); border-color: var(--border-cyan); box-shadow: 0 4px 20px rgba(0, 229, 255, 0.15);">
+                   placeholder="🔍 Search model, capacity (e.g. 40mm, Radial, SVEW-RD-50)..." 
+                   style="padding: 14px 22px; font-size: 15px; border-radius: 9999px; background: rgba(15, 23, 42, 0.9); border: 1.5px solid var(--border-cyan); color: #fff; box-shadow: 0 6px 25px rgba(0, 229, 255, 0.18);">
         </div>
     </div>
 </section>
@@ -105,8 +126,8 @@ try {
                          data-search-text="<?= strtolower(e($p['name'] . ' ' . $p['model_number'] . ' ' . $p['drilling_capacity'] . ' ' . $p['category_name'])) ?>">
                         
                         <!-- Real Machine Photo Showcase (Clean, Unobstructed Real Photo) -->
-                        <div class="machine-card-image" style="position: relative; overflow: hidden; background: #060911; border-bottom: 1px solid rgba(255,255,255,0.08); height: 230px;">
-                            <img src="<?= assetUrl($p['image_url']) ?>" alt="<?= e($p['name']) ?>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.4s ease;">
+                        <div class="machine-card-image" style="position: relative; overflow: hidden; background: radial-gradient(circle, rgba(15, 23, 42, 0.9) 0%, #060911 100%); border-bottom: 1px solid rgba(255,255,255,0.08); height: 230px; display: flex; align-items: center; justify-content: center; padding: 12px;">
+                            <img src="<?= assetUrl($p['image_url']) ?>" alt="<?= e($p['name']) ?>" loading="lazy" style="max-width: 100%; max-height: 100%; object-fit: contain; object-position: center; transition: transform 0.4s ease; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));">
                         </div>
 
                         <div class="machine-card-body">

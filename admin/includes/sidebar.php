@@ -35,7 +35,13 @@
         <li>
             <a href="<?= BASE_URL ?>/admin/eway-bill.php" class="sidebar-link <?= ($activeTab === 'eway-bill') ? 'active' : '' ?>" style="color: #38bdf8;">
                 <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-                <span>GST E-Way Bill (EWB-01)</span>
+                <span>GST E-Way Bills (All Customers)</span>
+            </a>
+        </li>
+        <li>
+            <a href="https://ewaybillgst.gov.in/" target="_blank" class="sidebar-link" style="color: #fbbf24; background: rgba(245, 158, 11, 0.08); border-left: 2px solid #f59e0b;">
+                <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                <span>Govt E-Way Portal ↗</span>
             </a>
         </li>
         <li>

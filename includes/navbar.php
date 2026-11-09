@@ -319,10 +319,10 @@ body.mobile-menu-open #varshaChatbotWindow {
     gap: 10px;
 }
 
-/* Tablet & Mobile Breakpoints */
-@media (max-width: 1200px) {
+/* Tablet & Laptop Breakpoints */
+@media (max-width: 1280px) {
     .btn-nav-mobile-toggle {
-        display: inline-flex;
+        display: inline-flex !important;
     }
     .nav-links-center {
         display: none !important;
@@ -331,14 +331,18 @@ body.mobile-menu-open #varshaChatbotWindow {
 
 @media (max-width: 768px) {
     .site-navbar {
-        height: 62px;
+        height: 60px;
     }
     .site-nav-container {
-        padding: 0 12px;
+        padding: 0 10px;
+        gap: 6px;
     }
     .brand-badge-wrap img {
-        height: 36px;
-        width: 36px;
+        height: 34px;
+        width: 34px;
+    }
+    .brand-title-main {
+        font-size: 14px !important;
     }
     .brand-subtitle-tag {
         display: none;
@@ -347,26 +351,29 @@ body.mobile-menu-open #varshaChatbotWindow {
         display: none;
     }
     .btn-nav-action {
-        height: 35px;
+        height: 34px;
         padding: 0 8px;
-        font-size: 12px;
+        font-size: 11.5px;
     }
-    .btn-top-app span.btn-text-full,
-    .btn-nav-admin span.btn-text-full {
-        display: none;
+    .btn-top-app,
+    .btn-nav-admin {
+        display: none !important;
+    }
+    .btn-nav-mobile-toggle {
+        display: inline-flex !important;
+        height: 34px;
+        width: 34px;
+        font-size: 18px;
     }
 }
 
 @media (max-width: 420px) {
     .brand-title-main {
-        font-size: 14.5px !important;
-    }
-    .btn-top-app {
-        padding: 0 7px;
+        font-size: 13.5px !important;
     }
     .btn-top-book {
-        padding: 0 9px;
-        font-size: 11.5px;
+        padding: 0 8px;
+        font-size: 11px;
     }
     .btn-top-book span.btn-text-extra {
         display: none;
@@ -380,46 +387,53 @@ body.mobile-menu-open #varshaChatbotWindow {
         <a href="<?= BASE_URL ?>/index.php" class="brand-badge-wrap" title="<?= APP_NAME ?> - <?= BRAND_NAME ?>">
             <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="<?= BRAND_NAME ?>">
             <div style="display: flex; flex-direction: column; line-height: 1.15;">
-                <span class="brand-title-main" style="font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">
+                <span class="brand-title-main" style="font-family: 'Space Grotesk', sans-serif; font-size: 15.5px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">
                     VARSHA <span style="color: var(--accent-cyan);">BRAND</span>
                 </span>
-                <span class="brand-subtitle-tag" style="font-size: 9.5px; font-weight: 700; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase;">
+                <span class="brand-subtitle-tag" style="font-size: 9px; font-weight: 700; color: #94a3b8; letter-spacing: 0.8px; text-transform: uppercase;">
                     BHAVNAGAR • SVEW
                 </span>
             </div>
         </a>
 
-        <!-- Desktop Navigation Menu (Visible on > 1200px) -->
+        <!-- Desktop Navigation Menu (Streamlined for flawless laptop fit) -->
         <ul class="nav-links-center">
             <li><a href="<?= BASE_URL ?>/index.php" class="site-nav-link <?= ($currentNav === 'home') ? 'active' : '' ?>"><span>🏠 Home</span></a></li>
-            <li><a href="<?= BASE_URL ?>/about.php" class="site-nav-link <?= ($currentNav === 'about') ? 'active' : '' ?>"><span>🏭 About Us</span></a></li>
-            <li><a href="<?= BASE_URL ?>/machines.php" class="site-nav-link <?= ($currentNav === 'machines') ? 'active' : '' ?>"><span>⚙️ All Machines</span></a></li>
-            <li><a href="<?= BASE_URL ?>/catalog.php" class="site-nav-link <?= ($currentNav === 'catalog') ? 'active' : '' ?>"><span>📖 Catalog &amp; PDF</span></a></li>
+            <li><a href="<?= BASE_URL ?>/about.php" class="site-nav-link <?= ($currentNav === 'about') ? 'active' : '' ?>"><span>🏭 About</span></a></li>
+            <li><a href="<?= BASE_URL ?>/machines.php" class="site-nav-link <?= ($currentNav === 'machines') ? 'active' : '' ?>"><span>⚙️ Machines</span></a></li>
             <li>
                 <a href="<?= BASE_URL ?>/simulator-6d.php" class="site-nav-link <?= ($currentNav === 'simulator') ? 'active' : '' ?>" style="color: var(--accent-cyan);">
                     <span>🔄 360° 12D View</span>
-                    <span style="font-size: 10px; background: rgba(0, 229, 255, 0.15); border: 1px solid #00e5ff; padding: 2px 7px; border-radius: 9999px; font-weight: 800;">3D LAB</span>
+                    <span style="font-size: 9.5px; background: rgba(0, 229, 255, 0.15); border: 1px solid #00e5ff; padding: 1px 5px; border-radius: 9999px; font-weight: 800;">3D LAB</span>
                 </a>
             </li>
-            <li><a href="<?= BASE_URL ?>/blog.php" class="site-nav-link <?= ($currentNav === 'blog') ? 'active' : '' ?>"><span>📚 Blog / Guides</span></a></li>
-            <li><a href="<?= BASE_URL ?>/track-order.php" class="site-nav-link <?= ($currentNav === 'tracking') ? 'active' : '' ?>" style="color: #34d399;"><span>🚚 Live Tracking</span><span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#10b981; box-shadow:0 0 6px #10b981;"></span></a></li>
-            <li><a href="<?= BASE_URL ?>/faqs.php" class="site-nav-link <?= ($currentNav === 'faqs') ? 'active' : '' ?>"><span>💡 FAQs &amp; Help</span></a></li>
-            <li><a href="<?= BASE_URL ?>/contact.php" class="site-nav-link <?= ($currentNav === 'contact') ? 'active' : '' ?>"><span>📍 Factory Contact</span></a></li>
-            <li>
-                <a href="#" onclick="openAppDownloadModal(); return false;" class="site-nav-link btn-download-app-trigger" style="color: #38bdf8; font-weight: 700;">
-                    <span>📲 Download App (PWA)</span>
+            <li><a href="<?= BASE_URL ?>/catalog.php" class="site-nav-link <?= ($currentNav === 'catalog') ? 'active' : '' ?>"><span>📖 Catalog</span></a></li>
+            <li><a href="<?= BASE_URL ?>/track-order.php" class="site-nav-link <?= ($currentNav === 'tracking') ? 'active' : '' ?>" style="color: #34d399;"><span>🚚 Live Tracking</span><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10b981; box-shadow:0 0 6px #10b981;"></span></a></li>
+            <li><a href="<?= BASE_URL ?>/contact.php" class="site-nav-link <?= ($currentNav === 'contact') ? 'active' : '' ?>"><span>📍 Contact</span></a></li>
+            
+            <!-- More Dropdown for Secondary Pages (Blog, FAQs, PWA App) -->
+            <li style="position: relative;" class="nav-dropdown-parent">
+                <a href="#" class="site-nav-link" onclick="event.preventDefault(); document.getElementById('navMoreDropdown').classList.toggle('show');" style="display: flex; align-items: center; gap: 4px;">
+                    <span>More</span>
+                    <span style="font-size: 10px;">▾</span>
                 </a>
+                <div id="navMoreDropdown" style="display: none; position: absolute; top: 100%; left: 0; background: #090e1c; border: 1.5px solid var(--accent-cyan); border-radius: 10px; width: 195px; padding: 6px 0; box-shadow: 0 15px 35px rgba(0,0,0,0.9); z-index: 10006;">
+                    <a href="<?= BASE_URL ?>/blog.php" style="display: block; padding: 8px 14px; font-size: 12.5px; color: #cbd5e1; text-decoration: none; font-weight: 600;">
+                        📚 Blog / Tech Guides
+                    </a>
+                    <a href="<?= BASE_URL ?>/faqs.php" style="display: block; padding: 8px 14px; font-size: 12.5px; color: #cbd5e1; text-decoration: none; font-weight: 600;">
+                        💡 FAQs &amp; Help Desk
+                    </a>
+                    <div style="border-top: 1px solid rgba(255,255,255,0.08); margin: 4px 0;"></div>
+                    <a href="#" onclick="openAppDownloadModal(); document.getElementById('navMoreDropdown').classList.remove('show'); return false;" style="display: block; padding: 8px 14px; font-size: 12.5px; color: #38bdf8; text-decoration: none; font-weight: 700;">
+                        📲 Download App (PWA)
+                    </a>
+                </div>
             </li>
         </ul>
 
         <!-- Right Side Quick Actions -->
         <div class="nav-actions-right">
-            <!-- PWA App Download Button -->
-            <button type="button" onclick="openAppDownloadModal()" class="btn-nav-action btn-top-app btn-download-app-trigger" title="Download Varsha Drill App for Android, PC &amp; iOS" style="border-color: #38bdf8; color: #38bdf8; background: rgba(56, 189, 248, 0.12); font-weight: 700;">
-                <span>📲</span>
-                <span class="btn-text-full">App</span>
-            </button>
-
             <!-- Customer Sign In Button (Top bar) -->
             <?php if (!empty($_SESSION['customer_user'])): ?>
                 <div class="btn-top-auth" style="position: relative; display: inline-block;">
@@ -461,7 +475,7 @@ body.mobile-menu-open #varshaChatbotWindow {
                 <span>💳 Book<span class="btn-text-extra"> Online</span></span>
             </a>
 
-            <!-- Admin Button (Accessible on both desktop and mobile top bar) -->
+            <!-- Admin Button (Accessible on desktop) -->
             <a href="<?= BASE_URL ?>/admin/index.php" class="btn-nav-action btn-nav-admin" title="Factory Admin Control Center">
                 <span>🔒</span>
                 <span class="btn-text-full">Admin</span>
@@ -547,7 +561,6 @@ body.mobile-menu-open #varshaChatbotWindow {
     </div>
 </aside>
 
-<script>
 <!-- JioMart-Style Floating Cart Notification Toast -->
 <div id="varshaCartToast" style="display: none; position: fixed; bottom: 25px; right: 25px; z-index: 10008; background: #0b1120; border: 1.5px solid var(--accent-cyan); border-radius: 12px; padding: 16px 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 229, 255, 0.25); max-width: 380px; width: calc(100vw - 40px); animation: varshaToastSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
     <div style="display: flex; align-items: flex-start; gap: 12px;">

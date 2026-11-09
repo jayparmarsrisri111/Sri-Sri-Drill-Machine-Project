@@ -134,7 +134,7 @@ try {
 
                 <!-- Real Photo Viewport (Togglable) -->
                 <div id="heroPhotoViewport" style="display: none; width: 100%; height: 380px; position: relative; background: #060911; align-items: center; justify-content: center; padding: 20px;">
-                    <img src="<?= assetUrl('assets/images/machinery/radial-drill-real.jpg') ?>" alt="Real Radial Drill Machine" style="max-height: 330px; max-width: 90%; object-fit: contain; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.8));">
+                    <img src="<?= assetUrl('assets/images/machinery/radial-drill-40-real.jpg') ?>" alt="Real Radial Drill Machine" style="max-height: 330px; max-width: 90%; object-fit: contain; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.8));">
                     <div style="position: absolute; bottom: 12px; right: 14px; background: rgba(0,0,0,0.85); border: 1px solid #10b981; border-radius: 6px; padding: 5px 12px; font-size: 11.5px; color: #34d399; font-weight: 600;">
                         ✔ Real Factory Machine: SVEW-RD-40 (Varsha Brand)
                     </div>
@@ -255,8 +255,8 @@ try {
                 <?php foreach ($products as $p): ?>
                     <div class="machine-card" data-category="<?= e($p['category_slug']) ?>">
                         <!-- Real Machine Photo Showcase (Clean, Unobstructed Real Photo) -->
-                        <div class="machine-card-image" style="position: relative; overflow: hidden; background: #060911; border-bottom: 1px solid rgba(255,255,255,0.08); height: 230px;">
-                            <img src="<?= assetUrl($p['image_url']) ?>" alt="<?= e($p['name']) ?>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.4s ease;">
+                        <div class="machine-card-image" style="position: relative; overflow: hidden; background: radial-gradient(circle, rgba(15, 23, 42, 0.9) 0%, #060911 100%); border-bottom: 1px solid rgba(255,255,255,0.08); height: 230px; display: flex; align-items: center; justify-content: center; padding: 12px;">
+                            <img src="<?= assetUrl($p['image_url']) ?>" alt="<?= e($p['name']) ?>" loading="lazy" style="max-width: 100%; max-height: 100%; object-fit: contain; object-position: center; transition: transform 0.4s ease; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));">
                         </div>
 
                         <div class="machine-card-body">

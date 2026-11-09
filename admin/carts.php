@@ -161,7 +161,25 @@ require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/sidebar.php';
 ?>
 
-<div class="admin-content-area" style="padding: 25px 30px; background: #060911; min-height: 100vh;">
+<div class="admin-main">
+    <!-- Topbar -->
+    <header class="admin-topbar">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" id="adminSidebarToggle" class="btn-sm btn-cyan" style="padding: 6px 10px; cursor: pointer;">☰</button>
+            <h1 class="topbar-title">Live Customer Carts (કાર્ટ્સ મોનિટરિંગ)</h1>
+        </div>
+        <div class="topbar-actions">
+            <a href="<?= BASE_URL ?>/cart.php" target="_blank" class="btn-sm btn-cyan" style="border-color: #f59e0b; color: #fbbf24;">
+                🛒 Open Frontend Cart
+            </a>
+            <a href="<?= BASE_URL ?>/admin/orders.php" class="btn-sm btn-cyan" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; color: #fff;">
+                💳 Converted Orders
+            </a>
+        </div>
+    </header>
+
+    <!-- Body -->
+    <main class="admin-body">
 
     <!-- Top Breadcrumb & Title -->
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 24px;">
@@ -169,18 +187,9 @@ require_once __DIR__ . '/includes/sidebar.php';
             <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: var(--accent-cyan); letter-spacing: 1px;">
                 CUSTOMER CART MONITORING
             </div>
-            <h1 style="font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 800; color: #ffffff; margin: 4px 0 0; display: flex; align-items: center; gap: 10px;">
+            <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 800; color: #ffffff; margin: 4px 0 0; display: flex; align-items: center; gap: 10px;">
                 <span>🛒 Live Customer Carts (યુઝર વાઇઝ કાર્ટ ડેશબોર્ડ)</span>
-            </h1>
-        </div>
-
-        <div style="display: flex; gap: 10px;">
-            <a href="<?= BASE_URL ?>/cart.php" target="_blank" class="btn btn-outline" style="border-color: #f59e0b; color: #fbbf24; font-size: 12.5px; font-weight: 700; text-decoration: none;">
-                🛒 Open Frontend Cart
-            </a>
-            <a href="<?= BASE_URL ?>/admin/orders.php" class="btn btn-primary" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; font-size: 12.5px; font-weight: 700; text-decoration: none;">
-                💳 View Converted Orders
-            </a>
+            </h2>
         </div>
     </div>
 
@@ -431,6 +440,7 @@ require_once __DIR__ . '/includes/sidebar.php';
         </div>
     <?php endif; ?>
 
+    </main>
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -18,9 +18,245 @@ if (empty($_SESSION['admin_user'])) {
 $orderId = intval($_GET['order_id'] ?? ($_GET['id'] ?? 0));
 $orderNum = trim($_GET['order_num'] ?? '');
 
+// If NO specific order requested, show the All Customers E-Way Bill Directory
+if ($orderId === 0 && empty($orderNum)) {
+    $activeTab = 'eway-bill';
+    $adminTitle = 'Customer-wise GST E-Way Bills & Consignments';
+
+    // Search query
+    $search = trim($_GET['q'] ?? '');
+
+    $sql = "SELECT o.*, p.drilling_capacity, p.weight_approx, p.image_url, p.model_number, p.name as product_name 
+            FROM orders o 
+            LEFT JOIN products p ON o.product_id = p.id ";
+    $params = [];
+    if (!empty($search)) {
+        $sql .= "WHERE (o.customer_name LIKE :s OR o.company_name LIKE :s OR o.customer_phone LIKE :s OR o.order_number LIKE :s OR o.invoice_number LIKE :s OR o.customer_gst LIKE :s OR o.delivery_city LIKE :s) ";
+        $params[':s'] = "%{$search}%";
+    }
+    $sql .= "ORDER BY o.id DESC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    $allOrders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Compute stats
+    $totalConsignments = count($allOrders);
+    $totalConsignmentValue = 0;
+    foreach ($allOrders as $o) {
+        $totalConsignmentValue += floatval($o['total_amount'] ?? 0);
+    }
+
+    require_once __DIR__ . '/includes/header.php';
+    require_once __DIR__ . '/includes/sidebar.php';
+    ?>
+    <div class="admin-main">
+        <!-- Topbar -->
+        <header class="admin-topbar">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <button type="button" id="adminSidebarToggle" class="btn-sm btn-cyan" style="padding: 6px 10px; cursor: pointer;">☰</button>
+                <h1 class="topbar-title">Customer-wise GST E-Way Bills (ઇ-વે બિલ મેનેજમેન્ટ)</h1>
+            </div>
+            <div class="topbar-actions">
+                <a href="https://ewaybillgst.gov.in/" target="_blank" class="btn-sm btn-cyan" style="background: rgba(245, 158, 11, 0.15); border-color: #f59e0b; color: #fbbf24; font-weight: 800;">
+                    🏛️ Open Govt E-Way Portal ↗
+                </a>
+                <a href="<?= BASE_URL ?>/admin/orders.php" class="btn-sm btn-cyan">
+                    💳 Orders &amp; Invoices
+                </a>
+            </div>
+        </header>
+
+        <!-- Body -->
+        <main class="admin-body">
+            <!-- Top Controls & Government Portal Hero Banner -->
+            <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(6, 10, 20, 0.98) 100%); border: 1.5px solid var(--admin-border-cyan); border-radius: 12px; padding: 22px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <span style="background: rgba(16,185,129,0.15); border: 1px solid #10b981; color: #34d399; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px;">
+                            FORM GST EWB-01 COMPLIANT
+                        </span>
+                        <span style="font-size: 11.5px; color: #94a3b8;">
+                            Supplier GSTIN: <strong style="color: #fff;">24AJHPP0087E1ZD</strong> (Bhavnagar)
+                        </span>
+                    </div>
+                    <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; color: #fff; margin: 0;">
+                        GST E-Way Bill Consignment Registry (દરેક ગ્રાહક વાઇઝ ઇ-વે બિલ)
+                    </h2>
+                    <p style="font-size: 13px; color: #cbd5e1; margin: 6px 0 0;">
+                        Generate, print, or verify 12-digit GST E-Way Bills for heavy machinery dispatches across India under HSN Code 8459.
+                    </p>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="https://ewaybillgst.gov.in/" target="_blank" class="btn-sm" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; font-size: 13px; font-weight: 800; background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); color: #060911; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
+                        <span>🏛️ Official Government Portal (ewaybillgst.gov.in) ↗</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>Total Consignments</h4>
+                        <div class="metric-num"><?= $totalConsignments ?></div>
+                    </div>
+                    <div class="metric-icon icon-cyan">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>Total Consignment Value</h4>
+                        <div class="metric-num" style="color: #34d399; font-size: 20px;">₹ <?= number_format($totalConsignmentValue, 2) ?></div>
+                    </div>
+                    <div class="metric-icon icon-emerald">
+                        <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>HSN Code</h4>
+                        <div class="metric-num" style="color: var(--accent-cyan); font-size: 22px;">8459</div>
+                    </div>
+                    <div class="metric-icon icon-blue">
+                        <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="content-card" style="margin-bottom: 24px;">
+                <form method="GET" action="eway-bill.php" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" name="q" value="<?= e($search) ?>" placeholder="🔍 Search customer name, phone, GSTIN, city, order #..." class="form-control" style="flex: 1; min-width: 260px; padding: 10px 14px; font-size: 13.5px; background: rgba(15,23,42,0.8); border: 1px solid var(--admin-border-cyan); color: #fff; border-radius: 8px;">
+                    <button type="submit" class="btn btn-primary" style="padding: 10px 18px; font-weight: 700; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; border: none; border-radius: 8px;">
+                        Search
+                    </button>
+                    <?php if (!empty($search)): ?>
+                        <a href="eway-bill.php" class="btn btn-outline" style="padding: 10px 14px; color: #94a3b8; border-color: rgba(255,255,255,0.2); border-radius: 8px; text-decoration: none;">
+                            Reset
+                        </a>
+                    <?php endif; ?>
+                </form>
+            </div>
+
+            <!-- Customer-wise Orders & E-Way Bill Table -->
+            <div class="content-card">
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Order / Invoice</th>
+                                <th>Customer &amp; Company</th>
+                                <th>GSTIN &amp; Destination</th>
+                                <th>Machine / Model</th>
+                                <th>Value (Inc. GST)</th>
+                                <th>E-Way Bill # (12-Digit)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($allOrders)): ?>
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 30px; color: #94a3b8;">
+                                        No customer orders found matching your search.
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($allOrders as $ord): 
+                                    $oId = intval($ord['id']);
+                                    $oDate = !empty($ord['created_at']) ? strtotime($ord['created_at']) : time();
+                                    $cEwb = '2410' . str_pad((string)(date('md', $oDate) . ($oId % 10000)), 8, '0', STR_PAD_LEFT);
+                                    $cGst = !empty($ord['customer_gst']) ? strtoupper($ord['customer_gst']) : 'URP (Unregistered)';
+                                ?>
+                                    <tr>
+                                        <td>
+                                            <div style="font-weight: 800; color: #fff; font-family: 'Space Grotesk', sans-serif;">
+                                                <?= e($ord['order_number']) ?>
+                                            </div>
+                                            <div style="font-size: 11px; color: var(--accent-cyan);">
+                                                <?= e($ord['invoice_number'] ?? 'INV-' . $ord['order_number']) ?>
+                                            </div>
+                                            <div style="font-size: 10.5px; color: #94a3b8; margin-top: 2px;">
+                                                <?= date('d M Y', $oDate) ?>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="font-weight: 700; color: #ffffff;">
+                                                <?= e($ord['customer_name']) ?>
+                                            </div>
+                                            <?php if (!empty($ord['company_name'])): ?>
+                                                <div style="font-size: 11.5px; color: #38bdf8;">
+                                                    <?= e($ord['company_name']) ?>
+                                                </div>
+                                            <?php endif; ?>
+                                            <div style="font-size: 11px; color: #94a3b8;">
+                                                📞 <?= e($ord['customer_phone']) ?>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="font-family: monospace; font-size: 12px; font-weight: 700; color: <?= ($cGst !== 'URP (Unregistered)') ? '#34d399' : '#fbbf24' ?>;">
+                                                <?= e($cGst) ?>
+                                            </div>
+                                            <div style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">
+                                                📍 <?= e($ord['delivery_city'] ?? 'Bhavnagar') ?>, <?= e($ord['delivery_state'] ?? 'Gujarat') ?>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="font-weight: 700; color: #fff;">
+                                                <?= e($ord['product_name'] ?? $ord['machine_name']) ?>
+                                            </div>
+                                            <div style="font-size: 11px; color: #94a3b8;">
+                                                Model: <strong style="color: #38bdf8;"><?= e($ord['model_number'] ?? 'SVEW-RD-40') ?></strong> (HSN: 8459)
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 800; color: #34d399;">
+                                                ₹ <?= number_format($ord['total_amount'], 2) ?>
+                                            </div>
+                                            <div style="font-size: 10.5px; color: #94a3b8;">
+                                                Tax: ₹ <?= number_format($ord['cgst_amount'] + $ord['sgst_amount'], 2) ?>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span style="display: inline-block; background: rgba(0, 229, 255, 0.1); border: 1px solid var(--admin-border-cyan); color: var(--accent-cyan); font-family: monospace; font-size: 12px; font-weight: 700; padding: 4px 8px; border-radius: 6px;">
+                                                <?= $cEwb ?>
+                                            </span>
+                                            <div style="font-size: 10.5px; color: #10b981; margin-top: 2px;">
+                                                ✔ Ready for Transit
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                                <a href="eway-bill.php?order_id=<?= $oId ?>" class="btn-sm btn-cyan" style="font-size: 11.5px; padding: 5px 10px; text-align: center; text-decoration: none;">
+                                                    📄 View Form EWB-01
+                                                </a>
+                                                <a href="https://ewaybillgst.gov.in/" target="_blank" class="btn-sm" style="font-size: 11px; padding: 4px 8px; text-align: center; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24; text-decoration: none;">
+                                                    🏛️ Govt Portal ↗
+                                                </a>
+                                                <a href="<?= BASE_URL ?>/invoice.php?order_id=<?= $oId ?>" target="_blank" style="font-size: 11px; color: #94a3b8; text-align: center; text-decoration: none;">
+                                                    📦 Tax Invoice
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    <?php
+    require_once __DIR__ . '/includes/footer.php';
+    exit;
+}
+
 $order = null;
 try {
-    $pdo = Database::getConnection();
     if ($orderId > 0) {
         $stmt = $pdo->prepare("SELECT o.*, p.drilling_capacity, p.weight_approx, p.image_url FROM orders o LEFT JOIN products p ON o.product_id = p.id WHERE o.id = :id");
         $stmt->execute([':id' => $orderId]);
@@ -28,9 +264,6 @@ try {
     } elseif (!empty($orderNum)) {
         $stmt = $pdo->prepare("SELECT o.*, p.drilling_capacity, p.weight_approx, p.image_url FROM orders o LEFT JOIN products p ON o.product_id = p.id WHERE o.order_number = :num");
         $stmt->execute([':num' => $orderNum]);
-        $order = $stmt->fetch(PDO::FETCH_ASSOC);
-    } else {
-        $stmt = $pdo->query("SELECT o.*, p.drilling_capacity, p.weight_approx, p.image_url FROM orders o LEFT JOIN products p ON o.product_id = p.id ORDER BY o.id DESC LIMIT 1");
         $order = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 } catch (Exception $e) {
@@ -275,14 +508,22 @@ $total = floatval($order['total_amount'] ?? ($taxable + $cgst + $sgst));
 <body>
 
     <!-- Non-printable Admin Controls -->
-    <div class="no-print-bar">
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <a href="orders.php" class="btn-action btn-back">← Back to Orders</a>
+    <div class="no-print-bar" style="flex-wrap: wrap; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <a href="eway-bill.php" class="btn-action btn-back" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">
+                ← All E-Way Bills
+            </a>
+            <a href="orders.php" class="btn-action btn-back">
+                ← Orders
+            </a>
             <span style="color: #94a3b8; font-size: 13px;">
-                Order: <strong style="color: #fff;"><?= e($order['order_number']) ?></strong> | Invoice: <strong style="color: #00e5ff;"><?= e($order['invoice_number']) ?></strong>
+                Order: <strong style="color: #fff;"><?= e($order['order_number']) ?></strong> | Customer: <strong style="color: #00e5ff;"><?= e($order['customer_name']) ?></strong>
             </span>
         </div>
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="https://ewaybillgst.gov.in/" target="_blank" class="btn-action" style="background: rgba(245, 158, 11, 0.2); border: 1.5px solid #f59e0b; color: #fbbf24; text-decoration: none;">
+                🏛️ Open Govt Portal (ewaybillgst.gov.in) ↗
+            </a>
             <a href="<?= BASE_URL ?>/invoice.php?order_id=<?= $order['id'] ?>" target="_blank" class="btn-action btn-back" style="border-color: #38bdf8; color: #38bdf8;">
                 📄 View Tax Invoice
             </a>

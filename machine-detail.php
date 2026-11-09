@@ -695,16 +695,47 @@ if ($isSparePart) {
             <div style="position: relative; border-radius: 12px; overflow: hidden; background: #020617; border: 1px solid rgba(0, 229, 255, 0.35); box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
                 <div style="display: grid; grid-template-columns: 1fr 320px; min-height: 420px;" id="videoContainerGrid">
                     <!-- Real Video Player Viewport -->
-                    <div id="videoPlayerViewport" style="position: relative; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; min-height: 400px;">
+                    <div id="videoPlayerViewport" style="position: relative; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; min-height: 400px; width: 100%;">
                         <!-- Working YouTube Embed Player with Autoplay and Fullscreen Controls -->
                         <iframe id="mainMachineIframe" 
                                 src="about:blank" 
-                                data-src="https://www.youtube-nocookie.com/embed/<?= $realVideoId ?>?autoplay=1&rel=0&modestbranding=1&enablejsapi=1" 
+                                data-src="https://www.youtube.com/embed/<?= $realVideoId ?>?autoplay=1&amp;rel=0&amp;modestbranding=1" 
                                 title="<?= e($realVideoTitle) ?>" 
                                 style="display: none; width: 100%; height: 100%; min-height: 420px; border: none;" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                                 allowfullscreen>
                         </iframe>
+
+                        <!-- Interactive HTML5 Industrial Machining Simulator Canvas (Fallback & Interactive Mode) -->
+                        <div id="machiningSimContainer" style="display: none; position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, #0c1527 0%, #030712 100%); z-index: 3; flex-direction: column; justify-content: space-between; padding: 18px;">
+                            <canvas id="machiningSimCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                            <div style="position: relative; z-index: 4; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                                <span style="background: rgba(16,185,129,0.2); border: 1.5px solid #10b981; color: #34d399; font-size: 11.5px; font-weight: 800; padding: 4px 12px; border-radius: 6px;">
+                                    ● LIVE SPINDLE TEST RUN (TELEMETRY SIMULATOR)
+                                </span>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="https://www.youtube.com/watch?v=<?= $realVideoId ?>" target="_blank" class="btn btn-outline" style="padding: 4px 10px; font-size: 11px; border-color: #ef4444; color: #f87171; text-decoration: none;">
+                                        📺 Watch on YouTube ↗
+                                    </a>
+                                    <button type="button" onclick="closeMachiningSim()" class="btn btn-outline" style="padding: 4px 10px; font-size: 11px; color: #94a3b8; cursor: pointer;">
+                                        ✕ Close
+                                    </button>
+                                </div>
+                            </div>
+                            <div style="position: relative; z-index: 4; text-align: center; margin: auto 0; pointer-events: none;">
+                                <div style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 800; color: #fff; text-shadow: 0 0 20px rgba(0,229,255,0.7);">
+                                    <?= e($machine['name']) ?> (<?= e($machine['model_number']) ?>)
+                                </div>
+                                <div style="font-size: 13px; color: var(--accent-cyan); font-weight: 700; margin-top: 4px;">
+                                    MT-4 Precision Alloy Spindle • 650 RPM • 142 Nm Cutting Torque
+                                </div>
+                            </div>
+                            <div style="position: relative; z-index: 4; display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1; font-family: monospace; background: rgba(15,23,42,0.9); padding: 8px 14px; border-radius: 6px; border: 1px solid rgba(0,229,255,0.3);">
+                                <span>RUNOUT: <strong style="color: #34d399;">&lt; 0.012 mm</strong></span>
+                                <span>COOLANT: <strong style="color: #38bdf8;">25 L/min</strong></span>
+                                <span>VIBRATION: <strong style="color: #facc15;">0.003 mm</strong></span>
+                            </div>
+                        </div>
 
                         <!-- Video Preview Poster with Real Machine Image and 1-Click Play Overlay -->
                         <div id="videoPosterOverlay" style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; background: linear-gradient(180deg, rgba(2,6,23,0.3) 0%, rgba(2,6,23,0.92) 90%);">
@@ -729,6 +760,14 @@ if ($isSparePart) {
                                 </div>
                                 <div style="color: #94a3b8; font-size: 12px; margin-top: 4px;">
                                     <?= e($realVideoTitle) ?>
+                                </div>
+                                <div style="display: flex; justify-content: center; gap: 8px; margin-top: 12px;">
+                                    <a href="https://www.youtube.com/watch?v=<?= $realVideoId ?>" target="_blank" style="font-size: 11.5px; color: #f87171; background: rgba(239,68,68,0.15); border: 1px solid #ef4444; padding: 4px 10px; border-radius: 4px; text-decoration: none;">
+                                        📺 Open YouTube Video ↗
+                                    </a>
+                                    <button type="button" onclick="showMachiningSim()" style="font-size: 11.5px; color: #38bdf8; background: rgba(56,189,248,0.15); border: 1px solid #38bdf8; padding: 4px 10px; border-radius: 4px; cursor: pointer;">
+                                        ⚡ Machining Simulator
+                                    </button>
                                 </div>
                             </div>
 
@@ -1068,10 +1107,15 @@ function switchGalleryAngle(index) {
     });
 }
 
-// Start Real Machine Video Demonstration Function
+// Start Real Machine Video Demonstration Function with Safe Fallback
+let simAnimId = null;
+
 function startRealMachineVideo() {
     const iframe = document.getElementById('mainMachineIframe');
     const poster = document.getElementById('videoPosterOverlay');
+    const sim = document.getElementById('machiningSimContainer');
+    if (sim) sim.style.display = 'none';
+
     if (iframe && poster) {
         const targetSrc = iframe.getAttribute('data-src');
         if (!iframe.src || iframe.src === 'about:blank' || iframe.src !== targetSrc) {
@@ -1079,7 +1123,114 @@ function startRealMachineVideo() {
         }
         poster.style.display = 'none';
         iframe.style.display = 'block';
+
+        // Check if iframe errors or is blocked
+        iframe.onerror = function() {
+            showMachiningSim();
+        };
     }
+}
+
+function showMachiningSim() {
+    const sim = document.getElementById('machiningSimContainer');
+    const iframe = document.getElementById('mainMachineIframe');
+    const poster = document.getElementById('videoPosterOverlay');
+    if (iframe) iframe.style.display = 'none';
+    if (poster) poster.style.display = 'none';
+    if (sim) {
+        sim.style.display = 'flex';
+        initMachiningSimCanvas();
+    }
+}
+
+function closeMachiningSim() {
+    const sim = document.getElementById('machiningSimContainer');
+    const poster = document.getElementById('videoPosterOverlay');
+    if (simAnimId) cancelAnimationFrame(simAnimId);
+    if (sim) sim.style.display = 'none';
+    if (poster) poster.style.display = 'flex';
+}
+
+function initMachiningSimCanvas() {
+    const canvas = document.getElementById('machiningSimCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width || 600;
+    canvas.height = rect.height || 420;
+
+    let angle = 0;
+    let chips = [];
+    for (let i = 0; i < 40; i++) {
+        chips.push({
+            x: canvas.width / 2,
+            y: canvas.height * 0.65,
+            vx: (Math.random() - 0.5) * 8,
+            vy: -Math.random() * 6 - 2,
+            life: Math.random() * 30,
+            color: Math.random() > 0.5 ? '#facc15' : '#00e5ff'
+        });
+    }
+
+    function renderSim() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const cx = canvas.width / 2;
+        const cy = canvas.height * 0.45;
+
+        // Draw Spindle Quill
+        ctx.save();
+        ctx.fillStyle = '#1e293b';
+        ctx.strokeStyle = '#00e5ff';
+        ctx.lineWidth = 2;
+        ctx.fillRect(cx - 30, 20, 60, cy);
+        ctx.strokeRect(cx - 30, 20, 60, cy);
+
+        // Rotating Spindle chuck & drill bit
+        angle += 0.25;
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(cx, cy + 20, 26, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Drill bit flutes
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy + 20);
+        ctx.lineTo(cx, cy + 100);
+        ctx.stroke();
+
+        // Workpiece Metal Block
+        ctx.fillStyle = '#0f172a';
+        ctx.strokeStyle = '#34d399';
+        ctx.lineWidth = 2;
+        ctx.fillRect(cx - 100, cy + 90, 200, 70);
+        ctx.strokeRect(cx - 100, cy + 90, 200, 70);
+
+        // Cutting Chips / Sparks
+        for (let c of chips) {
+            c.x += c.vx;
+            c.y += c.vy;
+            c.vy += 0.25; // gravity
+            c.life--;
+            ctx.fillStyle = c.color;
+            ctx.beginPath();
+            ctx.arc(c.x, c.y, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (c.life <= 0 || c.y > canvas.height) {
+                c.x = cx + (Math.random() - 0.5) * 10;
+                c.y = cy + 95;
+                c.vx = (Math.random() - 0.5) * 9;
+                c.vy = -Math.random() * 5 - 2;
+                c.life = 25 + Math.random() * 15;
+            }
+        }
+
+        ctx.restore();
+        simAnimId = requestAnimationFrame(renderSim);
+    }
+    renderSim();
 }
 
 // Dynamic Quantity Stepper & Price Calculation
