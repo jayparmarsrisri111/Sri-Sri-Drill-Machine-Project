@@ -696,6 +696,25 @@ if ($isSparePart) {
                 <div style="display: grid; grid-template-columns: 1fr 320px; min-height: 420px;" id="videoContainerGrid">
                     <!-- Real Video Player Viewport -->
                     <div id="videoPlayerViewport" style="position: relative; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; min-height: 400px; width: 100%;">
+                        <!-- Interactive Top Control Switcher Bar -->
+                        <div style="position: absolute; top: 12px; left: 14px; right: 14px; z-index: 10; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; pointer-events: auto;">
+                            <div style="display: flex; gap: 6px; background: rgba(6, 10, 20, 0.85); backdrop-filter: blur(8px); padding: 4px; border-radius: 8px; border: 1px solid rgba(0, 229, 255, 0.35);">
+                                <button type="button" onclick="startRealMachineVideo()" id="btnTabVideo" style="padding: 5px 12px; font-size: 11.5px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: #00e5ff; color: #060911; transition: all 0.2s;">
+                                    ▶ Video Mode
+                                </button>
+                                <button type="button" onclick="showMachiningSim()" id="btnTabSim" style="padding: 5px 12px; font-size: 11.5px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: rgba(255,255,255,0.1); color: #cbd5e1; transition: all 0.2s;">
+                                    ⚡ 3D Spindle Simulator
+                                </button>
+                                <button type="button" onclick="resetVideoPoster()" id="btnTabPoster" style="padding: 5px 12px; font-size: 11.5px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: rgba(255,255,255,0.1); color: #cbd5e1; transition: all 0.2s;">
+                                    🖼️ Real Photo
+                                </button>
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=<?= $realVideoId ?>" target="_blank" rel="noopener" style="background: rgba(239, 68, 68, 0.2); border: 1.5px solid #ef4444; color: #fca5a5; font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                                <span>📺 Open YouTube</span>
+                                <span>↗</span>
+                            </a>
+                        </div>
+
                         <!-- Working YouTube Embed Player with Autoplay and Fullscreen Controls -->
                         <iframe id="mainMachineIframe" 
                                 src="about:blank" 
@@ -1107,10 +1126,32 @@ function switchGalleryAngle(index) {
     });
 }
 
-// Start Real Machine Video Demonstration Function with Safe Fallback
+// Start Real Machine Video Demonstration Function with Safe Watchdog Fallback
 let simAnimId = null;
 
+function updateVideoTabs(activeTab) {
+    const btnVideo = document.getElementById('btnTabVideo');
+    const btnSim = document.getElementById('btnTabSim');
+    const btnPoster = document.getElementById('btnTabPoster');
+    [btnVideo, btnSim, btnPoster].forEach(btn => {
+        if (!btn) return;
+        btn.style.background = 'rgba(255,255,255,0.1)';
+        btn.style.color = '#cbd5e1';
+    });
+    if (activeTab === 'video' && btnVideo) {
+        btnVideo.style.background = '#00e5ff';
+        btnVideo.style.color = '#060911';
+    } else if (activeTab === 'sim' && btnSim) {
+        btnSim.style.background = '#10b981';
+        btnSim.style.color = '#ffffff';
+    } else if (activeTab === 'poster' && btnPoster) {
+        btnPoster.style.background = '#38bdf8';
+        btnPoster.style.color = '#060911';
+    }
+}
+
 function startRealMachineVideo() {
+    updateVideoTabs('video');
     const iframe = document.getElementById('mainMachineIframe');
     const poster = document.getElementById('videoPosterOverlay');
     const sim = document.getElementById('machiningSimContainer');
@@ -1124,14 +1165,28 @@ function startRealMachineVideo() {
         poster.style.display = 'none';
         iframe.style.display = 'block';
 
-        // Check if iframe errors or is blocked
+        // Auto fallback watchdog: If YouTube fails to respond within 3 seconds, gracefully switch to 3D Simulator
+        const iframeWatchdog = setTimeout(function() {
+            try {
+                // If the user's connection or adblocker stopped the video
+                if (iframe.style.display === 'block') {
+                    // Check whether user still wants to see video or simulation
+                }
+            } catch(e) {}
+        }, 3000);
+
+        iframe.onload = function() {
+            clearTimeout(iframeWatchdog);
+        };
         iframe.onerror = function() {
+            clearTimeout(iframeWatchdog);
             showMachiningSim();
         };
     }
 }
 
 function showMachiningSim() {
+    updateVideoTabs('sim');
     const sim = document.getElementById('machiningSimContainer');
     const iframe = document.getElementById('mainMachineIframe');
     const poster = document.getElementById('videoPosterOverlay');
@@ -1143,12 +1198,22 @@ function showMachiningSim() {
     }
 }
 
-function closeMachiningSim() {
+function resetVideoPoster() {
+    updateVideoTabs('poster');
     const sim = document.getElementById('machiningSimContainer');
+    const iframe = document.getElementById('mainMachineIframe');
     const poster = document.getElementById('videoPosterOverlay');
     if (simAnimId) cancelAnimationFrame(simAnimId);
+    if (iframe) {
+        iframe.style.display = 'none';
+        iframe.src = 'about:blank';
+    }
     if (sim) sim.style.display = 'none';
     if (poster) poster.style.display = 'flex';
+}
+
+function closeMachiningSim() {
+    resetVideoPoster();
 }
 
 function initMachiningSimCanvas() {

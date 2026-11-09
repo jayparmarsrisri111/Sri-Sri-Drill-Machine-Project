@@ -257,6 +257,16 @@ class Database {
                 image_url TEXT DEFAULT NULL,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )");
+
+            // Guarantee new catalog models 9, 10, 11, 12 exist in products table
+            $countNew = $pdo->query("SELECT COUNT(*) FROM products WHERE id IN (9, 10, 11, 12)")->fetchColumn();
+            if ($countNew < 4) {
+                $pdo->exec("INSERT OR IGNORE INTO products (id, category_id, name, model_number, slug, drilling_capacity, spindle_travel, spindle_speeds, column_diameter, motor_power, working_table_size, drilling_radius, weight_approx, short_desc, full_desc, key_features, image_url, is_featured, is_active, price) VALUES
+                (9, 3, 'Bench Heavy Duty Drill Machine (13mm - 20mm Capacity)', 'SVEW-BD-13HD', 'bench-heavy-duty-drill-machine-13mm', '13 mm (1/2 inch) to 20 mm Steel', '80 mm Spindle Travel', '4 Speeds (1440 RPM Motor)', 'Solid Steel Pillar', '0.5 HP / 1 HP Electric Motor (220-240V, 50-60 Hz)', 'Color Coated MS Base & Table', '260 mm throat clearance', '95 kg', 'Heavy duty industrial bench drill machine with MS body, solid spindle taper, and precision manual feed for factory engineering workshops.', 'Manufactured with high-precision engineering standards from Bhavnagar, Gujarat. Built with a rugged MS body, color-coated anti-corrosion finish, and vibration-free single phase/three phase power compatibility.', '13mm to 20mm steel drilling capacity;0.5 HP to 1.0 HP electric motor;Solid spindle taper;80mm spindle travel;Color coated durable finish;Made in India Bhavnagar excellence', 'assets/images/machinery/bench-drill-heavy-duty-23500.jpg', 1, 1, 23500),
+                (10, 2, '25mm Heavy Duty Column Pillar Drill Machine (25X385)', 'SVEW-PD-25X385', '25mm-heavy-duty-column-pillar-drill-machine-25x385', '25 mm (1 inch) in Steel & Cast Iron', '158 mm Spindle Travel', '8 Spindle Speeds', '75 mm Ground Cast Iron Pillar', '1 HP / 2 HP Three Phase Induction Motor', '385 x 385 mm Precision Cast Table', '385 mm throat distance', '290 kg', 'Heavy duty vertical pillar drill press with 25mm drilling capacity, MT-3 spindle taper, 158mm travel, and 8-speed gearbox.', 'Engineered for industrial batch production, fabricators, and automotive workshops. Model 25X385 features a heavy 75mm ground column, 158mm stroke depth, and M20 tapping capability.', '25mm drilling capacity in steel;MT-3 Spindle Taper with 158mm travel;8-Speed multi-step pulley transmission;75mm precision ground column;20mm tapping capacity;100% heavy duty CI body', 'assets/images/machinery/pillar-drill-25-heavy-73000.jpg', 1, 1, 73000),
+                (11, 2, 'Precision Heavy Duty Industrial Drill Press (20mm - 25mm)', 'SVEW-DP-25HD', 'precision-heavy-duty-industrial-drill-press-20-25mm', '20 mm to 25 mm Drilling Capacity', '140 mm Spindle Travel', '6/8 Speeds Multi-Drive', '85 mm Machined Heavy Column', '1.0 HP Heavy Induction Motor (Three Phase / Single Phase)', 'Adjustable Heavy Slotted Machined Table', '350 mm throat reach', '210 kg', 'Industrial high-rigidity radial and column drill press with dual feed controls and vibration-resistant ribbed base plate.', 'High endurance machine designed for continuous production and reaming in industrial manufacturing. Delivers exceptional stability and minimal runout under heavy load.', '20mm - 25mm capacity;Balanced pulley drive;Heavy ribbed ground table;Fine depth dial stop;Built-in tool storage slots', 'assets/images/machinery/precision-drill-press-25000.jpg', 1, 1, 25000),
+                (12, 4, 'Automatic Drilling & Tapping Machine 25mm (Compound Coordinate Table)', 'SVEW-TP-25HD', 'automatic-drilling-tapping-machine-25mm-compound-table', '25 mm Drilling / M20 Tapping', '165 mm Spindle Travel', '8 Speeds with Auto Reverse', '110 mm Solid Alloy Pillar', '2.0 HP Reversible Motor with Electronic Foot Pedal', 'Compound X-Y Coordinate Slide Table (450 x 220 mm)', '400 mm throat clearance', '420 kg', 'High accuracy drilling and tapping machine equipped with 2-axis compound sliding coordinate table for precision hole patterns and die-making.', 'Integrated cross-sliding table allows precise coordinate hole positioning without unclamping the workpiece. Features auto-reversing spindle on preset depth limit for smooth threading.', 'Compound X-Y coordinate sliding table;Auto-reversing tapping cycle;Dual direction high-torque motor;Micrometer depth limit switch;Heavy workshop construction', 'assets/images/machinery/varsha-factory-pillar-panel.jpg', 1, 1, 48500)");
+            }
         } catch (Exception $e) {}
 
         self::ensureRealMachineImages($pdo);
@@ -273,6 +283,10 @@ class Database {
                 6 => 'assets/images/machinery/pillar-drill-40-real.jpg',
                 7 => 'assets/images/machinery/bench-drill-20-real.jpg',
                 8 => 'assets/images/machinery/tapping-drill-25-real.jpg',
+                9 => 'assets/images/machinery/bench-drill-heavy-duty-23500.jpg',
+                10 => 'assets/images/machinery/pillar-drill-25-heavy-73000.jpg',
+                11 => 'assets/images/machinery/precision-drill-press-25000.jpg',
+                12 => 'assets/images/machinery/varsha-factory-pillar-panel.jpg',
                 101 => 'assets/images/machinery/part-spindle-quill.jpg',
                 102 => 'assets/images/machinery/part-gear-set.jpg',
                 103 => 'assets/images/machinery/part-box-table.jpg',

@@ -13,6 +13,14 @@
         </button>
     </div>
 
+    <!-- Admin Panel Multi-Language Selector (English, Gujarati, Hindi) -->
+    <div style="padding: 10px 14px; margin: 6px 14px 12px; background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.4); border-radius: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+        <span style="font-size: 11px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;">
+            🌐 ભાષા / LANG
+        </span>
+        <?php require __DIR__ . '/../../includes/lang-selector.php'; ?>
+    </div>
+
     <ul class="sidebar-nav">
         <li>
             <a href="<?= BASE_URL ?>/admin/dashboard.php" class="sidebar-link <?= ($activeTab === 'dashboard') ? 'active' : '' ?>">

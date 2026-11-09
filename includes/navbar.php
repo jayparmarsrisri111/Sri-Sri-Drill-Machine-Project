@@ -463,6 +463,9 @@ body.mobile-menu-open #varshaChatbotWindow {
                 </button>
             <?php endif; ?>
 
+            <!-- Multi-Language Selector Dropdown (English, Gujarati, Hindi) -->
+            <?php require __DIR__ . '/lang-selector.php'; ?>
+
             <!-- JioMart-style Cart Button with Dynamic Badge -->
             <a href="<?= BASE_URL ?>/cart.php" class="btn-nav-action btn-nav-cart" title="View Industrial Cart">
                 <span>🛒</span>
@@ -502,6 +505,15 @@ body.mobile-menu-open #varshaChatbotWindow {
             <span>⚡ VARSHA MENU</span>
         </div>
         <button type="button" class="drawer-close-btn" onclick="closeSiteMobileDrawer()" aria-label="Close Navigation Menu">&times;</button>
+    </div>
+
+    <!-- Mobile Multi-Language Selector (English, Gujarati, Hindi) -->
+    <div style="padding: 10px 14px; margin-bottom: 12px; background: rgba(15, 23, 42, 0.75); border: 1.5px solid rgba(0, 229, 255, 0.35); border-radius: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
+        <span style="font-size: 12px; font-weight: 700; color: #cbd5e1; display: flex; align-items: center; gap: 6px;">
+            <span>🌐</span>
+            <span>ભાષા / LANGUAGE:</span>
+        </span>
+        <?php require __DIR__ . '/lang-selector.php'; ?>
     </div>
 
     <!-- Drawer Navigation Links -->
