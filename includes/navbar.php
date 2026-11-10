@@ -331,7 +331,7 @@ body.mobile-menu-open #varshaChatbotWindow {
 
 @media (max-width: 768px) {
     .site-navbar {
-        height: 60px;
+        height: 58px;
     }
     .site-nav-container {
         padding: 0 10px;
@@ -342,41 +342,60 @@ body.mobile-menu-open #varshaChatbotWindow {
         width: 34px;
     }
     .brand-title-main {
-        font-size: 14px !important;
+        font-size: 13.5px !important;
     }
     .brand-subtitle-tag {
-        display: none;
+        display: none !important;
     }
     .btn-top-auth {
-        display: none;
+        display: none !important;
     }
-    .btn-nav-action {
-        height: 34px;
-        padding: 0 8px;
-        font-size: 11.5px;
+    .btn-top-book {
+        display: none !important;
     }
     .btn-top-app,
     .btn-nav-admin {
         display: none !important;
     }
+    .btn-nav-cart .btn-text-full {
+        display: none !important;
+    }
+    .btn-nav-cart {
+        height: 34px !important;
+        padding: 0 7px !important;
+        gap: 3px !important;
+        font-size: 13px !important;
+    }
+    .btn-nav-action {
+        height: 34px;
+        padding: 0 7px;
+        font-size: 11.5px;
+    }
+    .nav-actions-right {
+        gap: 6px !important;
+        flex-shrink: 0 !important;
+    }
     .btn-nav-mobile-toggle {
         display: inline-flex !important;
-        height: 34px;
-        width: 34px;
-        font-size: 18px;
+        height: 34px !important;
+        width: 34px !important;
+        font-size: 18px !important;
+        flex-shrink: 0 !important;
+        border: 1.5px solid var(--accent-cyan) !important;
+        box-shadow: 0 0 10px rgba(0, 229, 255, 0.3) !important;
     }
 }
 
 @media (max-width: 420px) {
     .brand-title-main {
-        font-size: 13.5px !important;
+        font-size: 13px !important;
     }
-    .btn-top-book {
+    .site-nav-container {
         padding: 0 8px;
-        font-size: 11px;
+        gap: 4px;
     }
-    .btn-top-book span.btn-text-extra {
-        display: none;
+    .nav-actions-right {
+        gap: 5px !important;
     }
 }
 </style>

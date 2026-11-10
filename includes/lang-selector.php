@@ -34,8 +34,9 @@ $dropdownId = 'langSelect_' . substr(md5(uniqid((string)rand(), true)), 0, 8);
 <div class="site-lang-dropdown-wrap notranslate" id="<?= $dropdownId ?>" style="position: relative; display: inline-block;">
     <button type="button" class="btn-site-lang-toggle" onclick="toggleSiteLangMenu('<?= $dropdownId ?>')" title="Change Language / ભાષા બદલો / भाषा बदलें" aria-label="Language Selector">
         <span style="font-size: 14px;">🌐</span>
-        <span class="active-lang-text" style="font-size: 12px; font-weight: 700;"><?= $activeLangMeta['flag'] ?> <?= $activeLangMeta['native'] ?></span>
-        <span style="font-size: 9px; opacity: 0.8; margin-left: 2px;">▼</span>
+        <span class="active-lang-text active-lang-desktop" style="font-size: 12px; font-weight: 700;"><?= $activeLangMeta['flag'] ?> <?= $activeLangMeta['native'] ?></span>
+        <span class="active-lang-text active-lang-mobile" style="display: none; font-size: 11px; font-weight: 800;"><?= $activeLangMeta['code'] ?></span>
+        <span style="font-size: 9px; opacity: 0.8; margin-left: 1px;">▼</span>
     </button>
 
     <div class="site-lang-menu" id="<?= $dropdownId ?>_menu">
@@ -177,6 +178,29 @@ body {
 }
 #google_translate_element {
     display: none !important;
+}
+@media (max-width: 768px) {
+    .active-lang-desktop {
+        display: none !important;
+    }
+    .active-lang-mobile {
+        display: inline !important;
+    }
+    .btn-site-lang-toggle {
+        height: 34px !important;
+        padding: 0 6px !important;
+        gap: 3px !important;
+        font-size: 11px !important;
+    }
+    .site-lang-menu {
+        position: fixed !important;
+        top: 62px !important;
+        right: 12px !important;
+        left: auto !important;
+        width: 250px !important;
+        max-width: calc(100vw - 24px) !important;
+        z-index: 100000 !important;
+    }
 }
 </style>
 

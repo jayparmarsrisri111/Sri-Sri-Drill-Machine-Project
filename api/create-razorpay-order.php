@@ -84,6 +84,23 @@ if ($response && ($httpCode === 200 || $httpCode === 201)) {
     }
 }
 
+// Banking limit detection: Single transactions exceeding ₹5,00,000 / ₹10,00,000
+if ($response && $httpCode >= 400) {
+    $errObj = json_decode($response, true);
+    $errDesc = $errObj['error']['description'] ?? '';
+    if ($amount >= 500000 || stripos($errDesc, 'amount') !== false || stripos($errDesc, 'limit') !== false) {
+        echo json_encode([
+            'success'                 => false,
+            'is_limit_error'          => true,
+            'amount'                  => $amount,
+            'message'                 => 'Single transaction of ₹ ' . number_format($amount, 2) . ' exceeds single banking gateway limits (₹5,00,000). Please select Token Booking Advance (₹25,000) or Direct RTGS / NEFT Bank Transfer.',
+            'suggested_advance'       => 25000,
+            'bank_transfer_available' => true
+        ]);
+        exit;
+    }
+}
+
 // Graceful fallback for local development or when Razorpay test API limits are hit:
 // Generate a clean compliant order identifier so the transaction completes safely
 $fallbackOrderId = 'order_svew_' . date('Ymd') . '_' . substr(bin2hex(random_bytes(4)), 0, 8);

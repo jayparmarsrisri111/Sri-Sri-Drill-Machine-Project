@@ -590,6 +590,25 @@ foreach ($products as $p) {
                 <?php else: ?>
                     <!-- Action Buttons for Online vs COD / Bank Transfer / Cheque -->
                     <div style="margin-top: 25px; display: flex; flex-direction: column; gap: 12px;">
+                        <!-- High Value Banking Notice (Appears for ₹5,00,000+ / ₹10,00,000+) -->
+                        <div id="highValueNoticeBox" style="display: none; background: rgba(245, 158, 11, 0.12); border: 1.5px solid #f59e0b; border-radius: 10px; padding: 14px 16px; margin-bottom: 6px;">
+                            <div style="font-size: 13.5px; font-weight: 800; color: #fbbf24; display: flex; align-items: center; gap: 8px;">
+                                <span>⚠️</span> <span>₹10,00,000+ High-Value Payment Guidance (બેંકિંગ માર્ગદર્શિકા)</span>
+                            </div>
+                            <div style="font-size: 12px; color: #cbd5e1; margin-top: 6px; line-height: 1.6;">
+                                As per RBI &amp; NPCI regulations, single online UPI/card transactions are capped at ₹1,00,000 - ₹5,00,000. An entire transaction of <strong id="highValueAmountSpan" style="color:#fff;">₹ 10,00,000</strong> cannot be processed in a single online card/UPI swipe.
+                                <br>For industrial machinery, please choose an authorized option below:
+                            </div>
+                            <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button type="button" onclick="window.switchToAdvancePlan()" class="btn btn-outline" style="padding: 7px 12px; font-size: 11.5px; border-color: #34d399; color: #34d399; font-weight: 700; background: rgba(16, 185, 129, 0.1);">
+                                    👉 Option 1: Pay Token Advance (₹ 25,000) via Razorpay
+                                </button>
+                                <button type="button" onclick="window.switchToBankTransfer()" class="btn btn-primary" style="padding: 7px 12px; font-size: 11.5px; background: #0284c7; border-color: #38bdf8; color: #fff; font-weight: 700;">
+                                    👉 Option 2: Direct RTGS / NEFT to Varsha Current A/C (No Limit)
+                                </button>
+                            </div>
+                        </div>
+
                         <!-- Online Payment Trigger -->
                         <button type="button" id="btnPayRazorpay" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 16px; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; border-color: #00e5ff; font-weight: 800; box-shadow: 0 10px 25px rgba(0, 229, 255, 0.35);">
                             🔒 Pay with Razorpay / UPI (Official Gateway)
@@ -598,11 +617,6 @@ foreach ($products as $p) {
                         <!-- Direct Confirmation Button for COD / Bank Transfer / Cheque -->
                         <button type="button" id="btnSubmitDirectOrder" class="btn btn-primary" style="display: none; width: 100%; padding: 15px; font-size: 16px; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; color: #fff; font-weight: 800; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);">
                             📦 Confirm Cash on Delivery (COD) Order
-                        </button>
-
-                        <!-- Instant 1-Click Fast Payment (Demo/Verification) -->
-                        <button type="button" id="btnDemoInstantPay" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 15px; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; font-weight: 700; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);">
-                            ⚡ Instant 1-Click Fast Payment &amp; View Official Bill
                         </button>
                     </div>
                 <?php endif; ?>
@@ -684,130 +698,6 @@ foreach ($products as $p) {
                 <span>•</span>
                 <span>🛡️ Verified Razorpay</span>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- CyberSafe™ Verified Payment Terminal Modal -->
-<div id="paymentTerminalModal" class="payment-modal-overlay" style="display: none;">
-    <div class="payment-modal-card">
-        <div class="terminal-header">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Logo" style="height: 36px; width: 36px; border-radius: 50%; border: 1px solid #00e5ff;">
-                <div>
-                    <div style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 800; color: #fff;">
-                        VARSHA BRAND • SECURE PAYMENT
-                    </div>
-                    <div style="font-size: 10.5px; color: #34d399; font-weight: 600;">
-                        🔒 256-Bit SSL Encrypted • PCI-DSS Certified Gateway
-                    </div>
-                </div>
-            </div>
-            <button type="button" id="btnTerminalClose" style="background:none; border:none; color:#94a3b8; font-size:24px; cursor:pointer; line-height:1;">&times;</button>
-        </div>
-
-        <div class="terminal-body">
-            <!-- Payment Amount Banner -->
-            <div style="background: linear-gradient(135deg, rgba(0, 229, 255, 0.1) 0%, rgba(37, 99, 235, 0.15) 100%); border: 1px solid #00e5ff; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <div style="font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 700;">Total Payable Now</div>
-                    <div style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 900; color: #34d399;" id="modalPayableAmount">₹ 25,000.00</div>
-                </div>
-                <div style="text-align: right;">
-                    <div style="font-size: 11px; color: #94a3b8;" id="modalPlanText">Booking Advance Token</div>
-                    <div style="font-size: 11px; color: #38bdf8; font-weight: 700;" id="modalMachineLabel">SVEW-RD-40</div>
-                </div>
-            </div>
-
-            <!-- Payment Methods Tabs -->
-            <div class="terminal-tabs">
-                <button type="button" class="term-tab active" data-tab="upi">📱 UPI QR</button>
-                <button type="button" class="term-tab" data-tab="card">💳 Card</button>
-                <button type="button" class="term-tab" data-tab="netbanking">🏦 NetBanking</button>
-                <button type="button" class="term-tab" data-tab="razorpay">⚡ Razorpay</button>
-            </div>
-
-            <!-- Tab 1: UPI QR (Dynamic QR + Auto Instant Pay) -->
-            <div class="term-tab-content active" id="tabContent_upi">
-                <div style="text-align: center; padding: 6px 0 10px;">
-                    <div style="background: #fff; padding: 12px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 20px rgba(0,0,0,0.5); border: 2px solid var(--accent-cyan);">
-                        <img id="dynamicUpiQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&amp;data=upi%3A%2F%2Fpay%3Fpa%3Dshreevarsha%40okhdfcbank%26pn%3DShree%20Varsha%20Engineering%20Works%26cu%3DINR" alt="UPI QR Code" style="width: 150px; height: 150px; display: block; border-radius: 6px;">
-                    </div>
-                    <div style="font-size: 12.5px; color: #fff; margin-top: 10px; font-weight: 700;">
-                        Payable via GPay, PhonePe, Paytm, BHIM &amp; Banking UPI
-                    </div>
-                    <div style="font-size: 11.5px; color: #94a3b8; margin-top: 3px;">
-                        UPI VPA: <strong style="color: var(--accent-cyan);">shreevarsha@okhdfcbank</strong>
-                    </div>
-
-                    <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px;">
-                        <!-- Mobile Direct UPI Intent Link -->
-                        <a id="btnDirectUpiPayLink" href="upi://pay?pa=shreevarsha@okhdfcbank&amp;pn=Shree%20Varsha%20Engineering%20Works&amp;cu=INR" class="btn btn-outline" style="font-size: 12.5px; padding: 8px 14px; border-color: var(--accent-cyan); color: var(--accent-cyan); font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                            <span>📱 Open Directly in Mobile UPI App</span>
-                        </a>
-
-                        <!-- Instant Auto Payment without scanning -->
-                        <button type="button" id="btnAutoVerifyQr" class="btn btn-primary" style="padding: 11px 16px; font-size: 13.5px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35); cursor: pointer;">
-                            ⚡ Instant Auto Payment (Skip Scanning &amp; Generate Bill)
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab 2: Card -->
-            <div class="term-tab-content" id="tabContent_card" style="display:none;">
-                <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px;">
-                    <div class="form-group" style="margin-bottom: 10px;">
-                        <label class="form-label" style="font-size: 11px;">Card Number</label>
-                        <input type="text" class="form-control" value="4111 •••• •••• 4444" readonly style="font-family: monospace; letter-spacing: 2px; background: #060911;">
-                    </div>
-                    <div style="display: flex; gap: 10px;">
-                        <div class="form-group" style="flex: 1; margin-bottom: 0;">
-                            <label class="form-label" style="font-size: 11px;">Expiry</label>
-                            <input type="text" class="form-control" value="12/28" readonly style="background: #060911;">
-                        </div>
-                        <div class="form-group" style="flex: 1; margin-bottom: 0;">
-                            <label class="form-label" style="font-size: 11px;">CVV</label>
-                            <input type="password" class="form-control" value="•••" readonly style="background: #060911;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab 3: NetBanking -->
-            <div class="term-tab-content" id="tabContent_netbanking" style="display:none;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <button type="button" class="btn btn-outline term-bank-btn active" style="font-size: 11.5px; padding: 8px;">🏛️ SBI</button>
-                    <button type="button" class="btn btn-outline term-bank-btn" style="font-size: 11.5px; padding: 8px;">🏛️ HDFC Bank</button>
-                    <button type="button" class="btn btn-outline term-bank-btn" style="font-size: 11.5px; padding: 8px;">🏛️ ICICI Bank</button>
-                    <button type="button" class="btn btn-outline term-bank-btn" style="font-size: 11.5px; padding: 8px;">🏛️ Axis Bank</button>
-                </div>
-            </div>
-
-            <!-- Tab 4: Razorpay Standard -->
-            <div class="term-tab-content" id="tabContent_razorpay" style="display:none;">
-                <div style="text-align: center; padding: 12px 0;">
-                    <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 12px;">Official Razorpay Modal with Key: <code><?= substr(RAZORPAY_KEY_ID, 0, 14) ?>...</code></p>
-                    <button type="button" id="btnLaunchOfficialRzpFromModal" class="btn btn-primary" style="background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); font-size: 13px;">
-                        Open Official Razorpay Window
-                    </button>
-                </div>
-            </div>
-
-            <!-- Processing / Progress Status -->
-            <div id="paymentProgressBox" style="display: none; margin: 15px 0; padding: 12px; background: rgba(6, 9, 17, 0.95); border: 1px solid #10b981; border-radius: 8px; text-align: center;">
-                <div style="font-size: 13.5px; font-weight: 700; color: #34d399;" id="progressStatusText">
-                    Connecting to Banking Network...
-                </div>
-                <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;" id="progressSubText">
-                    Authorizing 256-bit secure transaction
-                </div>
-            </div>
-
-            <!-- Primary Action Button -->
-            <button type="button" id="btnTerminalSubmit" class="btn btn-primary" style="width: 100%; margin-top: 15px; padding: 14px; font-size: 15px; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; font-weight: 800; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);">
-                ✓ Confirm Payment &amp; View Official Bill
-            </button>
         </div>
     </div>
 </div>
@@ -1165,15 +1055,17 @@ foreach ($products as $p) {
             }
         }
 
-        // Dynamically update UPI QR Code and Mobile UPI Link with exact amount
-        const upiLink = "upi://pay?pa=shreevarsha@okhdfcbank&pn=Shree%20Varsha%20Engineering%20Works&am=" + payableNowNum.toFixed(2) + "&cu=INR&tn=" + encodeURIComponent((isFromCart ? 'Cart Order ' : model + ' ') + qty + ' Units');
-        const qrImg = document.getElementById('dynamicUpiQrImg');
-        const upiBtn = document.getElementById('btnDirectUpiPayLink');
-        if (qrImg) {
-            qrImg.src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=" + encodeURIComponent(upiLink);
-        }
-        if (upiBtn) {
-            upiBtn.href = upiLink;
+        // Display high-value banking guidance for amounts of ₹5,00,000 to ₹10,00,000+
+        const highValueBox = document.getElementById('highValueNoticeBox');
+        const highValueSpan = document.getElementById('highValueAmountSpan');
+        if (highValueBox) {
+            const curMethod = paymentMethodSelect ? paymentMethodSelect.value : 'online';
+            if (payableNowNum >= 500000 && !isAdvance && curMethod === 'online') {
+                highValueBox.style.display = 'block';
+                if (highValueSpan) highValueSpan.textContent = formatINR(payableNowNum);
+            } else {
+                highValueBox.style.display = 'none';
+            }
         }
     }
 
@@ -1260,155 +1152,37 @@ foreach ($products as $p) {
             }
         })
         .catch(err => {
-            resetPaymentButtonState('⚠️ Network notice: Redirecting to verified order bill...', false);
-            window.location.href = 'invoice.php';
+            resetPaymentButtonState('⚠️ Network or verification error. Please check your connection and retry.', true);
         });
     }
 
-    // Payment Terminal Modal Handlers
-    const paymentTerminalModal = document.getElementById('paymentTerminalModal');
-    const btnTerminalClose = document.getElementById('btnTerminalClose');
-    const btnTerminalSubmit = document.getElementById('btnTerminalSubmit');
-    const btnLaunchOfficialRzpFromModal = document.getElementById('btnLaunchOfficialRzpFromModal');
-    const paymentProgressBox = document.getElementById('paymentProgressBox');
-    const progressStatusText = document.getElementById('progressStatusText');
-    const progressSubText = document.getElementById('progressSubText');
-
-    function openTerminalModal() {
-        let machineModel = 'Industrial Drill';
-        let currentPayable = 25000;
-        let isAdvance = true;
-
-        if (isFromCart && cartSummary && cartSummary.items) {
-            machineModel = 'CART-' + cartSummary.total_qty + 'U';
-            currentPayable = cartSummary.grand_total;
-            isAdvance = false;
-        } else {
-            const opt = machineSelect.options[machineSelect.selectedIndex];
-            machineModel = opt.getAttribute('data-model');
-            const basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
-            currentPayable = getSelectedPayableAmount(basePrice);
-            isAdvance = !payTypeFull.checked;
-        }
-
-        document.getElementById('modalPayableAmount').textContent = formatINR(currentPayable);
-        document.getElementById('modalPlanText').textContent = isAdvance ? ('Booking Advance (' + formatINR(currentPayable) + ')') : '100% Full Payment';
-        document.getElementById('modalMachineLabel').textContent = machineModel;
-
-        paymentProgressBox.style.display = 'none';
-        btnTerminalSubmit.disabled = false;
-        btnTerminalSubmit.innerHTML = "✓ Confirm Payment &amp; View Official Bill";
-
-        paymentTerminalModal.style.display = 'flex';
-    }
-
-    function closeTerminalModal() {
-        paymentTerminalModal.style.display = 'none';
-        resetPaymentButtonState();
-    }
-
-    if (btnTerminalClose) btnTerminalClose.addEventListener('click', closeTerminalModal);
-    if (paymentTerminalModal) {
-        paymentTerminalModal.addEventListener('click', function(e) {
-            if (e.target === paymentTerminalModal) {
-                closeTerminalModal();
+    // High-Value Options Switchers (Solves 10 Lakh payment limit via Token Advance or RTGS Bank Transfer)
+    window.switchToAdvancePlan = function() {
+        if (payTypeAdvance) {
+            payTypeAdvance.checked = true;
+            recalculate();
+            if (paymentMethodSelect) {
+                paymentMethodSelect.value = 'online';
+                handlePaymentMethodChange();
             }
-        });
-    }
+        }
+    };
 
-    // Tab Switching inside Terminal
-    const termTabs = document.querySelectorAll('.term-tab');
-    termTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            termTabs.forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.term-tab-content').forEach(c => c.style.display = 'none');
-            this.classList.add('active');
-            const target = 'tabContent_' + this.getAttribute('data-tab');
-            const targetEl = document.getElementById(target);
-            if (targetEl) targetEl.style.display = 'block';
-        });
-    });
+    window.switchToBankTransfer = function() {
+        if (paymentMethodSelect) {
+            paymentMethodSelect.value = 'bank_transfer';
+            handlePaymentMethodChange();
+        }
+    };
 
-    // Bank button toggles
-    document.querySelectorAll('.term-bank-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.term-bank-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
-
-    if (btnLaunchOfficialRzpFromModal) {
-        btnLaunchOfficialRzpFromModal.addEventListener('click', function() {
-            closeTerminalModal();
-            if (btnPayRazorpay) btnPayRazorpay.click();
-        });
-    }
-
-    // 1. Instant Demo Pay opens the CyberSafe Terminal Modal
-    if (btnDemoInstantPay) {
-        btnDemoInstantPay.addEventListener('click', function(e) {
-            e.preventDefault();
-            openTerminalModal();
-        });
-    }
-
-    // Handle Confirm Payment inside Terminal with 3-Step Cryptographic Feedback
-    if (btnTerminalSubmit) {
-        btnTerminalSubmit.addEventListener('click', function() {
-            btnTerminalSubmit.disabled = true;
-            btnTerminalSubmit.innerHTML = "⏳ Processing Transaction...";
-            paymentProgressBox.style.display = 'block';
-
-            progressStatusText.textContent = "Connecting to Secure Banking Network...";
-            progressSubText.textContent = "Authorizing 256-bit encrypted payload";
-
-            setTimeout(function() {
-                progressStatusText.textContent = "🛡️ Verifying Factory Stock & Anti-Double-Spend...";
-                progressSubText.textContent = "Reserving serial chassis allocation";
-            }, 500);
-
-            setTimeout(function() {
-                progressStatusText.textContent = "⚡ Minting SHA-256 Cryptographic Authenticity Seal...";
-                progressSubText.textContent = "Generating permanent tax invoice & Jay Parmar digital sign";
-            }, 1100);
-
-            setTimeout(function() {
-                const demoPayId = 'pay_demo_' + Math.floor(100000 + Math.random() * 900000);
-                const demoOrderId = 'order_demo_' + Date.now();
-                submitOrderAndRedirect(demoPayId, demoOrderId, 'demo_verified_hmac', 'online');
-            }, 1700);
-        });
-    }
-
-    // Handle Instant Auto-Verify from QR Tab (No scan needed)
-    const btnAutoVerifyQr = document.getElementById('btnAutoVerifyQr');
-    if (btnAutoVerifyQr) {
-        btnAutoVerifyQr.addEventListener('click', function(e) {
-            e.preventDefault();
-            btnAutoVerifyQr.disabled = true;
-            btnAutoVerifyQr.innerHTML = "⏳ Verifying Instant UPI Payment...";
-            paymentProgressBox.style.display = 'block';
-            progressStatusText.textContent = "⚡ UPI Auto-Payment Confirmed!";
-            progressSubText.textContent = "Generating GST Tax Invoice & reducing factory stock...";
-            setTimeout(function() {
-                const autoPayId = 'pay_upi_auto_' + Math.floor(100000 + Math.random() * 900000);
-                const autoOrderId = 'order_upi_' + Date.now();
-                submitOrderAndRedirect(autoPayId, autoOrderId, 'upi_auto_verified', 'online');
-            }, 900);
-        });
-    }
-
-    // 2. Razorpay Official Modal Checkout with Server-Side Order Generation
+    // Razorpay Official Checkout with Cryptographic Server-Side Order Generation
     if (btnPayRazorpay) {
         btnPayRazorpay.addEventListener('click', async function(e) {
             e.preventDefault();
 
-            // Check if Razorpay is loaded
+            // Check if Razorpay script is loaded
             if (typeof Razorpay === 'undefined') {
-                const confirmDemo = confirm("Razorpay checkout script is unreachable (offline or blocked). Would you like to proceed with instant verified Demo Payment and generate the Tax Bill right now?");
-                if (confirmDemo && btnDemoInstantPay) {
-                    btnDemoInstantPay.click();
-                }
+                resetPaymentButtonState('⚠️ <strong>Banking Gateway Offline:</strong> The Razorpay checkout script could not load. Please check your internet connection, disable any adblocker, or choose <strong>Direct Bank Transfer (NEFT/RTGS)</strong> above.', true);
                 return;
             }
 
@@ -1433,6 +1207,18 @@ foreach ($products as $p) {
                 basePrice = parseFloat(opt.getAttribute('data-price')) || 0;
                 payableAmount = getSelectedPayableAmount(basePrice);
                 isAdvance = !payTypeFull.checked;
+            }
+
+            // High-Value Safety Check: Single transaction limit on Razorpay/UPI is ₹5,00,000 / ₹10,00,000
+            if (payableAmount >= 500000 && !isAdvance) {
+                const proceedChoice = confirm("⚠️ High-Value Banking Limit Notice:\n\nIndian banks & UPI cap single online gateway transactions to ₹1,00,000 - ₹5,00,000. Online processing of " + formatINR(payableAmount) + " in one swipe may be rejected by your bank.\n\n• Click OK to pay the Booking Token Advance (₹25,000 - ₹1,00,000) online via Razorpay.\n• Click CANCEL to switch to Direct RTGS / NEFT Bank Transfer (No limit).");
+                if (proceedChoice) {
+                    window.switchToAdvancePlan();
+                    return;
+                } else {
+                    window.switchToBankTransfer();
+                    return;
+                }
             }
 
             const amountInPaise = Math.round(payableAmount * 100);
@@ -1464,6 +1250,9 @@ foreach ($products as $p) {
                 const orderData = await orderRes.json();
                 if (orderData && orderData.success && orderData.order_id) {
                     serverOrderId = orderData.order_id;
+                } else if (orderData && !orderData.success && orderData.is_limit_error) {
+                    resetPaymentButtonState('⚠️ <strong>Banking Limit:</strong> ' + orderData.message, true);
+                    return;
                 }
             } catch (errOrder) {
                 console.warn("Server order fetch failed, continuing with direct checkout:", errOrder);
@@ -1486,20 +1275,24 @@ foreach ($products as $p) {
                 },
                 "modal": {
                     "ondismiss": function() {
-                        resetPaymentButtonState('⚠️ <strong>Payment Window Closed:</strong> You can click below to retry Online Payment, or switch to <strong>Cash on Delivery (COD)</strong> or <strong>Direct Bank Transfer</strong> above.', false);
+                        resetPaymentButtonState('⚠️ <strong>Payment Interrupted:</strong> Gateway window closed. No payment was deducted. You can retry Online Payment or choose <strong>Cash on Delivery (COD)</strong> or <strong>Direct Bank Transfer</strong> above.', false);
                     }
                 },
                 "handler": function (response) {
+                    if (!response || !response.razorpay_payment_id) {
+                        resetPaymentButtonState('⚠️ <strong>Payment Error:</strong> Payment ID not returned. Bill cannot be generated.', true);
+                        return;
+                    }
                     submitOrderAndRedirect(
                         response.razorpay_payment_id,
-                        response.razorpay_order_id || serverOrderId || ('ORD_' + Date.now()),
-                        response.razorpay_signature || 'DEMO_VERIFIED',
+                        response.razorpay_order_id || serverOrderId,
+                        response.razorpay_signature,
                         'online'
                     );
                 }
             };
 
-            // Attach server-created order_id if available to unlock transactions up to ₹4,00,000+
+            // Attach server-created order_id if available
             if (serverOrderId && !serverOrderId.startsWith('order_svew_')) {
                 options.order_id = serverOrderId;
             }
@@ -1508,20 +1301,12 @@ foreach ($products as $p) {
                 const rzp = new Razorpay(options);
                 rzp.on('payment.failed', function (resp){
                     const reason = (resp && resp.error && resp.error.description) ? resp.error.description : 'Transaction cancelled';
-                    resetPaymentButtonState('⚠️ <strong>Payment Interrupted / Cancelled:</strong> ' + reason + '. You can retry Online Payment or choose <strong>Cash on Delivery (COD)</strong> above.', true);
+                    resetPaymentButtonState('⚠️ <strong>Payment Failed / Cancelled:</strong> ' + reason + '. No payment was processed. Bill cannot be issued for failed transactions.', true);
                 });
                 rzp.open();
             } catch (err) {
-                console.warn("Razorpay high value checkout note:", err);
-                // Seamlessly handle high-value payments or test environment limits without blocking the customer
-                paymentProgressBox.style.display = 'block';
-                progressStatusText.textContent = "⚡ Processing Secure High-Value Payment (₹ " + formatINR(payableAmount) + ")...";
-                progressSubText.textContent = "Authenticating full invoice transaction with Varsha Brand Bhavnagar...";
-                setTimeout(function() {
-                    const verifiedPayId = 'pay_full_' + Math.floor(100000 + Math.random() * 900000);
-                    const verifiedOrderId = serverOrderId || ('ORD_FULL_' + Date.now());
-                    submitOrderAndRedirect(verifiedPayId, verifiedOrderId, 'full_payment_verified', 'online');
-                }, 1200);
+                console.error("Razorpay error:", err);
+                resetPaymentButtonState('⚠️ <strong>Gateway Error:</strong> ' + (err.message || 'Could not launch payment gateway.') + '<br>For amounts exceeding limits (₹5,00,000 - ₹10,00,000), please choose <strong>Token Booking Advance (₹25,000)</strong> or <strong>Direct RTGS/NEFT Bank Transfer</strong> above.', true);
             }
         });
     }

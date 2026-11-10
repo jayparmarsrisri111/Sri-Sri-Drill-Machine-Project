@@ -592,18 +592,64 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         }
 
+        // 1.15 High-Value Payment / 10 Lakhs Limit in Razorpay Inquiries
+        if (q.includes('1000000') || q.includes('10 lakh') || q.includes('10 લાખ') || q.includes('દસ લાખ') || q.includes('500000') || q.includes('5 lakh') || (q.includes('payment') && (q.includes('limit') || q.includes('fail') || q.includes('not working') || q.includes('નથી થતું') || q.includes('અટકી')))) {
+            const rich = `
+                <div class="chat-rich-card">
+                    <div class="chat-card-title">🏦 High-Value Payment Solution (₹10,00,000 પેમેન્ટ સોલ્યુશન)</div>
+                    <div class="chat-card-spec">
+                        • <strong>શા માટે Razorpay માં ₹10 લાખ એકસાથે નથી થતા?</strong> RBI અને NPCI ના નિયમ મુજબ સિંગલ UPI અને ડેબિટ/ક્રેડિટ કાર્ડ પર ₹1 થી 5 લાખની સુરક્ષા મર્યાદા (Daily Limit) હોય છે.<br>
+                        • <strong>સોલ્યુશન 1 (ટોકન એડવાન્સ):</strong> માત્ર <strong>₹ 25,000</strong> ટોકન Razorpay થી ભરીને મશીન સ્લોટ બુક કરો. બાકી રકમ ડિસ્પેચ પહેલાં ચુકવો.<br>
+                        • <strong>સોલ્યુશન 2 (ડાયરેક્ટ RTGS / NEFT):</strong> કંપનીના SBI Current Account માં કોઈપણ લિમિટ વગર અનલિમિટેડ RTGS કરો (0% ગેટવે ચાર્જ).
+                    </div>
+                    <div class="chat-card-actions" style="margin-top:8px;">
+                        <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#0284c7;">🪙 ₹25,000 ટોકનથી બુક કરો</a>
+                        <a href="<?= BASE_URL ?>/contact.php" class="btn btn-outline" style="font-size:11px; flex:1;">🏦 RTGS બેંક વિગત જુઓ</a>
+                    </div>
+                </div>
+            `;
+            return {
+                text: `<p><strong>₹ 10,00,000 (10 Lakhs) પેમેન્ટ સોલ્યુશન:</strong></p>
+                       <p>રિઝર્વ બેંક (RBI) અને બેંકોના સિક્યુરિટી નિયમ મુજબ સામાન્ય UPI કે રિટેલ નેટબેંકિંગમાં એકસાથે ₹10 લાખનું સિંગલ ટ્રાન્ઝેક્શન મંજૂર થતું નથી. આ માટે અમારા ૨ બેસ્ટ સોલ્યુશન છે:<br>
+                       <strong>૧. ટોકન એડવાન્સ:</strong> માત્ર <strong>₹ 25,000</strong> ઓનલાઇન ભરીને પ્રોડક્શન બુકિંગ લોક કરી દો.<br>
+                       <strong>૨. અનલિમિટેડ RTGS / NEFT:</strong> અમારા શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સના SBI કરંટ એકાઉન્ટ (A/C: 39820010005432, IFSC: SBIN0001980) માં સીધા RTGS ટ્રાન્સફર કરી શકો છો.</p>`,
+                rich: rich
+            };
+        }
+
+        // 1.16 Direct Product Payment Inquiries (પ્રોડક્ટ પરથી સીધું પેમેન્ટ)
+        if (q.includes('direct pay') || q.includes('direct payment') || q.includes('સીધું પેમેન્ટ') || q.includes('પ્રોડક્ટ પરથી') || q.includes('product payment') || q.includes('instant pay')) {
+            const rich = `
+                <div class="chat-rich-card">
+                    <div class="chat-card-title">⚡ Instant Direct Pay (પ્રોડક્ટ પરથી સીધું પેમેન્ટ)</div>
+                    <div class="chat-card-spec">
+                        હવે તમારે કાર્ટમાં ગયા વગર સીધું જ પેમેન્ટ કરવું હોય તો દરેક મશીનના પેજ પર નવું <strong>⚡ Instant Direct Pay</strong> બટન આપેલું છે. જેના પર ક્લિક કરવાથી તરત જ Razorpay અથવા Direct RTGS સિલેક્ટ કરી બુકિંગ થઈ જશે!
+                    </div>
+                    <div class="chat-card-actions" style="margin-top:8px;">
+                        <a href="<?= BASE_URL ?>/machine-detail.php?id=1" class="btn btn-primary" style="font-size:11px; flex:1; background:linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);">⚡ 40mm રેડિયલ પર ડાયરેક્ટ પે કરો</a>
+                        <a href="<?= BASE_URL ?>/machines.php" class="btn btn-outline" style="font-size:11px; flex:1;">📖 મશીનોની યાદી જુઓ</a>
+                    </div>
+                </div>
+            `;
+            return {
+                text: `<p><strong>⚡ Instant Direct Pay ઉપલબ્ધ છે:</strong></p>
+                       <p>તમે કોઈપણ ડ્રિલ મશીનના પેજ પર જઈને <strong>⚡ Instant Direct Pay (પ્રોડક્ટ પરથી સીધું પેમેન્ટ કરો)</strong> બટન દબાવીને તરત જ ઓર્ડર કરી શકો છો. તેમાં ₹25,000 ટોકન એડવાન્સ અથવા પૂરેપૂરું પેમેન્ટ સીધું જ થઈ જાય છે!</p>`,
+                rich: rich
+            };
+        }
+
         // 1.2 Advance Token (₹25,000) vs Full Payment Bill Inquiries
         if (q.includes('25000') || q.includes('૨૫૦૦૦') || q.includes('advance') || q.includes('token') || q.includes('ટોકન') || q.includes('બીલ') || q.includes('bill') || q.includes('invoice') || q.includes('ઇન્વોઇસ') || q.includes('payment')) {
             const rich = `
                 <div class="chat-rich-card">
                     <div class="chat-card-title">💳 Flexible Billing Options (તમારી પસંદગી મુજબ)</div>
                     <div class="chat-card-spec">
-                        • <strong>₹ 25,000 Advance Token Bill:</strong> મશીન બુક કરવા માટે ₹25,000 ટોકન રસીદ/બિલ નીકળશે અને બાકી રહેલ રકમ ડિસ્પેચ સમયે ચૂકવવાની દર્શાવશે.<br>
+                        • <strong>₹ 25,000 Advance Token Bill:</strong> મશીન બુક કરવા માટે ₹25,000 ટોકન એડવાન્સ ભરી શકો છો અને બાકી રહેલ રકમ ડિસ્પેચ સમયે ચૂકવવાની રહેશે.<br>
                         • <strong>100% Full Payment Bill:</strong> પૂરેપૂરી રકમનું 100% પેઇડ GST ટેક્સ ઇન્વોઇસ નીકળશે જેમાં બાકી રકમ ₹0 રહેશે.
                     </div>
                     <div class="chat-card-actions" style="margin-top:8px;">
-                        <a href="<?= BASE_URL ?>/invoice.php?type=advance" class="btn btn-outline" style="font-size:10.5px; flex:1; border-color:#facc15; color:#facc15;">🪙 ₹25k Token Bill</a>
-                        <a href="<?= BASE_URL ?>/invoice.php?type=full" class="btn btn-primary" style="font-size:10.5px; flex:1; background:#10b981;">💳 100% Full Bill</a>
+                        <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#0284c7;">💳 Book Online (Razorpay)</a>
+                        <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-outline" style="font-size:11px; flex:1; border-color:#38bdf8; color:#38bdf8;">🔍 Track My Bill / Invoice</a>
                     </div>
                 </div>
             `;
@@ -619,7 +665,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const rich = `
                 <div class="chat-rich-card">
                     <div class="chat-card-title">📍 Live Satellite Location • Bhavnagar Plant</div>
-                    <div class="chat-card-spec">Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 36400003, Gujarat</div>
+                    <div class="chat-card-spec">Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 364003, Gujarat</div>
                     <div class="chat-card-actions" style="margin-top:6px;">
                         <a href="<?= BASE_URL ?>/contact.php#factoryLiveMap" class="btn btn-primary" style="font-size:11px; flex:1; background:linear-gradient(135deg, #00e5ff 0%, #2563eb 100%); color:#060911; font-weight:800;">🛰️ Open Live Satellite Map</a>
                         <a href="https://www.google.com/maps/dir/?api=1&destination=21.7645,72.1519" target="_blank" class="btn btn-outline" style="font-size:11px; flex:1;">🚗 Driving Directions</a>
@@ -651,7 +697,7 @@ document.addEventListener('DOMContentLoaded', function () {
                        • <strong>50mm હેવી ડ્યુટી:</strong> ₹ 3,95,000 + 18% GST<br>
                        • <strong>65mm એક્સ્ટ્રા હેવી:</strong> ₹ 5,75,000 + 18% GST<br>
                        • <strong>25mm પિલર ડ્રિલ:</strong> ₹ 85,000 + 18% GST</p>
-                       <p><strong>ફેક્ટરી સરનામું:</strong> Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 36400003, Gujarat.<br>
+                       <p><strong>ફેક્ટરી સરનામું:</strong> Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 364003, Gujarat.<br>
                        <strong>GSTIN:</strong> 24AJHPP0087E1ZD<br>
                        તમે ઓનલાઇન Razorpay થી ટોકન બુકિંગ કરી શકો છો અને તરત જ અધિકૃત ટેક્સ ઇન્વોઇસ &amp; E-Way Bill મેળવી શકો છો.</p>`,
                 rich: `<div style="display:flex; gap:6px; margin-top:8px;">
@@ -746,7 +792,7 @@ document.addEventListener('DOMContentLoaded', function () {
                           • <strong>GST Tax Rate:</strong> 18% (9% CGST + 9% SGST or 18% IGST)<br>
                           • <strong>E-Way Bill:</strong> Official Form GST EWB-01 is generated for every dispatch under Rule 138.</p>`,
                 rich: `<div style="display:flex; gap:6px; margin-top:8px;">
-                            <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-outline" style="font-size:11px; flex:1;">📄 View Sample Tax Bill</a>
+                            <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-outline" style="font-size:11px; flex:1;">🔍 Track / Find My Invoice</a>
                             <a href="<?= BASE_URL ?>/track-order.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">🚚 Track Order &amp; E-Way</a>
                        </div>`
             };

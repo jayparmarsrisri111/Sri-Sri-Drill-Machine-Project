@@ -12,66 +12,173 @@ $orderId = intval($_GET['order_id'] ?? 0);
 $orderNumber = sanitizeString($_GET['order_num'] ?? '');
 
 $order = null;
+$customerOrders = [];
+$lookupError = '';
+
 try {
     $pdo = Database::getConnection();
-    if ($orderId > 0) {
+
+    // Check if customer is searching via POST or GET lookup form
+    $searchNum = sanitizeString($_REQUEST['search_order_num'] ?? '');
+    $searchPhone = sanitizeString($_REQUEST['search_phone'] ?? '');
+
+    if (!empty($searchNum)) {
+        if (!empty($searchPhone)) {
+            $stmt = $pdo->prepare("SELECT o.*, p.image_url, p.drilling_capacity, p.spindle_speeds, p.motor_power FROM orders o LEFT JOIN products p ON o.product_id = p.id WHERE (o.order_number = :num OR o.invoice_number = :num) AND (o.customer_phone LIKE :ph) LIMIT 1");
+            $cleanPh = preg_replace('/[^0-9]/', '', $searchPhone);
+            $stmt->execute([':num' => $searchNum, ':ph' => '%' . substr($cleanPh, -10)]);
+            $order = $stmt->fetch();
+            if (!$order) {
+                $lookupError = 'No matching order found for this Order Number and Mobile Number combination.';
+            }
+        } else {
+            $stmt = $pdo->prepare("SELECT o.*, p.image_url, p.drilling_capacity, p.spindle_speeds, p.motor_power FROM orders o LEFT JOIN products p ON o.product_id = p.id WHERE o.order_number = :num OR o.invoice_number = :num LIMIT 1");
+            $stmt->execute([':num' => $searchNum]);
+            $order = $stmt->fetch();
+        }
+    } elseif ($orderId > 0) {
         $stmt = $pdo->prepare("SELECT o.*, p.image_url, p.drilling_capacity, p.spindle_speeds, p.motor_power FROM orders o LEFT JOIN products p ON o.product_id = p.id WHERE o.id = :id");
         $stmt->execute([':id' => $orderId]);
         $order = $stmt->fetch();
     } elseif (!empty($orderNumber)) {
-        $stmt = $pdo->prepare("SELECT o.*, p.image_url, p.drilling_capacity, p.spindle_speeds, p.motor_power FROM orders o LEFT JOIN products p ON o.product_id = p.id WHERE o.order_number = :num");
+        $stmt = $pdo->prepare("SELECT o.*, p.image_url, p.drilling_capacity, p.spindle_speeds, p.motor_power FROM orders o LEFT JOIN products p ON o.product_id = p.id WHERE o.order_number = :num OR o.invoice_number = :num");
         $stmt->execute([':num' => $orderNumber]);
         $order = $stmt->fetch();
-    } else {
-        // Fetch latest order for demo/preview if no ID provided
-        $stmt = $pdo->query("SELECT o.*, p.image_url, p.drilling_capacity, p.spindle_speeds, p.motor_power FROM orders o LEFT JOIN products p ON o.product_id = p.id ORDER BY o.id DESC LIMIT 1");
-        $order = $stmt->fetch();
     }
+
     if ($order && !empty($order['id'])) {
         $oiStmt = $pdo->prepare("SELECT * FROM order_items WHERE order_id = :oid ORDER BY id ASC");
         $oiStmt->execute([':oid' => $order['id']]);
         $orderItems = $oiStmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // If no specific order selected, check if customer is signed in to list their orders
+    if (!$order && !empty($_SESSION['customer_user']['id'])) {
+        $cStmt = $pdo->prepare("SELECT o.*, p.image_url FROM orders o LEFT JOIN products p ON o.product_id = p.id WHERE o.customer_id = :cid ORDER BY o.id DESC");
+        $cStmt->execute([':cid' => intval($_SESSION['customer_user']['id'])]);
+        $customerOrders = $cStmt->fetchAll(PDO::FETCH_ASSOC);
     }
 } catch (Exception $e) {
     die("Database error: " . $e->getMessage());
 }
 
 if (!$order) {
-    // If no order in DB yet, create a demo order record for instant real invoice preview
-    $order = [
-        'id' => 1,
-        'order_number' => 'SVEW-ORD-' . date('Ymd') . '-A108F',
-        'invoice_number' => 'SVEW-INV-' . date('Y') . '-88421',
-        'product_id' => 1,
-        'product_name' => '40mm All-Geared Radial Drill Machine',
-        'model_number' => 'SVEW-RD-40',
-        'customer_name' => 'Kishorbhai Parmar',
-        'company_name' => 'Parmar Precision Tool Works',
-        'customer_email' => 'kishor.parmar@example.com',
-        'customer_phone' => '+91 98251 12345',
-        'customer_address' => 'Plot No. 18, Phase 2, G.I.D.C. Lodhika Industrial Estate',
-        'customer_city' => 'Rajkot',
-        'customer_pincode' => '360021',
-        'customer_gst' => '24AABCP9876C1Z4',
-        'payment_type' => 'booking_advance',
-        'machine_price' => 285000.00,
-        'taxable_amount' => 21186.44,
-        'cgst_amount' => 1906.78,
-        'sgst_amount' => 1906.78,
-        'total_amount' => 25000.00,
-        'razorpay_order_id' => 'order_demo_1092',
-        'razorpay_payment_id' => 'pay_demo_varsha_99182',
-        'razorpay_signature' => 'verified_demo_hmac_sha256',
-        'payment_status' => 'paid',
-        'order_status' => 'confirmed',
-        'authorized_signatory' => 'Jay Parmar',
-        'notes' => '415V 3-Phase standard industrial specification',
-        'created_at' => date('Y-m-d H:i:s'),
-        'image_url' => 'assets/images/machinery/radial-drill-real.jpg',
-        'drilling_capacity' => '40 mm (Cast Iron / Steel)',
-        'spindle_speeds' => '8 Speeds (50 - 1500 RPM)',
-        'motor_power' => '3 HP (2.2 kW)'
-    ];
+    // If no order found or no ID provided, render the Secure Invoice Lookup Portal
+    $pageTitle = 'Tax Invoice & Bill Search | ' . APP_NAME;
+    $currentNav = 'invoice';
+    require_once __DIR__ . '/includes/header.php';
+    require_once __DIR__ . '/includes/navbar.php';
+    ?>
+    <section class="section" style="padding: 40px 0 70px;">
+        <div class="container" style="max-width: 980px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <span class="pill-badge" style="background: rgba(0, 229, 255, 0.15); border-color: #00e5ff; color: #00e5ff;">
+                    📄 OFFICIAL FACTORY TAX BILLS
+                </span>
+                <h1 style="font-family: var(--font-heading); font-size: 28px; color: #fff; margin-top: 8px;">
+                    Find &amp; Download Your Tax Invoice / Bill
+                </h1>
+                <p style="font-size: 14px; color: var(--text-secondary); max-width: 620px; margin: 8px auto 0;">
+                    Enter your Order Number and registered Mobile Number to securely view and print your certified GST Tax Invoice or Proforma Bill.
+                </p>
+            </div>
+
+            <?php if (!empty($lookupError)): ?>
+                <div style="background: rgba(239, 68, 68, 0.15); border: 1.5px solid #ef4444; color: #f87171; border-radius: 10px; padding: 14px 18px; margin-bottom: 22px; font-size: 13.5px; display: flex; align-items: center; gap: 10px;">
+                    <span>⚠️</span>
+                    <span><?= e($lookupError) ?></span>
+                </div>
+            <?php endif; ?>
+
+            <!-- Search Card -->
+            <div style="background: var(--bg-card); border: 1.5px solid var(--border-cyan); border-radius: 14px; padding: 26px; box-shadow: var(--shadow-card); margin-bottom: 30px;">
+                <form method="GET" action="invoice.php" style="display: grid; grid-template-columns: 1.2fr 1fr auto; gap: 14px; align-items: flex-end;">
+                    <div>
+                        <label class="form-label" style="font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 6px; display: block;">
+                            Order Number or Invoice Number *
+                        </label>
+                        <input type="text" name="search_order_num" required class="form-control" placeholder="e.g. SVEW-ORD-20261110-A108F" value="<?= e($_REQUEST['search_order_num'] ?? '') ?>" style="height: 44px; font-size: 14px; background: #060911; color: #fff; border: 1.5px solid rgba(0, 229, 255, 0.4);">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 6px; display: block;">
+                            Registered Mobile Number
+                        </label>
+                        <input type="tel" name="search_phone" class="form-control" placeholder="e.g. 9824913555" value="<?= e($_REQUEST['search_phone'] ?? '') ?>" style="height: 44px; font-size: 14px; background: #060911; color: #fff; border: 1.5px solid rgba(0, 229, 255, 0.4);">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary" style="height: 44px; padding: 0 22px; font-weight: 800; font-size: 14px; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; border-color: #00e5ff; display: flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap;">
+                            <span>🔍 Search Bill</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Customer Orders List (If Signed In) -->
+            <?php if (!empty($customerOrders)): ?>
+                <div style="background: rgba(15, 23, 42, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.4); border-radius: 14px; padding: 22px; margin-bottom: 30px;">
+                    <div style="font-size: 16px; font-weight: 800; color: #38bdf8; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                        <span>👤</span> <span>Your Verified Machinery Orders &amp; Tax Bills</span>
+                    </div>
+                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px;">
+                            <thead>
+                                <tr style="border-bottom: 1.5px solid rgba(255,255,255,0.1); text-align: left; color: #94a3b8; font-size: 11px; text-transform: uppercase;">
+                                    <th style="padding: 8px 10px;">Order No</th>
+                                    <th style="padding: 8px 10px;">Machine Model</th>
+                                    <th style="padding: 8px 10px;">Date</th>
+                                    <th style="padding: 8px 10px; text-align: right;">Amount</th>
+                                    <th style="padding: 8px 10px; text-align: center;">Payment</th>
+                                    <th style="padding: 8px 10px; text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($customerOrders as $co): 
+                                    $isCoPaid = ($co['payment_status'] === 'paid');
+                                ?>
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                        <td style="padding: 12px 10px; font-weight: 700; color: #00e5ff;">
+                                            <?= e($co['order_number']) ?>
+                                        </td>
+                                        <td style="padding: 12px 10px; color: #fff;">
+                                            <?= e($co['model_number']) ?> - <?= e($co['product_name']) ?>
+                                        </td>
+                                        <td style="padding: 12px 10px; color: #94a3b8; font-size: 12px;">
+                                            <?= date('d-M-Y', strtotime($co['created_at'])) ?>
+                                        </td>
+                                        <td style="padding: 12px 10px; text-align: right; font-weight: 700; color: #34d399;">
+                                            ₹ <?= number_format($co['total_amount'], 2) ?>
+                                        </td>
+                                        <td style="padding: 12px 10px; text-align: center;">
+                                            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; <?= $isCoPaid ? 'background:#dcfce7; color:#15803d;' : 'background:#fef3c7; color:#b45309;' ?>">
+                                                <?= $isCoPaid ? '✔ PAID' : '⏳ PENDING' ?>
+                                            </span>
+                                        </td>
+                                        <td style="padding: 12px 10px; text-align: right;">
+                                            <a href="invoice.php?order_id=<?= $co['id'] ?>" class="btn btn-outline" style="padding: 5px 12px; font-size: 11.5px; border-color: #00e5ff; color: #00e5ff; font-weight: 700; text-decoration: none;">
+                                                📄 View Bill →
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <?php elseif (empty($_SESSION['customer_user'])): ?>
+                <div style="text-align: center; background: rgba(15, 23, 42, 0.6); border: 1px dashed rgba(255,255,255,0.15); border-radius: 12px; padding: 22px;">
+                    <div style="font-size: 13.5px; color: #cbd5e1; margin-bottom: 10px;">
+                        Have an existing customer account? Sign in to view all your past machine orders &amp; tax invoices automatically.
+                    </div>
+                    <button type="button" onclick="openCustomerAuthModal('Sign in to view your orders and tax invoices.')" class="btn btn-outline" style="border-color: #38bdf8; color: #38bdf8; font-size: 12.5px; padding: 8px 18px; font-weight: 700;">
+                        👤 Customer Sign In / Register
+                    </button>
+                </div>
+            <?php endif; ?>
+        </div>
+    </section>
+    <?php
+    require_once __DIR__ . '/includes/footer.php';
+    exit;
 }
 
 // Convert amount to words in Indian Currency Format
@@ -694,15 +801,9 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             <span style="color: #94a3b8; font-size: 13px;">
                 Order No: <strong style="color: #fff;"><?= e($order['order_number']) ?></strong>
             </span>
-            <!-- 1-Click Bill Type Switcher -->
-            <div style="display: inline-flex; gap: 6px; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                <a href="?order_id=<?= intval($order['id'] ?? 1) ?>&type=advance" class="btn-action" style="padding: 5px 10px; font-size: 11.5px; border-radius: 6px; text-decoration: none; <?= (($_GET['type'] ?? $order['payment_type']) !== 'full_payment' && ($_GET['type'] ?? '') !== 'full') ? 'background:#0284c7; color:#fff; font-weight:700;' : 'background:transparent; color:#94a3b8;' ?>">
-                    🪙 ₹25,000 Advance Token Bill
-                </a>
-                <a href="?order_id=<?= intval($order['id'] ?? 1) ?>&type=full" class="btn-action" style="padding: 5px 10px; font-size: 11.5px; border-radius: 6px; text-decoration: none; <?= (($_GET['type'] ?? '') === 'full' || ($order['payment_type'] === 'full_payment' && ($_GET['type'] ?? '') !== 'advance')) ? 'background:#10b981; color:#fff; font-weight:700;' : 'background:transparent; color:#94a3b8;' ?>">
-                    💳 100% Full Payment Bill
-                </a>
-            </div>
+            <span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 6px; <?= ($order['payment_status'] === 'paid') ? 'background: #166534; color: #86efac; border: 1px solid #22c55e;' : 'background: #854d0e; color: #fef08a; border: 1px solid #eab308;' ?>">
+                <?= ($order['payment_status'] === 'paid') ? '✔ PAYMENT VERIFIED &amp; COMPLETED' : '⏳ PAYMENT STATUS: PENDING / PROFORMA' ?>
+            </span>
         </div>
         <div style="display: flex; gap: 10px;">
             <button onclick="window.print()" class="btn-action btn-print">
@@ -737,9 +838,9 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             </div>
 
             <?php 
-                $typeOverride = $_GET['type'] ?? '';
+                $isPaid = (isset($order['payment_status']) && strtolower($order['payment_status']) === 'paid');
                 $orderType = $order['payment_type'] ?? 'booking_advance';
-                $isAdvance = ($typeOverride === 'advance') ? true : (($typeOverride === 'full') ? false : ($orderType === 'booking_advance'));
+                $isAdvance = ($orderType === 'booking_advance');
 
                 $machineBasePrice = floatval($order['machine_price'] ?? 285000.00);
                 if ($machineBasePrice <= 0) $machineBasePrice = 285000.00;
@@ -747,7 +848,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
 
                 if ($isAdvance) {
                     $paidAmount = floatval($order['total_amount'] ?? 25000.00);
-                    if ($paidAmount <= 0 || ($typeOverride === 'advance' && $paidAmount > 50000)) {
+                    if ($paidAmount <= 0) {
                         $paidAmount = 25000.00;
                     }
                     $taxableAmount = round($paidAmount / 1.18, 2);
@@ -758,12 +859,10 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                     $taxableAmount = $machineBasePrice;
                     $cgstAmount = round($taxableAmount * 0.09, 2);
                     $sgstAmount = round($taxableAmount * 0.09, 2);
-                    $paidAmount = $taxableAmount + $cgstAmount + $sgstAmount;
+                    $paidAmount = floatval($order['total_amount'] ?? ($taxableAmount + $cgstAmount + $sgstAmount));
                     $balanceDue = 0.00;
                 }
-            ?>
 
-            <?php 
                 $pm = $order['payment_method'] ?? 'online';
                 $payMethodLabel = 'Razorpay 256-Bit SSL';
                 $payMethodColor = '#10b981';
@@ -777,31 +876,48 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                     $payMethodLabel = 'Account Payee Cheque / DD';
                     $payMethodColor = '#7e22ce';
                 }
+
+                // Determine official title based on true payment verification status
+                if ($isPaid) {
+                    $docTitle = $isAdvance ? 'ADVANCE BOOKING TAX INVOICE' : 'TAX INVOICE (100% PAID)';
+                } else {
+                    if ($pm === 'cod') {
+                        $docTitle = 'PROFORMA INVOICE (CASH ON DELIVERY ORDER)';
+                    } elseif ($pm === 'bank_transfer') {
+                        $docTitle = 'PROFORMA INVOICE / RTGS-NEFT PAYMENT ADVICE';
+                    } else {
+                        $docTitle = 'PROFORMA INVOICE (PAYMENT PENDING)';
+                    }
+                }
             ?>
 
             <div class="invoice-title-block">
-                <div class="inv-title"><?= ($pm === 'cod') ? 'TAX INVOICE (CASH ON DELIVERY)' : ($isAdvance ? 'ADVANCE BOOKING TAX INVOICE' : 'TAX INVOICE (100% PAID)') ?></div>
+                <div class="inv-title"><?= $docTitle ?></div>
                 <div style="margin: 4px 0;">
-                    <?php if ($pm === 'cod'): ?>
-                        <span class="status-badge" style="background: #fef3c7; color: #b45309; border-color: #fcd34d;">
-                            ✔ CASH ON DELIVERY CONFIRMED (PAYABLE AT DELIVERY) • ₹ <?= number_format($paidAmount, 2) ?>
-                        </span>
-                    <?php elseif ($pm === 'bank_transfer'): ?>
-                        <span class="status-badge" style="background: #e0f2fe; color: #0369a1; border-color: #7dd3fc;">
-                            ✔ DIRECT BANK TRANSFER (NEFT/RTGS ORDER RESERVED) • ₹ <?= number_format($paidAmount, 2) ?>
-                        </span>
-                    <?php elseif ($pm === 'cheque'): ?>
-                        <span class="status-badge" style="background: #f3e8ff; color: #7e22ce; border-color: #d8b4fe;">
-                            ✔ CHEQUE / DD ORDER (VERIFICATION AT RECEIPT) • ₹ <?= number_format($paidAmount, 2) ?>
-                        </span>
-                    <?php elseif ($isAdvance): ?>
-                        <span class="status-badge" style="background: #fef3c7; color: #b45309; border-color: #fcd34d;">
-                            ✔ ADVANCE TOKEN PAID (SLOT RESERVED) • ₹ <?= number_format($paidAmount, 2) ?>
-                        </span>
+                    <?php if ($isPaid): ?>
+                        <?php if ($isAdvance): ?>
+                            <span class="status-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac;">
+                                ✔ ADVANCE TOKEN PAID &amp; VERIFIED • ₹ <?= number_format($paidAmount, 2) ?>
+                            </span>
+                        <?php else: ?>
+                            <span class="status-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac;">
+                                ✔ 100% FULL PAYMENT RECEIVED (NIL BALANCE) • ₹ <?= number_format($paidAmount, 2) ?>
+                            </span>
+                        <?php endif; ?>
                     <?php else: ?>
-                        <span class="status-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac;">
-                            ✔ 100% FULL PAYMENT RECEIVED (NIL BALANCE) • ₹ <?= number_format($paidAmount, 2) ?>
-                        </span>
+                        <?php if ($pm === 'cod'): ?>
+                            <span class="status-badge" style="background: #fef3c7; color: #b45309; border-color: #fcd34d;">
+                                ⏳ CASH ON DELIVERY BOOKED • ₹ <?= number_format($paidAmount, 2) ?> (DUE AT DISPATCH/DELIVERY)
+                            </span>
+                        <?php elseif ($pm === 'bank_transfer'): ?>
+                            <span class="status-badge" style="background: #e0f2fe; color: #0369a1; border-color: #7dd3fc;">
+                                ⏳ RTGS / NEFT PAYMENT PENDING • ₹ <?= number_format($paidAmount, 2) ?> (VERIFICATION AWAITED)
+                            </span>
+                        <?php else: ?>
+                            <span class="status-badge" style="background: #fee2e2; color: #991b1b; border-color: #fca5a5;">
+                                ⏳ PAYMENT PENDING / NOT YET REALIZED • ₹ <?= number_format($paidAmount, 2) ?>
+                            </span>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
                 <table class="inv-meta-table">
@@ -874,6 +990,36 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 </div>
             </div>
         </div>
+
+        <?php if (!$isPaid): ?>
+            <!-- Proforma Notice & Bank Transfer Instructions (Shown when payment is not yet completed/verified) -->
+            <div style="margin: 14px 0 16px; padding: 12px 16px; background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 8px; color: #78350f;">
+                <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 13.5px; margin-bottom: 6px; color: #b45309;">
+                    <span>⚠️</span>
+                    <span>PROFORMA INVOICE &bull; ચુકવણી બાકી (PAYMENT AWAITED / UNPAID)</span>
+                </div>
+                <div style="font-size: 11.5px; line-height: 1.5; color: #92400e;">
+                    This document is an <strong>Official Proforma Invoice &amp; Order Booking Confirmation</strong>. 
+                    Final Certified GST Tax Invoice with official red rubber seal and machinery dispatch clearance will be issued upon realization of payment.
+                    <?php if ($pm === 'bank_transfer' || $pm === 'online'): ?>
+                        <div style="margin-top: 8px; padding: 10px; background: #ffffff; border: 1px solid #fde68a; border-radius: 6px; color: #1e293b;">
+                            <strong style="color: #0f172a; font-size: 12px; display: block; margin-bottom: 4px;">
+                                🏦 Direct RTGS / NEFT / IMPS Company Bank Details (for Wire Transfer):
+                            </strong>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; font-size: 11.5px;">
+                                <div><strong>Beneficiary:</strong> SHREE VARSHA ENGINEERING WORKS</div>
+                                <div><strong>Bank Name:</strong> State Bank of India (SBI)</div>
+                                <div><strong>Current A/C No:</strong> 39820010005432</div>
+                                <div><strong>IFSC Code:</strong> SBIN0001980 (Chitra Branch, Bhavnagar)</div>
+                            </div>
+                            <div style="font-size: 10.5px; color: #64748b; margin-top: 4px;">
+                                * After RTGS/NEFT transfer, please share transaction reference (UTR) on WhatsApp: <strong><?= COMPANY_PHONE_1 ?></strong> for instant payment clearance.
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endif; ?>
 
         <!-- Items Table (Responsive Scroll Wrapper for Mobile Screens) -->
         <div class="items-table-wrapper">
@@ -1008,16 +1154,16 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         <!-- Official Seal and Authorized Signatory Row -->
         <div class="sign-seal-row">
             <!-- Official Company Rubber Stamp / Sico (શિકો) -->
-            <div class="seal-box">
-                <img src="<?= assetUrl('assets/images/varsha-brand-seal.svg') ?>" alt="Varsha Brand Official Stamp (શિકો)" class="seal-image" title="Official Rubber Stamp (શિકો) - Shree Varsha Engineering Works">
+            <div class="seal-box" style="<?= !$isPaid ? 'opacity: 0.85; border-color: #f59e0b;' : '' ?>">
+                <img src="<?= assetUrl('assets/images/varsha-brand-seal.svg') ?>" alt="Varsha Brand Official Stamp (શિકો)" class="seal-image" title="Official Rubber Stamp (શિકો) - Shree Varsha Engineering Works" style="<?= !$isPaid ? 'filter: grayscale(40%);' : '' ?>">
                 <div>
-                    <div style="font-size: 11.5px; font-weight: 800; color: #7c3aed; letter-spacing: 0.8px;">
-                        OFFICIAL FACTORY STAMP / SICO (શિકો)
+                    <div style="font-size: 11.5px; font-weight: 800; color: <?= $isPaid ? '#7c3aed' : '#b45309' ?>; letter-spacing: 0.8px;">
+                        <?= $isPaid ? 'OFFICIAL FACTORY STAMP / SICO (શિકો)' : 'PROFORMA ORDER STAMP / SICO (શિકો)' ?>
                     </div>
                     <div style="font-size: 10.5px; color: #64748b; line-height: 1.35; margin-top: 2px;">
                         <strong>VARSHA BRAND (SVEW)</strong><br>
                         Bhavnagar Factory Unit • ISO 9001:2015<br>
-                        Quality Approved &amp; Certified
+                        <?= $isPaid ? '<span style="color:#16a34a; font-weight:700;">Payment Realized &amp; Verified</span>' : '<span style="color:#d97706; font-weight:700;">Subject to Payment Realization</span>' ?>
                     </div>
                 </div>
             </div>
@@ -1028,24 +1174,24 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                     For <strong>SHREE VARSHA ENGINEERING WORKS</strong>
                 </div>
                 <!-- Jay Parmar Signature -->
-                <img src="<?= assetUrl('assets/images/jay-parmar-signature.svg') ?>" alt="Signature of Jay Parmar" class="signature-img">
+                <img src="<?= assetUrl('assets/images/jay-parmar-signature.svg') ?>" alt="Signature of Jay Parmar" class="signature-img" style="<?= !$isPaid ? 'opacity: 0.75;' : '' ?>">
                 <div class="signatory-name"><?= e($order['authorized_signatory'] ?? 'Jay Parmar') ?></div>
-                <div class="signatory-title">Partner & Authorized Signatory</div>
+                <div class="signatory-title"><?= $isPaid ? 'Partner &amp; Authorized Signatory' : 'Authorized Signatory (Proforma / Acknowledgment)' ?></div>
             </div>
         </div>
 
         <?php
-            $cryptoHash = $order['crypto_seal'] ?? hash('sha256', $order['order_number'] . '|' . $order['invoice_number'] . '|' . $order['razorpay_payment_id'] . '|' . $order['total_amount'] . '|' . COMPANY_GSTIN . '|' . RAZORPAY_KEY_SECRET);
+            $cryptoHash = $order['crypto_seal'] ?? hash('sha256', $order['order_number'] . '|' . $order['invoice_number'] . '|' . ($order['razorpay_payment_id'] ?? 'UNPAID') . '|' . $order['total_amount'] . '|' . COMPANY_GSTIN . '|' . RAZORPAY_KEY_SECRET);
         ?>
         <!-- World-First Cryptographic Invoice Integrity & Anti-Forgery Ledger Seal -->
-        <div class="crypto-proof-box" style="margin-top: 18px; background: #f8fafc; border: 1.5px dashed #0284c7; border-radius: 8px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div class="crypto-proof-box" style="margin-top: 18px; background: #f8fafc; border: 1.5px dashed <?= $isPaid ? '#0284c7' : '#f59e0b' ?>; border-radius: 8px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
             <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="background: #0284c7; color: #fff; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0;">
-                    🔒
+                <div style="background: <?= $isPaid ? '#0284c7' : '#f59e0b' ?>; color: #fff; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0;">
+                    <?= $isPaid ? '🔒' : '⏳' ?>
                 </div>
                 <div>
                     <div style="font-size: 11px; font-weight: 800; color: #0f172a; letter-spacing: 0.5px;">
-                        CRYPTOGRAPHIC PROOF OF AUTHENTICITY (SHA-256 DIGITAL LEDGER SEAL)
+                        <?= $isPaid ? 'CRYPTOGRAPHIC PROOF OF AUTHENTICITY (SHA-256 DIGITAL LEDGER SEAL)' : 'PROFORMA ORDER VERIFICATION LOG (PAYMENT AUDIT PENDING)' ?>
                     </div>
                     <div style="font-family: monospace; font-size: 9.5px; color: #475569; word-break: break-all; margin-top: 2px;">
                         PROVENANCE HASH: <?= $cryptoHash ?>
@@ -1053,14 +1199,20 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 </div>
             </div>
             <div>
-                <span style="display: inline-block; background: #dcfce7; border: 1px solid #16a34a; color: #15803d; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">
-                    ✓ IMMUTABLE & VERIFIED
-                </span>
+                <?php if ($isPaid): ?>
+                    <span style="display: inline-block; background: #dcfce7; border: 1px solid #16a34a; color: #15803d; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">
+                        ✓ IMMUTABLE &amp; VERIFIED
+                    </span>
+                <?php else: ?>
+                    <span style="display: inline-block; background: #fef3c7; border: 1px solid #d97706; color: #b45309; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">
+                        ⏳ PAYMENT VERIFICATION AWAITED
+                    </span>
+                <?php endif; ?>
             </div>
         </div>
 
         <div class="disclaimer-box" style="margin-top: 16px; padding-top: 10px; border-top: 1px dashed #cbd5e1; text-align: center; font-size: 10px; color: #94a3b8;">
-            This is an electronically generated and certified Tax Invoice with secure digital audit trail. Razorpay Payment ID: <?= e($order['razorpay_payment_id']) ?>. Certified by Shree Varsha Engineering Works.
+            <?= $isPaid ? 'This is an electronically generated and certified Tax Invoice with secure digital audit trail. Razorpay Payment ID: ' . e($order['razorpay_payment_id']) . '. Certified by Shree Varsha Engineering Works.' : 'This is a computer generated Proforma Invoice / Order Acknowledgement. Official GST Tax Invoice is generated post settlement of payment.' ?>
         </div>
     </div>
 

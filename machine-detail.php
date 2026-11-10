@@ -379,6 +379,10 @@ if ($isSparePart) {
                         <span>360° Interactive 12D Machine View</span>
                         <span class="turntable-step-pill">30° STEP</span>
                     </button>
+                    <!-- 1-Click Instant Direct Pay Button -->
+                    <button type="button" onclick="openDirectPayModal()" class="btn" style="flex: 1 1 100%; text-align: center; background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%); border: 1.5px solid #38bdf8; color: #fff; font-weight: 800; padding: 14px; font-size: 15.5px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(6,182,212,0.35); transition: transform 0.2s, box-shadow 0.2s;">
+                        <span>⚡ Instant Direct Pay (પ્રોડક્ટ પરથી સીધું પેમેન્ટ કરો)</span>
+                    </button>
                     <a id="btnBookOnlineTop" href="<?= BASE_URL ?>/checkout.php?machine_id=<?= $machine['id'] ?>&qty=1" class="btn btn-primary" style="flex: 1 1 100%; text-align: center; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; font-weight: 700; padding: 13px; font-size: 15px;">
                         💳 Book Machine Online (Razorpay)
                     </a>
@@ -1412,6 +1416,503 @@ function addFbtBundleToCart(btn) {
         btn.innerHTML = originalText;
     });
 }
+
+/* =========================================================================
+   INSTANT DIRECT PAYMENT SYSTEM (પ્રોડક્ટ પરથી સીધું પેમેન્ટ)
+   Supports Advance Token, 100% Full Payment, and ₹10L+ RTGS Direct Wire
+   ========================================================================= */
+const DIRECT_MACHINE_ID = <?= intval($machine['id']) ?>;
+const DIRECT_MACHINE_NAME = <?= json_encode($machine['name']) ?>;
+const DIRECT_MODEL_NUMBER = <?= json_encode($machine['model_number']) ?>;
+const DIRECT_BASE_PRICE = <?= floatval($mBasePrice) ?>;
+const DIRECT_CSRF_TOKEN = <?= json_encode(generateCsrfToken()) ?>;
+const DIRECT_RZP_KEY = <?= json_encode(RAZORPAY_KEY_ID) ?>;
+
+function openDirectPayModal() {
+    const currentQty = parseInt(document.getElementById('detailQtyInput')?.value) || 1;
+    const directQtyInput = document.getElementById('dpQtyInput');
+    if (directQtyInput) directQtyInput.value = currentQty;
+    recalcDirectPay();
+    const modal = document.getElementById('modalDirectPay');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeDirectPayModal() {
+    const modal = document.getElementById('modalDirectPay');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+function adjustDpQty(delta) {
+    const input = document.getElementById('dpQtyInput');
+    if (!input) return;
+    let val = (parseInt(input.value) || 1) + delta;
+    if (val < 1) val = 1;
+    input.value = val;
+    // Sync main page input as well
+    const mainQty = document.getElementById('detailQtyInput');
+    if (mainQty) {
+        mainQty.value = val;
+        if (typeof onDetailQtyChange === 'function') onDetailQtyChange();
+    }
+    recalcDirectPay();
+}
+
+function recalcDirectPay() {
+    const qty = parseInt(document.getElementById('dpQtyInput')?.value) || 1;
+    const plan = document.querySelector('input[name="dp_plan"]:checked')?.value || 'advance';
+    const method = document.querySelector('input[name="dp_method"]:checked')?.value || 'razorpay';
+
+    const subtotal = DIRECT_BASE_PRICE * qty;
+    const gst = Math.round(subtotal * 0.18 * 100) / 100;
+    const fullTotal = subtotal + gst;
+
+    let payableToday = 0;
+    let balanceOnDispatch = 0;
+
+    if (plan === 'advance') {
+        payableToday = 25000 * qty;
+        balanceOnDispatch = Math.max(0, fullTotal - payableToday);
+    } else {
+        payableToday = fullTotal;
+        balanceOnDispatch = 0;
+    }
+
+    document.getElementById('dpLblQty').textContent = qty + (qty > 1 ? ' Units' : ' Unit');
+    document.getElementById('dpLblBasePrice').textContent = '₹ ' + subtotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    document.getElementById('dpLblGst').textContent = '₹ ' + gst.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    document.getElementById('dpLblFullTotal').textContent = '₹ ' + fullTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    document.getElementById('dpLblPayableToday').textContent = '₹ ' + payableToday.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+    const balRow = document.getElementById('dpRowBalance');
+    if (balRow) {
+        if (plan === 'advance') {
+            balRow.style.display = 'table-row';
+            document.getElementById('dpLblBalance').textContent = '₹ ' + balanceOnDispatch.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        } else {
+            balRow.style.display = 'none';
+        }
+    }
+
+    // High Value / ₹10,00,000 Banking Limit Alert
+    const limitAlert = document.getElementById('dpLimitAlert');
+    const bankDetailsBox = document.getElementById('dpBankDetailsBox');
+    
+    if (limitAlert) {
+        if (payableToday >= 500000 && method === 'razorpay' && plan === 'full') {
+            limitAlert.style.display = 'block';
+        } else {
+            limitAlert.style.display = 'none';
+        }
+    }
+
+    if (bankDetailsBox) {
+        if (method === 'bank_transfer') {
+            bankDetailsBox.style.display = 'block';
+        } else {
+            bankDetailsBox.style.display = 'none';
+        }
+    }
+
+    // Update Action Button Text
+    const submitBtn = document.getElementById('btnSubmitDirectPay');
+    if (submitBtn) {
+        if (method === 'bank_transfer') {
+            submitBtn.innerHTML = '<span>📄 Generate Proforma Invoice &amp; Confirm RTGS Order (₹ ' + payableToday.toLocaleString('en-IN') + ')</span>';
+            submitBtn.style.background = 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)';
+        } else {
+            submitBtn.innerHTML = '<span>⚡ Pay Now via Razorpay (₹ ' + payableToday.toLocaleString('en-IN') + ')</span>';
+            submitBtn.style.background = 'linear-gradient(135deg, #059669 0%, #10b981 100%)';
+        }
+    }
+}
+
+function submitDirectPayment(e) {
+    if (e) e.preventDefault();
+
+    const form = document.getElementById('directPayForm');
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    const name = document.getElementById('dpName').value.trim();
+    const phone = document.getElementById('dpPhone').value.trim();
+    const email = document.getElementById('dpEmail').value.trim();
+    const city = document.getElementById('dpCity').value.trim();
+    const address = document.getElementById('dpAddress').value.trim();
+    const pincode = document.getElementById('dpPincode').value.trim();
+    const company = document.getElementById('dpCompany').value.trim();
+    const gstin = document.getElementById('dpGst').value.trim();
+    const qty = parseInt(document.getElementById('dpQtyInput').value) || 1;
+    const plan = document.querySelector('input[name="dp_plan"]:checked')?.value || 'advance';
+    const method = document.querySelector('input[name="dp_method"]:checked')?.value || 'razorpay';
+
+    const subtotal = DIRECT_BASE_PRICE * qty;
+    const gst = Math.round(subtotal * 0.18 * 100) / 100;
+    const fullTotal = subtotal + gst;
+    const payableAmount = (plan === 'advance') ? (25000 * qty) : fullTotal;
+
+    const btn = document.getElementById('btnSubmitDirectPay');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳ Processing Secure Order...</span>';
+
+    // Flow 1: Direct RTGS / NEFT Wire Transfer
+    if (method === 'bank_transfer') {
+        const payload = new FormData();
+        payload.append('csrf_token', DIRECT_CSRF_TOKEN);
+        payload.append('payment_method', 'bank_transfer');
+        payload.append('payment_type', plan === 'full' ? 'full_payment' : 'booking_advance');
+        payload.append('machine_id', DIRECT_MACHINE_ID);
+        payload.append('quantity', qty);
+        payload.append('customer_name', name);
+        payload.append('customer_phone', phone);
+        payload.append('customer_email', email);
+        payload.append('customer_city', city);
+        payload.append('customer_address', address);
+        payload.append('customer_pincode', pincode);
+        payload.append('company_name', company);
+        payload.append('customer_gst', gstin);
+
+        fetch('<?= BASE_URL ?>/payment-verify.php', {
+            method: 'POST',
+            body: payload
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success && data.invoice_url) {
+                window.location.href = data.invoice_url;
+            } else {
+                alert(data.message || 'Error creating bank transfer order.');
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Network connection error. Please try again.');
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        });
+        return;
+    }
+
+    // Flow 2: Razorpay Online Payment
+    const rzpOrderData = new FormData();
+    rzpOrderData.append('csrf_token', DIRECT_CSRF_TOKEN);
+    rzpOrderData.append('amount', payableAmount);
+    rzpOrderData.append('machine_id', DIRECT_MACHINE_ID);
+    rzpOrderData.append('machine_name', DIRECT_MACHINE_NAME);
+    rzpOrderData.append('model_number', DIRECT_MODEL_NUMBER);
+    rzpOrderData.append('payment_type', plan === 'full' ? 'full_payment' : 'booking_advance');
+    rzpOrderData.append('customer_name', name);
+    rzpOrderData.append('customer_phone', phone);
+
+    fetch('<?= BASE_URL ?>/api/create-razorpay-order.php', {
+        method: 'POST',
+        body: rzpOrderData
+    })
+    .then(res => res.json())
+    .then(orderRes => {
+        if (!orderRes.success) {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            if (orderRes.is_limit_error) {
+                alert(orderRes.message);
+                document.getElementById('dpPlanAdvance').checked = true;
+                recalcDirectPay();
+            } else {
+                alert(orderRes.message || 'Could not initiate online payment gateway.');
+            }
+            return;
+        }
+
+        const options = {
+            key: DIRECT_RZP_KEY,
+            amount: orderRes.amount,
+            currency: orderRes.currency || 'INR',
+            name: '<?= APP_NAME ?>',
+            description: DIRECT_MODEL_NUMBER + ' (' + (plan === 'full' ? '100% Full Payment' : 'Token Advance Booking') + ')',
+            image: '<?= assetUrl("assets/images/varsha-logo.png") ?>',
+            order_id: orderRes.order_id,
+            prefill: {
+                name: name,
+                contact: phone,
+                email: email
+            },
+            notes: {
+                machine_id: DIRECT_MACHINE_ID,
+                model_number: DIRECT_MODEL_NUMBER,
+                plan: plan
+            },
+            theme: {
+                color: '#0284c7'
+            },
+            handler: function(response) {
+                btn.innerHTML = '<span>🔒 Verifying Cryptographic Payment Signature...</span>';
+                const verifyPayload = new FormData();
+                verifyPayload.append('csrf_token', DIRECT_CSRF_TOKEN);
+                verifyPayload.append('payment_method', 'online');
+                verifyPayload.append('payment_type', plan === 'full' ? 'full_payment' : 'booking_advance');
+                verifyPayload.append('machine_id', DIRECT_MACHINE_ID);
+                verifyPayload.append('quantity', qty);
+                verifyPayload.append('customer_name', name);
+                verifyPayload.append('customer_phone', phone);
+                verifyPayload.append('customer_email', email);
+                verifyPayload.append('customer_city', city);
+                verifyPayload.append('customer_address', address);
+                verifyPayload.append('customer_pincode', pincode);
+                verifyPayload.append('company_name', company);
+                verifyPayload.append('customer_gst', gstin);
+                verifyPayload.append('razorpay_payment_id', response.razorpay_payment_id);
+                verifyPayload.append('razorpay_order_id', response.razorpay_order_id);
+                verifyPayload.append('razorpay_signature', response.razorpay_signature);
+
+                fetch('<?= BASE_URL ?>/payment-verify.php', {
+                    method: 'POST',
+                    body: verifyPayload
+                })
+                .then(r => r.json())
+                .then(verifyData => {
+                    if (verifyData.success && verifyData.invoice_url) {
+                        window.location.href = verifyData.invoice_url;
+                    } else {
+                        alert(verifyData.message || 'Payment verification failed. If money was debited, please contact Bhavnagar factory support.');
+                        btn.disabled = false;
+                        btn.innerHTML = originalText;
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Payment received but verification timeout. Please check your order history.');
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                });
+            },
+            modal: {
+                ondismiss: function() {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
+            }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Gateway communication error. Please try again.');
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    });
+}
 </script>
+
+<!-- Razorpay Official Checkout SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<!-- =========================================================================
+     INSTANT DIRECT PAYMENT MODAL (#modalDirectPay)
+     ========================================================================= -->
+<?php
+    $dpCustUser = $_SESSION['customer_user'] ?? null;
+    $dpName = $dpCustUser['full_name'] ?? '';
+    $dpPhone = $dpCustUser['phone'] ?? '';
+    $dpEmail = $dpCustUser['email'] ?? '';
+    $dpCompany = $dpCustUser['company_name'] ?? '';
+    $dpAddress = $dpCustUser['address'] ?? '';
+    $dpCity = $dpCustUser['city'] ?? 'Bhavnagar';
+    $dpPincode = $dpCustUser['pincode'] ?? '364003';
+    $dpGst = $dpCustUser['gst_number'] ?? '';
+?>
+<div id="modalDirectPay" style="display: none; position: fixed; inset: 0; z-index: 99999; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+    <div style="background: #0b1120; border: 1.5px solid var(--accent-cyan); border-radius: 14px; max-width: 680px; width: 100%; max-height: 92vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.9); color: #fff; padding: 22px;">
+        
+        <!-- Modal Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 14px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="<?= assetUrl($machine['image_url']) ?>" alt="<?= e($machine['name']) ?>" style="width: 52px; height: 52px; object-fit: contain; background: #020617; border: 1px solid rgba(0,229,255,0.3); border-radius: 8px; padding: 4px;">
+                <div>
+                    <span style="font-size: 11px; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">⚡ Direct Instant Checkout</span>
+                    <h3 style="font-size: 17px; font-weight: 800; color: #fff; margin: 2px 0;"><?= e($machine['name']) ?></h3>
+                    <span style="font-size: 12px; color: #94a3b8;">Model: <strong><?= e($machine['model_number']) ?></strong> &bull; Ex-Price: <strong>₹ <?= number_format($mBasePrice, 2) ?></strong></span>
+                </div>
+            </div>
+            <button type="button" onclick="closeDirectPayModal()" style="background: rgba(255,255,255,0.1); border: none; color: #cbd5e1; font-size: 20px; line-height: 1; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
+        </div>
+
+        <form id="directPayForm" onsubmit="submitDirectPayment(event)">
+            <!-- Quantity Selection -->
+            <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <strong style="font-size: 13.5px; color: #fff; display: block;">Select Machine Quantity (જથ્થો)</strong>
+                    <span style="font-size: 11.5px; color: #94a3b8;">Direct dispatch reservation from Bhavnagar factory</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button type="button" onclick="adjustDpQty(-1)" style="width: 34px; height: 34px; border-radius: 6px; background: #060911; border: 1.5px solid var(--accent-cyan); color: #fff; font-size: 18px; font-weight: 800; cursor: pointer;">−</button>
+                    <input type="number" id="dpQtyInput" value="1" min="1" max="50" style="width: 55px; height: 34px; text-align: center; font-size: 16px; font-weight: 800; background: #060911; border: 1.5px solid #0284c7; color: #34d399; border-radius: 6px;" onchange="recalcDirectPay()">
+                    <button type="button" onclick="adjustDpQty(1)" style="width: 34px; height: 34px; border-radius: 6px; background: #060911; border: 1.5px solid var(--accent-cyan); color: #fff; font-size: 18px; font-weight: 800; cursor: pointer;">+</button>
+                </div>
+            </div>
+
+            <!-- Payment Plan Selection -->
+            <div style="margin-bottom: 16px;">
+                <label style="font-size: 13px; font-weight: 700; color: #cbd5e1; margin-bottom: 8px; display: block;">Choose Payment Option (પેમેન્ટ વિકલ્પ પસંદ કરો):</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: flex-start; gap: 10px; background: rgba(15, 23, 42, 0.7); border: 1.5px solid #0284c7; border-radius: 8px; padding: 10px 12px; cursor: pointer;">
+                        <input type="radio" name="dp_plan" id="dpPlanAdvance" value="advance" checked onchange="recalcDirectPay()" style="margin-top: 3px; accent-color: #0284c7;">
+                        <div>
+                            <strong style="color: #38bdf8; font-size: 13px; display: block;">🪙 Token Advance (₹25,000 / unit)</strong>
+                            <span style="font-size: 11px; color: #94a3b8; line-height: 1.3; display: block; margin-top: 2px;">
+                                Reserve factory slot now. Pay remaining balance upon machine inspection before dispatch.
+                            </span>
+                        </div>
+                    </label>
+
+                    <label style="display: flex; align-items: flex-start; gap: 10px; background: rgba(15, 23, 42, 0.7); border: 1.5px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 10px 12px; cursor: pointer;">
+                        <input type="radio" name="dp_plan" id="dpPlanFull" value="full" onchange="recalcDirectPay()" style="margin-top: 3px; accent-color: #10b981;">
+                        <div>
+                            <strong style="color: #34d399; font-size: 13px; display: block;">💳 100% Full Payment</strong>
+                            <span style="font-size: 11px; color: #94a3b8; line-height: 1.3; display: block; margin-top: 2px;">
+                                Settle complete invoice value. Fast-track prioritized road freight dispatch.
+                            </span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Payment Gateway / Wire Transfer Method -->
+            <div style="margin-bottom: 16px;">
+                <label style="font-size: 13px; font-weight: 700; color: #cbd5e1; margin-bottom: 8px; display: block;">Payment Gateway / Method:</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; gap: 8px; background: rgba(15, 23, 42, 0.7); border: 1.5px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 9px 12px; cursor: pointer;">
+                        <input type="radio" name="dp_method" value="razorpay" checked onchange="recalcDirectPay()" style="accent-color: #0284c7;">
+                        <span style="font-size: 12.5px; font-weight: 700; color: #fff;">⚡ Razorpay (UPI, Cards, NetBanking)</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; background: rgba(15, 23, 42, 0.7); border: 1.5px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 9px 12px; cursor: pointer;">
+                        <input type="radio" name="dp_method" value="bank_transfer" onchange="recalcDirectPay()" style="accent-color: #0284c7;">
+                        <span style="font-size: 12.5px; font-weight: 700; color: #38bdf8;">🏦 Direct RTGS / NEFT (No Limit)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- High Value / ₹10,00,000 Banking Limit Alert Notice -->
+            <div id="dpLimitAlert" style="display: none; margin-bottom: 16px; padding: 12px 14px; background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 8px; color: #78350f;">
+                <div style="font-weight: 800; font-size: 13px; color: #b45309; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                    <span>⚠️</span>
+                    <span>Banking Limit Notice (₹5L / ₹10L Online Cap)</span>
+                </div>
+                <div style="font-size: 11.5px; color: #92400e; line-height: 1.45;">
+                    Indian retail banks and UPI/gateways strictly cap single online transactions at ₹1 Lakh - ₹5 Lakhs. For high-ticket payments, choose:
+                    <div style="margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="button" onclick="document.getElementById('dpPlanAdvance').checked=true; recalcDirectPay();" style="padding: 4px 8px; font-size: 11px; font-weight: 700; background: #0284c7; color: #fff; border: none; border-radius: 4px; cursor: pointer;">👉 Switch to ₹25,000 Token Advance</button>
+                        <button type="button" onclick="document.querySelectorAll('input[name=dp_method]')[1].checked=true; recalcDirectPay();" style="padding: 4px 8px; font-size: 11px; font-weight: 700; background: #059669; color: #fff; border: none; border-radius: 4px; cursor: pointer;">👉 Switch to Direct RTGS (Unlimited)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Direct Bank Details Box (Shown when RTGS selected) -->
+            <div id="dpBankDetailsBox" style="display: none; margin-bottom: 16px; padding: 12px 14px; background: rgba(2, 132, 199, 0.1); border: 1.5px solid #0284c7; border-radius: 8px;">
+                <div style="font-size: 12px; font-weight: 800; color: #38bdf8; margin-bottom: 6px;">
+                    🏦 SVEW Official Bank Wire Transfer Account:
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11.5px; color: #cbd5e1;">
+                    <div><strong>A/C Name:</strong> SHREE VARSHA ENG WORKS</div>
+                    <div><strong>Bank:</strong> State Bank of India (SBI)</div>
+                    <div><strong>A/C No:</strong> 39820010005432</div>
+                    <div><strong>IFSC Code:</strong> SBIN0001980 (Chitra, Bhavnagar)</div>
+                </div>
+                <div style="font-size: 10.5px; color: #94a3b8; margin-top: 5px;">
+                    * Submitting will reserve your order immediately and provide an official Proforma Invoice with payment clearance reference.
+                </div>
+            </div>
+
+            <!-- Customer Details Grid -->
+            <div style="margin-bottom: 16px;">
+                <label style="font-size: 13px; font-weight: 700; color: #cbd5e1; margin-bottom: 8px; display: block;">Customer &amp; Delivery Details (ગ્રાહકની વિગત):</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                    <div>
+                        <input type="text" id="dpName" required placeholder="Full Name *" value="<?= e($dpName) ?>" style="width: 100%; height: 38px; padding: 0 10px; background: #060911; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; font-size: 12.5px;">
+                    </div>
+                    <div>
+                        <input type="tel" id="dpPhone" required placeholder="Phone / Mobile Number *" value="<?= e($dpPhone) ?>" style="width: 100%; height: 38px; padding: 0 10px; background: #060911; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; font-size: 12.5px;">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                    <div>
+                        <input type="email" id="dpEmail" required placeholder="Email Address *" value="<?= e($dpEmail) ?>" style="width: 100%; height: 38px; padding: 0 10px; background: #060911; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; font-size: 12.5px;">
+                    </div>
+                    <div>
+                        <input type="text" id="dpCompany" placeholder="Company / Workshop Name" value="<?= e($dpCompany) ?>" style="width: 100%; height: 38px; padding: 0 10px; background: #060911; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; font-size: 12.5px;">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                    <div>
+                        <input type="text" id="dpAddress" required placeholder="Factory / Workshop Address *" value="<?= e($dpAddress) ?>" style="width: 100%; height: 38px; padding: 0 10px; background: #060911; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; font-size: 12.5px;">
+                    </div>
+                    <div>
+                        <input type="text" id="dpCity" required placeholder="City *" value="<?= e($dpCity) ?>" style="width: 100%; height: 38px; padding: 0 10px; background: #060911; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; font-size: 12.5px;">
+                    </div>
+                    <div>
+                        <input type="text" id="dpPincode" required placeholder="Pincode *" value="<?= e($dpPincode) ?>" style="width: 100%; height: 38px; padding: 0 10px; background: #060911; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; font-size: 12.5px;">
+                    </div>
+                </div>
+
+                <div>
+                    <input type="text" id="dpGst" placeholder="GSTIN (Optional for GST input tax credit, e.g. 24XXXXX...)" value="<?= e($dpGst) ?>" style="width: 100%; height: 38px; padding: 0 10px; background: #060911; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; font-size: 12.5px; text-transform: uppercase;">
+                </div>
+            </div>
+
+            <!-- Price Breakdown Summary -->
+            <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(0, 229, 255, 0.25); border-radius: 8px; padding: 12px 14px; margin-bottom: 18px;">
+                <table style="width: 100%; font-size: 12px; color: #cbd5e1; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 3px 0;">Billed Qty &amp; Base Price:</td>
+                        <td style="text-align: right; font-weight: 600;"><span id="dpLblQty">1 Unit</span> &bull; <span id="dpLblBasePrice">₹ 0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 3px 0;">GST (18% HSN 8459):</td>
+                        <td style="text-align: right; font-weight: 600;" id="dpLblGst">₹ 0.00</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 3px 0; color: #94a3b8;">Total Machine Gross Value:</td>
+                        <td style="text-align: right; font-weight: 700; color: #38bdf8;" id="dpLblFullTotal">₹ 0.00</td>
+                    </tr>
+                    <tr id="dpRowBalance" style="border-top: 1px dashed rgba(255,255,255,0.1);">
+                        <td style="padding: 4px 0; color: #f87171;">Pending Balance Due on Dispatch:</td>
+                        <td style="text-align: right; font-weight: 700; color: #f87171;" id="dpLblBalance">₹ 0.00</td>
+                    </tr>
+                    <tr style="border-top: 1.5px solid rgba(255,255,255,0.15); font-size: 14px;">
+                        <td style="padding: 6px 0; font-weight: 800; color: #fff;">TOTAL PAYABLE TODAY:</td>
+                        <td style="text-align: right; font-weight: 900; color: #34d399;" id="dpLblPayableToday">₹ 0.00</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Submit Button & Security Note -->
+            <div>
+                <button type="submit" id="btnSubmitDirectPay" style="width: 100%; height: 48px; border: none; border-radius: 8px; font-weight: 800; font-size: 15px; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);">
+                    <span>⚡ Pay Now via Razorpay</span>
+                </button>
+                <div style="font-size: 10.5px; color: #94a3b8; text-align: center; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>🔒 256-Bit SSL Encrypted</span>
+                    <span>&bull;</span>
+                    <span>Instant Certified Tax / Proforma Invoice</span>
+                    <span>&bull;</span>
+                    <span>Official Factory Guarantee</span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

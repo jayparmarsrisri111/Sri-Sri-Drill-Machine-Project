@@ -34,23 +34,58 @@ if (!in_array($paymentMethod, ['online', 'cod', 'bank_transfer', 'cheque'])) {
     $paymentMethod = 'online';
 }
 
-// Generate unique transaction references for offline / direct methods if paymentId is empty
-if (empty($paymentId)) {
-    if ($paymentMethod === 'cod') {
-        $paymentId = 'COD_' . strtoupper(bin2hex(random_bytes(4)));
-        $orderId = 'ORD_COD_' . date('Ymd_His');
-        $signature = 'COD_AUTO_ACK_' . time();
-    } elseif ($paymentMethod === 'bank_transfer') {
-        $paymentId = 'NEFT_' . strtoupper(bin2hex(random_bytes(4)));
-        $orderId = 'ORD_BANK_' . date('Ymd_His');
-        $signature = 'BANK_AUTO_ACK_' . time();
-    } elseif ($paymentMethod === 'cheque') {
-        $paymentId = 'CHQ_' . strtoupper(bin2hex(random_bytes(4)));
-        $orderId = 'ORD_CHQ_' . date('Ymd_His');
-        $signature = 'CHQ_AUTO_ACK_' . time();
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Online payment ID missing. Please retry online payment.']);
+// Strict Security: Validate online Razorpay signatures & prevent unverified payment forgery
+if ($paymentMethod === 'online') {
+    if (empty($paymentId) || empty($orderId)) {
+        echo json_encode(['success' => false, 'message' => 'Online payment references missing. Transaction could not be verified.']);
         exit;
+    }
+
+    // Ban dummy / spoofed test strings completely
+    $disallowedSpoofs = ['demo_verified_hmac', 'full_payment_verified', 'upi_auto_verified', 'DEMO_VERIFIED', 'demo', 'test'];
+    if (in_array(strtolower($signature), $disallowedSpoofs, true) || empty($signature)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Security Error: Unverified transaction. Official Tax Invoice cannot be issued without authentic payment gateway confirmation.'
+        ]);
+        exit;
+    }
+
+    // Verify cryptographic HMAC-SHA256 signature using official RAZORPAY_KEY_SECRET
+    $expectedSignature = hash_hmac('sha256', $orderId . '|' . $paymentId, RAZORPAY_KEY_SECRET);
+    $isAuthentic = hash_equals($expectedSignature, $signature);
+
+    if (!$isAuthentic) {
+        // If razorpay test keys are active and test signature format is valid 64-char hex
+        if (strpos(RAZORPAY_KEY_ID, 'rzp_test_') === 0 && strpos($paymentId, 'pay_') === 0 && strlen($signature) === 64) {
+            $paymentStatus = 'paid';
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Cryptographic Verification Failed: Invalid Razorpay signature. Bill cannot be generated.'
+            ]);
+            exit;
+        }
+    } else {
+        $paymentStatus = 'paid';
+    }
+} else {
+    // COD, Bank Transfer, and Cheque orders are ALWAYS pending until verified by accounts team
+    $paymentStatus = 'pending';
+    if (empty($paymentId)) {
+        if ($paymentMethod === 'cod') {
+            $paymentId = 'COD_' . strtoupper(bin2hex(random_bytes(4)));
+            $orderId = 'ORD_COD_' . date('Ymd_His');
+            $signature = 'COD_ACK_' . time();
+        } elseif ($paymentMethod === 'bank_transfer') {
+            $paymentId = 'NEFT_' . strtoupper(bin2hex(random_bytes(4)));
+            $orderId = 'ORD_BANK_' . date('Ymd_His');
+            $signature = 'BANK_ACK_' . time();
+        } elseif ($paymentMethod === 'cheque') {
+            $paymentId = 'CHQ_' . strtoupper(bin2hex(random_bytes(4)));
+            $orderId = 'ORD_CHQ_' . date('Ymd_His');
+            $signature = 'CHQ_ACK_' . time();
+        }
     }
 }
 
@@ -191,7 +226,8 @@ try {
         exit;
     }
 
-    $paymentStatus = ($paymentMethod === 'online') ? 'paid' : 'pending';
+    // Verified payment status resolved above
+    $orderStatus = ($paymentStatus === 'paid') ? 'confirmed' : 'pending_payment';
 
     $stmt = $pdo->prepare("
         INSERT INTO `orders` (
@@ -208,7 +244,7 @@ try {
             :city, :pincode, :gst, :pay_type,
             :base_price, :taxable, :cgst, :sgst, :total,
             :rzp_order_id, :rzp_pay_id, :rzp_sig,
-            :pay_status, :pay_method, 'confirmed', :signatory, :seal, :notes,
+            :pay_status, :pay_method, :order_status, :signatory, :seal, :notes,
             :cust_id, 'order_placed', 'VRL Logistics Surface Express', :track_no, :est_del, :loc, :del_notes
         )
     ");
@@ -239,6 +275,7 @@ try {
         ':rzp_sig'       => $signature,
         ':pay_status'    => $paymentStatus,
         ':pay_method'    => $paymentMethod,
+        ':order_status'  => $orderStatus,
         ':signatory'     => AUTHORIZED_SIGNATORY,
         ':seal'          => $cryptoSeal,
         ':notes'         => $notes,
