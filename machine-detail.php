@@ -989,12 +989,13 @@ if ($isSparePart) {
             <?php foreach ($compatParts as $cp): ?>
                 <div style="background: rgba(11, 17, 32, 0.9); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.25s;" onmouseover="this.style.borderColor='var(--accent-cyan)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(0, 229, 255, 0.2)'; this.style.transform='none';">
                     <div>
-                        <div style="height: 150px; border-radius: 8px; overflow: hidden; background: #060911; margin-bottom: 12px; position: relative;">
-                            <a href="<?= BASE_URL ?>/machine-detail.php?id=<?= $cp['id'] ?>">
-                                <img src="<?= assetUrl($cp['image_url']) ?>" alt="<?= e($cp['name']) ?>" style="width: 100%; height: 100%; object-fit: cover;">
-                            </a>
-                            <span style="position: absolute; top: 8px; left: 8px; background: rgba(0, 229, 255, 0.2); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 4px;">
+                        <div style="height: 155px; border-radius: 8px; overflow: hidden; background: #060911; margin-bottom: 12px; position: relative; cursor: zoom-in;" onclick="openPartZoomModal('<?= assetUrl($cp['image_url']) ?>', '<?= e(addslashes($cp['name'])) ?>', '<?= e(addslashes($cp['model_number'])) ?>', '<?= number_format($cp['price'], 2) ?>', '<?= e(addslashes($cp['short_desc'] ?? 'Genuine Factory Spare Part')) ?>', <?= intval($cp['id']) ?>)" title="Click to Zoom / મોટો ફોટો જોવા ક્લિક કરો">
+                            <img src="<?= assetUrl($cp['image_url']) ?>" alt="<?= e($cp['name']) ?>" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+                            <span style="position: absolute; top: 8px; left: 8px; background: rgba(0, 229, 255, 0.25); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 4px; z-index: 2;">
                                 <?= e($cp['model_number']) ?>
+                            </span>
+                            <span style="position: absolute; bottom: 8px; right: 8px; background: rgba(2, 6, 23, 0.85); border: 1px solid rgba(0,229,255,0.4); color: #38bdf8; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px; display: flex; align-items: center; gap: 4px; z-index: 2;">
+                                <span>🔍</span> <span>Zoom</span>
                             </span>
                         </div>
                         <div style="font-size: 10.5px; font-weight: 700; color: #38bdf8; text-transform: uppercase;">
@@ -1914,5 +1915,98 @@ function submitDirectPayment(e) {
         </form>
     </div>
 </div>
+
+<!-- =========================================================================
+     GENUINE SPARE PART LIGHTBOX & IMAGE ENLARGE MODAL (#partZoomModal)
+     ========================================================================= -->
+<div id="partZoomModal" style="display: none; position: fixed; inset: 0; z-index: 999999; background: rgba(2, 6, 23, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); align-items: center; justify-content: center; padding: 20px; overflow-y: auto;" onclick="if(event.target===this) closePartZoomModal()">
+    <div style="background: #090e1c; border: 2px solid var(--accent-cyan); border-radius: 16px; max-width: 680px; width: 100%; box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 35px rgba(0, 229, 255, 0.25); color: #fff; overflow: hidden; position: relative; animation: modalPopIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
+        
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.85);">
+            <div>
+                <span id="pzmModelTag" style="font-size: 11px; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.8px; background: rgba(0,229,255,0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(0,229,255,0.4);">
+                    SVEW GENUINE PART
+                </span>
+                <h3 id="pzmName" style="font-size: 17px; font-weight: 800; color: #fff; margin: 4px 0 0;">Part Name</h3>
+            </div>
+            <button type="button" onclick="closePartZoomModal()" style="background: rgba(255,255,255,0.1); border: none; color: #cbd5e1; font-size: 24px; line-height: 1; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.4)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">&times;</button>
+        </div>
+
+        <!-- Enlarge Image Showcase -->
+        <div style="background: radial-gradient(circle, rgba(15, 23, 42, 0.95) 0%, #030712 100%); padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <img id="pzmImage" src="" alt="Enlarged Spare Part" style="max-width: 100%; max-height: 52vh; object-fit: contain; border-radius: 10px; filter: drop-shadow(0 10px 25px rgba(0,0,0,0.85)); transition: transform 0.3s ease;">
+            <div style="font-size: 11px; color: #94a3b8; margin-top: 8px;">
+                🔍 100% Original Factory Component • Induction Hardened &amp; Precision Ground
+            </div>
+        </div>
+
+        <!-- Footer Info & Actions -->
+        <div style="padding: 16px 20px; background: rgba(11, 17, 32, 0.95);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                <div>
+                    <div style="font-size: 11px; color: #94a3b8;">Factory Direct Price:</div>
+                    <div id="pzmPrice" style="font-size: 22px; font-weight: 900; color: #34d399; font-family: 'Space Grotesk', sans-serif;">
+                        ₹ 0.00
+                    </div>
+                </div>
+                <div style="font-size: 12px; color: #cbd5e1; max-width: 380px; line-height: 1.4;" id="pzmDesc">
+                    Genuine SVEW Spare Part.
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px;">
+                <button type="button" id="pzmBtnAddCart" class="btn btn-outline" style="border-color: #f59e0b; color: #fbbf24; background: rgba(245, 158, 11, 0.12); font-weight: 700; padding: 10px;">
+                    🛒 Add to Cart
+                </button>
+                <a href="#" id="pzmBtnBuyNow" class="btn btn-primary" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; font-weight: 800; text-align: center; padding: 10px; text-decoration: none;">
+                    💳 Buy Now
+                </a>
+                <a href="#" id="pzmBtnDetail" class="btn btn-outline" style="border-color: #38bdf8; color: #38bdf8; font-weight: 700; padding: 10px; text-decoration: none;">
+                    Details →
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openPartZoomModal(imgUrl, name, model, price, desc, id) {
+    const modal = document.getElementById('partZoomModal');
+    if (!modal) return;
+    
+    document.getElementById('pzmImage').src = imgUrl;
+    document.getElementById('pzmName').textContent = name;
+    document.getElementById('pzmModelTag').textContent = model;
+    document.getElementById('pzmPrice').textContent = '₹ ' + price;
+    document.getElementById('pzmDesc').textContent = desc || 'Original factory spare part manufactured in Bhavnagar unit.';
+    
+    document.getElementById('pzmBtnBuyNow').href = '<?= BASE_URL ?>/checkout.php?product_id=' + id;
+    document.getElementById('pzmBtnDetail').href = '<?= BASE_URL ?>/machine-detail.php?id=' + id;
+    
+    const btnAdd = document.getElementById('pzmBtnAddCart');
+    btnAdd.onclick = function() {
+        if (window.addToCart) {
+            window.addToCart(id, 1, btnAdd);
+        }
+    };
+    
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closePartZoomModal() {
+    const modal = document.getElementById('partZoomModal');
+    if (!modal) return;
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closePartZoomModal();
+    }
+});
+</script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

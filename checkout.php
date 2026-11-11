@@ -72,6 +72,19 @@ require_once __DIR__ . '/includes/navbar.php';
         background: linear-gradient(180deg, rgba(6, 9, 17, 0.95) 0%, rgba(11, 17, 32, 0.8) 100%);
         border-bottom: 1px solid var(--border-subtle);
     }
+    .checkout-hero-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 10px;
+    }
+    .checkout-hero-logo {
+        height: 48px;
+        width: 48px;
+        border-radius: 50%;
+        border: 1.5px solid var(--accent-cyan);
+        flex-shrink: 0;
+    }
     .checkout-grid {
         display: grid;
         grid-template-columns: 1.15fr 0.85fr;
@@ -82,7 +95,37 @@ require_once __DIR__ . '/includes/navbar.php';
     @media (max-width: 992px) {
         .checkout-grid {
             grid-template-columns: 1fr;
-            gap: 30px;
+            gap: 25px;
+        }
+    }
+    @media (max-width: 768px) {
+        .checkout-hero {
+            padding: 18px 0 14px;
+        }
+        .checkout-hero-header {
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+        }
+        .checkout-hero-header h1 {
+            font-size: 19px !important;
+            line-height: 1.25 !important;
+            margin-top: 4px !important;
+        }
+        .checkout-hero-header .pill-badge {
+            font-size: 10px !important;
+            padding: 2px 7px !important;
+        }
+        .checkout-grid {
+            margin: 15px 0 35px !important;
+            gap: 20px !important;
+        }
+        .checkout-card {
+            padding: 16px !important;
+        }
+        .order-summary-card {
+            padding: 16px !important;
+            position: static !important;
         }
     }
     .checkout-card {
@@ -218,14 +261,14 @@ require_once __DIR__ . '/includes/navbar.php';
 <!-- Top Title -->
 <section class="checkout-hero">
     <div class="container">
-        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
-            <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand" style="height: 48px; width: 48px; border-radius: 50%; border: 1.5px solid var(--accent-cyan);">
-            <div>
-                <span class="pill-badge" style="background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #34d399;">
+        <div class="checkout-hero-header">
+            <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand" class="checkout-hero-logo">
+            <div style="flex: 1; min-width: 0;">
+                <span class="pill-badge" style="background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #34d399; font-size: 11px;">
                     🔒 256-BIT SECURE RAZORPAY GATEWAY
                 </span>
-                <h1 style="font-family: var(--font-heading); font-size: 26px; color: #fff; margin-top: 4px;">
-                    Online Machine Booking & Official Tax Invoice
+                <h1 style="font-family: var(--font-heading); font-size: 24px; color: #fff; margin-top: 4px; word-break: break-word;">
+                    Online Machine Booking &amp; Official Tax Invoice
                 </h1>
             </div>
         </div>
@@ -516,12 +559,15 @@ foreach ($products as $p) {
                     </select>
 
                     <!-- Dynamic helper panels for selected method -->
-                    <div id="methodInfoOnline" class="method-info-box" style="margin-top: 14px; background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.35); border-radius: 8px; padding: 12px 16px;">
-                        <div style="font-size: 13px; font-weight: 800; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
+                    <div id="methodInfoOnline" class="method-info-box" style="margin-top: 14px; background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.35); border-radius: 8px; padding: 14px 16px;">
+                        <div style="font-size: 13.5px; font-weight: 800; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
                             <span>🔒</span> 256-Bit SSL Encrypted Razorpay Gateway
                         </div>
                         <div style="font-size: 12px; color: #cbd5e1; margin-top: 4px; line-height: 1.5;">
-                            Pay securely with Google Pay, PhonePe, Paytm, BHIM UPI, RuPay, Visa, MasterCard, or NetBanking across 50+ banks. Instant token confirmation &amp; official GST Tax Invoice generated immediately.
+                            Pay securely with Google Pay, PhonePe, Paytm, BHIM UPI, RuPay, Visa, MasterCard, or NetBanking across 50+ banks. Instant token confirmation &amp; official GST Tax Invoice generated immediately upon successful payment.
+                        </div>
+                        <div style="margin-top: 10px; padding: 8px 12px; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 6px; font-size: 11.5px; color: #fbbf24; line-height: 1.45;">
+                            💡 <strong>બેંકિંગ લિમિટ માર્ગદર્શિકા (UPI Limit Notice):</strong> ભારતીય બેંકો અને UPI એપ્સમાં સિંગલ પેમેન્ટ પર ₹25,000 થી ₹1,00,000 ની લિમિટ હોય છે. જેથી ₹25,000 થી વધુ રકમનું UPI પેમેન્ટ બેંક તરફથી અટકી શકે છે. સરળ પેમેન્ટ માટે <strong>₹ 25,000 ટોકન એડવાન્સ</strong> પસંદ કરો અથવા <strong>ડેબિટ/ક્રેડિટ કાર્ડ / નેટબેંકિંગ</strong> અથવા <strong>ડાયરેક્ટ RTGS / NEFT</strong> પસંદ કરો.
                         </div>
                     </div>
 
@@ -539,18 +585,39 @@ foreach ($products as $p) {
 
                     <div id="methodInfoBank" class="method-info-box" style="display: none; margin-top: 14px; background: rgba(2, 132, 199, 0.12); border: 1.5px solid #0284c7; border-radius: 8px; padding: 14px;">
                         <div style="font-size: 13.5px; font-weight: 800; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
-                            <span>🏛️</span> Shree Varsha Current Account (HDFC Bank)
+                            <span>🏛️</span> Shree Varsha Current Account (HDFC / SBI Bank)
                         </div>
                         <div style="font-size: 12px; color: #cbd5e1; margin-top: 8px; line-height: 1.6; background: rgba(0,0,0,0.4); padding: 10px 14px; border-radius: 6px; font-family: monospace;">
                             <strong>A/C Name:</strong> SHREE VARSHA ENGINEERING WORKS<br>
-                            <strong>Bank:</strong> HDFC Bank Ltd.<br>
+                            <strong>Bank:</strong> HDFC Bank Ltd. (or State Bank of India)<br>
                             <strong>A/C No:</strong> 50200088992211 (Current Account)<br>
                             <strong>IFSC Code:</strong> HDFC0000123<br>
                             <strong>Branch:</strong> Waghawadi Road, Bhavnagar - 364002<br>
                             <strong>UPI ID:</strong> shreevarsha@okhdfcbank
                         </div>
-                        <div style="margin-top: 6px; font-size: 11px; color: #94a3b8;">
-                            Initiate NEFT/RTGS/IMPS transfer. Your production slot will be confirmed upon UTR receipt.
+                        
+                        <!-- Required Payment Details Form for Direct Bank Transfer -->
+                        <div style="margin-top: 14px; padding: 12px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 8px;">
+                            <div style="font-size: 12.5px; font-weight: 800; color: #38bdf8; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                                <span>📝</span> જરૂરી ટ્રાન્સફર વિગતો ભરો (Enter Transfer Details):
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div>
+                                    <label class="form-label" style="font-size: 11px; margin-bottom: 3px; color: #fff;">UTR / Transaction Ref No *</label>
+                                    <input type="text" id="bankUtrInput" class="form-control" placeholder="e.g. UTR123456789012" style="font-size: 12.5px; height: 38px; text-transform: uppercase;">
+                                </div>
+                                <div>
+                                    <label class="form-label" style="font-size: 11px; margin-bottom: 3px; color: #fff;">Sender Bank Name *</label>
+                                    <input type="text" id="bankSenderInput" class="form-control" placeholder="e.g. State Bank of India" style="font-size: 12.5px; height: 38px;">
+                                </div>
+                                <div style="grid-column: span 2;">
+                                    <label class="form-label" style="font-size: 11px; margin-bottom: 3px; color: #fff;">Transfer Date *</label>
+                                    <input type="date" id="bankDateInput" class="form-control" value="<?= date('Y-m-d') ?>" style="font-size: 12.5px; height: 38px;">
+                                </div>
+                            </div>
+                            <div style="font-size: 10.5px; color: #94a3b8; margin-top: 6px;">
+                                * સુરક્ષા ચકાસણી માટે UTR નંબર અને તમારી બેંકનું નામ દાખલ કરવું ફરજિયાત છે.
+                            </div>
                         </div>
                     </div>
 
@@ -560,6 +627,30 @@ foreach ($products as $p) {
                         </div>
                         <div style="font-size: 12px; color: #cbd5e1; margin-top: 5px; line-height: 1.5;">
                             Issue cheque or DD in favor of <strong>"SHREE VARSHA ENGINEERING WORKS"</strong>, payable at Bhavnagar. Hand it over to the delivery partner on arrival or courier it to our factory address.
+                        </div>
+
+                        <!-- Required Payment Details Form for Cheque / DD -->
+                        <div style="margin-top: 14px; padding: 12px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(192, 132, 252, 0.4); border-radius: 8px;">
+                            <div style="font-size: 12.5px; font-weight: 800; color: #c084fc; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                                <span>📝</span> જરૂરી ચેક વિગતો ભરો (Enter Cheque / DD Details):
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div>
+                                    <label class="form-label" style="font-size: 11px; margin-bottom: 3px; color: #fff;">Cheque / DD Number *</label>
+                                    <input type="text" id="chequeNumberInput" class="form-control" placeholder="e.g. 000452 (6 digits)" style="font-size: 12.5px; height: 38px;">
+                                </div>
+                                <div>
+                                    <label class="form-label" style="font-size: 11px; margin-bottom: 3px; color: #fff;">Bank &amp; Branch Name *</label>
+                                    <input type="text" id="chequeBankInput" class="form-control" placeholder="e.g. HDFC Bank, GIDC Branch" style="font-size: 12.5px; height: 38px;">
+                                </div>
+                                <div style="grid-column: span 2;">
+                                    <label class="form-label" style="font-size: 11px; margin-bottom: 3px; color: #fff;">Cheque Issue Date *</label>
+                                    <input type="date" id="chequeDateInput" class="form-control" value="<?= date('Y-m-d') ?>" style="font-size: 12.5px; height: 38px;">
+                                </div>
+                            </div>
+                            <div style="font-size: 10.5px; color: #94a3b8; margin-top: 6px;">
+                                * સુરક્ષા ચકાસણી માટે ચેક નંબર અને બેંકનું નામ દાખલ કરવું ફરજિયાત છે.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -814,6 +905,35 @@ foreach ($products as $p) {
         btnSubmitDirectOrder.addEventListener('click', function(e) {
             e.preventDefault();
             const method = paymentMethodSelect ? paymentMethodSelect.value : 'cod';
+            
+            if (method === 'bank_transfer') {
+                const utr = document.getElementById('bankUtrInput') ? document.getElementById('bankUtrInput').value.trim() : '';
+                const sender = document.getElementById('bankSenderInput') ? document.getElementById('bankSenderInput').value.trim() : '';
+                if (!utr) {
+                    alert('⚠️ કૃપા કરીને બેંક ટ્રાન્સફરનો UTR / ટ્રાન્ઝેક્શન રેફરન્સ નંબર દાખલ કરો (Please enter UTR / Transaction Reference Number).');
+                    if (document.getElementById('bankUtrInput')) document.getElementById('bankUtrInput').focus();
+                    return;
+                }
+                if (!sender) {
+                    alert('⚠️ કૃપા કરીને તમારી રવાનગી બેંકનું નામ દાખલ કરો (Please enter Remitting Bank Name).');
+                    if (document.getElementById('bankSenderInput')) document.getElementById('bankSenderInput').focus();
+                    return;
+                }
+            } else if (method === 'cheque') {
+                const chqNum = document.getElementById('chequeNumberInput') ? document.getElementById('chequeNumberInput').value.trim() : '';
+                const chqBank = document.getElementById('chequeBankInput') ? document.getElementById('chequeBankInput').value.trim() : '';
+                if (!chqNum) {
+                    alert('⚠️ કૃપા કરીને ચેક / ડીડી નંબર દાખલ કરો (Please enter 6-digit Cheque / DD Number).');
+                    if (document.getElementById('chequeNumberInput')) document.getElementById('chequeNumberInput').focus();
+                    return;
+                }
+                if (!chqBank) {
+                    alert('⚠️ કૃપા કરીને બેંક અને બ્રાન્ચનું નામ દાખલ કરો (Please enter Bank & Branch Name).');
+                    if (document.getElementById('chequeBankInput')) document.getElementById('chequeBankInput').focus();
+                    return;
+                }
+            }
+
             btnSubmitDirectOrder.disabled = true;
             btnSubmitDirectOrder.innerHTML = '⏳ Confirming ' + method.toUpperCase() + ' Order...';
             submitOrderAndRedirect(null, null, null, method);
@@ -1108,6 +1228,22 @@ foreach ($products as $p) {
         postData.append('notes', notes);
         postData.append('from_cart', isFromCart ? "1" : "0");
 
+        if (chosenMethod === 'bank_transfer') {
+            const utr = document.getElementById('bankUtrInput') ? document.getElementById('bankUtrInput').value.trim() : '';
+            const sender = document.getElementById('bankSenderInput') ? document.getElementById('bankSenderInput').value.trim() : '';
+            const bDate = document.getElementById('bankDateInput') ? document.getElementById('bankDateInput').value : '';
+            postData.append('bank_utr', utr);
+            postData.append('bank_sender_name', sender);
+            postData.append('bank_transfer_date', bDate);
+        } else if (chosenMethod === 'cheque') {
+            const chqNum = document.getElementById('chequeNumberInput') ? document.getElementById('chequeNumberInput').value.trim() : '';
+            const chqBank = document.getElementById('chequeBankInput') ? document.getElementById('chequeBankInput').value.trim() : '';
+            const chqDate = document.getElementById('chequeDateInput') ? document.getElementById('chequeDateInput').value : '';
+            postData.append('cheque_number', chqNum);
+            postData.append('cheque_bank_name', chqBank);
+            postData.append('cheque_date', chqDate);
+        }
+
         if (isFromCart && cartSummary && cartSummary.items && cartSummary.items.length > 0) {
             postData.append('machine_id', cartSummary.items[0].id || 1);
             postData.append('machine_name', 'Combined Cart Order (' + cartSummary.items.length + ' Items)');
@@ -1275,12 +1411,12 @@ foreach ($products as $p) {
                 },
                 "modal": {
                     "ondismiss": function() {
-                        resetPaymentButtonState('⚠️ <strong>Payment Interrupted:</strong> Gateway window closed. No payment was deducted. You can retry Online Payment or choose <strong>Cash on Delivery (COD)</strong> or <strong>Direct Bank Transfer</strong> above.', false);
+                        resetPaymentButtonState('⚠️ <strong>Payment Interrupted / Closed:</strong> Gateway window closed without payment. No amount was deducted and NO bill has been generated. Bill is only issued after verified payment realization.', true);
                     }
                 },
                 "handler": function (response) {
                     if (!response || !response.razorpay_payment_id) {
-                        resetPaymentButtonState('⚠️ <strong>Payment Error:</strong> Payment ID not returned. Bill cannot be generated.', true);
+                        resetPaymentButtonState('⚠️ <strong>Payment Error:</strong> Payment confirmation missing. Bill cannot be generated without authentic payment proof.', true);
                         return;
                     }
                     submitOrderAndRedirect(
@@ -1300,8 +1436,9 @@ foreach ($products as $p) {
             try {
                 const rzp = new Razorpay(options);
                 rzp.on('payment.failed', function (resp){
-                    const reason = (resp && resp.error && resp.error.description) ? resp.error.description : 'Transaction cancelled';
-                    resetPaymentButtonState('⚠️ <strong>Payment Failed / Cancelled:</strong> ' + reason + '. No payment was processed. Bill cannot be issued for failed transactions.', true);
+                    const reason = (resp && resp.error && resp.error.description) ? resp.error.description : 'Transaction cancelled by bank / limit exceeded';
+                    resetPaymentButtonState('❌ <strong>Payment Unsuccessful:</strong> ' + reason + '. No payment was processed and NO bill has been generated. Note: For payments above ₹25,000, please select <strong>Token Booking Advance (₹25,000)</strong> or <strong>Direct RTGS/NEFT Bank Transfer</strong>.', true);
+                });
                 });
                 rzp.open();
             } catch (err) {

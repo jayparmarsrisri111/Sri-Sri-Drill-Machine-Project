@@ -549,300 +549,235 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!isUser) playBeep(520, 0.1);
     }
 
-    // Natural Language Engineering Knowledgebase
+    // Natural Language Engineering Knowledgebase (Precision Multi-Lingual AI Assistant)
     function getBotResponse(rawText) {
         const q = rawText.toLowerCase().trim();
+        const isGujarati = /[\u0A80-\u0AFF]/.test(rawText) || q.includes('chhe') || q.includes('nathi') || q.includes('ketla') || q.includes('kem') || q.includes('bhav') || q.includes('saru');
+        const isHindi = /[\u0900-\u097F]/.test(rawText) || q.includes('kya') || q.includes('kaise') || q.includes('kitna') || q.includes('chahiye');
 
-        // 1. 40mm Radial Drill Price & Specs
-        if (q.includes('40mm') || q.includes('rd-40') || q.includes('rd 40') || q.includes('all geared radial')) {
-            const rich = `
-                <div class="chat-rich-card">
-                    <img src="<?= assetUrl('assets/images/machinery/radial-drill-40-real.jpg') ?>" alt="RD-40 Real Photo">
-                    <div class="chat-card-title">SVEW-RD-40 All-Geared Radial Drill</div>
-                    <div class="chat-card-spec">Capacity: 40mm Steel / 50mm C.I. • 8 Speeds (50-1800 RPM)</div>
-                    <div class="chat-card-price">Ex-Factory: ₹ 2,85,000 + 18% GST (Token: ₹25,000)</div>
-                    <div class="chat-card-actions">
-                        <a href="<?= BASE_URL ?>/checkout.php?product_id=1" class="btn btn-primary" style="background:#10b981; font-size:11px;">💳 Book Now</a>
-                        <a href="<?= BASE_URL ?>/machine-detail.php?id=1" class="btn btn-outline" style="font-size:11px;">Full Specs</a>
-                    </div>
-                </div>
-            `;
+        // 1. Owners, Leadership & Company Founders
+        if (q.includes('owner') || q.includes('founder') || q.includes('director') || q.includes('maalik') || q.includes('માલિક') || q.includes('ડાયરેક્ટર') || q.includes('jay') || q.includes('jitubhai') || q.includes('jitendra') || q.includes('parmar') || q.includes('કોણ છે')) {
+            if (isGujarati) {
+                return {
+                    text: `<p><strong>શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સ (ભાવનગર) ની લીડરશિપ:</strong></p>
+                           <p>👤 <strong>શ્રી જીતેન્દ્રભાઈ પરમાર</strong> - ફાઉન્ડર અને ટેકનિકલ ડિરેક્ટર (૨૫+ વર્ષનો ઇન્ડસ્ટ્રિયલ અનુભવ). મો: <strong>+91 9824913555</strong><br>
+                              👤 <strong>શ્રી જય પરમાર</strong> - પ્રોડક્શન એન્જિનિયર અને અધિકૃત હસ્તાક્ષરકર્તા (Authorized Signatory). મો: <strong>+91 9714611331</strong><br>
+                              ફેક્ટરી: શેડ L/786, GIDC, હાદાનગર પાસે, ભાવનગર - 364003 (ગુજરાત).</p>`,
+                    rich: `<div style="margin-top:6px;"><a href="<?= getWhatsAppLink(COMPANY_WHATSAPP, 'નમસ્તે જીતેન્દ્રભાઈ અને જયભાઈ, હું વર્ષા બ્રાન્ડ ડ્રિલ મશીન બાબતે વાત કરવા માંગુ છું.') ?>" target="_blank" class="btn btn-whatsapp" style="font-size:11px; display:block; text-align:center;">💬 ડાયરેક્ટ વોટ્સએપ કરો</a></div>`
+                };
+            }
             return {
-                text: `<p><strong>SVEW-RD-40 All-Geared Radial Drill</strong> is our most popular industrial machine! Hardened & ground alloy steel gears, power elevation column, 1650 kg heavy vibration-free Grade-25 casting. Factory price: <strong>₹ 2,85,000</strong> (+18% GST). Token advance: ₹ 25,000.</p>`,
-                rich: rich
+                text: `<p><strong>Shree Varsha Engineering Works Leadership:</strong></p>
+                       <p>👤 <strong>Jitendrabhai Parmar</strong> - Founder &amp; Technical Director (+91 9824913555)<br>
+                          👤 <strong>Jay Parmar</strong> - Production Engineer &amp; Authorized Signatory (+91 9714611331)<br>
+                          Our ISO 9001:2015 manufacturing plant is located at Shed L/786, GIDC, Bhavnagar, Gujarat.</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= getWhatsAppLink(COMPANY_WHATSAPP, 'Hello Jay Parmar & Jitendrabhai, I would like to inquire about Varsha Brand drill machines.') ?>" target="_blank" class="btn btn-whatsapp" style="font-size:11px; display:block; text-align:center;">💬 Chat Directly on WhatsApp</a></div>`
             };
         }
 
-        // 1.1 Spare Parts & Tooling Inquiries (Real Images & 100% Sachi Details)
-        if (q.includes('part') || q.includes('spares') || q.includes('spindle') || q.includes('gear') || q.includes('chuck') || q.includes('pump') || q.includes('table') || q.includes('accessories') || q.includes('સ્પેર') || q.includes('પાર્ટ')) {
-            const rich = `
-                <div class="chat-rich-card">
-                    <img src="<?= assetUrl('assets/images/machinery/part-spindle-quill.jpg') ?>" alt="Genuine Spare Parts Real Photo">
-                    <div class="chat-card-title">⚙️ Genuine Varsha Factory Spare Parts</div>
-                    <div class="chat-card-spec">• MT-4 Alloy Spindle Sleeve: ₹ 14,500<br>• 8-Speed Headstock Gear Set: ₹ 22,000<br>• T-Slot Box Table (500x600): ₹ 18,500<br>• 1-16mm Keyless Chuck MT-4: ₹ 3,800<br>• Coolant Pump & Hose Kit: ₹ 4,200</div>
-                    <div class="chat-card-actions" style="margin-top:6px;">
-                        <a href="<?= BASE_URL ?>/machines.php?category=spindles-quills" class="btn btn-outline" style="font-size:11px; flex:1;">Browse All Parts</a>
-                        <a href="<?= BASE_URL ?>/machine-detail.php?id=101" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">View Real Photos & Specs</a>
-                    </div>
-                </div>
-            `;
+        // 2. Warranty, Guarantee & Quality Assurance
+        if (q.includes('warranty') || q.includes('guarantee') || q.includes('વોરંટી') || q.includes('ગેરેન્ટી') || q.includes('quality') || q.includes('ટેસ્ટિંગ') || q.includes('ખરાબી') || q.includes('service')) {
             return {
-                text: `<p>હા, અમે તમામ <strong>Varsha Brand Radial & Pillar Drill Machines</strong> ના ૧૦૦% ઓરિજિનલ સ્પેરપાર્ટ્સ (Spindle Quill, Alloy Gears, Box Table, Coolant Pump, Chucks) સ્ટોક રાખીએ છીએ. દરેક પાર્ટના રિયલ ફોટો અને સ્પેશિફિકેશન તમે જોઈ શકો છો.</p>`,
-                rich: rich
+                text: `<p><strong>🛡️ Official Manufacturer Warranty &amp; Quality Guarantee:</strong></p>
+                       <p>• <strong>12 Months (1 Year) Comprehensive Warranty</strong> on casting frame, hardened gear train, and spindle assembly.<br>
+                          • Grade-25 heavy-duty cast iron body with vibration-free stability.<br>
+                          • Every machine undergoes a 100% pre-dispatch dial-gauge alignment &amp; torque run-test at our Bhavnagar plant.<br>
+                          • Genuine spare parts and engineer service support available directly from factory.</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/catalog.php" class="btn btn-outline" style="font-size:11px; display:block; text-align:center;">📖 View Quality Certifications</a></div>`
             };
         }
 
-        // 1.15 High-Value Payment / 10 Lakhs Limit in Razorpay Inquiries
-        if (q.includes('1000000') || q.includes('10 lakh') || q.includes('10 લાખ') || q.includes('દસ લાખ') || q.includes('500000') || q.includes('5 lakh') || (q.includes('payment') && (q.includes('limit') || q.includes('fail') || q.includes('not working') || q.includes('નથી થતું') || q.includes('અટકી')))) {
-            const rich = `
-                <div class="chat-rich-card">
-                    <div class="chat-card-title">🏦 High-Value Payment Solution (₹10,00,000 પેમેન્ટ સોલ્યુશન)</div>
-                    <div class="chat-card-spec">
-                        • <strong>શા માટે Razorpay માં ₹10 લાખ એકસાથે નથી થતા?</strong> RBI અને NPCI ના નિયમ મુજબ સિંગલ UPI અને ડેબિટ/ક્રેડિટ કાર્ડ પર ₹1 થી 5 લાખની સુરક્ષા મર્યાદા (Daily Limit) હોય છે.<br>
-                        • <strong>સોલ્યુશન 1 (ટોકન એડવાન્સ):</strong> માત્ર <strong>₹ 25,000</strong> ટોકન Razorpay થી ભરીને મશીન સ્લોટ બુક કરો. બાકી રકમ ડિસ્પેચ પહેલાં ચુકવો.<br>
-                        • <strong>સોલ્યુશન 2 (ડાયરેક્ટ RTGS / NEFT):</strong> કંપનીના SBI Current Account માં કોઈપણ લિમિટ વગર અનલિમિટેડ RTGS કરો (0% ગેટવે ચાર્જ).
-                    </div>
-                    <div class="chat-card-actions" style="margin-top:8px;">
-                        <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#0284c7;">🪙 ₹25,000 ટોકનથી બુક કરો</a>
-                        <a href="<?= BASE_URL ?>/contact.php" class="btn btn-outline" style="font-size:11px; flex:1;">🏦 RTGS બેંક વિગત જુઓ</a>
-                    </div>
-                </div>
-            `;
+        // 3. Delivery, Shipping Timeline & Transport Carriers
+        if (q.includes('delivery') || q.includes('dispatch') || q.includes('transport') || q.includes('freight') || q.includes('shipping') || q.includes('કેટલા દિવસ') || q.includes('ક્યારે મળશે') || q.includes('ડિલિવરી') || q.includes('ડિસ્પેચ') || q.includes('kitne din')) {
             return {
-                text: `<p><strong>₹ 10,00,000 (10 Lakhs) પેમેન્ટ સોલ્યુશન:</strong></p>
-                       <p>રિઝર્વ બેંક (RBI) અને બેંકોના સિક્યુરિટી નિયમ મુજબ સામાન્ય UPI કે રિટેલ નેટબેંકિંગમાં એકસાથે ₹10 લાખનું સિંગલ ટ્રાન્ઝેક્શન મંજૂર થતું નથી. આ માટે અમારા ૨ બેસ્ટ સોલ્યુશન છે:<br>
-                       <strong>૧. ટોકન એડવાન્સ:</strong> માત્ર <strong>₹ 25,000</strong> ઓનલાઇન ભરીને પ્રોડક્શન બુકિંગ લોક કરી દો.<br>
-                       <strong>૨. અનલિમિટેડ RTGS / NEFT:</strong> અમારા શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સના SBI કરંટ એકાઉન્ટ (A/C: 39820010005432, IFSC: SBIN0001980) માં સીધા RTGS ટ્રાન્સફર કરી શકો છો.</p>`,
-                rich: rich
+                text: `<p><strong>🚚 Dispatch &amp; Doorstep Logistics Timeline:</strong></p>
+                       <p>• <strong>Gujarat:</strong> 24 to 48 hours (૧ થી ૨ દિવસ)<br>
+                          • <strong>Maharashtra &amp; MP:</strong> 48 to 72 hours (૨ થી ૩ દિવસ)<br>
+                          • <strong>Rest of India:</strong> 3 to 5 business days<br>
+                          • <strong>Logistics Partners:</strong> VRL Logistics Heavy Freight, TCI Freight, ARC.<br>
+                          • Consignment packed in reinforced wooden crate with anti-rust oil wrap and official LR / E-Way Bill.</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/track-order.php" class="btn btn-primary" style="background:linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color:#060911; font-weight:800; font-size:11px; display:block; text-align:center;">🚚 Amazon-Style Live Order Tracking</a></div>`
             };
         }
 
-        // 1.16 Direct Product Payment Inquiries (પ્રોડક્ટ પરથી સીધું પેમેન્ટ)
-        if (q.includes('direct pay') || q.includes('direct payment') || q.includes('સીધું પેમેન્ટ') || q.includes('પ્રોડક્ટ પરથી') || q.includes('product payment') || q.includes('instant pay')) {
-            const rich = `
-                <div class="chat-rich-card">
-                    <div class="chat-card-title">⚡ Instant Direct Pay (પ્રોડક્ટ પરથી સીધું પેમેન્ટ)</div>
-                    <div class="chat-card-spec">
-                        હવે તમારે કાર્ટમાં ગયા વગર સીધું જ પેમેન્ટ કરવું હોય તો દરેક મશીનના પેજ પર નવું <strong>⚡ Instant Direct Pay</strong> બટન આપેલું છે. જેના પર ક્લિક કરવાથી તરત જ Razorpay અથવા Direct RTGS સિલેક્ટ કરી બુકિંગ થઈ જશે!
-                    </div>
-                    <div class="chat-card-actions" style="margin-top:8px;">
-                        <a href="<?= BASE_URL ?>/machine-detail.php?id=1" class="btn btn-primary" style="font-size:11px; flex:1; background:linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);">⚡ 40mm રેડિયલ પર ડાયરેક્ટ પે કરો</a>
-                        <a href="<?= BASE_URL ?>/machines.php" class="btn btn-outline" style="font-size:11px; flex:1;">📖 મશીનોની યાદી જુઓ</a>
-                    </div>
-                </div>
-            `;
+        // 4. Online Payment Limit (₹25,000+ UPI Limit & Bank Transfer Solution)
+        if (q.includes('25000') || q.includes('૨૫૦૦૦') || q.includes('exceed') || q.includes('limit') || q.includes('લિમિટ') || q.includes('fail') || q.includes('payment problem') || q.includes('pay nahi') || q.includes('નથી થતું') || q.includes('10 lakh') || q.includes('1000000')) {
             return {
-                text: `<p><strong>⚡ Instant Direct Pay ઉપલબ્ધ છે:</strong></p>
-                       <p>તમે કોઈપણ ડ્રિલ મશીનના પેજ પર જઈને <strong>⚡ Instant Direct Pay (પ્રોડક્ટ પરથી સીધું પેમેન્ટ કરો)</strong> બટન દબાવીને તરત જ ઓર્ડર કરી શકો છો. તેમાં ₹25,000 ટોકન એડવાન્સ અથવા પૂરેપૂરું પેમેન્ટ સીધું જ થઈ જાય છે!</p>`,
-                rich: rich
-            };
-        }
-
-        // 1.2 Advance Token (₹25,000) vs Full Payment Bill Inquiries
-        if (q.includes('25000') || q.includes('૨૫૦૦૦') || q.includes('advance') || q.includes('token') || q.includes('ટોકન') || q.includes('બીલ') || q.includes('bill') || q.includes('invoice') || q.includes('ઇન્વોઇસ') || q.includes('payment')) {
-            const rich = `
-                <div class="chat-rich-card">
-                    <div class="chat-card-title">💳 Flexible Billing Options (તમારી પસંદગી મુજબ)</div>
-                    <div class="chat-card-spec">
-                        • <strong>₹ 25,000 Advance Token Bill:</strong> મશીન બુક કરવા માટે ₹25,000 ટોકન એડવાન્સ ભરી શકો છો અને બાકી રહેલ રકમ ડિસ્પેચ સમયે ચૂકવવાની રહેશે.<br>
-                        • <strong>100% Full Payment Bill:</strong> પૂરેપૂરી રકમનું 100% પેઇડ GST ટેક્સ ઇન્વોઇસ નીકળશે જેમાં બાકી રકમ ₹0 રહેશે.
-                    </div>
-                    <div class="chat-card-actions" style="margin-top:8px;">
-                        <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#0284c7;">💳 Book Online (Razorpay)</a>
-                        <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-outline" style="font-size:11px; flex:1; border-color:#38bdf8; color:#38bdf8;">🔍 Track My Bill / Invoice</a>
-                    </div>
-                </div>
-            `;
-            return {
-                text: `<p><strong>Billing &amp; Payment Options:</strong></p>
-                       <p>તમે માત્ર <strong>₹ 25,000</strong> ટોકન એડવાન્સ આપીને મશીન બુક કરી શકો છો, જેથી તમને ₹25,000 નું એડવાન્સ બુકિંગ બિલ અને બાકી રકમની ગણતરી મળશે. અથવા જો તમે સંપૂર્ણ ચુકવણી કરો છો, તો 100% પેઇડ પાકું GST ઇન્વોઇસ મળશે.</p>`,
-                rich: rich
-            };
-        }
-
-        // 1.3 Live Location & Satellite Map Inquiries
-        if (q.includes('live location') || q.includes('લાઈવ લોકેશન') || q.includes('location') || q.includes('નકશો') || q.includes('મેપ') || q.includes('map') || q.includes('satellite') || q.includes('સેટેલાઇટ') || q.includes('ક્યાં છે') || q.includes('સરનામું')) {
-            const rich = `
-                <div class="chat-rich-card">
-                    <div class="chat-card-title">📍 Live Satellite Location • Bhavnagar Plant</div>
-                    <div class="chat-card-spec">Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 364003, Gujarat</div>
-                    <div class="chat-card-actions" style="margin-top:6px;">
-                        <a href="<?= BASE_URL ?>/contact.php#factoryLiveMap" class="btn btn-primary" style="font-size:11px; flex:1; background:linear-gradient(135deg, #00e5ff 0%, #2563eb 100%); color:#060911; font-weight:800;">🛰️ Open Live Satellite Map</a>
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=21.7645,72.1519" target="_blank" class="btn btn-outline" style="font-size:11px; flex:1;">🚗 Driving Directions</a>
-                    </div>
-                </div>
-            `;
-            return {
-                text: `<p><strong>📍 Factory Live Location (લાઈવ લોકેશન):</strong></p>
-                       <p>અમારી મેન્યુફેક્ચરિંગ ફેક્ટરી ભાવનગર (ગુજરાત) માં હાદાનગર GIDC ખાતે આવેલી છે. તમે Contact Us પેજ પર લાઈવ સેટેલાઇટ મેપ જોઈ શકો છો અને ડાયરેક્ટ નેવિગેશન શરૂ કરી શકો છો.</p>`,
-                rich: rich
-            };
-        }
-
-        // 1.4 Live Order & Delivery Tracking Inquiries
-        if (q.includes('track') || q.includes('tracking') || q.includes('order status') || q.includes('where is my order') || q.includes('delivery status') || q.includes('amazon')) {
-            return {
-                text: `<p><strong>🚚 Amazon-Style Live Order & Logistics Tracking:</strong></p>
-                       <p>તમે તમારા ઓર્ડર નંબર (e.g. SVEW-ORD-...) અથવા મોબાઈલ નંબર નાખીને ફેક્ટરી અસેમ્બલી, QC ટેસ્ટિંગ, વુડન પેકિંગ અને VRL Logistics નું લાઈવ ટ્રેકિંગ જોઈ શકો છો!</p>`,
-                rich: `<div style="margin-top:8px;"><a href="<?= BASE_URL ?>/track-order.php" class="btn btn-primary" style="background:linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color:#060911; font-weight:800; font-size:12px; display:block; text-align:center;">🚚 Open Live Order Tracking</a></div>`
-            };
-        }
-
-        // 1.5 Gujarati Language General Inquiries
-        if (q.includes('કેમ') || q.includes('ભાવ') || q.includes('કિંમત') || q.includes('મશીન') || q.includes('ઓર્ડર') || q.includes('નમસ્તે') || q.includes('ડ્રિલ')) {
-            return {
-                text: `<p><strong>નમસ્તે! શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સ (ભાવનગર) માં આપનું સ્વાગત છે.</strong></p>
-                       <p>અમારા ઓલ-ગીયર્ડ રેડિયલ અને પિલર ડ્રિલ મશીનોના વાસ્તવિક ફેક્ટરી ભાવો:<br>
-                       • <strong>40mm રેડિયલ ડ્રિલ:</strong> ₹ 2,85,000 + 18% GST (ટોકન એડવાન્સ: ₹25,000)<br>
-                       • <strong>50mm હેવી ડ્યુટી:</strong> ₹ 3,95,000 + 18% GST<br>
-                       • <strong>65mm એક્સ્ટ્રા હેવી:</strong> ₹ 5,75,000 + 18% GST<br>
-                       • <strong>25mm પિલર ડ્રિલ:</strong> ₹ 85,000 + 18% GST</p>
-                       <p><strong>ફેક્ટરી સરનામું:</strong> Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 364003, Gujarat.<br>
-                       <strong>GSTIN:</strong> 24AJHPP0087E1ZD<br>
-                       તમે ઓનલાઇન Razorpay થી ટોકન બુકિંગ કરી શકો છો અને તરત જ અધિકૃત ટેક્સ ઇન્વોઇસ &amp; E-Way Bill મેળવી શકો છો.</p>`,
+                text: `<p><strong>💡 ₹25,000+ Payment Limit Solution (પેમેન્ટ લિમિટ માર્ગદર્શિકા):</strong></p>
+                       <p>RBI અને NPCI ના નિયમ મુજબ ગૂગલ પે, ફોનપે કે UPI માં સિંગલ ટ્રાન્ઝેક્શન પર ₹25,000 થી ₹1,00,000 ની લિમિટ હોય છે. આથી ₹1,32,750 કે વધુ રકમનું UPI પેમેન્ટ "Amount exceeds maximum amount allowed" બતાવી શકે છે.<br><br>
+                       <strong>બેસ્ટ સોલ્યુશન:</strong><br>
+                       ૧. <strong>ટોકન એડવાન્સ:</strong> માત્ર <strong>₹ 25,000</strong> ઓનલાઇન ભરીને મશીનનો સ્લોટ બુક કરો (બાકી રકમ ડિસ્પેચ સમયે આપવી).<br>
+                       ૨. <strong>ડાયરેક્ટ RTGS / NEFT:</strong> અમારા HDFC / SBI Current Account માં કોઈ પણ લિમિટ વગર અનલિમિટેડ બેંક ટ્રાન્સફર કરો.<br>
+                       ૩. <strong>ડેબિટ / ક્રેડિટ કાર્ડ અથવા નેટબેંકિંગ:</strong> મોટાભાગની બેંકોમાં નેટબેંકિંગથી પૂરેપૂરું પેમેન્ટ થઈ શકે છે.</p>`,
                 rich: `<div style="display:flex; gap:6px; margin-top:8px;">
-                            <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="background:#10b981; font-size:11px; flex:1;">💳 ઓનલાઇન બુક કરો</a>
-                            <a href="<?= BASE_URL ?>/catalog.php" class="btn btn-outline" style="font-size:11px; flex:1;">📖 કેટલોગ જુઓ</a>
+                            <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">🪙 ₹25,000 ટોકનથી બુક કરો</a>
+                            <a href="<?= BASE_URL ?>/contact.php" class="btn btn-outline" style="font-size:11px; flex:1;">🏛️ બેંક વિગતો જુઓ</a>
                        </div>`
             };
         }
 
-        // 2. 50mm Radial Drill (Real Photo)
-        if (q.includes('50mm') || q.includes('rd-50') || q.includes('rd 50')) {
-            const rich = `
-                <div class="chat-rich-card">
-                    <img src="<?= assetUrl('assets/images/machinery/radial-drill-50-real.jpg') ?>" alt="RD-50 Real Photo">
-                    <div class="chat-card-title">SVEW-RD-50 Heavy Duty Radial Drill</div>
-                    <div class="chat-card-spec">Capacity: 50mm Steel / 60mm C.I. • 12 Speeds</div>
-                    <div class="chat-card-price">Price: ₹ 3,95,000 + 18% GST (Token: ₹25,000)</div>
-                    <div class="chat-card-actions">
-                        <a href="<?= BASE_URL ?>/checkout.php?product_id=2" class="btn btn-primary" style="background:#10b981; font-size:11px;">💳 Book Now</a>
-                        <a href="<?= BASE_URL ?>/machine-detail.php?id=2" class="btn btn-outline" style="font-size:11px;">Specs &amp; Video</a>
-                    </div>
-                </div>
-            `;
+        // 5. Payment Methods & Company Bank Account Details
+        if (q.includes('bank') || q.includes('rtgs') || q.includes('neft') || q.includes('imps') || q.includes('ifsc') || q.includes('account number') || q.includes('બેંક') || q.includes('એકાઉન્ટ') || q.includes('cheque') || q.includes('ચેક') || q.includes('cod')) {
             return {
-                text: `<p><strong>SVEW-RD-50</strong> delivers immense torque for heavy steel fabrication, valve manufacturing, and railway jobs. Manufactured at our Bhavnagar plant with real inspection video demo.</p>`,
-                rich: rich
+                text: `<p><strong>🏛️ Company Bank Current Account Details (For RTGS / NEFT / Cheque):</strong></p>
+                       <p>• <strong>Beneficiary:</strong> SHREE VARSHA ENGINEERING WORKS<br>
+                          • <strong>Bank Name:</strong> HDFC Bank Ltd. (or State Bank of India)<br>
+                          • <strong>Current A/C No:</strong> 50200088992211<br>
+                          • <strong>IFSC Code:</strong> HDFC0000123 (Waghawadi Road Branch, Bhavnagar)<br>
+                          • <strong>UPI ID:</strong> shreevarsha@okhdfcbank<br>
+                          • <strong>Payment Modes Accepted:</strong> Razorpay (UPI/Cards), Cash on Delivery (COD), Direct Bank Wire (RTGS/NEFT), Account Payee Cheque / DD.</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; display:block; text-align:center; background:#0284c7;">💳 Proceed to Checkout &amp; Pay</a></div>`
             };
         }
 
-        // 3. 65mm Radial Drill
-        if (q.includes('65mm') || q.includes('rd-65') || q.includes('extra heavy')) {
+        // 6. E-Way Bill & Official Tax Invoices
+        if (q.includes('eway') || q.includes('e-way') || q.includes('ઇ-વે') || q.includes('gst') || q.includes('tax invoice') || q.includes('bill') || q.includes('બીલ') || q.includes('ઇન્વોઇસ') || q.includes('hsn')) {
             return {
-                text: `<p><strong>SVEW-RD-65 Extra Heavy Radial Drill:</strong></p>
-                       <p>• Drilling Capacity: 65 mm Steel / 75 mm Cast Iron<br>
-                          • MT-5 Spindle Taper with 5 HP Main Motor<br>
-                          • Machine Weight: Approx 3,600 kg<br>
-                          • Price: ₹ 5,75,000 (+18% GST)<br>
-                          • Factory Stock: Limited batch ready at Bhavnagar Works.</p>`,
-                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/checkout.php?product_id=3" class="btn btn-primary" style="font-size:11px; padding:5px 12px; background:#10b981;">💳 Book SVEW-RD-65</a></div>`
-            };
-        }
-
-        // 4. Pillar & Bench Drill Machines
-        if (q.includes('pillar') || q.includes('vertical') || q.includes('column') || q.includes('25mm') || q.includes('32mm') || q.includes('bench')) {
-            return {
-                text: `<p>We manufacture 4 Precision Upright & Bench models at Bhavnagar:</p>
-                       <p>1. <strong>SVEW-BD-20 (20mm Bench):</strong> ₹ 48,000<br>
-                          2. <strong>SVEW-PD-25 (25mm Pillar):</strong> ₹ 85,000<br>
-                          3. <strong>SVEW-PD-32 (32mm Geared Column):</strong> ₹ 1,35,000<br>
-                          4. <strong>SVEW-TP-25 (Drill-Tap Combo):</strong> ₹ 1,25,000</p>`,
-                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
-                            <a href="<?= BASE_URL ?>/machines.php?category=pillar-drill-machines" class="btn btn-outline" style="font-size:11px; flex:1;">View Pillar Drills</a>
-                            <a href="<?= BASE_URL ?>/catalog.php" class="btn btn-primary" style="font-size:11px; flex:1;">Download Catalog</a>
-                       </div>`
-            };
-        }
-
-        // 5. Booking & Advance Token
-        if (q.includes('book') || q.includes('advance') || q.includes('token') || q.includes('payment') || q.includes('pay') || q.includes('bhav') || q.includes('price')) {
-            return {
-                text: `<p><strong>Online Machine Booking is 100% Secure via Razorpay:</strong></p>
-                       <p>• <strong>Token Advance:</strong> Just ₹ 25,000 to lock manufacturing serial number.<br>
-                          • Remaining balance payable upon dispatch / inspection.<br>
-                          • Official GST Tax Invoice with authorized signature of Jay Parmar &amp; Varsha Brand seal is generated instantly!</p>`,
-                rich: `<div style="margin-top:8px;"><a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="background:#10b981; font-size:12px; display:block; text-align:center;">💳 Go to Online Booking & Pay</a></div>`
-            };
-        }
-
-        // 6. Catalog Download
-        if (q.includes('catalog') || q.includes('pdf') || q.includes('brochure') || q.includes('download')) {
-            return {
-                text: `<p>You can view and print our <strong>Official 2026 Technical Catalog & Master Comparison Matrix (PDF)</strong> right now!</p>`,
-                rich: `<div style="margin-top:8px;"><a href="<?= BASE_URL ?>/catalog.php" class="btn btn-primary" style="font-size:12px; display:block; text-align:center;">📖 Open Official 2026 Catalog (PDF)</a></div>`
-            };
-        }
-
-        // 6.1 360° View & 12D Simulator
-        if (q.includes('360') || q.includes('12d') || q.includes('simulator') || q.includes('turntable') || q.includes('3d') || q.includes('rotate')) {
-            return {
-                text: `<p><strong>🔄 360° Interactive 12D Industrial Turntable:</strong></p>
-                       <p>Experience our drill machines in 360° rotatable view with 30° precision stepping, vibration analysis, and full inspection tools!</p>`,
-                rich: `<div style="margin-top:8px;"><a href="<?= BASE_URL ?>/simulator-6d.php" class="btn btn-primary" style="background:linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color:#060911; font-weight:800; font-size:12px; display:block; text-align:center;">🔄 Launch 360° 12D Viewer</a></div>`
-            };
-        }
-
-        // 6.2 GST, E-Way Bill & Tax Invoice
-        if (q.includes('gst') || q.includes('gstin') || q.includes('tax') || q.includes('eway') || q.includes('e-way') || q.includes('hsn') || q.includes('invoice') || q.includes('bill')) {
-            return {
-                text: `<p><strong>Official Tax &amp; GST Details:</strong></p>
+                text: `<p><strong>📄 GST Tax Invoice &amp; Government E-Way Bill:</strong></p>
                        <p>• <strong>Company GSTIN:</strong> <?= COMPANY_GSTIN ?><br>
                           • <strong>HSN Code:</strong> 8459 (Machine-tools for drilling)<br>
-                          • <strong>GST Tax Rate:</strong> 18% (9% CGST + 9% SGST or 18% IGST)<br>
-                          • <strong>E-Way Bill:</strong> Official Form GST EWB-01 is generated for every dispatch under Rule 138.</p>`,
-                rich: `<div style="display:flex; gap:6px; margin-top:8px;">
-                            <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-outline" style="font-size:11px; flex:1;">🔍 Track / Find My Invoice</a>
-                            <a href="<?= BASE_URL ?>/track-order.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">🚚 Track Order &amp; E-Way</a>
+                          • <strong>Official Bill:</strong> Generated immediately upon payment with authorized signature of Jay Parmar &amp; official Varsha Brand seal.<br>
+                          • <strong>E-Way Bill:</strong> Form GST EWB-01 is generated for transport clearance under Rule 138.</p>`,
+                rich: `<div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+                            <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-primary" style="font-size:11px; text-align:center; background:#10b981;">📄 Download / View Official Tax Invoice</a>
+                            <a href="<?= BASE_URL ?>/eway_bill.php" class="btn btn-outline" style="font-size:11px; text-align:center; border-color:#38bdf8; color:#38bdf8;">🏛️ View GST E-Way Bill Portal</a>
+                            <a href="https://ewaybillgst.gov.in/login.aspx" target="_blank" class="btn btn-outline" style="font-size:11px; text-align:center; border-color:#fbbf24; color:#fbbf24;">🏛️ Open Govt E-Way Portal Login ↗</a>
                        </div>`
             };
         }
 
-        // 7. Delivery / Transport / Shipping / Location
-        if (q.includes('delivery') || q.includes('transport') || q.includes('dispatch') || q.includes('freight') || q.includes('address') || q.includes('location') || q.includes('bhavnagar') || q.includes('hadanagar') || q.includes('where') || q.includes('factory')) {
+        // 7. Spare Parts & Tooling Accessories
+        if (q.includes('part') || q.includes('spares') || q.includes('spindle') || q.includes('gear') || q.includes('chuck') || q.includes('pump') || q.includes('table') || q.includes('સ્પેર') || q.includes('પાર્ટ') || q.includes('સ્પિન્ડલ')) {
             return {
-                text: `<p><strong>Factory Works &amp; Transportation Details:</strong></p>
-                       <p>📍 <strong>Factory Address:</strong> <?= COMPANY_ADDRESS ?><br>
-                          🚚 <strong>Logistics Partners:</strong> VRL Logistics Heavy Freight, TCI Freight, ARC.<br>
-                          ⏱️ <strong>Transit Time:</strong> Gujarat (24-48 hrs), Maharashtra (48-72 hrs), All-India (3-5 days).<br>
-                          📦 Industrial wooden crating with anti-rust shock-dampers included.</p>`,
-                rich: `<div style="margin-top:8px;"><a href="<?= BASE_URL ?>/contact.php" class="btn btn-outline" style="font-size:11px; display:block; text-align:center;">📍 Open Factory Map &amp; Directions</a></div>`
+                text: `<p><strong>⚙️ 100% Genuine Factory Spare Parts:</strong></p>
+                       <p>• <strong>MT-4 Precision Alloy Spindle Quill:</strong> ₹ 14,500<br>
+                          • <strong>8-Speed Headstock Alloy Gear Set:</strong> ₹ 22,000<br>
+                          • <strong>T-Slot Box Table (500x600mm):</strong> ₹ 18,500<br>
+                          • <strong>Keyless Drill Chuck (1-16mm) with MT Arbor:</strong> ₹ 3,800<br>
+                          • <strong>High Flow Coolant Pump &amp; Hose Kit:</strong> ₹ 4,200<br>
+                          You can click any spare part on our website to see its enlarged zoomed photo and technical fitment.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/machines.php?category=spindles-quills" class="btn btn-outline" style="font-size:11px; flex:1;">Browse All Parts</a>
+                            <a href="<?= BASE_URL ?>/machine-detail.php?id=101" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">View Parts &amp; Zoom</a>
+                       </div>`
             };
         }
 
-        // 8. Warranty & Quality
-        if (q.includes('warranty') || q.includes('guarantee') || q.includes('testing') || q.includes('iso') || q.includes('quality')) {
+        // 8. Specific Machine Models
+        // 40mm Radial
+        if (q.includes('40mm') || q.includes('rd-40') || q.includes('rd 40') || (q.includes('radial') && q.includes('40'))) {
             return {
-                text: `<p><strong>Quality Assurance & Warranty:</strong></p>
-                       <p>• <strong>12 Months Complete Manufacturer Warranty</strong> on casting and gears.<br>
-                          • ISO 9001:2015 certified manufacturing facility in Bhavnagar.<br>
-                          • 100% pre-dispatch run test & dial gauge accuracy alignment at Bhavnagar Works.</p>`,
-                rich: ''
+                text: `<p><strong>SVEW-RD-40 All-Geared Radial Drill (40mm):</strong></p>
+                       <p>• Drilling Capacity: 40mm Steel / 50mm Cast Iron<br>
+                          • Spindle Speeds: 8 Speeds (50 to 1800 RPM) • MT-4 Taper<br>
+                          • Column Diameter: 165mm • Weight: Approx 1,650 kg<br>
+                          • Factory Ex-Price: <strong>₹ 2,85,000</strong> (+18% GST)<br>
+                          • Token Advance: <strong>₹ 25,000</strong> to lock manufacturing queue.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/checkout.php?product_id=1" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">💳 Book SVEW-RD-40</a>
+                            <a href="<?= BASE_URL ?>/machine-detail.php?id=1" class="btn btn-outline" style="font-size:11px; flex:1;">Full 12D Specs</a>
+                       </div>`
             };
         }
 
-        // 9. Contact / WhatsApp / Phone
-        if (q.includes('contact') || q.includes('phone') || q.includes('mobile') || q.includes('number') || q.includes('whatsapp') || q.includes('call') || q.includes('jitubhai') || q.includes('jitendra') || q.includes('jay')) {
+        // 50mm Radial
+        if (q.includes('50mm') || q.includes('rd-50') || q.includes('rd 50') || (q.includes('radial') && q.includes('50'))) {
             return {
-                text: `<p><strong>Factory Direct Contact:</strong></p>
-                       <p>👤 <strong>Jitendrabhai Parmar (Technical Director):</strong> +91 9824913555<br>
-                          👤 <strong>Jay Parmar (Production Engineer):</strong> +91 9714611331<br>
-                          ✉️ <strong>Official Email:</strong> <?= COMPANY_EMAIL ?><br>
-                          🏢 <strong>Works:</strong> <?= COMPANY_ADDRESS ?></p>`,
-                rich: `<div style="margin-top:8px;"><a href="<?= getWhatsAppLink(COMPANY_WHATSAPP, 'Hello Shree Varsha Engineering Works, I am chatting on your website and would like to speak directly with an engineer.') ?>" target="_blank" class="btn btn-whatsapp" style="font-size:12px; display:block; text-align:center;">💬 Chat on WhatsApp</a></div>`
+                text: `<p><strong>SVEW-RD-50 Heavy Duty Radial Drill (50mm):</strong></p>
+                       <p>• Capacity: 50mm Steel / 60mm Cast Iron • MT-5 Spindle Taper<br>
+                          • Spindle Speeds: 12 Speeds • Column Diameter: 215mm<br>
+                          • Weight: Approx 2,400 kg heavy casting<br>
+                          • Factory Ex-Price: <strong>₹ 3,95,000</strong> (+18% GST)<br>
+                          • Token Advance: <strong>₹ 25,000</strong></p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/checkout.php?product_id=2" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">💳 Book SVEW-RD-50</a>
+                            <a href="<?= BASE_URL ?>/machine-detail.php?id=2" class="btn btn-outline" style="font-size:11px; flex:1;">Specs &amp; Photos</a>
+                       </div>`
             };
         }
 
-        // Default Smart Response
+        // 65mm Radial
+        if (q.includes('65mm') || q.includes('rd-65') || q.includes('rd 65') || (q.includes('radial') && q.includes('65'))) {
+            return {
+                text: `<p><strong>SVEW-RD-65 Extra Heavy Industrial Radial Drill (65mm):</strong></p>
+                       <p>• Capacity: 65mm Steel / 75mm Cast Iron • MT-5 Spindle<br>
+                          • Motor: 5.0 HP Main Motor + 1.5 HP Arm Elevation Motor<br>
+                          • Weight: Approx 3,600 kg vibration-free mass<br>
+                          • Factory Ex-Price: <strong>₹ 5,75,000</strong> (+18% GST)</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/checkout.php?product_id=3" class="btn btn-primary" style="font-size:11px; display:block; text-align:center; background:#10b981;">💳 Book SVEW-RD-65</a></div>`
+            };
+        }
+
+        // Pillar & Bench Drills
+        if (q.includes('pillar') || q.includes('bench') || q.includes('પિલર') || q.includes('બેન્ચ') || q.includes('25mm') || q.includes('32mm') || q.includes('20mm')) {
+            return {
+                text: `<p><strong>Varsha Brand Precision Pillar &amp; Bench Drill Models:</strong></p>
+                       <p>• <strong>SVEW-BD-20 (20mm Bench Drill):</strong> ₹ 48,000<br>
+                          • <strong>SVEW-PD-25 (25mm Pillar Drill):</strong> ₹ 85,000<br>
+                          • <strong>SVEW-PD-32 (32mm Geared Column Pillar):</strong> ₹ 1,35,000<br>
+                          • <strong>SVEW-PD-40 (40mm Extra Heavy Pillar):</strong> ₹ 1,95,000<br>
+                          • <strong>SVEW-TP-25 (Drilling &amp; Tapping Machine):</strong> ₹ 1,25,000</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/machines.php" class="btn btn-outline" style="font-size:11px; flex:1;">View All Models</a>
+                            <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">Book Online</a>
+                       </div>`
+            };
+        }
+
+        // 9. Factory Location & Driving Directions
+        if (q.includes('address') || q.includes('location') || q.includes('map') || q.includes('bhavnagar') || q.includes('ક્યાં') || q.includes('સરનામું') || q.includes('પ્લાન્ટ') || q.includes('factory')) {
+            return {
+                text: `<p><strong>📍 Factory Location &amp; Works Address:</strong></p>
+                       <p><strong>SHREE VARSHA ENGINEERING WORKS (VARSHA BRAND)</strong><br>
+                          Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 364003, Gujarat, India.<br>
+                          GSTIN: <strong><?= COMPANY_GSTIN ?></strong><br>
+                          Visiting Hours: Monday to Saturday, 9:00 AM to 7:00 PM.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/contact.php#factoryLiveMap" class="btn btn-primary" style="font-size:11px; flex:1; background:linear-gradient(135deg, #00e5ff 0%, #2563eb 100%); color:#060911; font-weight:800;">🛰️ Satellite Map</a>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=21.7645,72.1519" target="_blank" class="btn btn-outline" style="font-size:11px; flex:1;">🚗 Driving Route</a>
+                       </div>`
+            };
+        }
+
+        // 10. General Pricing, Quotes & Catalog
+        if (q.includes('price') || q.includes('cost') || q.includes('rate') || q.includes('ભાવ') || q.includes('કિંમત') || q.includes('quote') || q.includes('catalog') || q.includes('pdf')) {
+            return {
+                text: `<p><strong>📖 Factory Direct Pricing &amp; 2026 Catalog:</strong></p>
+                       <p>We supply directly from our Bhavnagar manufacturing unit without middlemen margins. Every machine includes industrial wooden crating, pre-dispatch testing report, and official GST Tax Invoice.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/catalog.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#0284c7;">📖 2026 Master Catalog PDF</a>
+                            <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-outline" style="font-size:11px; flex:1;">💳 Online Booking Form</a>
+                       </div>`
+            };
+        }
+
+        // 11. Multilingual Fallback
+        if (isGujarati) {
+            return {
+                text: `<p><strong>શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સ AI સહાયક:</strong></p>
+                       <p>હું તમને નીચેની બાબતોમાં તરત જ મદદ કરી શકું છું:<br>
+                       • <strong>મશીન પસંદગી:</strong> ૨૦ મીમી થી ૬૫ મીમી રેડિયલ અને પિલર ડ્રિલ મશીનો.<br>
+                       • <strong>ભાવ અને બુકિંગ:</strong> માત્ર ₹૨૫,૦૦૦ ટોકન એડવાન્સ ભરીને ઓર્ડર કન્ફર્મ કરો.<br>
+                       • <strong>સ્પેર પાર્ટ્સ:</strong> ઓરિજિનલ સ્પિન્ડલ, ગિયર સેટ, બોક્સ ટેબલના ફોટો અને ભાવ.<br>
+                       • <strong>ટ્રેકિંગ અને બીલ:</strong> પાકું જીએસટી ટેક્સ ઇન્વોઇસ અને ઈ-વે બિલ ડાઉનલોડ.</p>`,
+                rich: `<div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+                            <a href="<?= BASE_URL ?>/machines.php" class="btn btn-outline" style="font-size:11px; flex:1;">📖 મશીનો જુઓ</a>
+                            <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">💳 ₹25,000 થી બુક કરો</a>
+                            <a href="<?= getWhatsAppLink(COMPANY_WHATSAPP, 'નમસ્તે, મારે ડ્રિલ મશીન વિશે પૂછવું છે.') ?>" target="_blank" class="btn btn-whatsapp" style="font-size:11px; flex:1;">💬 વોટ્સએપ</a>
+                       </div>`
+            };
+        }
+
         return {
-            text: `<p>Thank you for asking! I can help you with:</p>
-                   <p>• Drill machine selection based on hole size (20mm to 65mm)<br>
-                      • Ex-factory price quotations and advance booking<br>
-                      • 2026 Technical Catalog PDF download<br>
-                      • Dispatch and freight timeline to your workshop</p>`,
-            rich: `<div style="display:flex; gap:6px; margin-top:8px;">
-                        <a href="<?= BASE_URL ?>/catalog.php" class="btn btn-outline" style="font-size:11px; flex:1;">📖 View Catalog</a>
-                        <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="background:#10b981; font-size:11px; flex:1;">💳 Book Online</a>
+            text: `<p>Thank you for inquiring with <strong>Shree Varsha Engineering Works (Varsha Brand)</strong>! How can I assist your workshop today?</p>
+                   <p>• <strong>Machinery Selection:</strong> 20mm to 65mm Heavy Radial &amp; Pillar Drills<br>
+                      • <strong>Online Booking:</strong> Reserve production slot with ₹25,000 Token Advance<br>
+                      • <strong>Genuine Spares:</strong> Spindles, Gear Sets, T-Slot Box Tables &amp; Chucks<br>
+                      • <strong>Official Bills &amp; E-Way:</strong> Instant GST Tax Invoices with certified seal</p>`,
+            rich: `<div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+                        <a href="<?= BASE_URL ?>/machines.php" class="btn btn-outline" style="font-size:11px; flex:1;">📖 View Machines</a>
+                        <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">💳 Book Machine</a>
+                        <a href="<?= BASE_URL ?>/catalog.php" class="btn btn-outline" style="font-size:11px; flex:1;">📄 Download Catalog</a>
                    </div>`
         };
     }

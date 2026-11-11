@@ -69,18 +69,26 @@ try {
                 </a>
             </div>
 
-            <!-- Stats Ticker -->
+            <!-- Stats Ticker (Dynamic Real-Time Sync from Admin Company Settings) -->
+            <?php
+                $expNum = preg_replace('/[^0-9]/', '', EXPERIENCE_YEARS) ?: '25';
+                $expSuffix = preg_replace('/[0-9]/', '', EXPERIENCE_YEARS) ?: '+';
+                $builtNum = preg_replace('/[^0-9]/', '', MACHINES_BUILT) ?: '1800';
+                $builtSuffix = preg_replace('/[0-9]/', '', MACHINES_BUILT) ?: '+';
+                $clientNum = preg_replace('/[^0-9]/', '', HAPPY_CLIENTS) ?: '100';
+                $clientSuffix = preg_replace('/[0-9]/', '', HAPPY_CLIENTS) ?: '%';
+            ?>
             <div class="hero-stats">
                 <div class="stat-item">
-                    <h3>25<span>+</span></h3>
+                    <h3><?= htmlspecialchars($expNum) ?><span><?= htmlspecialchars($expSuffix) ?></span></h3>
                     <p>Years of Engineering</p>
                 </div>
                 <div class="stat-item">
-                    <h3>1800<span>+</span></h3>
+                    <h3><?= htmlspecialchars($builtNum) ?><span><?= htmlspecialchars($builtSuffix) ?></span></h3>
                     <p>Machines Installed</p>
                 </div>
                 <div class="stat-item">
-                    <h3>100<span>%</span></h3>
+                    <h3><?= htmlspecialchars($clientNum) ?><span><?= htmlspecialchars($clientSuffix) ?></span></h3>
                     <p>Quality Tested</p>
                 </div>
             </div>

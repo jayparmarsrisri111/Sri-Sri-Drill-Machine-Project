@@ -116,8 +116,13 @@ if (!$order) {
             <!-- Customer Orders List (If Signed In) -->
             <?php if (!empty($customerOrders)): ?>
                 <div style="background: rgba(15, 23, 42, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.4); border-radius: 14px; padding: 22px; margin-bottom: 30px;">
-                    <div style="font-size: 16px; font-weight: 800; color: #38bdf8; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
-                        <span>👤</span> <span>Your Verified Machinery Orders &amp; Tax Bills</span>
+                    <div style="font-size: 16px; font-weight: 800; color: #38bdf8; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span>👤</span> <span>Your Verified Machinery Orders &amp; Tax Bills</span>
+                        </div>
+                        <a href="customer-dashboard.php" class="btn btn-outline" style="font-size: 11.5px; padding: 5px 12px; border-color: #00e5ff; color: #00e5ff; text-decoration: none; font-weight: 700;">
+                            📊 Open Full Customer Dashboard →
+                        </a>
                     </div>
                     <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
                         <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px;">
@@ -996,11 +1001,20 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             <div style="margin: 14px 0 16px; padding: 12px 16px; background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 8px; color: #78350f;">
                 <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 13.5px; margin-bottom: 6px; color: #b45309;">
                     <span>⚠️</span>
-                    <span>PROFORMA INVOICE &bull; ચુકવણી બાકી (PAYMENT AWAITED / UNPAID)</span>
+                    <span>PROFORMA INVOICE &bull; ચુકવણી ચકાસણી હેઠળ (PAYMENT AWAITED / UNDER VERIFICATION)</span>
                 </div>
                 <div style="font-size: 11.5px; line-height: 1.5; color: #92400e;">
                     This document is an <strong>Official Proforma Invoice &amp; Order Booking Confirmation</strong>. 
-                    Final Certified GST Tax Invoice with official red rubber seal and machinery dispatch clearance will be issued upon realization of payment.
+                    Final Certified GST Tax Invoice and machinery dispatch clearance will be issued upon realization of payment.
+                    
+                    <?php if (!empty($order['notes']) && (strpos($order['notes'], 'Bank Transfer Ref') !== false || strpos($order['notes'], 'Cheque/DD Ref') !== false)): ?>
+                        <div style="margin-top: 8px; padding: 8px 12px; background: #fef3c7; border: 1px solid #f59e0b; border-radius: 6px; font-weight: 700; color: #92400e; font-size: 12px;">
+                            📋 <strong>Submitted Reference:</strong> <?= e($order['notes']) ?>
+                            <div style="font-size: 11px; font-weight: normal; color: #78350f; margin-top: 2px;">
+                                Status: Your submitted payment details are being verified by factory accounts team.
+                            </div>
+                        </div>
+                    <?php endif; ?>
                     <?php if ($pm === 'bank_transfer' || $pm === 'online'): ?>
                         <div style="margin-top: 8px; padding: 10px; background: #ffffff; border: 1px solid #fde68a; border-radius: 6px; color: #1e293b;">
                             <strong style="color: #0f172a; font-size: 12px; display: block; margin-bottom: 4px;">
@@ -1151,32 +1165,34 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             <strong>Amount in Words:</strong> <?= amountInWords($paidAmount) ?>
         </div>
 
-        <!-- Official Seal and Authorized Signatory Row -->
+        <!-- Official Certified Seal and Authorized Signatory Row -->
         <div class="sign-seal-row">
-            <!-- Official Company Rubber Stamp / Sico (શિકો) -->
-            <div class="seal-box" style="<?= !$isPaid ? 'opacity: 0.85; border-color: #f59e0b;' : '' ?>">
-                <img src="<?= assetUrl('assets/images/varsha-brand-seal.svg') ?>" alt="Varsha Brand Official Stamp (શિકો)" class="seal-image" title="Official Rubber Stamp (શિકો) - Shree Varsha Engineering Works" style="<?= !$isPaid ? 'filter: grayscale(40%);' : '' ?>">
-                <div>
-                    <div style="font-size: 11.5px; font-weight: 800; color: <?= $isPaid ? '#7c3aed' : '#b45309' ?>; letter-spacing: 0.8px;">
-                        <?= $isPaid ? 'OFFICIAL FACTORY STAMP / SICO (શિકો)' : 'PROFORMA ORDER STAMP / SICO (શિકો)' ?>
-                    </div>
-                    <div style="font-size: 10.5px; color: #64748b; line-height: 1.35; margin-top: 2px;">
-                        <strong>VARSHA BRAND (SVEW)</strong><br>
-                        Bhavnagar Factory Unit • ISO 9001:2015<br>
-                        <?= $isPaid ? '<span style="color:#16a34a; font-weight:700;">Payment Realized &amp; Verified</span>' : '<span style="color:#d97706; font-weight:700;">Subject to Payment Realization</span>' ?>
-                    </div>
+            <!-- Left: Factory Dispatch & Production Certification -->
+            <div style="flex: 1; max-width: 460px; text-align: left;">
+                <div style="font-size: 11.5px; font-weight: 800; color: <?= $isPaid ? '#0284c7' : '#b45309' ?>; text-transform: uppercase; letter-spacing: 0.5px;">
+                    <?= $isPaid ? '✔ Verified Factory Tax Invoice' : '⏳ Proforma Order Confirmation' ?>
+                </div>
+                <div style="font-size: 11px; color: #64748b; line-height: 1.45; margin-top: 3px;">
+                    This document certifies that the machinery and components specified herein conform to Shree Varsha Engineering Works Grade-25 industrial standards.
+                    <br><strong style="color: #0f172a;">Factory Origin:</strong> Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 364003 (Gujarat).
+                    <br><?= $isPaid ? '<span style="color:#16a34a; font-weight:700;">Payment Realized &amp; Dispatch Cleared</span>' : '<span style="color:#d97706; font-weight:700;">Subject to Realization of Payment</span>' ?>
                 </div>
             </div>
 
-            <!-- Authorized Signatory -->
-            <div class="signature-box">
-                <div style="font-size: 11px; color: #64748b; margin-bottom: 2px;">
+            <!-- Right: Combined Stamp & Signature (Seal behind, Signature overlaid directly on top) -->
+            <div class="signature-box" style="position: relative; min-width: 220px; text-align: center;">
+                <div style="font-size: 11px; color: #475569; margin-bottom: 2px; font-weight: 700;">
                     For <strong>SHREE VARSHA ENGINEERING WORKS</strong>
                 </div>
-                <!-- Jay Parmar Signature -->
-                <img src="<?= assetUrl('assets/images/jay-parmar-signature.svg') ?>" alt="Signature of Jay Parmar" class="signature-img" style="<?= !$isPaid ? 'opacity: 0.75;' : '' ?>">
-                <div class="signatory-name"><?= e($order['authorized_signatory'] ?? 'Jay Parmar') ?></div>
-                <div class="signatory-title"><?= $isPaid ? 'Partner &amp; Authorized Signatory' : 'Authorized Signatory (Proforma / Acknowledgment)' ?></div>
+                <div style="position: relative; height: 80px; display: flex; align-items: center; justify-content: center; margin: 4px 0;">
+                    <!-- Company Rubber Stamp Seal (Positioned under signature) -->
+                    <img src="<?= assetUrl('assets/images/varsha-brand-seal.svg') ?>" alt="Varsha Brand Official Seal" style="position: absolute; width: 78px; height: 78px; opacity: <?= $isPaid ? '0.85' : '0.65' ?>; pointer-events: none; transform: rotate(-6deg);">
+                    <!-- Signature Overlaid Over the Seal -->
+                    <img src="<?= assetUrl('assets/images/jay-parmar-signature.svg') ?>" alt="Signature of Jay Parmar" class="signature-img" style="position: relative; z-index: 2; height: 56px; <?= !$isPaid ? 'opacity: 0.85;' : '' ?>">
+                </div>
+                <div class="signature-line" style="height: 1px; background: #cbd5e1; width: 180px; margin: 3px auto 4px;"></div>
+                <div class="signatory-name" style="font-size: 12.5px; font-weight: 800; color: #0f172a; line-height: 1.2;"><?= e($order['authorized_signatory'] ?? 'Jay Parmar') ?></div>
+                <div class="signatory-title" style="font-size: 10.5px; color: #64748b;"><?= $isPaid ? 'Partner &amp; Authorized Signatory' : 'Authorized Signatory (Proforma / Acknowledgment)' ?></div>
             </div>
         </div>
 

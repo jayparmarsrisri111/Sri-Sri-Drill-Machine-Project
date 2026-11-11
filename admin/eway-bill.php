@@ -57,8 +57,8 @@ if ($orderId === 0 && empty($orderNum)) {
                 <h1 class="topbar-title">Customer-wise GST E-Way Bills (ઇ-વે બિલ મેનેજમેન્ટ)</h1>
             </div>
             <div class="topbar-actions">
-                <a href="https://ewaybillgst.gov.in/" target="_blank" class="btn-sm btn-cyan" style="background: rgba(245, 158, 11, 0.15); border-color: #f59e0b; color: #fbbf24; font-weight: 800;">
-                    🏛️ Open Govt E-Way Portal ↗
+                <a href="https://ewaybillgst.gov.in/login.aspx" target="_blank" class="btn-sm btn-cyan" style="background: rgba(245, 158, 11, 0.15); border-color: #f59e0b; color: #fbbf24; font-weight: 800;" title="Official Government GST E-Way Bill Direct Login">
+                    🏛️ Open Govt E-Way Portal Login ↗
                 </a>
                 <a href="<?= BASE_URL ?>/admin/orders.php" class="btn-sm btn-cyan">
                     💳 Orders &amp; Invoices
@@ -88,8 +88,8 @@ if ($orderId === 0 && empty($orderNum)) {
                 </div>
 
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <a href="https://ewaybillgst.gov.in/" target="_blank" class="btn-sm" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; font-size: 13px; font-weight: 800; background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); color: #060911; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);">
-                        <span>🏛️ Official Government Portal (ewaybillgst.gov.in) ↗</span>
+                    <a href="https://ewaybillgst.gov.in/login.aspx" target="_blank" class="btn-sm" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; font-size: 13px; font-weight: 800; background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); color: #060911; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);" title="Direct Login to Government GST E-Way Bill Portal">
+                        <span>🏛️ Official Government Portal Direct Login (ewaybillgst.gov.in/login.aspx) ↗</span>
                     </a>
                 </div>
             </div>
@@ -233,8 +233,8 @@ if ($orderId === 0 && empty($orderNum)) {
                                                 <a href="eway-bill.php?order_id=<?= $oId ?>" class="btn-sm btn-cyan" style="font-size: 11.5px; padding: 5px 10px; text-align: center; text-decoration: none;">
                                                     📄 View Form EWB-01
                                                 </a>
-                                                <a href="https://ewaybillgst.gov.in/" target="_blank" class="btn-sm" style="font-size: 11px; padding: 4px 8px; text-align: center; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24; text-decoration: none;">
-                                                    🏛️ Govt Portal ↗
+                                                <a href="https://ewaybillgst.gov.in/login.aspx" target="_blank" class="btn-sm" style="font-size: 11px; padding: 4px 8px; text-align: center; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24; text-decoration: none;" title="Government Portal Login">
+                                                    🏛️ Govt Login ↗
                                                 </a>
                                                 <a href="<?= BASE_URL ?>/invoice.php?order_id=<?= $oId ?>" target="_blank" style="font-size: 11px; color: #94a3b8; text-align: center; text-decoration: none;">
                                                     📦 Tax Invoice
@@ -521,8 +521,8 @@ $total = floatval($order['total_amount'] ?? ($taxable + $cgst + $sgst));
             </span>
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <a href="https://ewaybillgst.gov.in/" target="_blank" class="btn-action" style="background: rgba(245, 158, 11, 0.2); border: 1.5px solid #f59e0b; color: #fbbf24; text-decoration: none;">
-                🏛️ Open Govt Portal (ewaybillgst.gov.in) ↗
+            <a href="https://ewaybillgst.gov.in/login.aspx" target="_blank" class="btn-action" style="background: rgba(245, 158, 11, 0.2); border: 1.5px solid #f59e0b; color: #fbbf24; text-decoration: none;" title="Official Government GST E-Way Bill Direct Login">
+                🏛️ Open Govt Portal Direct Login (ewaybillgst.gov.in) ↗
             </a>
             <a href="<?= BASE_URL ?>/invoice.php?order_id=<?= $order['id'] ?>" target="_blank" class="btn-action btn-back" style="border-color: #38bdf8; color: #38bdf8;">
                 📄 View Tax Invoice

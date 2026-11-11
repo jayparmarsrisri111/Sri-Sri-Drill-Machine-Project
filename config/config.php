@@ -80,6 +80,11 @@ define('BRAND_NAME', getSetting('brand_name', 'VARSHA BRAND'));
 define('AUTHORIZED_SIGNATORY', getSetting('authorized_signatory', 'Jay Parmar'));
 define('COMPANY_GSTIN', getSetting('gstin', '24AJHPP0087E1ZD'));
 
+// Production Experience & Factory Stats (Configurable from Admin Settings)
+define('EXPERIENCE_YEARS', getSetting('experience_years', '25+'));
+define('MACHINES_BUILT', getSetting('machines_built', '1800+'));
+define('HAPPY_CLIENTS', getSetting('happy_clients', '100%'));
+
 // Banking & UPI Payment Gateway Settings
 define('COMPANY_BANK_NAME', getSetting('bank_name', 'State Bank of India'));
 define('COMPANY_BANK_ACC', getSetting('bank_account_no', '384910284729'));

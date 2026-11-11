@@ -70,22 +70,50 @@ if ($paymentMethod === 'online') {
         $paymentStatus = 'paid';
     }
 } else {
-    // COD, Bank Transfer, and Cheque orders are ALWAYS pending until verified by accounts team
-    $paymentStatus = 'pending';
-    if (empty($paymentId)) {
-        if ($paymentMethod === 'cod') {
-            $paymentId = 'COD_' . strtoupper(bin2hex(random_bytes(4)));
-            $orderId = 'ORD_COD_' . date('Ymd_His');
-            $signature = 'COD_ACK_' . time();
-        } elseif ($paymentMethod === 'bank_transfer') {
-            $paymentId = 'NEFT_' . strtoupper(bin2hex(random_bytes(4)));
-            $orderId = 'ORD_BANK_' . date('Ymd_His');
-            $signature = 'BANK_ACK_' . time();
-        } elseif ($paymentMethod === 'cheque') {
-            $paymentId = 'CHQ_' . strtoupper(bin2hex(random_bytes(4)));
-            $orderId = 'ORD_CHQ_' . date('Ymd_His');
-            $signature = 'CHQ_ACK_' . time();
+    // Bank Transfer and Cheque require mandatory financial reference details for security
+    if ($paymentMethod === 'bank_transfer') {
+        $utr = sanitizeString($_POST['bank_utr'] ?? '');
+        $senderBank = sanitizeString($_POST['bank_sender_name'] ?? '');
+        $transferDate = sanitizeString($_POST['bank_transfer_date'] ?? date('Y-m-d'));
+
+        if (empty($utr) || strlen($utr) < 4) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'સુરક્ષા એરર: બેંક ટ્રાન્સફર કન્ફર્મ કરવા માટે સાચો UTR / રેફરન્સ નંબર દાખલ કરવો ફરજિયાત છે (Valid UTR Number is required).'
+            ]);
+            exit;
         }
+
+        $paymentId = 'UTR_' . strtoupper($utr);
+        $orderId = 'ORD_RTGS_' . date('Ymd_His');
+        $signature = 'BANK_VERIF_' . strtoupper(substr(md5($utr . $senderBank), 0, 16));
+        $paymentStatus = 'pending_verification';
+        $transferNotes = "Bank Transfer Ref: UTR " . $utr . " (" . $senderBank . ") Date: " . $transferDate;
+    } elseif ($paymentMethod === 'cheque') {
+        $chequeNum = sanitizeString($_POST['cheque_number'] ?? '');
+        $chequeBank = sanitizeString($_POST['cheque_bank_name'] ?? '');
+        $chequeDate = sanitizeString($_POST['cheque_date'] ?? date('Y-m-d'));
+
+        if (empty($chequeNum) || strlen($chequeNum) < 3) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'સુરક્ષા એરર: ચેક અથવા ડીડી ઓર્ડર માટે સાચો ચેક નંબર દાખલ કરવો ફરજિયાત છે (Valid Cheque Number is required).'
+            ]);
+            exit;
+        }
+
+        $paymentId = 'CHQ_' . strtoupper($chequeNum);
+        $orderId = 'ORD_CHQ_' . date('Ymd_His');
+        $signature = 'CHQ_VERIF_' . strtoupper(substr(md5($chequeNum . $chequeBank), 0, 16));
+        $paymentStatus = 'pending_verification';
+        $transferNotes = "Cheque/DD Ref: No. " . $chequeNum . " (" . $chequeBank . ") Date: " . $chequeDate;
+    } else {
+        // COD
+        $paymentStatus = 'pending_cod';
+        $paymentId = 'COD_' . strtoupper(bin2hex(random_bytes(4)));
+        $orderId = 'ORD_COD_' . date('Ymd_His');
+        $signature = 'COD_ACK_' . time();
+        $transferNotes = "Cash on Delivery (Payable to transport carrier upon delivery)";
     }
 }
 
@@ -99,6 +127,9 @@ $custCity = sanitizeString($_POST['customer_city'] ?? '');
 $custPincode = sanitizeString($_POST['customer_pincode'] ?? '');
 $custGst = strtoupper(sanitizeString($_POST['customer_gst'] ?? ''));
 $notes = sanitizeString($_POST['notes'] ?? '');
+if (!empty($transferNotes)) {
+    $notes = trim($notes . ' | ' . $transferNotes, ' | ');
+}
 
 $pdo = Database::getConnection();
 

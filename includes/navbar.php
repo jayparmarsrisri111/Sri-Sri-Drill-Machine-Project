@@ -464,6 +464,9 @@ body.mobile-menu-open #varshaChatbotWindow {
                         <div style="padding: 8px 14px; font-size: 11.5px; color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.08);">
                             Signed in as<br><strong style="color: #fff; font-size: 13px;"><?= e($_SESSION['customer_user']['full_name']) ?></strong>
                         </div>
+                        <a href="<?= BASE_URL ?>/customer-dashboard.php" style="display: block; padding: 9px 14px; font-size: 12.5px; color: #00e5ff; text-decoration: none; font-weight: 700;">
+                            📊 My Account &amp; Bills
+                        </a>
                         <a href="<?= BASE_URL ?>/track-order.php" style="display: block; padding: 9px 14px; font-size: 12.5px; color: #34d399; text-decoration: none; font-weight: 600;">
                             🚚 Track My Orders
                         </a>
@@ -564,14 +567,17 @@ body.mobile-menu-open #varshaChatbotWindow {
             <div style="background: rgba(15, 23, 42, 0.9); border: 1.5px solid #38bdf8; border-radius: 10px; padding: 12px 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
                 <div style="font-size: 11px; color: #94a3b8;">Signed in as:</div>
                 <div style="font-weight: 700; color: #fff; font-size: 14px; margin-bottom: 8px;">👤 <?= e($_SESSION['customer_user']['full_name']) ?></div>
-                <div style="display: flex; gap: 8px;">
-                    <a href="<?= BASE_URL ?>/track-order.php" class="btn btn-outline" style="flex: 1; padding: 7px 10px; font-size: 11.5px; border-color: #34d399; color: #34d399; text-align: center; text-decoration: none;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px;">
+                    <a href="<?= BASE_URL ?>/customer-dashboard.php" class="btn btn-outline" style="padding: 7px 8px; font-size: 11px; border-color: #00e5ff; color: #00e5ff; text-align: center; text-decoration: none; font-weight: 700;">
+                        📊 Account
+                    </a>
+                    <a href="<?= BASE_URL ?>/track-order.php" class="btn btn-outline" style="padding: 7px 8px; font-size: 11px; border-color: #34d399; color: #34d399; text-align: center; text-decoration: none;">
                         🚚 Orders
                     </a>
-                    <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-outline" style="flex: 1; padding: 7px 10px; font-size: 11.5px; border-color: #cbd5e1; color: #cbd5e1; text-align: center; text-decoration: none;">
+                    <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-outline" style="padding: 7px 8px; font-size: 11px; border-color: #cbd5e1; color: #cbd5e1; text-align: center; text-decoration: none;">
                         📄 Bills
                     </a>
-                    <a href="<?= BASE_URL ?>/logout-customer.php" class="btn btn-outline" style="padding: 7px 10px; font-size: 11.5px; border-color: #f87171; color: #f87171; text-align: center; text-decoration: none;">
+                    <a href="<?= BASE_URL ?>/logout-customer.php" class="btn btn-outline" style="padding: 7px 8px; font-size: 11px; border-color: #f87171; color: #f87171; text-align: center; text-decoration: none;">
                         🚪 Out
                     </a>
                 </div>
