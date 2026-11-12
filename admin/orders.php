@@ -224,7 +224,7 @@ require_once __DIR__ . '/includes/sidebar.php';
             <div>
                 <h1 class="topbar-title">Customer Orders &amp; Live Delivery Tracking</h1>
                 <p style="font-size: 13px; color: var(--text-muted); margin-top: 3px;">
-                    Track machine bookings, verified Razorpay payments, tax invoices, and manage live delivery milestones.
+                    Track machine bookings, verified online payments, tax invoices, and manage live delivery milestones.
                 </p>
             </div>
         </div>
@@ -278,7 +278,7 @@ require_once __DIR__ . '/includes/sidebar.php';
                 <div style="padding: 40px; text-align: center; color: var(--text-muted);">
                     <p>No customer orders recorded yet.</p>
                     <a href="<?= BASE_URL ?>/checkout.php" target="_blank" class="btn btn-primary" style="margin-top: 15px;">
-                        Place First Booking via Razorpay
+                        Place First Booking Online
                     </a>
                 </div>
             <?php else: ?>

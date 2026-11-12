@@ -384,7 +384,7 @@ if ($isSparePart) {
                         <span>⚡ Instant Direct Pay (પ્રોડક્ટ પરથી સીધું પેમેન્ટ કરો)</span>
                     </button>
                     <a id="btnBookOnlineTop" href="<?= BASE_URL ?>/checkout.php?machine_id=<?= $machine['id'] ?>&qty=1" class="btn btn-primary" style="flex: 1 1 100%; text-align: center; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399; font-weight: 700; padding: 13px; font-size: 15px;">
-                        💳 Book Machine Online (Razorpay)
+                        💳 Book Machine Online
                     </a>
                     <button type="button" class="btn btn-cart-detail" onclick="window.addToCart(<?= $machine['id'] ?>, parseInt(document.getElementById('detailQtyInput').value) || 1, this)" style="flex: 1 1 100%; text-align: center; background: rgba(245, 158, 11, 0.16); border: 1.5px solid #f59e0b; color: #fbbf24; font-weight: 800; padding: 13px; font-size: 15px; border-radius: 8px; cursor: pointer; transition: all 0.25s;">
                         <span>🛒 Add to Cart (કાર્ટમાં ઉમેરો)</span>
@@ -989,14 +989,8 @@ if ($isSparePart) {
             <?php foreach ($compatParts as $cp): ?>
                 <div style="background: rgba(11, 17, 32, 0.9); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.25s;" onmouseover="this.style.borderColor='var(--accent-cyan)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(0, 229, 255, 0.2)'; this.style.transform='none';">
                     <div>
-                        <div style="height: 155px; border-radius: 8px; overflow: hidden; background: #060911; margin-bottom: 12px; position: relative; cursor: zoom-in;" onclick="openPartZoomModal('<?= assetUrl($cp['image_url']) ?>', '<?= e(addslashes($cp['name'])) ?>', '<?= e(addslashes($cp['model_number'])) ?>', '<?= number_format($cp['price'], 2) ?>', '<?= e(addslashes($cp['short_desc'] ?? 'Genuine Factory Spare Part')) ?>', <?= intval($cp['id']) ?>)" title="Click to Zoom / મોટો ફોટો જોવા ક્લિક કરો">
+                        <div style="height: 160px; border-radius: 8px; overflow: hidden; background: #060911; margin-bottom: 12px; position: relative; cursor: zoom-in;" onclick="openPartZoomModal('<?= assetUrl($cp['image_url']) ?>', '<?= e(addslashes($cp['name'])) ?>', '<?= e(addslashes($cp['model_number'])) ?>', '<?= number_format($cp['price'], 2) ?>', '<?= e(addslashes($cp['short_desc'] ?? 'Genuine Factory Spare Part')) ?>', <?= intval($cp['id']) ?>)" title="Click for Amazon-style large image zoom / મોટો ફોટો જોવા ક્લિક કરો">
                             <img src="<?= assetUrl($cp['image_url']) ?>" alt="<?= e($cp['name']) ?>" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
-                            <span style="position: absolute; top: 8px; left: 8px; background: rgba(0, 229, 255, 0.25); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 4px; z-index: 2;">
-                                <?= e($cp['model_number']) ?>
-                            </span>
-                            <span style="position: absolute; bottom: 8px; right: 8px; background: rgba(2, 6, 23, 0.85); border: 1px solid rgba(0,229,255,0.4); color: #38bdf8; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px; display: flex; align-items: center; gap: 4px; z-index: 2;">
-                                <span>🔍</span> <span>Zoom</span>
-                            </span>
                         </div>
                         <div style="font-size: 10.5px; font-weight: 700; color: #38bdf8; text-transform: uppercase;">
                             <?= e($cp['category_name']) ?>
@@ -1527,7 +1521,7 @@ function recalcDirectPay() {
             submitBtn.innerHTML = '<span>📄 Generate Proforma Invoice &amp; Confirm RTGS Order (₹ ' + payableToday.toLocaleString('en-IN') + ')</span>';
             submitBtn.style.background = 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)';
         } else {
-            submitBtn.innerHTML = '<span>⚡ Pay Now via Razorpay (₹ ' + payableToday.toLocaleString('en-IN') + ')</span>';
+            submitBtn.innerHTML = '<span>⚡ Pay Now via Secure Gateway (₹ ' + payableToday.toLocaleString('en-IN') + ')</span>';
             submitBtn.style.background = 'linear-gradient(135deg, #059669 0%, #10b981 100%)';
         }
     }
@@ -1795,7 +1789,7 @@ function submitDirectPayment(e) {
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <label style="display: flex; align-items: center; gap: 8px; background: rgba(15, 23, 42, 0.7); border: 1.5px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 9px 12px; cursor: pointer;">
                         <input type="radio" name="dp_method" value="razorpay" checked onchange="recalcDirectPay()" style="accent-color: #0284c7;">
-                        <span style="font-size: 12.5px; font-weight: 700; color: #fff;">⚡ Razorpay (UPI, Cards, NetBanking)</span>
+                        <span style="font-size: 12.5px; font-weight: 700; color: #fff;">⚡ Instant UPI / Cards / NetBanking</span>
                     </label>
                     <label style="display: flex; align-items: center; gap: 8px; background: rgba(15, 23, 42, 0.7); border: 1.5px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 9px 12px; cursor: pointer;">
                         <input type="radio" name="dp_method" value="bank_transfer" onchange="recalcDirectPay()" style="accent-color: #0284c7;">
@@ -1902,7 +1896,7 @@ function submitDirectPayment(e) {
             <!-- Submit Button & Security Note -->
             <div>
                 <button type="submit" id="btnSubmitDirectPay" style="width: 100%; height: 48px; border: none; border-radius: 8px; font-weight: 800; font-size: 15px; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);">
-                    <span>⚡ Pay Now via Razorpay</span>
+                    <span>⚡ Pay Online via Secure Gateway</span>
                 </button>
                 <div style="font-size: 10.5px; color: #94a3b8; text-align: center; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <span>🔒 256-Bit SSL Encrypted</span>
@@ -1975,7 +1969,32 @@ function openPartZoomModal(imgUrl, name, model, price, desc, id) {
     const modal = document.getElementById('partZoomModal');
     if (!modal) return;
     
-    document.getElementById('pzmImage').src = imgUrl;
+    const pzmImg = document.getElementById('pzmImage');
+    pzmImg.src = imgUrl;
+    pzmImg.style.transform = 'scale(1)';
+    pzmImg.style.cursor = 'zoom-in';
+
+    // Amazon-style cursor zoom lens
+    pzmImg.onmousemove = function(e) {
+        const rect = pzmImg.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        pzmImg.style.transformOrigin = `${x}% ${y}%`;
+        pzmImg.style.transform = 'scale(2.2)';
+        pzmImg.style.cursor = 'crosshair';
+    };
+    pzmImg.onmouseleave = function() {
+        pzmImg.style.transform = 'scale(1)';
+        pzmImg.style.cursor = 'zoom-in';
+    };
+    pzmImg.onclick = function() {
+        if (pzmImg.style.transform === 'scale(2.2)') {
+            pzmImg.style.transform = 'scale(1)';
+        } else {
+            pzmImg.style.transform = 'scale(2.2)';
+        }
+    };
+
     document.getElementById('pzmName').textContent = name;
     document.getElementById('pzmModelTag').textContent = model;
     document.getElementById('pzmPrice').textContent = '₹ ' + price;

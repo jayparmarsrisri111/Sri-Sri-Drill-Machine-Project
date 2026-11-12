@@ -57,7 +57,7 @@ try {
                     📖 2026 Machine Catalog
                 </a>
                 <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399;">
-                    💳 Book Online (Razorpay)
+                    💳 Book Machine Online
                 </a>
                 <a href="<?= BASE_URL ?>/simulator-6d.php" class="btn btn-outline" style="border-color: rgba(0, 229, 255, 0.4); display: flex; align-items: center; gap: 5px;">
                     <span style="font-size: 11px; background: rgba(0, 229, 255, 0.2); border: 1px solid #00e5ff; padding: 1px 6px; border-radius: 9999px; font-weight: 800;">360°</span>

@@ -121,7 +121,7 @@ try {
 
             <div class="metric-card">
                 <div class="metric-info">
-                    <h4>Orders (Razorpay)</h4>
+                    <h4>Orders &amp; Bills</h4>
                     <div class="metric-num" style="color: #34d399;"><?= $totalOrders ?></div>
                 </div>
                 <div class="metric-icon icon-emerald">
@@ -293,7 +293,7 @@ try {
         <!-- Recent Orders (Razorpay) -->
         <div class="content-card" style="margin-bottom: 30px;">
             <div class="card-header-flex">
-                <h3 class="card-title">Recent Razorpay Orders & Tax Invoices</h3>
+                <h3 class="card-title">Recent Orders &amp; Tax Invoices</h3>
                 <div style="display: flex; gap: 8px;">
                     <a href="eway-bill.php" target="_blank" class="btn-sm btn-cyan" style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399;">
                         📋 Print E-Way Bill

@@ -9,9 +9,16 @@
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../config/database.php';
 
-// Auth Guard
+$pdo = Database::getConnection();
+
+// Auth Guard: If not admin, redirect appropriately
 if (empty($_SESSION['admin_user'])) {
-    header("Location: index.php");
+    if (!empty($_GET['order_id']) || !empty($_GET['order_num']) || !empty($_SESSION['customer_user'])) {
+        $qs = !empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '';
+        header("Location: " . BASE_URL . "/eway-bill.php" . $qs);
+        exit;
+    }
+    header("Location: index.php?redirect=" . urlencode('eway-bill.php'));
     exit;
 }
 

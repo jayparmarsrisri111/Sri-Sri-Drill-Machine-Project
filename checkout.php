@@ -258,21 +258,23 @@ require_once __DIR__ . '/includes/navbar.php';
     }
 </style>
 
-<!-- Top Title -->
-<section class="checkout-hero">
-    <div class="container">
-        <div class="checkout-hero-header">
-            <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand" class="checkout-hero-logo">
-            <div style="flex: 1; min-width: 0;">
-                <span class="pill-badge" style="background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #34d399; font-size: 11px;">
-                    🔒 256-BIT SECURE RAZORPAY GATEWAY
-                </span>
-                <h1 style="font-family: var(--font-heading); font-size: 24px; color: #fff; margin-top: 4px; word-break: break-word;">
-                    Online Machine Booking &amp; Official Tax Invoice
-                </h1>
+<!-- Top Title (Styled matching machines.php) -->
+<section style="padding: 42px 0 28px; background: radial-gradient(circle at 50% 15%, rgba(0, 229, 255, 0.12) 0%, rgba(6, 9, 17, 0.98) 70%); border-bottom: 1px solid var(--border-subtle); position: relative; overflow: hidden;">
+    <div class="container" style="text-align: center; max-width: 900px; margin: 0 auto; position: relative; z-index: 2;">
+        
+        <!-- Integrated Brand Header Badge -->
+        <div style="display: inline-flex; align-items: center; gap: 12px; background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.4); border-radius: 9999px; padding: 6px 20px 6px 8px; margin-bottom: 16px; box-shadow: 0 8px 25px rgba(0, 229, 255, 0.18);">
+            <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand" style="height: 42px; width: 42px; border-radius: 50%; border: 2px solid var(--accent-cyan); object-fit: contain;">
+            <div style="text-align: left; line-height: 1.2;">
+                <div style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">VARSHA BRAND • BHAVNAGAR</div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #34d399; letter-spacing: 1.2px; text-transform: uppercase;">🔒 256-Bit Secure Banking Gateway</div>
             </div>
         </div>
-        <p style="color: var(--text-secondary); font-size: 14px;">
+
+        <h1 class="section-title" style="margin-bottom: 10px; font-size: clamp(24px, 4vw, 36px); font-family: var(--font-heading);">
+            Online Machine Booking &amp; <span style="color: var(--accent-cyan);">Official Tax Invoice</span>
+        </h1>
+        <p class="section-desc" style="max-width: 760px; margin: 0 auto; font-size: 14.5px; color: #cbd5e1; line-height: 1.6;">
             Book your <strong><?= BRAND_NAME ?></strong> industrial drill machine directly from Shree Varsha Engineering Works, Bhavnagar. Official GST Tax Invoice is generated immediately with authorized signature of <strong><?= AUTHORIZED_SIGNATORY ?></strong> and official company seal.
         </p>
     </div>
@@ -552,7 +554,7 @@ foreach ($products as $p) {
                         <span>💳</span> Select Payment Method (ચુકવણીની રીત પસંદ કરો) *
                     </label>
                     <select id="paymentMethodSelect" class="form-control" style="font-size: 14.5px; font-weight: 700; height: 46px; border: 1.5px solid #00e5ff; background: #060911; color: #fff; cursor: pointer;">
-                        <option value="online" selected>💳 Online Payment (Instant UPI, Debit / Credit Card, NetBanking via Razorpay)</option>
+                        <option value="online" selected>💳 Online Payment (Instant UPI, Debit / Credit Card, NetBanking)</option>
                         <option value="cod">💵 Cash on Delivery (COD / ડિલિવરી સમયે રોકડા ચુકવો)</option>
                         <option value="bank_transfer">🏛️ Direct Bank Transfer (NEFT / RTGS / IMPS - HDFC Bank Current A/C)</option>
                         <option value="cheque">📜 Cheque / Demand Draft (ખાતા પેયી એકાઉન્ટ પેયી ચેક / ડીડી)</option>
@@ -561,7 +563,7 @@ foreach ($products as $p) {
                     <!-- Dynamic helper panels for selected method -->
                     <div id="methodInfoOnline" class="method-info-box" style="margin-top: 14px; background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.35); border-radius: 8px; padding: 14px 16px;">
                         <div style="font-size: 13.5px; font-weight: 800; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
-                            <span>🔒</span> 256-Bit SSL Encrypted Razorpay Gateway
+                            <span>🔒</span> 256-Bit SSL Encrypted Banking Gateway
                         </div>
                         <div style="font-size: 12px; color: #cbd5e1; margin-top: 4px; line-height: 1.5;">
                             Pay securely with Google Pay, PhonePe, Paytm, BHIM UPI, RuPay, Visa, MasterCard, or NetBanking across 50+ banks. Instant token confirmation &amp; official GST Tax Invoice generated immediately upon successful payment.
@@ -692,7 +694,7 @@ foreach ($products as $p) {
                             </div>
                             <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
                                 <button type="button" onclick="window.switchToAdvancePlan()" class="btn btn-outline" style="padding: 7px 12px; font-size: 11.5px; border-color: #34d399; color: #34d399; font-weight: 700; background: rgba(16, 185, 129, 0.1);">
-                                    👉 Option 1: Pay Token Advance (₹ 25,000) via Razorpay
+                                    👉 Option 1: Pay Token Advance (₹ 25,000) Online
                                 </button>
                                 <button type="button" onclick="window.switchToBankTransfer()" class="btn btn-primary" style="padding: 7px 12px; font-size: 11.5px; background: #0284c7; border-color: #38bdf8; color: #fff; font-weight: 700;">
                                     👉 Option 2: Direct RTGS / NEFT to Varsha Current A/C (No Limit)
@@ -702,7 +704,7 @@ foreach ($products as $p) {
 
                         <!-- Online Payment Trigger -->
                         <button type="button" id="btnPayRazorpay" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 16px; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; border-color: #00e5ff; font-weight: 800; box-shadow: 0 10px 25px rgba(0, 229, 255, 0.35);">
-                            🔒 Pay with Razorpay / UPI (Official Gateway)
+                            🔒 Pay Online / UPI (Official Gateway)
                         </button>
 
                         <!-- Direct Confirmation Button for COD / Bank Transfer / Cheque -->
@@ -787,7 +789,7 @@ foreach ($products as $p) {
                 <span>•</span>
                 <span>⚡ Instant Tax Invoice</span>
                 <span>•</span>
-                <span>🛡️ Verified Razorpay</span>
+                <span>🛡️ Verified Banking Gateway</span>
             </div>
         </div>
     </div>
@@ -1136,7 +1138,7 @@ foreach ($products as $p) {
             if (labelOptionCustomAdvance) labelOptionCustomAdvance.classList.remove('active');
             if (labelOptionFull) labelOptionFull.classList.remove('active');
             if (paymentPlanNotice) paymentPlanNotice.textContent = "Token Advance ₹25,000 × " + qty + " = ₹" + payableNowNum.toLocaleString('en-IN') + " (Balance ₹" + Math.max(0, fullTotal - payableNowNum).toLocaleString('en-IN') + " on dispatch)";
-            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Booking Advance " + formatINR(payableNowNum) + " (Razorpay / UPI)";
+            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Booking Advance " + formatINR(payableNowNum) + " (Instant UPI / Cards)";
         } else if (!isFromCart && payTypeCustomAdvance && payTypeCustomAdvance.checked && pType !== 'part') {
             let customVal = parseFloat(inputCustomAdvance.value) || (90000 * qty);
             if (customVal > (400000 * qty)) customVal = (400000 * qty);
@@ -1149,7 +1151,7 @@ foreach ($products as $p) {
             if (labelOptionCustomAdvance) labelOptionCustomAdvance.classList.add('active');
             if (labelOptionFull) labelOptionFull.classList.remove('active');
             if (paymentPlanNotice) paymentPlanNotice.textContent = "Custom Online Advance ₹" + payableNowNum.toLocaleString('en-IN') + " (Balance ₹" + Math.max(0, fullTotal - payableNowNum).toLocaleString('en-IN') + " on dispatch)";
-            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Online Advance " + formatINR(payableNowNum) + " (Razorpay / UPI)";
+            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Online Advance " + formatINR(payableNowNum) + " (Instant UPI / Cards)";
         } else {
             payableNowNum = fullTotal;
             isAdvance = false;
@@ -1158,7 +1160,7 @@ foreach ($products as $p) {
             if (labelOptionCustomAdvance) labelOptionCustomAdvance.classList.remove('active');
             if (labelOptionFull) labelOptionFull.classList.add('active');
             if (paymentPlanNotice) paymentPlanNotice.textContent = isFromCart ? "100% Cart Total Payment" : ((pType === 'part') ? ("100% Spare Part Payment for " + qty + " Unit(s) + 18% GST") : ("100% Full Machine Payment for " + qty + " Unit(s) + 18% GST"));
-            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Full Amount " + formatINR(fullTotal) + " (Razorpay / UPI)";
+            if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Full Amount " + formatINR(fullTotal) + " (Instant UPI / Cards)";
         }
 
         if (rowPayableNow) rowPayableNow.textContent = formatINR(payableNowNum);
@@ -1345,9 +1347,9 @@ foreach ($products as $p) {
                 isAdvance = !payTypeFull.checked;
             }
 
-            // High-Value Safety Check: Single transaction limit on Razorpay/UPI is ₹5,00,000 / ₹10,00,000
+            // High-Value Safety Check: Single transaction limit on online gateway / UPI is ₹5,00,000
             if (payableAmount >= 500000 && !isAdvance) {
-                const proceedChoice = confirm("⚠️ High-Value Banking Limit Notice:\n\nIndian banks & UPI cap single online gateway transactions to ₹1,00,000 - ₹5,00,000. Online processing of " + formatINR(payableAmount) + " in one swipe may be rejected by your bank.\n\n• Click OK to pay the Booking Token Advance (₹25,000 - ₹1,00,000) online via Razorpay.\n• Click CANCEL to switch to Direct RTGS / NEFT Bank Transfer (No limit).");
+                const proceedChoice = confirm("⚠️ High-Value Banking Limit Notice:\n\nIndian banks & UPI cap single online gateway transactions to ₹1,00,000 - ₹5,00,000. Online processing of " + formatINR(payableAmount) + " in one swipe may be rejected by your bank.\n\n• Click OK to pay the Booking Token Advance (" + formatINR(25000) + ") online.\n• Click CANCEL to switch to Direct RTGS / NEFT Bank Transfer (No limit).");
                 if (proceedChoice) {
                     window.switchToAdvancePlan();
                     return;
@@ -1365,7 +1367,7 @@ foreach ($products as $p) {
             const csrfToken = document.getElementById('csrfToken').value;
 
             btnPayRazorpay.disabled = true;
-            btnPayRazorpay.textContent = "Connecting to Razorpay Banking Gateway...";
+            btnPayRazorpay.textContent = "Connecting to Secure Banking Gateway...";
 
             let serverOrderId = null;
             try {
@@ -1438,7 +1440,6 @@ foreach ($products as $p) {
                 rzp.on('payment.failed', function (resp){
                     const reason = (resp && resp.error && resp.error.description) ? resp.error.description : 'Transaction cancelled by bank / limit exceeded';
                     resetPaymentButtonState('❌ <strong>Payment Unsuccessful:</strong> ' + reason + '. No payment was processed and NO bill has been generated. Note: For payments above ₹25,000, please select <strong>Token Booking Advance (₹25,000)</strong> or <strong>Direct RTGS/NEFT Bank Transfer</strong>.', true);
-                });
                 });
                 rzp.open();
             } catch (err) {

@@ -555,8 +555,43 @@ document.addEventListener('DOMContentLoaded', function () {
         const isGujarati = /[\u0A80-\u0AFF]/.test(rawText) || q.includes('chhe') || q.includes('nathi') || q.includes('ketla') || q.includes('kem') || q.includes('bhav') || q.includes('saru');
         const isHindi = /[\u0900-\u097F]/.test(rawText) || q.includes('kya') || q.includes('kaise') || q.includes('kitna') || q.includes('chahiye');
 
-        // 1. Owners, Leadership & Company Founders
-        if (q.includes('owner') || q.includes('founder') || q.includes('director') || q.includes('maalik') || q.includes('માલિક') || q.includes('ડાયરેક્ટર') || q.includes('jay') || q.includes('jitubhai') || q.includes('jitendra') || q.includes('parmar') || q.includes('કોણ છે')) {
+        // 0. Polite Greetings & Welcome
+        if (/\b(hi|hello|hey|namaste|kem cho|kya hal|pranam)\b/i.test(q) || q.includes('કેમ છો') || q.includes('નમસ્તે') || q.includes('જય શ્રી કૃષ્ણ') || q.includes('નમસ્કાર')) {
+            if (isGujarati) {
+                return {
+                    text: `<p><strong>નમસ્તે! શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સ (ભાવનગર) માં તમારું સ્વાગત છે.</strong></p>
+                           <p>હું વર્ષા બ્રાન્ડ ઔદ્યોગિક ડ્રિલ મશીન સહાયક છું. આજે હું તમને કઈ રીતે મદદ કરી શકું?<br>
+                           • <strong>મશીન મોડલ અને ભાવ</strong> જાણવા માટે <em>"40mm Radial Price"</em> લખો.<br>
+                           • <strong>ઓનલાઇન બુકિંગ</strong> માટે <em>"Book Online"</em> લખો.<br>
+                           • <strong>ઓર્ડર ટ્રેકિંગ / બિલ</strong> માટે <em>"Track Order"</em> લખો.<br>
+                           • <strong>સ્પેર પાર્ટ્સ</strong> માટે <em>"Spare Parts"</em> લખો.</p>`,
+                    rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                                <a href="<?= BASE_URL ?>/machines.php" class="btn btn-outline" style="font-size:11px; flex:1;">📖 મશીન કેટલોગ</a>
+                                <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">💳 ઓનલાઇન બુકિંગ</a>
+                           </div>`
+                };
+            }
+            return {
+                text: `<p><strong>Namaste! Welcome to Shree Varsha Engineering Works (Varsha Brand).</strong></p>
+                       <p>I am your 24/7 AI Machinery Assistant. How can I assist you today?<br>
+                       • Ask for <strong>Machine Prices</strong> (e.g. 40mm, 50mm, 65mm Radial or Pillar)<br>
+                       • Ask about <strong>Online Booking & ₹25,000 Advance Token</strong><br>
+                       • Inquire about <strong>Spare Parts & Amazon-Style Zoom</strong><br>
+                       • Track your <strong>Live Delivery & GST Tax Invoices</strong></p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/machines.php" class="btn btn-outline" style="font-size:11px; flex:1;">📖 Machine Catalog</a>
+                            <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">💳 Book Machine</a>
+                       </div>`
+            };
+        }
+
+        // 1. Owners, Leadership & Company Founders (Exact word matching to prevent false triggers)
+        const isOwnerQuery = /\b(owner|founder|director|maalik|ceo)\b/i.test(q) || 
+                             q.includes('માલિક') || q.includes('ડાયરેક્ટર') || q.includes('કોણ છે માલિક') || 
+                             q.includes('jay parmar') || q.includes('jitubhai parmar') || q.includes('jitendra parmar') ||
+                             q.includes('જીતેન્દ્રભાઈ') || q.includes('જય પરમાર');
+
+        if (isOwnerQuery) {
             if (isGujarati) {
                 return {
                     text: `<p><strong>શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સ (ભાવનગર) ની લીડરશિપ:</strong></p>
@@ -625,23 +660,36 @@ document.addEventListener('DOMContentLoaded', function () {
                           • <strong>Current A/C No:</strong> 50200088992211<br>
                           • <strong>IFSC Code:</strong> HDFC0000123 (Waghawadi Road Branch, Bhavnagar)<br>
                           • <strong>UPI ID:</strong> shreevarsha@okhdfcbank<br>
-                          • <strong>Payment Modes Accepted:</strong> Razorpay (UPI/Cards), Cash on Delivery (COD), Direct Bank Wire (RTGS/NEFT), Account Payee Cheque / DD.</p>`,
+                          • <strong>Payment Modes Accepted:</strong> Instant UPI, Cards, NetBanking, Cash on Delivery (COD), Direct Bank Wire (RTGS/NEFT), Account Payee Cheque / DD.</p>`,
                 rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; display:block; text-align:center; background:#0284c7;">💳 Proceed to Checkout &amp; Pay</a></div>`
             };
         }
 
-        // 6. E-Way Bill & Official Tax Invoices
-        if (q.includes('eway') || q.includes('e-way') || q.includes('ઇ-વે') || q.includes('gst') || q.includes('tax invoice') || q.includes('bill') || q.includes('બીલ') || q.includes('ઇન્વોઇસ') || q.includes('hsn')) {
+        // 6. E-Way Bill & Government Portal
+        if (q.includes('eway') || q.includes('e-way') || q.includes('ઇ-વે') || q.includes('ઈ-વે') || q.includes('પરિવહન') || q.includes('ewb') || q.includes('portal') || q.includes('પોર્ટલ')) {
             return {
-                text: `<p><strong>📄 GST Tax Invoice &amp; Government E-Way Bill:</strong></p>
-                       <p>• <strong>Company GSTIN:</strong> <?= COMPANY_GSTIN ?><br>
-                          • <strong>HSN Code:</strong> 8459 (Machine-tools for drilling)<br>
-                          • <strong>Official Bill:</strong> Generated immediately upon payment with authorized signature of Jay Parmar &amp; official Varsha Brand seal.<br>
-                          • <strong>E-Way Bill:</strong> Form GST EWB-01 is generated for transport clearance under Rule 138.</p>`,
+                text: `<p><strong>🏛️ Government GST E-Way Bill (FORM GST EWB-01):</strong></p>
+                       <p>• <strong>Supplier GSTIN:</strong> <?= COMPANY_GSTIN ?><br>
+                          • <strong>HSN Code:</strong> 8459 (Industrial Drilling Machinery)<br>
+                          • <strong>Govt E-Way Clearance:</strong> Complies with Rule 138 of CGST Rules 2017 with verified 12-digit E-Way Bill Number and dynamic QR code.<br>
+                          • You can inspect customer-wise E-Way bills directly or open the official government portal login.</p>`,
                 rich: `<div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
-                            <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-primary" style="font-size:11px; text-align:center; background:#10b981;">📄 Download / View Official Tax Invoice</a>
-                            <a href="<?= BASE_URL ?>/eway_bill.php" class="btn btn-outline" style="font-size:11px; text-align:center; border-color:#38bdf8; color:#38bdf8;">🏛️ View GST E-Way Bill Portal</a>
+                            <a href="<?= BASE_URL ?>/eway_bill.php" class="btn btn-primary" style="font-size:11px; text-align:center; background:#0284c7;">🚚 View GST E-Way Bill Details</a>
                             <a href="https://ewaybillgst.gov.in/login.aspx" target="_blank" class="btn btn-outline" style="font-size:11px; text-align:center; border-color:#fbbf24; color:#fbbf24;">🏛️ Open Govt E-Way Portal Login ↗</a>
+                       </div>`
+            };
+        }
+
+        // 6B. Official GST Tax Invoice & Customer Bills
+        if (q.includes('tax invoice') || q.includes('bill') || q.includes('બીલ') || q.includes('ઇન્વોઇસ') || q.includes('રસીદ') || q.includes('invoice') || q.includes('receipt')) {
+            return {
+                text: `<p><strong>📄 Official GST Tax Invoice &amp; Certified Bill:</strong></p>
+                       <p>• <strong>Instant Generation:</strong> Tax Invoice is generated immediately upon successful payment with verified cryptographic seal.<br>
+                          • <strong>Authorized Signatory:</strong> Bears official digital signature of Jay Parmar &amp; company seal.<br>
+                          • <strong>Find Your Past Bills:</strong> Enter your registered mobile number on the invoice page or log into your Customer Dashboard to view all orders.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:8px;">
+                            <a href="<?= BASE_URL ?>/invoice.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">📄 Search / View Invoices</a>
+                            <a href="<?= BASE_URL ?>/customer-dashboard.php" class="btn btn-outline" style="font-size:11px; flex:1; border-color:#00e5ff; color:#00e5ff;">📊 Customer Dashboard</a>
                        </div>`
             };
         }

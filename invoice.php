@@ -115,52 +115,63 @@ if (!$order) {
 
             <!-- Customer Orders List (If Signed In) -->
             <?php if (!empty($customerOrders)): ?>
-                <div style="background: rgba(15, 23, 42, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.4); border-radius: 14px; padding: 22px; margin-bottom: 30px;">
-                    <div style="font-size: 16px; font-weight: 800; color: #38bdf8; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span>👤</span> <span>Your Verified Machinery Orders &amp; Tax Bills</span>
+                <div class="verified-orders-card" style="background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 16, 31, 0.95) 100%); border: 1.5px solid rgba(0, 229, 255, 0.35); border-radius: 14px; padding: 22px; margin-bottom: 30px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);">
+                    <div style="margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: rgba(0, 229, 255, 0.15); border: 1px solid #00e5ff; color: #00e5ff; font-size: 16px;">👤</span>
+                            <div>
+                                <h3 style="margin: 0; font-size: 16.5px; font-weight: 800; color: #fff; font-family: 'Space Grotesk', sans-serif;">
+                                    Your Verified Machinery Orders &amp; Tax Bills
+                                </h3>
+                                <div style="font-size: 12px; color: #94a3b8;">
+                                    Linked to your registered account (<?= e($custUser['phone'] ?? '') ?>)
+                                </div>
+                            </div>
                         </div>
-                        <a href="customer-dashboard.php" class="btn btn-outline" style="font-size: 11.5px; padding: 5px 12px; border-color: #00e5ff; color: #00e5ff; text-decoration: none; font-weight: 700;">
-                            📊 Open Full Customer Dashboard →
+                        <a href="customer-dashboard.php" class="btn" style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.25) 0%, rgba(0, 229, 255, 0.25) 100%); border: 1.5px solid #00e5ff; color: #00e5ff; font-size: 12px; padding: 7px 16px; border-radius: 8px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 15px rgba(0, 229, 255, 0.2);">
+                            <span>📊 Open Full Customer Dashboard →</span>
                         </a>
                     </div>
-                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                        <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px;">
+
+                    <!-- Responsive Table Container -->
+                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 640px; background: rgba(6, 9, 17, 0.6);">
                             <thead>
-                                <tr style="border-bottom: 1.5px solid rgba(255,255,255,0.1); text-align: left; color: #94a3b8; font-size: 11px; text-transform: uppercase;">
-                                    <th style="padding: 8px 10px;">Order No</th>
-                                    <th style="padding: 8px 10px;">Machine Model</th>
-                                    <th style="padding: 8px 10px;">Date</th>
-                                    <th style="padding: 8px 10px; text-align: right;">Amount</th>
-                                    <th style="padding: 8px 10px; text-align: center;">Payment</th>
-                                    <th style="padding: 8px 10px; text-align: right;">Action</th>
+                                <tr style="background: rgba(255, 255, 255, 0.04); border-bottom: 1.5px solid rgba(0, 229, 255, 0.25); text-align: left; color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px;">
+                                    <th style="padding: 12px 14px;">Order No</th>
+                                    <th style="padding: 12px 14px;">Machine Model</th>
+                                    <th style="padding: 12px 14px;">Date</th>
+                                    <th style="padding: 12px 14px; text-align: right;">Amount</th>
+                                    <th style="padding: 12px 14px; text-align: center;">Payment</th>
+                                    <th style="padding: 12px 14px; text-align: right;">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($customerOrders as $co): 
                                     $isCoPaid = ($co['payment_status'] === 'paid');
                                 ?>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
-                                        <td style="padding: 12px 10px; font-weight: 700; color: #00e5ff;">
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.06); transition: background 0.2s;">
+                                        <td style="padding: 14px; font-weight: 800; color: #00e5ff; font-family: monospace; font-size: 13px;">
                                             <?= e($co['order_number']) ?>
                                         </td>
-                                        <td style="padding: 12px 10px; color: #fff;">
-                                            <?= e($co['model_number']) ?> - <?= e($co['product_name']) ?>
+                                        <td style="padding: 14px; color: #fff;">
+                                            <div style="font-weight: 700; color: #fff;"><?= e($co['model_number']) ?></div>
+                                            <div style="font-size: 12px; color: #94a3b8;"><?= e($co['product_name']) ?></div>
                                         </td>
-                                        <td style="padding: 12px 10px; color: #94a3b8; font-size: 12px;">
+                                        <td style="padding: 14px; color: #cbd5e1; font-size: 12.5px; white-space: nowrap;">
                                             <?= date('d-M-Y', strtotime($co['created_at'])) ?>
                                         </td>
-                                        <td style="padding: 12px 10px; text-align: right; font-weight: 700; color: #34d399;">
+                                        <td style="padding: 14px; text-align: right; font-weight: 800; color: #34d399; font-size: 14.5px; white-space: nowrap;">
                                             ₹ <?= number_format($co['total_amount'], 2) ?>
                                         </td>
-                                        <td style="padding: 12px 10px; text-align: center;">
-                                            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; <?= $isCoPaid ? 'background:#dcfce7; color:#15803d;' : 'background:#fef3c7; color:#b45309;' ?>">
+                                        <td style="padding: 14px; text-align: center;">
+                                            <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 800; letter-spacing: 0.4px; <?= $isCoPaid ? 'background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399;' : 'background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24;' ?>">
                                                 <?= $isCoPaid ? '✔ PAID' : '⏳ PENDING' ?>
                                             </span>
                                         </td>
-                                        <td style="padding: 12px 10px; text-align: right;">
-                                            <a href="invoice.php?order_id=<?= $co['id'] ?>" class="btn btn-outline" style="padding: 5px 12px; font-size: 11.5px; border-color: #00e5ff; color: #00e5ff; font-weight: 700; text-decoration: none;">
-                                                📄 View Bill →
+                                        <td style="padding: 14px; text-align: right; white-space: nowrap;">
+                                            <a href="invoice.php?order_id=<?= $co['id'] ?>" class="btn" style="padding: 6px 14px; font-size: 12px; background: rgba(0, 229, 255, 0.12); border: 1px solid #00e5ff; color: #00e5ff; font-weight: 800; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(0, 229, 255, 0.15);">
+                                                <span>📄 View Bill →</span>
                                             </a>
                                         </td>
                                     </tr>
@@ -816,7 +827,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 🖨️ Print / Download PDF Invoice
             </button>
             <?php
-                $waText = "Hello " . APP_NAME . ", Here is my order confirmation and invoice:\nInvoice No: " . $order['invoice_number'] . "\nModel: " . $order['model_number'] . "\nAmount: Rs. " . number_format($order['total_amount'], 2) . "\nRazorpay Payment ID: " . $order['razorpay_payment_id'];
+                $waText = "Hello " . APP_NAME . ", Here is my order confirmation and invoice:\nInvoice No: " . $order['invoice_number'] . "\nModel: " . $order['model_number'] . "\nAmount: Rs. " . number_format($order['total_amount'], 2) . "\nTransaction Ref: " . $order['razorpay_payment_id'];
             ?>
             <a href="<?= getWhatsAppLink(COMPANY_WHATSAPP, $waText) ?>" target="_blank" class="btn-action btn-whatsapp-share">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2z"/></svg>
@@ -869,7 +880,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 }
 
                 $pm = $order['payment_method'] ?? 'online';
-                $payMethodLabel = 'Razorpay 256-Bit SSL';
+                $payMethodLabel = 'Instant UPI / 256-Bit SSL';
                 $payMethodColor = '#10b981';
                 if ($pm === 'cod') {
                     $payMethodLabel = 'Cash on Delivery (COD)';
@@ -1228,7 +1239,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         </div>
 
         <div class="disclaimer-box" style="margin-top: 16px; padding-top: 10px; border-top: 1px dashed #cbd5e1; text-align: center; font-size: 10px; color: #94a3b8;">
-            <?= $isPaid ? 'This is an electronically generated and certified Tax Invoice with secure digital audit trail. Razorpay Payment ID: ' . e($order['razorpay_payment_id']) . '. Certified by Shree Varsha Engineering Works.' : 'This is a computer generated Proforma Invoice / Order Acknowledgement. Official GST Tax Invoice is generated post settlement of payment.' ?>
+            <?= $isPaid ? 'This is an electronically generated and certified Tax Invoice with secure digital audit trail. Transaction Ref: ' . e($order['razorpay_payment_id']) . '. Certified by Shree Varsha Engineering Works.' : 'This is a computer generated Proforma Invoice / Order Acknowledgement. Official GST Tax Invoice is generated post settlement of payment.' ?>
         </div>
     </div>
 

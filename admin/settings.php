@@ -224,16 +224,16 @@ foreach ($rows as $r) {
                 </div>
 
                 <h3 class="card-title" style="margin: 30px 0 20px; padding-top: 20px; border-top: 1px solid var(--admin-border);">
-                    Razorpay Online Gateway Credentials (Live / Test API Keys)
+                    Online Payment Gateway Credentials (Live / Test API Keys)
                 </h3>
 
                 <div class="form-row">
                     <div class="admin-form-group">
-                        <label>Razorpay Key ID</label>
+                        <label>Gateway Key ID</label>
                         <input type="text" name="razorpay_key_id" class="admin-form-control" value="<?= e($settings['razorpay_key_id'] ?? 'rzp_test_SLvrGI5oOB3cDO') ?>">
                     </div>
                     <div class="admin-form-group">
-                        <label>Razorpay Key Secret</label>
+                        <label>Gateway Key Secret</label>
                         <input type="password" name="razorpay_key_secret" class="admin-form-control" value="<?= e($settings['razorpay_key_secret'] ?? 'fs37YWN1P1N8Gt5HkC8PVSUB') ?>">
                     </div>
                 </div>

@@ -785,7 +785,7 @@ require_once __DIR__ . '/includes/navbar.php';
                         <!-- Security Badges -->
                         <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 11px; color: #94a3b8;">
                             <div style="display: flex; align-items: center; gap: 6px;">
-                                <span style="color: #34d399;">✔</span> 100% Razorpay Secure
+                                <span style="color: #34d399;">✔</span> 100% 256-Bit SSL Secure
                             </div>
                             <div style="display: flex; align-items: center; gap: 6px;">
                                 <span style="color: #34d399;">✔</span> GST Tax Input Credit

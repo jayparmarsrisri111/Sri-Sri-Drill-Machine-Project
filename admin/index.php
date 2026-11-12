@@ -43,7 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             'role' => $user['role'],
                             'login_time' => time()
                         ];
-                        header("Location: dashboard.php");
+                        $redirectTo = !empty($_REQUEST['redirect']) ? sanitizeString($_REQUEST['redirect']) : 'dashboard.php';
+                        if (strpos($redirectTo, '://') !== false || strpos($redirectTo, '//') === 0) {
+                            $redirectTo = 'dashboard.php';
+                        }
+                        header("Location: " . $redirectTo);
                         exit;
                     } else {
                         $errorMessage = 'Invalid username or password. Please try again.';
@@ -122,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form method="POST">
             <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
+            <input type="hidden" name="redirect" value="<?= e($_REQUEST['redirect'] ?? '') ?>">
             <div class="form-group">
                 <label class="form-label">Username</label>
                 <input type="text" name="username" class="form-control" placeholder="Enter username" value="admin" required autofocus>

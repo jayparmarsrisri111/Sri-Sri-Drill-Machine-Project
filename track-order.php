@@ -104,7 +104,7 @@ $currentStep = $statusMap[$currStatusKey] ?? 0;
 $deliveryStages = [
     [
         'title' => 'Order Confirmed & Paid',
-        'sub'   => 'Verified via Razorpay • GST Invoice Generated',
+        'sub'   => 'Verified Online Payment • GST Invoice Generated',
         'badge' => 'Instant Verification',
         'icon'  => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
     ],
@@ -494,11 +494,11 @@ $deliveryStages = [
                         <span style="color: #cbd5e1;">₹ <?= number_format($selectedOrder['cgst_amount'] + $selectedOrder['sgst_amount'], 2) ?></span>
                     </div>
                     <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 800; color: #34d399; padding: 8px 0 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 6px;">
-                        <span>Amount Paid (Razorpay):</span>
+                        <span>Amount Paid (Online Verified):</span>
                         <span>₹ <?= number_format($selectedOrder['total_amount'], 2) ?></span>
                     </div>
                     <div style="font-size: 11px; color: #64748b; margin-top: 4px; text-align: right;">
-                        Razorpay ID: <?= e($selectedOrder['razorpay_payment_id'] ?? 'Verified') ?>
+                        Transaction Ref: <?= e($selectedOrder['razorpay_payment_id'] ?? 'Verified') ?>
                     </div>
                 </div>
 

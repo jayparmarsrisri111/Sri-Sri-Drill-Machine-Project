@@ -427,7 +427,7 @@ body.mobile-menu-open #varshaChatbotWindow {
                 </a>
             </li>
             <li><a href="<?= BASE_URL ?>/catalog.php" class="site-nav-link <?= ($currentNav === 'catalog') ? 'active' : '' ?>"><span>📖 Catalog</span></a></li>
-            <li><a href="<?= BASE_URL ?>/track-order.php" class="site-nav-link <?= ($currentNav === 'tracking') ? 'active' : '' ?>" style="color: #34d399;"><span>🚚 Live Tracking</span><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10b981; box-shadow:0 0 6px #10b981;"></span></a></li>
+            <li><a href="<?= BASE_URL ?>/track-order.php" class="site-nav-link <?= ($currentNav === 'tracking') ? 'active' : '' ?>" style="color: #34d399;"><span>🚚 Live Tracking</span></a></li>
             <li><a href="<?= BASE_URL ?>/contact.php" class="site-nav-link <?= ($currentNav === 'contact') ? 'active' : '' ?>"><span>📍 Contact</span></a></li>
             
             <!-- More Dropdown for Secondary Pages (Blog, FAQs, PWA App) -->
@@ -555,7 +555,7 @@ body.mobile-menu-open #varshaChatbotWindow {
         <li class="drawer-nav-item"><a href="<?= BASE_URL ?>/catalog.php" class="<?= ($currentNav === 'catalog') ? 'active' : '' ?>"><span>📖 Catalog &amp; PDF</span><span>➔</span></a></li>
         <li class="drawer-nav-item"><a href="<?= BASE_URL ?>/simulator-6d.php" class="<?= ($currentNav === 'simulator') ? 'active' : '' ?>" style="color: var(--accent-cyan);"><span>🔄 360° 12D View</span><span style="font-size:10px; background:rgba(0,229,255,0.2); border:1px solid #00e5ff; padding:2px 6px; border-radius:6px;">3D LAB</span></a></li>
         <li class="drawer-nav-item"><a href="<?= BASE_URL ?>/blog.php" class="<?= ($currentNav === 'blog') ? 'active' : '' ?>"><span>📚 Blog / Guides</span><span>➔</span></a></li>
-        <li class="drawer-nav-item"><a href="<?= BASE_URL ?>/track-order.php" class="<?= ($currentNav === 'tracking') ? 'active' : '' ?>" style="color: #34d399;"><span>🚚 Live Tracking</span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981;"></span></a></li>
+        <li class="drawer-nav-item"><a href="<?= BASE_URL ?>/track-order.php" class="<?= ($currentNav === 'tracking') ? 'active' : '' ?>" style="color: #34d399;"><span>🚚 Live Tracking</span></a></li>
         <li class="drawer-nav-item"><a href="<?= BASE_URL ?>/faqs.php" class="<?= ($currentNav === 'faqs') ? 'active' : '' ?>"><span>💡 FAQs &amp; Help</span><span>➔</span></a></li>
         <li class="drawer-nav-item"><a href="<?= BASE_URL ?>/contact.php" class="<?= ($currentNav === 'contact') ? 'active' : '' ?>"><span>📍 Factory Contact</span><span>➔</span></a></li>
         <li class="drawer-nav-item"><a href="#" onclick="closeSiteMobileDrawer(); openAppDownloadModal(); return false;" style="color: #38bdf8; font-weight: 700;"><span>📲 Download App (PWA)</span><span>➔</span></a></li>

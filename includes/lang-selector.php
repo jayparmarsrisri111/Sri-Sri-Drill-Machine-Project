@@ -261,14 +261,19 @@ function setAllTransCookies(targetLang) {
     }
     clearVals.forEach(c => { document.cookie = c; });
 
-    // 3. Set new googtrans
+    // 3. Set new googtrans (Supports both /en/ and /auto/ for universal browser coverage)
     const transVal = (targetLang === 'en') ? '/en/en' : ('/en/' + targetLang);
+    const transAuto = (targetLang === 'en') ? '/auto/en' : ('/auto/' + targetLang);
+
     document.cookie = "googtrans=" + transVal + "; path=/; max-age=31536000; SameSite=Lax";
+    document.cookie = "googtrans=" + transAuto + "; path=/; max-age=31536000; SameSite=Lax";
     if (domain !== 'localhost') {
         document.cookie = "googtrans=" + transVal + "; domain=" + domain + "; path=/; max-age=31536000; SameSite=Lax";
+        document.cookie = "googtrans=" + transAuto + "; domain=" + domain + "; path=/; max-age=31536000; SameSite=Lax";
         const parts = domain.split('.');
         if (parts.length > 2) {
             document.cookie = "googtrans=" + transVal + "; domain=." + parts.slice(-2).join('.') + "; path=/; max-age=31536000; SameSite=Lax";
+            document.cookie = "googtrans=" + transAuto + "; domain=." + parts.slice(-2).join('.') + "; path=/; max-age=31536000; SameSite=Lax";
         }
     }
 }
