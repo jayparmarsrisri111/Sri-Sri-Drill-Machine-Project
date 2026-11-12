@@ -294,8 +294,8 @@ try {
                             <div style="margin: 8px 0 14px; display: flex; align-items: baseline; justify-content: space-between; background: rgba(11, 17, 32, 0.75); border: 1px solid rgba(0, 229, 255, 0.25); border-radius: 8px; padding: 8px 12px;">
                                 <div>
                                     <div style="font-size: 10px; text-transform: uppercase; color: #94a3b8; font-weight: 700;">Factory Ex-Price</div>
-                                    <div style="font-family: 'Space Grotesk', sans-serif; font-size: 19px; font-weight: 900; color: #34d399;">
-                                        ₹ <?= number_format($p['price'] ?? getMachinePrice($p['id']), 2) ?>
+                                    <div style="font-family: 'Space Grotesk', sans-serif; font-size: 19px; font-weight: 900; color: #34d399; white-space: nowrap !important; display: inline-flex; align-items: center; gap: 3px;">
+                                        <span>₹</span><span><?= number_format($p['price'] ?? getMachinePrice($p['id']), 2) ?></span>
                                     </div>
                                 </div>
                                 <div style="text-align: right;">

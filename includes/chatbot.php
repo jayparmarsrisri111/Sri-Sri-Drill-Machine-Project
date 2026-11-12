@@ -594,19 +594,29 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isOwnerQuery) {
             if (isGujarati) {
                 return {
-                    text: `<p><strong>શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સ (ભાવનગર) ની લીડરશિપ:</strong></p>
-                           <p>👤 <strong>શ્રી જીતેન્દ્રભાઈ પરમાર</strong> - ફાઉન્ડર અને ટેકનિકલ ડિરેક્ટર (૨૫+ વર્ષનો ઇન્ડસ્ટ્રિયલ અનુભવ). મો: <strong>+91 9824913555</strong><br>
-                              👤 <strong>શ્રી જય પરમાર</strong> - પ્રોડક્શન એન્જિનિયર અને અધિકૃત હસ્તાક્ષરકર્તા (Authorized Signatory). મો: <strong>+91 9714611331</strong><br>
-                              ફેક્ટરી: શેડ L/786, GIDC, હાદાનગર પાસે, ભાવનગર - 364003 (ગુજરાત).</p>`,
-                    rich: `<div style="margin-top:6px;"><a href="<?= getWhatsAppLink(COMPANY_WHATSAPP, 'નમસ્તે જીતેન્દ્રભાઈ અને જયભાઈ, હું વર્ષા બ્રાન્ડ ડ્રિલ મશીન બાબતે વાત કરવા માંગુ છું.') ?>" target="_blank" class="btn btn-whatsapp" style="font-size:11px; display:block; text-align:center;">💬 ડાયરેક્ટ વોટ્સએપ કરો</a></div>`
+                    text: `<p><strong>શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સ (ભાવનગર) ની એક્ઝિક્યુટિવ લીડરશિપ:</strong></p>
+                           <p>👤 <strong>શ્રી જીતેન્દ્રભાઈ પરમાર</strong> - Founder &amp; CEO (મુખ્ય કાર્યકારી અધિકારી, ૨૫+ વર્ષનો અનુભવ).<br>
+                              📞 ફોન: <strong>+91 98249 13555</strong> | ✉️ varshaengineeringworks@gmail.com<br><br>
+                              👤 <strong>શ્રી જય પરમાર</strong> - Co-CEO &amp; Production Engineer (અધિકૃત હસ્તાક્ષરકર્તા - Authorized Signatory).<br>
+                              📞 ફોન: <strong>+91 97146 11331</strong> | ✉️ jayparmar@varshamachines.com<br><br>
+                              🏭 ફેક્ટરી: શેડ L/786, GIDC, હાદાનગર પાસે, ભાવનગર - 364003 (ગુજરાત).</p>`,
+                    rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                                <a href="<?= BASE_URL ?>/about.php" class="btn btn-outline" style="font-size:11px; flex:1;">🏭 સંપૂર્ણ લીડરશિપ જુઓ</a>
+                                <a href="<?= getWhatsAppLink('919714611331', 'નમસ્તે જયભાઈ (Co-CEO) & જીતેન્દ્રભાઈ (CEO), હું વર્ષા બ્રાન્ડ ડ્રિલ મશીન બાબતે વાત કરવા માંગુ છું.') ?>" target="_blank" class="btn btn-whatsapp" style="font-size:11px; flex:1;">💬 ડાયરેક્ટ વોટ્સએપ</a>
+                           </div>`
                 };
             }
             return {
-                text: `<p><strong>Shree Varsha Engineering Works Leadership:</strong></p>
-                       <p>👤 <strong>Jitendrabhai Parmar</strong> - Founder &amp; Technical Director (+91 9824913555)<br>
-                          👤 <strong>Jay Parmar</strong> - Production Engineer &amp; Authorized Signatory (+91 9714611331)<br>
-                          Our ISO 9001:2015 manufacturing plant is located at Shed L/786, GIDC, Bhavnagar, Gujarat.</p>`,
-                rich: `<div style="margin-top:6px;"><a href="<?= getWhatsAppLink(COMPANY_WHATSAPP, 'Hello Jay Parmar & Jitendrabhai, I would like to inquire about Varsha Brand drill machines.') ?>" target="_blank" class="btn btn-whatsapp" style="font-size:11px; display:block; text-align:center;">💬 Chat Directly on WhatsApp</a></div>`
+                text: `<p><strong>Shree Varsha Engineering Works Executive Leadership:</strong></p>
+                       <p>👤 <strong>Jitendrabhai Parmar</strong> - Founder &amp; CEO (Chief Executive Officer, 25+ Years Experience)<br>
+                          📞 Phone: <strong>+91 98249 13555</strong> | ✉️ varshaengineeringworks@gmail.com<br><br>
+                          👤 <strong>Jay Parmar</strong> - Co-CEO &amp; Production Engineer (Authorized Signatory)<br>
+                          📞 Phone: <strong>+91 97146 11331</strong> | ✉️ jayparmar@varshamachines.com<br><br>
+                          🏭 Factory: Shed L/786, GIDC, Nr. Hadanagar, Bhavnagar - 364003, Gujarat.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/about.php" class="btn btn-outline" style="font-size:11px; flex:1;">🏭 View Full Leadership</a>
+                            <a href="<?= getWhatsAppLink('919714611331', 'Hello Jay Parmar (Co-CEO) & Jitendrabhai (CEO), I would like to inquire about Varsha Brand drill machines.') ?>" target="_blank" class="btn btn-whatsapp" style="font-size:11px; flex:1;">💬 Direct WhatsApp</a>
+                       </div>`
             };
         }
 

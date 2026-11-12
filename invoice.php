@@ -141,7 +141,7 @@ if (!$order) {
                                     <th style="padding: 12px 14px;">Order No</th>
                                     <th style="padding: 12px 14px;">Machine Model</th>
                                     <th style="padding: 12px 14px;">Date</th>
-                                    <th style="padding: 12px 14px; text-align: right;">Amount</th>
+                                    <th style="padding: 12px 14px; text-align: right; min-width: 140px; white-space: nowrap !important;">Amount</th>
                                     <th style="padding: 12px 14px; text-align: center;">Payment</th>
                                     <th style="padding: 12px 14px; text-align: right;">Action</th>
                                 </tr>
@@ -161,8 +161,8 @@ if (!$order) {
                                         <td style="padding: 14px; color: #cbd5e1; font-size: 12.5px; white-space: nowrap;">
                                             <?= date('d-M-Y', strtotime($co['created_at'])) ?>
                                         </td>
-                                        <td style="padding: 14px; text-align: right; font-weight: 800; color: #34d399; font-size: 14.5px; white-space: nowrap;">
-                                            ₹ <?= number_format($co['total_amount'], 2) ?>
+                                        <td style="padding: 14px; text-align: right; font-weight: 800; color: #34d399; font-size: 14.5px; white-space: nowrap !important;">
+                                            <span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($co['total_amount'], 2) ?></span></span>
                                         </td>
                                         <td style="padding: 14px; text-align: center;">
                                             <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 800; letter-spacing: 0.4px; <?= $isCoPaid ? 'background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399;' : 'background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24;' ?>">
@@ -320,12 +320,13 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
 
         /* Header */
         .inv-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            display: grid;
+            grid-template-columns: 1.25fr 1fr;
+            gap: 20px;
+            align-items: start;
             border-bottom: 2px solid #0f172a;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
+            padding-bottom: 18px;
+            margin-bottom: 18px;
         }
         .company-branding {
             display: flex;
@@ -912,26 +913,26 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 <div style="margin: 4px 0;">
                     <?php if ($isPaid): ?>
                         <?php if ($isAdvance): ?>
-                            <span class="status-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac;">
-                                ✔ ADVANCE TOKEN PAID &amp; VERIFIED • ₹ <?= number_format($paidAmount, 2) ?>
+                            <span class="status-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac; white-space: nowrap;">
+                                ✔ ADVANCE TOKEN PAID &amp; VERIFIED • ₹&nbsp;<?= number_format($paidAmount, 2) ?>
                             </span>
                         <?php else: ?>
-                            <span class="status-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac;">
-                                ✔ 100% FULL PAYMENT RECEIVED (NIL BALANCE) • ₹ <?= number_format($paidAmount, 2) ?>
+                            <span class="status-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac; white-space: nowrap;">
+                                ✔ 100% FULL PAYMENT RECEIVED (NIL BALANCE) • ₹&nbsp;<?= number_format($paidAmount, 2) ?>
                             </span>
                         <?php endif; ?>
                     <?php else: ?>
                         <?php if ($pm === 'cod'): ?>
-                            <span class="status-badge" style="background: #fef3c7; color: #b45309; border-color: #fcd34d;">
-                                ⏳ CASH ON DELIVERY BOOKED • ₹ <?= number_format($paidAmount, 2) ?> (DUE AT DISPATCH/DELIVERY)
+                            <span class="status-badge" style="background: #fef3c7; color: #b45309; border-color: #fcd34d; white-space: nowrap;">
+                                ⏳ CASH ON DELIVERY BOOKED • ₹&nbsp;<?= number_format($paidAmount, 2) ?> (DUE AT DISPATCH/DELIVERY)
                             </span>
                         <?php elseif ($pm === 'bank_transfer'): ?>
-                            <span class="status-badge" style="background: #e0f2fe; color: #0369a1; border-color: #7dd3fc;">
-                                ⏳ RTGS / NEFT PAYMENT PENDING • ₹ <?= number_format($paidAmount, 2) ?> (VERIFICATION AWAITED)
+                            <span class="status-badge" style="background: #e0f2fe; color: #0369a1; border-color: #7dd3fc; white-space: nowrap;">
+                                ⏳ RTGS / NEFT PAYMENT PENDING • ₹&nbsp;<?= number_format($paidAmount, 2) ?> (VERIFICATION AWAITED)
                             </span>
                         <?php else: ?>
-                            <span class="status-badge" style="background: #fee2e2; color: #991b1b; border-color: #fca5a5;">
-                                ⏳ PAYMENT PENDING / NOT YET REALIZED • ₹ <?= number_format($paidAmount, 2) ?>
+                            <span class="status-badge" style="background: #fee2e2; color: #991b1b; border-color: #fca5a5; white-space: nowrap;">
+                                ⏳ PAYMENT PENDING / NOT YET REALIZED • ₹&nbsp;<?= number_format($paidAmount, 2) ?>
                             </span>
                         <?php endif; ?>
                     <?php endif; ?>
@@ -1139,33 +1140,33 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 <table class="totals-table">
                     <tr>
                         <td style="color: #64748b;">Taxable Value (This Invoice):</td>
-                        <td style="text-align: right; font-weight: 600;">₹ <?= number_format($taxableAmount, 2) ?></td>
+                        <td style="text-align: right; font-weight: 600; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($taxableAmount, 2) ?></span></span></td>
                     </tr>
                     <tr>
                         <td style="color: #64748b;">CGST (9.00%):</td>
-                        <td style="text-align: right; font-weight: 600;">₹ <?= number_format($cgstAmount, 2) ?></td>
+                        <td style="text-align: right; font-weight: 600; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($cgstAmount, 2) ?></span></span></td>
                     </tr>
                     <tr>
                         <td style="color: #64748b;">SGST (9.00%):</td>
-                        <td style="text-align: right; font-weight: 600;">₹ <?= number_format($sgstAmount, 2) ?></td>
+                        <td style="text-align: right; font-weight: 600; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($sgstAmount, 2) ?></span></span></td>
                     </tr>
                     <tr class="grand-total">
                         <td>TOTAL PAID TODAY (INR):</td>
-                        <td style="text-align: right; color: #15803d;">₹ <?= number_format($paidAmount, 2) ?></td>
+                        <td style="text-align: right; color: #15803d; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($paidAmount, 2) ?></span></span></td>
                     </tr>
                     <?php if ($isAdvance): ?>
                     <tr>
                         <td style="color: #475569; font-size: 11.5px; padding-top: 8px;">Total Machine Value (with 18% GST):</td>
-                        <td style="text-align: right; font-weight: 700; color: #0284c7; padding-top: 8px;">₹ <?= number_format($fullMachineGross, 2) ?></td>
+                        <td style="text-align: right; font-weight: 700; color: #0284c7; padding-top: 8px; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($fullMachineGross, 2) ?></span></span></td>
                     </tr>
                     <tr style="background: #fef2f2; border: 1.5px solid #f87171;">
                         <td style="color: #b91c1c; font-weight: 800; font-size: 12px; padding: 6px 8px;">PENDING BALANCE DUE ON DISPATCH:</td>
-                        <td style="text-align: right; font-weight: 900; color: #b91c1c; font-size: 14px; padding: 6px 8px;">₹ <?= number_format($balanceDue, 2) ?></td>
+                        <td style="text-align: right; font-weight: 900; color: #b91c1c; font-size: 14px; padding: 6px 8px; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($balanceDue, 2) ?></span></span></td>
                     </tr>
                     <?php else: ?>
                     <tr style="background: #f0fdf4; border: 1.5px solid #86efac;">
                         <td style="color: #15803d; font-weight: 800; font-size: 12px; padding: 6px 8px;">BALANCE DUE (REMAINING):</td>
-                        <td style="text-align: right; font-weight: 900; color: #15803d; font-size: 13.5px; padding: 6px 8px;">₹ 0.00 (PAID IN FULL - NIL BALANCE)</td>
+                        <td style="text-align: right; font-weight: 900; color: #15803d; font-size: 13.5px; padding: 6px 8px; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span>0.00 (PAID IN FULL - NIL BALANCE)</span></span></td>
                     </tr>
                     <?php endif; ?>
                 </table>

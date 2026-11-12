@@ -52,7 +52,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['quick_status_
             'order_status'    => 'delivered', 
             'payment_status'  => 'paid',
             'delivery_status' => 'delivered', 
-            'label'           => '🏁 Successfully Delivered (સફળ ડિલિવર્ડ)'
+            'label'           => '🏁 Successfully Delivered (ડિલિવરી મળી ગઈ - ૧૦૦% પૂર્ણ)'
         ],
         'failure'   => [
             'order_status'    => 'cancelled', 
@@ -344,8 +344,8 @@ require_once __DIR__ . '/includes/sidebar.php';
                                         <?php else: ?>
                                             <span style="color: #38bdf8; font-weight: 700; font-size: 11.5px; display: block;">Full Payment</span>
                                         <?php endif; ?>
-                                        <strong style="color: #34d399; font-size: 15px;">
-                                            ₹ <?= number_format($ord['total_amount'], 2) ?>
+                                        <strong style="color: #34d399; font-size: 15px; white-space: nowrap !important; display: inline-flex; align-items: center; gap: 3px;">
+                                            <span>₹</span><span><?= number_format($ord['total_amount'], 2) ?></span>
                                         </strong>
                                         <div style="margin-top: 4px;">
                                             <?php if (($ord['payment_status'] ?? '') === 'paid'): ?>
@@ -501,7 +501,7 @@ require_once __DIR__ . '/includes/sidebar.php';
                     <option value="packed">4. Export Wooden Crate Packed &amp; Sealed</option>
                     <option value="dispatched">5. Dispatched with Freight Carrier (In Transit)</option>
                     <option value="out_for_delivery">6. Out for Local Destination Delivery</option>
-                    <option value="delivered">7. Delivered &amp; Commissioned at Customer Site (Successfully Delivered)</option>
+                    <option value="delivered">7. Delivered (ડિલિવરી મળી ગઈ - All Stages Complete 100%)</option>
                     <option value="rejected">❌ Rejected / Order Cancelled</option>
                 </select>
             </div>

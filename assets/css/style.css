@@ -573,7 +573,9 @@ img, svg {
 .machine-card-image {
   position: relative;
   background: #090d16;
-  padding: 24px;
+  padding: 0;
+  height: 235px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -582,14 +584,15 @@ img, svg {
 }
 
 .machine-card-image img {
-  height: 220px;
-  width: auto;
-  object-fit: contain;
-  transition: var(--transition);
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .machine-card:hover .machine-card-image img {
-  transform: scale(1.04);
+  transform: scale(1.06);
 }
 
 .machine-badge {

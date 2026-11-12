@@ -286,12 +286,12 @@ require_once __DIR__ . '/includes/navbar.php';
                                     </td>
 
                                     <!-- Total Amount -->
-                                    <td style="padding: 14px 12px; text-align: right; vertical-align: middle;">
-                                        <div style="font-weight: 800; color: #34d399; font-size: 14px; font-family: 'Space Grotesk', sans-serif;">
-                                            ₹ <?= number_format($co['total_amount'] ?? 0, 2) ?>
+                                    <td style="padding: 14px 12px; text-align: right; vertical-align: middle; white-space: nowrap !important;">
+                                        <div style="font-weight: 800; color: #34d399; font-size: 14px; font-family: 'Space Grotesk', sans-serif; white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;">
+                                            <span>₹</span><span><?= number_format($co['total_amount'] ?? 0, 2) ?></span>
                                         </div>
-                                        <div style="font-size: 10px; color: #94a3b8;">
-                                            <?= (($co['payment_type'] ?? '') === 'booking_advance') ? 'Advance Token (₹25k)' : 'Full Payment' ?>
+                                        <div style="font-size: 10px; color: #94a3b8; white-space: nowrap;">
+                                            <?= (($co['payment_type'] ?? '') === 'booking_advance') ? 'Advance Token (₹25,000)' : 'Full Payment' ?>
                                         </div>
                                     </td>
 

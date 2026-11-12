@@ -429,26 +429,6 @@ body.mobile-menu-open #varshaChatbotWindow {
             <li><a href="<?= BASE_URL ?>/catalog.php" class="site-nav-link <?= ($currentNav === 'catalog') ? 'active' : '' ?>"><span>📖 Catalog</span></a></li>
             <li><a href="<?= BASE_URL ?>/track-order.php" class="site-nav-link <?= ($currentNav === 'tracking') ? 'active' : '' ?>" style="color: #34d399;"><span>🚚 Live Tracking</span></a></li>
             <li><a href="<?= BASE_URL ?>/contact.php" class="site-nav-link <?= ($currentNav === 'contact') ? 'active' : '' ?>"><span>📍 Contact</span></a></li>
-            
-            <!-- More Dropdown for Secondary Pages (Blog, FAQs, PWA App) -->
-            <li style="position: relative;" class="nav-dropdown-parent">
-                <a href="#" class="site-nav-link" onclick="event.preventDefault(); document.getElementById('navMoreDropdown').classList.toggle('show');" style="display: flex; align-items: center; gap: 4px;">
-                    <span>More</span>
-                    <span style="font-size: 10px;">▾</span>
-                </a>
-                <div id="navMoreDropdown" style="display: none; position: absolute; top: 100%; left: 0; background: #090e1c; border: 1.5px solid var(--accent-cyan); border-radius: 10px; width: 195px; padding: 6px 0; box-shadow: 0 15px 35px rgba(0,0,0,0.9); z-index: 10006;">
-                    <a href="<?= BASE_URL ?>/blog.php" style="display: block; padding: 8px 14px; font-size: 12.5px; color: #cbd5e1; text-decoration: none; font-weight: 600;">
-                        📚 Blog / Tech Guides
-                    </a>
-                    <a href="<?= BASE_URL ?>/faqs.php" style="display: block; padding: 8px 14px; font-size: 12.5px; color: #cbd5e1; text-decoration: none; font-weight: 600;">
-                        💡 FAQs &amp; Help Desk
-                    </a>
-                    <div style="border-top: 1px solid rgba(255,255,255,0.08); margin: 4px 0;"></div>
-                    <a href="#" onclick="openAppDownloadModal(); document.getElementById('navMoreDropdown').classList.remove('show'); return false;" style="display: block; padding: 8px 14px; font-size: 12.5px; color: #38bdf8; text-decoration: none; font-weight: 700;">
-                        📲 Download App (PWA)
-                    </a>
-                </div>
-            </li>
         </ul>
 
         <!-- Right Side Quick Actions -->
