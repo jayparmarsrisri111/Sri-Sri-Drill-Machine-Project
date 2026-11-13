@@ -31,6 +31,7 @@ $activeLangMeta = $langLabels[$currentLang] ?? $langLabels['en'];
 $dropdownId = 'langSelect_' . substr(md5(uniqid((string)rand(), true)), 0, 8);
 ?>
 
+<?php if (!isset($renderLangDropdown) || $renderLangDropdown !== false): ?>
 <div class="site-lang-dropdown-wrap notranslate" id="<?= $dropdownId ?>" style="position: relative; display: inline-block;">
     <button type="button" class="btn-site-lang-toggle" onclick="toggleSiteLangMenu('<?= $dropdownId ?>')" title="Change Language / ભાષા બદલો / भाषा बदलें" aria-label="Language Selector">
         <span style="font-size: 14px;">🌐</span>
@@ -73,6 +74,7 @@ $dropdownId = 'langSelect_' . substr(md5(uniqid((string)rand(), true)), 0, 8);
         </button>
     </div>
 </div>
+<?php endif; ?>
 
 <?php if (!defined('SITE_LANG_ASSETS_LOADED')): define('SITE_LANG_ASSETS_LOADED', true); ?>
 <!-- Google Translate Mount Point (Kept in DOM offscreen so Google Translate engine mounts and translates cleanly) -->

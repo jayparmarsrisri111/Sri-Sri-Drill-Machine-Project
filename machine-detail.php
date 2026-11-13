@@ -1598,10 +1598,15 @@ function submitDirectPayment(e) {
         return;
     }
 
-    // Flow 2: Razorpay Online Payment
+    // Flow 2: Online Payment Gateway (Instant UPI / Cards / NetBanking)
+    let actualGatewayPayable = payableAmount;
+    if (DIRECT_RZP_KEY.startsWith('rzp_test_') && payableAmount > 25000) {
+        actualGatewayPayable = 25000;
+    }
+
     const rzpOrderData = new FormData();
     rzpOrderData.append('csrf_token', DIRECT_CSRF_TOKEN);
-    rzpOrderData.append('amount', payableAmount);
+    rzpOrderData.append('amount', actualGatewayPayable);
     rzpOrderData.append('machine_id', DIRECT_MACHINE_ID);
     rzpOrderData.append('machine_name', DIRECT_MACHINE_NAME);
     rzpOrderData.append('model_number', DIRECT_MODEL_NUMBER);
@@ -1630,7 +1635,7 @@ function submitDirectPayment(e) {
 
         const options = {
             key: DIRECT_RZP_KEY,
-            amount: orderRes.amount,
+            amount: orderRes.amount || Math.round(actualGatewayPayable * 100),
             currency: orderRes.currency || 'INR',
             name: '<?= APP_NAME ?>',
             description: DIRECT_MODEL_NUMBER + ' (' + (plan === 'full' ? '100% Full Payment' : 'Token Advance Booking') + ')',
@@ -1650,6 +1655,12 @@ function submitDirectPayment(e) {
                 color: '#0284c7'
             },
             handler: function(response) {
+                if (!response || !response.razorpay_payment_id) {
+                    alert('⚠️ પેમેન્ટ અસફળ: પેમેન્ટ કન્ફર્મેશન મળેલ નથી. બિલ બનાવી શકાતું નથી.');
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    return;
+                }
                 btn.innerHTML = '<span>🔒 Verifying Cryptographic Payment Signature...</span>';
                 const verifyPayload = new FormData();
                 verifyPayload.append('csrf_token', DIRECT_CSRF_TOKEN);
@@ -1692,6 +1703,7 @@ function submitDirectPayment(e) {
             },
             modal: {
                 ondismiss: function() {
+                    alert('⚠️ પેમેન્ટ વિન્ડો બંધ થઈ ગઈ છે. કોઈ પેમેન્ટ થયું નથી અને બિલ પણ બન્યું નથી (Payment Cancelled / Incomplete: No bill generated).');
                     btn.disabled = false;
                     btn.innerHTML = originalText;
                 }
@@ -1699,6 +1711,12 @@ function submitDirectPayment(e) {
         };
 
         const rzp = new Razorpay(options);
+        rzp.on('payment.failed', function(resp) {
+            const reason = (resp && resp.error && resp.error.description) ? resp.error.description : 'Payment cancelled or declined by bank.';
+            alert('❌ પેમેન્ટ અસફળ: ' + reason + '\n\nકોઈ રકમ કપાઈ નથી અને બિલ પણ બન્યું નથી. (Payment Unsuccessful: No bill has been generated).');
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        });
         rzp.open();
     })
     .catch(err => {

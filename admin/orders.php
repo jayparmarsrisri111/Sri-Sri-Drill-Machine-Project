@@ -270,9 +270,16 @@ require_once __DIR__ . '/includes/sidebar.php';
 
         <!-- Orders Table Card -->
         <div class="admin-card">
-            <h2 style="font-family: var(--font-heading); font-size: 18px; color: #fff; margin-bottom: 16px;">
-                All Orders &amp; Logistics Tracking
-            </h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                <h2 style="font-family: var(--font-heading); font-size: 18px; color: #fff; margin: 0;">
+                    All Orders &amp; Logistics Tracking (<?= count($orders) ?>)
+                </h2>
+                <div style="position: relative; width: 100%; max-width: 340px;">
+                    <input type="text" id="orderSearchInput" placeholder="🔍 Search Order #, Invoice #, Name, Phone..." 
+                           style="width: 100%; padding: 8px 12px 8px 36px; background: rgba(15, 23, 42, 0.9); border: 1.5px solid rgba(0, 229, 255, 0.4); border-radius: 8px; color: #fff; font-size: 12.5px; outline: none;">
+                    <span style="position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 13px; opacity: 0.7;">🔍</span>
+                </div>
+            </div>
 
             <?php if (empty($orders)): ?>
                 <div style="padding: 40px; text-align: center; color: var(--text-muted);">
@@ -562,6 +569,25 @@ function openLogisticsModal(order) {
 function closeLogisticsModal() {
     document.getElementById('logisticsModal').style.display = 'none';
 }
+
+// Live search filter for orders table
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('orderSearchInput');
+    const tableRows = document.querySelectorAll('.tech-table tbody tr');
+    if (searchInput && tableRows.length > 0) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (!query || text.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    }
+});
 </script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
