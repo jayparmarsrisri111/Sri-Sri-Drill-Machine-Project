@@ -8,9 +8,8 @@
 <div id="varshaChatbotLauncher" class="chatbot-launcher" title="Chat with Varsha AI Machinery Engineer">
     <div class="launcher-pulse"></div>
     <div class="launcher-icon">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
-        </svg>
+        <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha AI" class="launcher-logo-img">
+        <span class="launcher-ai-chip">AI</span>
     </div>
     <span class="launcher-badge" id="chatbotUnreadBadge">1</span>
 </div>
@@ -25,9 +24,12 @@
                 <span class="online-indicator"></span>
             </div>
             <div>
-                <div class="bot-name">Varsha AI Engineer</div>
+                <div class="bot-name" style="display: flex; align-items: center; gap: 6px;">
+                    <span>Varsha AI Engineer</span>
+                    <span style="font-size: 9.5px; background: rgba(0, 229, 255, 0.2); border: 1px solid #00e5ff; color: #00e5ff; padding: 1px 6px; border-radius: 9999px; font-weight: 800;">OFFICIAL</span>
+                </div>
                 <div class="bot-status">
-                    <span class="pulse-dot"></span> Online • Factory AI Assistant
+                    <span class="pulse-dot"></span> Online • 24/7 Factory Assistant
                 </div>
             </div>
         </div>
@@ -105,6 +107,38 @@
     border: 2px solid #00e5ff;
     animation: launcherPulseAnim 2.2s infinite;
     pointer-events: none;
+}
+.launcher-icon {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.launcher-logo-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    object-fit: contain;
+    background: #060911;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+.launcher-ai-chip {
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+    background: #00e5ff;
+    color: #060911;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 1px 4px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    border: 1.5px solid #060911;
+    line-height: 1.1;
+    box-shadow: 0 2px 6px rgba(0, 229, 255, 0.6);
 }
 @keyframes launcherPulseAnim {
     0% { transform: scale(1); opacity: 0.9; }
@@ -576,11 +610,48 @@ document.addEventListener('DOMContentLoaded', function () {
                        <p>I am your 24/7 AI Machinery Assistant. How can I assist you today?<br>
                        • Ask for <strong>Machine Prices</strong> (e.g. 40mm, 50mm, 65mm Radial or Pillar)<br>
                        • Ask about <strong>Online Booking & ₹25,000 Advance Token</strong><br>
-                       • Inquire about <strong>Spare Parts & Amazon-Style Zoom</strong><br>
+                       • Inquire about <strong>Spare Parts &amp; High-Definition 4K Zoom</strong><br>
                        • Track your <strong>Live Delivery & GST Tax Invoices</strong></p>`,
                 rich: `<div style="display:flex; gap:6px; margin-top:6px;">
                             <a href="<?= BASE_URL ?>/machines.php" class="btn btn-outline" style="font-size:11px; flex:1;">📖 Machine Catalog</a>
                             <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">💳 Book Machine</a>
+                       </div>`
+            };
+        }
+
+        // 0.5. Company Name, Firm Details & Factory Background
+        const isCompanyQuery = /\b(company|firm|factory|business|brand|compnay|karkhanu|karhana)\b/i.test(q) || 
+                               q.includes('company name') || q.includes('compnay name') || q.includes('કંપની') || 
+                               q.includes('ફેક્ટરી') || q.includes('બ્રાન્ડ') || q.includes('નામ શું') || 
+                               q.includes('shree varsha') || q.includes('varsha brand');
+
+        if (isCompanyQuery) {
+            if (isGujarati) {
+                return {
+                    text: `<p><strong>🏭 કંપની પરિચય (Company Overview):</strong></p>
+                           <p>• <strong>કંપનીનું નામ:</strong> શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સ (Shree Varsha Engineering Works)<br>
+                           • <strong>બ્રાન્ડ નેમ:</strong> VARSHA BRAND (વર્ષા બ્રાન્ડ - રજિસ્ટર્ડ ટ્રેડમાર્ક)<br>
+                           • <strong>ફેક્ટરી સરનામું:</strong> શેડ નં. L/786, GIDC ઔદ્યોગિક વસાહત, હાદાનગર પાસે, ભાવનગર - 364003 (ગુજરાત).<br>
+                           • <strong>અનુભવ:</strong> ૨૫+ વર્ષથી હેવી ડ્યુટી રેડિયલ અને પિલર ડ્રિલ મશીન મેન્યુફેક્ચરિંગ.<br>
+                           • <strong>GSTIN:</strong> <?= COMPANY_GSTIN ?><br>
+                           • <strong>મુખ્ય વડા:</strong> શ્રી જીતેન્દ્રભાઈ પરમાર (Founder &amp; CEO) અને શ્રી જય પરમાર (Co-CEO).</p>`,
+                    rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                                <a href="<?= BASE_URL ?>/about.php" class="btn btn-outline" style="font-size:11px; flex:1;">🏭 કંપની વિશે વધુ વાંચો</a>
+                                <a href="<?= BASE_URL ?>/machines.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#0284c7;">📖 મશીન કેટલોગ જુઓ</a>
+                           </div>`
+                };
+            }
+            return {
+                text: `<p><strong>🏭 Company Name &amp; Profile:</strong></p>
+                       <p>• <strong>Company Name:</strong> Shree Varsha Engineering Works<br>
+                       • <strong>Official Brand:</strong> VARSHA BRAND (Registered Industrial Trademark)<br>
+                       • <strong>Manufacturing Plant:</strong> Shed No. L/786, GIDC Industrial Estate, Nr. Hadanagar, Bhavnagar - 364003, Gujarat, India.<br>
+                       • <strong>Experience:</strong> 25+ Years of Heavy-Duty Radial &amp; Pillar Drill Machine Manufacturing.<br>
+                       • <strong>GSTIN:</strong> <?= COMPANY_GSTIN ?><br>
+                       • <strong>Executive Leadership:</strong> Jitendrabhai Parmar (Founder &amp; CEO) and Jay Parmar (Co-CEO).</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/about.php" class="btn btn-outline" style="font-size:11px; flex:1;">🏭 Full Company Story</a>
+                            <a href="<?= BASE_URL ?>/machines.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#0284c7;">📖 Browse Machines</a>
                        </div>`
             };
         }
@@ -641,7 +712,7 @@ document.addEventListener('DOMContentLoaded', function () {
                           • <strong>Rest of India:</strong> 3 to 5 business days<br>
                           • <strong>Logistics Partners:</strong> VRL Logistics Heavy Freight, TCI Freight, ARC.<br>
                           • Consignment packed in reinforced wooden crate with anti-rust oil wrap and official LR / E-Way Bill.</p>`,
-                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/track-order.php" class="btn btn-primary" style="background:linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color:#060911; font-weight:800; font-size:11px; display:block; text-align:center;">🚚 Amazon-Style Live Order Tracking</a></div>`
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/track-order.php" class="btn btn-primary" style="background:linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color:#060911; font-weight:800; font-size:11px; display:block; text-align:center;">🚚 Real-Time Live Order Tracking</a></div>`
             };
         }
 

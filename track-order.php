@@ -306,12 +306,12 @@ $deliveryStages = [
             
             <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.4); padding: 4px 16px; border-radius: 9999px; font-size: 11.5px; color: #34d399; font-weight: 700; letter-spacing: 0.5px;">
                 <span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; animation: pulse 2s infinite;"></span>
-                <span>AMAZON-STYLE LIVE DISPATCH &amp; TRANSIT LOGISTICS</span>
+                <span>REAL-TIME FACTORY DISPATCH &amp; TRANSIT LOGISTICS</span>
             </div>
         </div>
 
-        <!-- Main Heading -->
-        <h1 style="font-family: var(--font-heading); font-size: 34px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.25; margin-bottom: 12px; text-shadow: 0 2px 12px rgba(0,0,0,0.6);">
+        <!-- Main Heading (Centered) -->
+        <h1 style="font-family: var(--font-heading); font-size: clamp(24px, 4vw, 36px); font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.25; margin: 0 auto 12px; text-shadow: 0 2px 12px rgba(0,0,0,0.6); text-align: center;">
             Real-Time Machine &amp; Spare Parts <span style="background: linear-gradient(135deg, #00e5ff 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Delivery Status</span>
         </h1>
 
@@ -365,6 +365,28 @@ $deliveryStages = [
                         </a>
                     </div>
                 </div>
+
+                <?php if ($currStatusKey === 'delivered' || $currentStep >= 6): ?>
+                    <!-- Delivered & Commissioned Celebration Card -->
+                    <div style="margin: 24px 0; background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.35) 100%); border: 2px solid #10b981; border-radius: 12px; padding: 22px; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.25);">
+                        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                            <div style="width: 52px; height: 52px; border-radius: 50%; background: #10b981; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 0 20px #10b981; flex-shrink: 0;">
+                                🏁
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 11.5px; font-weight: 800; color: #a7f3d0; text-transform: uppercase; letter-spacing: 1px;">
+                                    ✔ 100% ORDER COMPLETE &bull; ALL 6 STAGES FINISHED
+                                </div>
+                                <h3 style="font-family: var(--font-heading); font-size: 20px; color: #fff; margin: 3px 0 5px; font-weight: 800;">
+                                    Delivered &amp; Commissioned at Factory (ડિલિવરી અને ટેસ્ટિંગ સફળતાપૂર્વક પૂર્ણ)
+                                </h3>
+                                <p style="font-size: 13px; color: #d1fae5; margin: 0; line-height: 1.5;">
+                                    Your Varsha Brand industrial machine has been safely delivered, unloaded with crane, leveled, and commissioned at your factory workshop. Official GST Tax Invoice, warranty card, and test certificates have been handed over.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
                 <!-- Estimated Delivery Big Banner -->
                 <div style="margin: 24px 0; background: linear-gradient(135deg, rgba(2, 132, 199, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%); border: 1.5px solid rgba(0, 229, 255, 0.35); border-radius: 12px; padding: 20px;">

@@ -8,7 +8,7 @@ require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/database.php';
 
 $pageTitle = 'Frequently Asked Questions (FAQs) | ' . BRAND_NAME . ' Bhavnagar';
-$pageDesc = 'Get answers to questions about booking Varsha Brand drill machines, ₹25,000 advance token payments, Amazon-style tracking, GST invoices, and warranty.';
+$pageDesc = 'Get answers to questions about booking Varsha Brand drill machines, ₹25,000 advance token payments, real-time live tracking, GST invoices, and warranty.';
 $pageKeywords = 'drill machine FAQ, radial drill machine questions, buy drill machine Bhavnagar, advance booking drill machine, Varsha brand FAQ';
 $canonicalUrl = 'https://varsha-drill-machines.onrender.com/faqs.php';
 $currentNav = 'faqs';
@@ -24,11 +24,11 @@ $faqGroups = [
         'faqs' => [
             [
                 'q' => 'How does the ₹25,000 Advance Token Booking work on your website?',
-                'a' => 'You can reserve any Varsha Brand drill machine directly by paying a standard <strong>₹25,000 advance token amount</strong> via Razorpay (UPI, Credit/Debit Card, Net Banking, or NEFT/RTGS). Once your payment succeeds, your production slot is immediately reserved at our Bhavnagar plant, and an official Computerized GST Tax Invoice with an Order ID and Invoice Number is generated automatically.'
+                'a' => 'You can reserve any Varsha Brand drill machine directly by paying a standard <strong>₹25,000 advance token amount</strong> via secure online gateway (UPI, Credit/Debit Card, Net Banking, or NEFT/RTGS). Once your payment succeeds, your production slot is immediately reserved at our Bhavnagar plant, and an official Computerized GST Tax Invoice with an Order ID and Invoice Number is generated automatically.'
             ],
             [
                 'q' => 'Is online payment secure? What payment methods are accepted?',
-                'a' => 'Yes, 100% secure. All payments are processed through <strong>Razorpay’s PCI-DSS Level-1 certified bank-grade payment gateway</strong> with 256-bit SSL encryption. We accept all major UPI apps (Google Pay, PhonePe, Paytm, BHIM), Net Banking across 50+ Indian banks, Visa/MasterCard/RuPay cards, and direct IMPS/NEFT/RTGS transfers.'
+                'a' => 'Yes, 100% secure. All payments are processed through <strong>PCI-DSS Level-1 certified bank-grade payment gateway</strong> with 256-bit SSL encryption. We accept all major UPI apps (Google Pay, PhonePe, Paytm, BHIM), Net Banking across 50+ Indian banks, Visa/MasterCard/RuPay cards, and direct IMPS/NEFT/RTGS transfers.'
             ],
             [
                 'q' => 'When is the remaining balance payable after paying the token amount?',
@@ -42,12 +42,12 @@ $faqGroups = [
     ],
     [
         'category' => 'tracking_delivery',
-        'category_name' => 'Amazon-Style Order & Logistics Tracking',
+        'category_name' => 'Real-Time Order & Logistics Tracking',
         'icon' => '🚚',
         'faqs' => [
             [
                 'q' => 'How can I track my machine delivery status in real-time?',
-                'a' => 'You can visit our <a href="' . BASE_URL . '/track-order.php" style="color:#00e5ff; font-weight:700;">Live Order Tracking</a> page at any time and enter your Order Number (e.g. SVEW-ORD-...) or registered Mobile Number. You will see real-time updates matching Amazon-style logistics from chassis assembly and VCI wooden crating to freight carrier dispatch and local flatbed arrival.'
+                'a' => 'You can visit our <a href="' . BASE_URL . '/track-order.php" style="color:#00e5ff; font-weight:700;">Live Order Tracking</a> page at any time and enter your Order Number (e.g. SVEW-ORD-...) or registered Mobile Number. You will see real-time updates matching live factory logistics from chassis assembly and VCI wooden crating to freight carrier dispatch and local flatbed arrival.'
             ],
             [
                 'q' => 'How are heavy drill machines packaged for long-distance transport?',
@@ -303,7 +303,7 @@ $faqSchema = [
             Frequently Asked <span style="background: linear-gradient(135deg, #00e5ff 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Questions (FAQs)</span>
         </h1>
         <p style="color: #cbd5e1; font-size: 16px; max-width: 720px; margin: 0 auto; line-height: 1.6;">
-            Everything you need to know about purchasing Varsha Brand drill machines, advance token payments, Amazon-style delivery tracking, GST tax invoicing, and warranty support.
+            Everything you need to know about purchasing Varsha Brand drill machines, advance token payments, real-time live delivery tracking, GST tax invoicing, and warranty support.
         </p>
 
         <!-- Live FAQ Search -->

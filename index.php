@@ -262,9 +262,9 @@ try {
             <?php if (!empty($products)): ?>
                 <?php foreach ($products as $p): ?>
                     <div class="machine-card" data-category="<?= e($p['category_slug']) ?>">
-                        <!-- Real Machine Photo Showcase (Clean, Unobstructed Real Photo) -->
-                        <div class="machine-card-image" style="position: relative; overflow: hidden; background: radial-gradient(circle, rgba(15, 23, 42, 0.9) 0%, #060911 100%); border-bottom: 1px solid rgba(255,255,255,0.08); height: 230px; display: flex; align-items: center; justify-content: center; padding: 12px;">
-                            <img src="<?= assetUrl($p['image_url']) ?>" alt="<?= e($p['name']) ?>" loading="lazy" style="max-width: 100%; max-height: 100%; object-fit: contain; object-position: center; transition: transform 0.4s ease; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));">
+                        <!-- Real Machine Photo Showcase (Clean, Full-Bleed Workshop Photo) -->
+                        <div class="machine-card-image" style="position: relative; overflow: hidden; background: #060911; border-bottom: 1px solid rgba(255,255,255,0.08); height: 230px; display: flex; align-items: center; justify-content: center; padding: 0;">
+                            <img src="<?= assetUrl($p['image_url']) ?>" alt="<?= e($p['name']) ?>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.4s ease;">
                         </div>
 
                         <div class="machine-card-body">

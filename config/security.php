@@ -34,8 +34,8 @@ function applySecurityHeaders(): void {
             header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
         }
 
-        // Comprehensive Content Security Policy (CSP) allowing Google Maps, Razorpay, FontAwesome, Fonts & 3D WebGL
-        header("Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com https://maps.google.com https://www.google.com; connect-src 'self' https://api.razorpay.com https://lumberjack.razorpay.com https://*.razorpay.com; img-src 'self' data: blob: https:;");
+        // Comprehensive Content Security Policy (CSP) allowing Google Translate, YouTube, Google Maps, Razorpay, FontAwesome, Fonts & 3D WebGL
+        header("Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://translate.google.com https://translate.googleapis.com https://checkout.razorpay.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://www.youtube.com https://s.ytimg.com; style-src 'self' 'unsafe-inline' https: https://translate.googleapis.com; frame-src 'self' https://translate.google.com https://translate.googleapis.com https://www.youtube.com https://www.youtube-nocookie.com https://api.razorpay.com https://checkout.razorpay.com https://maps.google.com https://www.google.com; connect-src 'self' https://translate.google.com https://translate.googleapis.com https://api.razorpay.com https://lumberjack.razorpay.com https://*.razorpay.com https://www.youtube.com; img-src 'self' data: blob: https: https://translate.google.com https://www.google.com https://translate.googleapis.com https://i.ytimg.com;");
     }
 }
 

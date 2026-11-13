@@ -722,7 +722,7 @@ if ($isSparePart) {
                         <!-- Working YouTube Embed Player with Autoplay and Fullscreen Controls -->
                         <iframe id="mainMachineIframe" 
                                 src="about:blank" 
-                                data-src="https://www.youtube.com/embed/<?= $realVideoId ?>?autoplay=1&amp;rel=0&amp;modestbranding=1" 
+                                data-src="https://www.youtube-nocookie.com/embed/<?= $realVideoId ?>?autoplay=1&amp;mute=1&amp;rel=0&amp;modestbranding=1&amp;playsinline=1&amp;enablejsapi=1" 
                                 title="<?= e($realVideoTitle) ?>" 
                                 style="display: none; width: 100%; height: 100%; min-height: 420px; border: none;" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -761,7 +761,7 @@ if ($isSparePart) {
                         </div>
 
                         <!-- Video Preview Poster with Real Machine Image and 1-Click Play Overlay -->
-                        <div id="videoPosterOverlay" style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; background: linear-gradient(180deg, rgba(2,6,23,0.3) 0%, rgba(2,6,23,0.92) 90%);">
+                        <div id="videoPosterOverlay" onclick="startRealMachineVideo()" style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; background: linear-gradient(180deg, rgba(2,6,23,0.3) 0%, rgba(2,6,23,0.92) 90%); cursor: pointer;">
                             <img src="<?= assetUrl($machine['image_url']) ?>" alt="<?= e($machine['name']) ?>" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0.45; filter: drop-shadow(0 10px 30px rgba(0,229,255,0.2)); pointer-events: none;">
 
                             <div style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
@@ -867,7 +867,7 @@ if ($isSparePart) {
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 22px;">
                 <div>
                     <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; color: #fbbf24; text-transform: uppercase; letter-spacing: 1px;">
-                        <span>⚡ AMAZON-STYLE COMBO BUNDLE</span>
+                        <span>⚡ FACTORY COMBO BUNDLE</span>
                         <span style="background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; padding: 2px 8px; border-radius: 9999px; font-size: 10px;">COMBO 5% SAVINGS</span>
                     </div>
                     <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 23px; font-weight: 800; color: #fff; margin: 4px 0 0;">
@@ -989,7 +989,7 @@ if ($isSparePart) {
             <?php foreach ($compatParts as $cp): ?>
                 <div style="background: rgba(11, 17, 32, 0.9); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.25s;" onmouseover="this.style.borderColor='var(--accent-cyan)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(0, 229, 255, 0.2)'; this.style.transform='none';">
                     <div>
-                        <div style="height: 160px; border-radius: 8px; overflow: hidden; background: #060911; margin-bottom: 12px; position: relative; cursor: zoom-in;" onclick="openPartZoomModal('<?= assetUrl($cp['image_url']) ?>', '<?= e(addslashes($cp['name'])) ?>', '<?= e(addslashes($cp['model_number'])) ?>', '<?= number_format($cp['price'], 2) ?>', '<?= e(addslashes($cp['short_desc'] ?? 'Genuine Factory Spare Part')) ?>', <?= intval($cp['id']) ?>)" title="Click for Amazon-style large image zoom / મોટો ફોટો જોવા ક્લિક કરો">
+                        <div style="height: 160px; border-radius: 8px; overflow: hidden; background: #060911; margin-bottom: 12px; position: relative; cursor: zoom-in;" onclick="openPartZoomModal('<?= assetUrl($cp['image_url']) ?>', '<?= e(addslashes($cp['name'])) ?>', '<?= e(addslashes($cp['model_number'])) ?>', '<?= number_format($cp['price'], 2) ?>', '<?= e(addslashes($cp['short_desc'] ?? 'Genuine Factory Spare Part')) ?>', <?= intval($cp['id']) ?>)" title="Click for high-definition 4K zoom / મોટો ફોટો જોવા ક્લિક કરો">
                             <img src="<?= assetUrl($cp['image_url']) ?>" alt="<?= e($cp['name']) ?>" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
                         </div>
                         <div style="font-size: 10.5px; font-weight: 700; color: #38bdf8; text-transform: uppercase;">

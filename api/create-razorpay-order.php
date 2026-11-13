@@ -29,6 +29,11 @@ if ($amount <= 0) {
     exit;
 }
 
+// Ensure test keys never trigger Razorpay sandbox ₹25,000 ceiling error ("Amount exceeds maximum amount allowed")
+if (strpos(RAZORPAY_KEY_ID, 'rzp_test_') === 0 && $amount > 25000) {
+    $amount = 25000;
+}
+
 $machineId = intval($_POST['machine_id'] ?? 1);
 $machineName = sanitizeString($_POST['machine_name'] ?? 'Varsha Drill Machine');
 $modelNumber = sanitizeString($_POST['model_number'] ?? 'SVEW-RD-40');

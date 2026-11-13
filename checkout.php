@@ -325,7 +325,7 @@ foreach ($products as $p) {
                                 Ordering Machine or Spare Parts? Sign In to Link Your Order
                             </div>
                             <div style="font-size: 12px; color: #94a3b8;">
-                                Log in to track delivery via Amazon-style live status and download GST tax invoices anytime.
+                                Log in to track delivery via real-time live status and download GST tax invoices anytime.
                             </div>
                         </div>
                     </div>
@@ -669,7 +669,7 @@ foreach ($products as $p) {
                         <div style="font-size: 34px; margin-bottom: 8px;">🔒</div>
                         <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 6px;">Customer Login Required to Book / Buy</h3>
                         <p style="font-size: 13px; color: #94a3b8; max-width: 440px; margin: 0 auto 18px; line-height: 1.5;">
-                            As per factory regulations, to generate your official GST Tax Invoice and activate Amazon-style live order dispatch tracking, please Sign In or Register before proceeding to payment.
+                            As per factory regulations, to generate your official GST Tax Invoice and activate real-time live order dispatch tracking, please Sign In or Register before proceeding to payment.
                         </p>
                         <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                             <button type="button" onclick="openCustomerAuthModal('Please sign in or register to complete your machine order.')" class="btn btn-primary" style="padding: 12px 22px; font-size: 13.5px; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; border-color: #00e5ff;">
@@ -1359,7 +1359,15 @@ foreach ($products as $p) {
                 }
             }
 
-            const amountInPaise = Math.round(payableAmount * 100);
+            // Ensure test mode transactions never exceed Razorpay sandbox ₹25,000 transaction ceiling
+            let gatewayPayableAmount = payableAmount;
+            let isTestCapped = false;
+            if (RAZORPAY_KEY.startsWith('rzp_test_') && payableAmount > 25000) {
+                gatewayPayableAmount = 25000;
+                isTestCapped = true;
+            }
+
+            const amountInPaise = Math.round(gatewayPayableAmount * 100);
 
             const name = document.getElementById('custName').value.trim() || 'Ramesh Patel';
             const phone = document.getElementById('custPhone').value.trim() || '+91 9824913555';
@@ -1373,7 +1381,7 @@ foreach ($products as $p) {
             try {
                 const orderFormData = new FormData();
                 orderFormData.append('csrf_token', csrfToken);
-                orderFormData.append('amount', payableAmount);
+                orderFormData.append('amount', gatewayPayableAmount);
                 orderFormData.append('machine_id', machineId);
                 orderFormData.append('machine_name', machineName);
                 orderFormData.append('model_number', modelNumber);
@@ -1401,7 +1409,7 @@ foreach ($products as $p) {
                 "amount": amountInPaise,
                 "currency": "INR",
                 "name": "VARSHA BRAND",
-                "description": (isAdvance ? "Advance Booking (" + formatINR(payableAmount) + "): " : "Full Payment: ") + modelNumber + " (" + machineName + ")",
+                "description": (isAdvance || isTestCapped ? "Booking Token Advance (" + formatINR(gatewayPayableAmount) + "): " : "Full Payment: ") + modelNumber + " (" + machineName + ")",
                 "image": "<?= $rzpLogoUrl ?>",
                 "prefill": {
                     "name": name,

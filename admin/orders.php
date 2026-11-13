@@ -290,7 +290,7 @@ require_once __DIR__ . '/includes/sidebar.php';
                                 <th>Customer &amp; Location</th>
                                 <th>Machine / Part</th>
                                 <th>Type &amp; Amount</th>
-                                <th>Amazon-Style Delivery Status</th>
+                                <th>Real-Time Delivery Status</th>
                                 <th>Freight Logistics</th>
                                 <th>Actions</th>
                             </tr>

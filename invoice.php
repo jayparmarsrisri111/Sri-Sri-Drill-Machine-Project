@@ -1208,39 +1208,8 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             </div>
         </div>
 
-        <?php
-            $cryptoHash = $order['crypto_seal'] ?? hash('sha256', $order['order_number'] . '|' . $order['invoice_number'] . '|' . ($order['razorpay_payment_id'] ?? 'UNPAID') . '|' . $order['total_amount'] . '|' . COMPANY_GSTIN . '|' . RAZORPAY_KEY_SECRET);
-        ?>
-        <!-- World-First Cryptographic Invoice Integrity & Anti-Forgery Ledger Seal -->
-        <div class="crypto-proof-box" style="margin-top: 18px; background: #f8fafc; border: 1.5px dashed <?= $isPaid ? '#0284c7' : '#f59e0b' ?>; border-radius: 8px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="background: <?= $isPaid ? '#0284c7' : '#f59e0b' ?>; color: #fff; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0;">
-                    <?= $isPaid ? '🔒' : '⏳' ?>
-                </div>
-                <div>
-                    <div style="font-size: 11px; font-weight: 800; color: #0f172a; letter-spacing: 0.5px;">
-                        <?= $isPaid ? 'CRYPTOGRAPHIC PROOF OF AUTHENTICITY (SHA-256 DIGITAL LEDGER SEAL)' : 'PROFORMA ORDER VERIFICATION LOG (PAYMENT AUDIT PENDING)' ?>
-                    </div>
-                    <div style="font-family: monospace; font-size: 9.5px; color: #475569; word-break: break-all; margin-top: 2px;">
-                        PROVENANCE HASH: <?= $cryptoHash ?>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <?php if ($isPaid): ?>
-                    <span style="display: inline-block; background: #dcfce7; border: 1px solid #16a34a; color: #15803d; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">
-                        ✓ IMMUTABLE &amp; VERIFIED
-                    </span>
-                <?php else: ?>
-                    <span style="display: inline-block; background: #fef3c7; border: 1px solid #d97706; color: #b45309; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px;">
-                        ⏳ PAYMENT VERIFICATION AWAITED
-                    </span>
-                <?php endif; ?>
-            </div>
-        </div>
-
-        <div class="disclaimer-box" style="margin-top: 16px; padding-top: 10px; border-top: 1px dashed #cbd5e1; text-align: center; font-size: 10px; color: #94a3b8;">
-            <?= $isPaid ? 'This is an electronically generated and certified Tax Invoice with secure digital audit trail. Transaction Ref: ' . e($order['razorpay_payment_id']) . '. Certified by Shree Varsha Engineering Works.' : 'This is a computer generated Proforma Invoice / Order Acknowledgement. Official GST Tax Invoice is generated post settlement of payment.' ?>
+        <div class="disclaimer-box" style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #e2e8f0; text-align: center; font-size: 10.5px; color: #64748b;">
+            <?= $isPaid ? 'This is an officially certified Computerized GST Tax Invoice with authorized digital seal. Certified by Shree Varsha Engineering Works, Bhavnagar.' : 'This is an Official Proforma Invoice / Order Acknowledgement. Certified GST Tax Invoice will be issued post payment settlement.' ?>
         </div>
     </div>
 

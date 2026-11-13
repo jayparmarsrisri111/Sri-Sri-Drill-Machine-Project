@@ -114,85 +114,99 @@ require_once __DIR__ . '/includes/navbar.php';
 </section>
 
 <!-- Executive Leadership & Directors Section -->
-<section class="section" style="background: radial-gradient(circle at 50% 10%, rgba(0, 229, 255, 0.08) 0%, rgba(6, 10, 20, 0.98) 70%); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+<section class="section" style="background: radial-gradient(circle at 50% 10%, rgba(0, 229, 255, 0.08) 0%, rgba(6, 10, 20, 0.98) 70%); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); padding: 60px 0;">
     <div class="container">
-        <div class="section-title-wrap" style="text-align: center; margin-bottom: 40px;">
+        <div class="section-title-wrap" style="text-align: center; margin-bottom: 45px;">
             <div class="pill-badge">EXECUTIVE LEADERSHIP &amp; MANAGEMENT</div>
             <h2 class="section-title">Meet Our <span>Founders &amp; Directors</span></h2>
-            <p class="section-desc" style="max-width: 680px; margin: 0 auto; color: #cbd5e1; font-size: 15px;">
+            <p class="section-desc" style="max-width: 680px; margin: 0 auto; color: #cbd5e1; font-size: 15px; line-height: 1.6;">
                 Leading Shree Varsha Engineering Works with over 25 years of industrial foundry metallurgy, heavy gear cutting precision, and machine-tool engineering excellence.
             </p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1040px; margin: 0 auto;">
-            <!-- Jitendrabhai Parmar (CEO) -->
-            <div style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(245, 158, 11, 0.4); border-radius: 14px; padding: 28px 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); position: relative; overflow: hidden; display: flex; flex-direction: column;">
-                <div style="position: absolute; top: 0; right: 0; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000; font-weight: 800; font-size: 11px; padding: 4px 14px; border-bottom-left-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 1060px; margin: 0 auto;">
+            <!-- Jitendrabhai Parmar (Founder & CEO) -->
+            <div style="background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 15, 29, 0.98) 100%); border: 1.5px solid rgba(245, 158, 11, 0.45); border-radius: 16px; padding: 32px 26px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(245, 158, 11, 0.12); position: relative; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease;">
+                <div style="position: absolute; top: 0; right: 0; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000; font-weight: 800; font-size: 11px; padding: 5px 16px; border-bottom-left-radius: 12px; text-transform: uppercase; letter-spacing: 0.8px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">
                     ★ FOUNDER &amp; CEO
                 </div>
-                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 20px;">
-                    <div style="position: relative;">
-                        <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Jitendrabhai Parmar" style="width: 82px; height: 82px; border-radius: 50%; object-fit: contain; background: #0b1120; border: 2.5px solid #f59e0b; padding: 4px; box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);">
-                        <span style="position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; background: #10b981; border: 2px solid #0f172a;"></span>
+                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 22px;">
+                    <div style="position: relative; flex-shrink: 0;">
+                        <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Jitendrabhai Parmar - CEO" style="width: 86px; height: 86px; border-radius: 50%; object-fit: contain; background: #070b14; border: 3px solid #f59e0b; padding: 4px; box-shadow: 0 0 25px rgba(245, 158, 11, 0.4);">
+                        <span style="position: absolute; bottom: 3px; right: 3px; width: 14px; height: 14px; border-radius: 50%; background: #10b981; border: 2.5px solid #0f172a; box-shadow: 0 0 8px #10b981;"></span>
                     </div>
                     <div>
-                        <h3 style="font-family: var(--font-heading); font-size: 20px; font-weight: 800; color: #fff; margin: 0 0 4px 0;">Jitendrabhai Parmar</h3>
-                        <div style="font-size: 13.5px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">Chief Executive Officer (CEO)</div>
-                        <div style="font-size: 11.5px; color: #94a3b8;">Founder &amp; Heavy Metallurgy Director</div>
+                        <h3 style="font-family: var(--font-heading); font-size: 21px; font-weight: 800; color: #ffffff; margin: 0 0 4px 0; letter-spacing: 0.3px;">Jitendrabhai Parmar</h3>
+                        <div style="font-size: 14px; font-weight: 700; color: #fbbf24; margin-bottom: 3px;">Chief Executive Officer (CEO)</div>
+                        <div style="font-size: 12px; color: #94a3b8; font-weight: 500;">Founder &amp; Heavy Metallurgy Director</div>
                     </div>
                 </div>
-                <p style="color: #cbd5e1; font-size: 13.5px; line-height: 1.6; margin-bottom: 20px; flex: 1;">
+                <p style="color: #cbd5e1; font-size: 13.5px; line-height: 1.65; margin-bottom: 22px; flex: 1;">
                     Visionary founder of Shree Varsha Engineering Works with <strong>25+ years</strong> of hands-on mastery in seasoned Grade-25 cast iron metallurgy, heavy boring machines, and industrial drill press engineering across Bhavnagar's machine-tool cluster.
                 </p>
-                <div style="background: rgba(6, 9, 17, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
-                        <span style="color: #94a3b8;">Direct Phone:</span>
-                        <a href="tel:+919824913555" style="color: #34d399; font-weight: 700; text-decoration: none; font-family: monospace; font-size: 13px;">📞 +91 98249 13555</a>
+                <div style="background: rgba(6, 10, 20, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
+                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px;">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="#34d399"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24 11.72 11.72 0 003.68.59 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.68 1 1 0 01-.24 1.02l-2.23 2.09z"/></svg>
+                            Direct Phone:
+                        </span>
+                        <a href="tel:+919824913555" style="color: #34d399; font-weight: 700; text-decoration: none; font-family: 'Space Grotesk', monospace; font-size: 13.5px;">+91 98249 13555</a>
                     </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
-                        <span style="color: #94a3b8;">Email Address:</span>
-                        <a href="mailto:varshaengineeringworks@gmail.com" style="color: #38bdf8; font-weight: 600; text-decoration: none; word-break: break-all;">✉️ varshaengineeringworks@gmail.com</a>
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
+                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px;">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="#38bdf8"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            Email Address:
+                        </span>
+                        <a href="mailto:varshaengineeringworks@gmail.com" style="color: #38bdf8; font-weight: 600; text-decoration: none; word-break: break-all; font-size: 12.5px;">varshaengineeringworks@gmail.com</a>
                     </div>
                 </div>
-                <div style="margin-top: 16px;">
-                    <a href="<?= getWhatsAppLink('919824913555', 'Hello Jitendrabhai Parmar (CEO), I am inquiring about Varsha Brand drill machines.') ?>" target="_blank" class="btn btn-whatsapp" style="width: 100%; justify-content: center; font-size: 12px;">
-                        💬 WhatsApp with Jitendrabhai (CEO)
+                <div style="margin-top: 18px;">
+                    <a href="<?= getWhatsAppLink('919824913555', 'Hello Jitendrabhai Parmar (CEO), I am inquiring about Varsha Brand drill machines.') ?>" target="_blank" class="btn" style="width: 100%; justify-content: center; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: #ffffff; border: 1px solid #34d399; border-radius: 8px; padding: 11px; text-decoration: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2z"/></svg>
+                        <span>WhatsApp with Jitendrabhai (CEO)</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Jay Parmar (Co-CEO) -->
-            <div style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.45); border-radius: 14px; padding: 28px 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); position: relative; overflow: hidden; display: flex; flex-direction: column;">
-                <div style="position: absolute; top: 0; right: 0; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; font-weight: 800; font-size: 11px; padding: 4px 14px; border-bottom-left-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+            <!-- Jay Parmar (Co-CEO & Production Head) -->
+            <div style="background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 15, 29, 0.98) 100%); border: 1.5px solid rgba(0, 229, 255, 0.45); border-radius: 16px; padding: 32px 26px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 229, 255, 0.15); position: relative; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease;">
+                <div style="position: absolute; top: 0; right: 0; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; font-weight: 800; font-size: 11px; padding: 5px 16px; border-bottom-left-radius: 12px; text-transform: uppercase; letter-spacing: 0.8px; box-shadow: 0 4px 12px rgba(0, 229, 255, 0.3);">
                     ★ CO-CEO &amp; PRODUCTION HEAD
                 </div>
-                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 20px;">
-                    <div style="position: relative;">
-                        <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Jay Parmar" style="width: 82px; height: 82px; border-radius: 50%; object-fit: contain; background: #0b1120; border: 2.5px solid var(--accent-cyan); padding: 4px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);">
-                        <span style="position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; background: #00e5ff; border: 2px solid #0f172a;"></span>
+                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 22px;">
+                    <div style="position: relative; flex-shrink: 0;">
+                        <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Jay Parmar - Co-CEO" style="width: 86px; height: 86px; border-radius: 50%; object-fit: contain; background: #070b14; border: 3px solid var(--accent-cyan); padding: 4px; box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);">
+                        <span style="position: absolute; bottom: 3px; right: 3px; width: 14px; height: 14px; border-radius: 50%; background: #00e5ff; border: 2.5px solid #0f172a; box-shadow: 0 0 8px #00e5ff;"></span>
                     </div>
                     <div>
-                        <h3 style="font-family: var(--font-heading); font-size: 20px; font-weight: 800; color: #fff; margin: 0 0 4px 0;">Jay Parmar</h3>
-                        <div style="font-size: 13.5px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 4px;">Co-CEO &amp; Production Engineer</div>
-                        <div style="font-size: 11.5px; color: #94a3b8;">Authorized Signatory &amp; Operations Head</div>
+                        <h3 style="font-family: var(--font-heading); font-size: 21px; font-weight: 800; color: #ffffff; margin: 0 0 4px 0; letter-spacing: 0.3px;">Jay Parmar</h3>
+                        <div style="font-size: 14px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 3px;">Co-CEO &amp; Production Engineer</div>
+                        <div style="font-size: 12px; color: #94a3b8; font-weight: 500;">Authorized Signatory &amp; Operations Head</div>
                     </div>
                 </div>
-                <p style="color: #cbd5e1; font-size: 13.5px; line-height: 1.6; margin-bottom: 20px; flex: 1;">
+                <p style="color: #cbd5e1; font-size: 13.5px; line-height: 1.65; margin-bottom: 22px; flex: 1;">
                     Specialized in precision spindle runout calibration (&lt;0.015mm), 20MnCr5 hardened alloy gear tooth profiling, 12D digital machinery simulations, and managing client consignments &amp; verified GST tax documentation.
                 </p>
-                <div style="background: rgba(6, 9, 17, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
-                        <span style="color: #94a3b8;">Direct Phone:</span>
-                        <a href="tel:+919714611331" style="color: #34d399; font-weight: 700; text-decoration: none; font-family: monospace; font-size: 13px;">📞 +91 97146 11331</a>
+                <div style="background: rgba(6, 10, 20, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
+                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px;">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="#34d399"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24 11.72 11.72 0 003.68.59 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.68 1 1 0 01-.24 1.02l-2.23 2.09z"/></svg>
+                            Direct Phone:
+                        </span>
+                        <a href="tel:+919714611331" style="color: #34d399; font-weight: 700; text-decoration: none; font-family: 'Space Grotesk', monospace; font-size: 13.5px;">+91 97146 11331</a>
                     </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
-                        <span style="color: #94a3b8;">Email Address:</span>
-                        <a href="mailto:jayparmar@varshamachines.com" style="color: #38bdf8; font-weight: 600; text-decoration: none; word-break: break-all;">✉️ jayparmar@varshamachines.com</a>
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
+                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px;">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="#38bdf8"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            Email Address:
+                        </span>
+                        <a href="mailto:jayparmar@varshamachines.com" style="color: #38bdf8; font-weight: 600; text-decoration: none; word-break: break-all; font-size: 12.5px;">jayparmar@varshamachines.com</a>
                     </div>
                 </div>
-                <div style="margin-top: 16px;">
-                    <a href="<?= getWhatsAppLink('919714611331', 'Hello Jay Parmar (Co-CEO), I am inquiring about Varsha Brand drill machines.') ?>" target="_blank" class="btn btn-whatsapp" style="width: 100%; justify-content: center; font-size: 12px;">
-                        💬 WhatsApp with Jay Parmar (Co-CEO)
+                <div style="margin-top: 18px;">
+                    <a href="<?= getWhatsAppLink('919714611331', 'Hello Jay Parmar (Co-CEO), I am inquiring about Varsha Brand drill machines.') ?>" target="_blank" class="btn" style="width: 100%; justify-content: center; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; border: 1px solid #00e5ff; border-radius: 8px; padding: 11px; text-decoration: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2z"/></svg>
+                        <span>WhatsApp with Jay Parmar (Co-CEO)</span>
                     </a>
                 </div>
             </div>
@@ -242,93 +256,6 @@ require_once __DIR__ . '/includes/navbar.php';
                 </div>
                 <h3 class="feature-title">Full Load Testing Bay</h3>
                 <p class="feature-desc">Every drill machine is run on full electrical and mechanical loads for 6 continuous hours to inspect thermal rise, noise, and vibration.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Executive Leadership & Directors Section -->
-<section class="section" style="background: radial-gradient(circle at 50% 10%, rgba(0, 229, 255, 0.08) 0%, rgba(6, 10, 20, 0.98) 70%); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
-    <div class="container">
-        <div class="section-title-wrap" style="text-align: center; margin-bottom: 40px;">
-            <div class="pill-badge">EXECUTIVE LEADERSHIP &amp; MANAGEMENT</div>
-            <h2 class="section-title">Meet Our <span>Founders &amp; Directors</span></h2>
-            <p class="section-desc" style="max-width: 680px; margin: 0 auto; color: #cbd5e1; font-size: 15px;">
-                Leading Shree Varsha Engineering Works with over 25 years of industrial foundry metallurgy, heavy gear cutting precision, and machine-tool engineering excellence.
-            </p>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1040px; margin: 0 auto;">
-            <!-- Jitendrabhai Parmar (CEO) -->
-            <div style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(245, 158, 11, 0.4); border-radius: 14px; padding: 28px 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); position: relative; overflow: hidden; display: flex; flex-direction: column;">
-                <div style="position: absolute; top: 0; right: 0; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000; font-weight: 800; font-size: 11px; padding: 4px 14px; border-bottom-left-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
-                    ★ FOUNDER &amp; CEO
-                </div>
-                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 20px;">
-                    <div style="position: relative;">
-                        <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Jitendrabhai Parmar" style="width: 82px; height: 82px; border-radius: 50%; object-fit: contain; background: #0b1120; border: 2.5px solid #f59e0b; padding: 4px; box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);">
-                        <span style="position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; background: #10b981; border: 2px solid #0f172a;"></span>
-                    </div>
-                    <div>
-                        <h3 style="font-family: var(--font-heading); font-size: 20px; font-weight: 800; color: #fff; margin: 0 0 4px 0;">Jitendrabhai Parmar</h3>
-                        <div style="font-size: 13.5px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">Chief Executive Officer (CEO)</div>
-                        <div style="font-size: 11.5px; color: #94a3b8;">Founder &amp; Heavy Metallurgy Director</div>
-                    </div>
-                </div>
-                <p style="color: #cbd5e1; font-size: 13.5px; line-height: 1.6; margin-bottom: 20px; flex: 1;">
-                    Visionary founder of Shree Varsha Engineering Works with <strong>25+ years</strong> of hands-on mastery in seasoned Grade-25 cast iron metallurgy, heavy boring machines, and industrial drill press engineering across Bhavnagar's machine-tool cluster.
-                </p>
-                <div style="background: rgba(6, 9, 17, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
-                        <span style="color: #94a3b8;">Direct Phone:</span>
-                        <a href="tel:+919824913555" style="color: #34d399; font-weight: 700; text-decoration: none; font-family: monospace; font-size: 13px;">📞 +91 98249 13555</a>
-                    </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
-                        <span style="color: #94a3b8;">Email Address:</span>
-                        <a href="mailto:varshaengineeringworks@gmail.com" style="color: #38bdf8; font-weight: 600; text-decoration: none; word-break: break-all;">✉️ varshaengineeringworks@gmail.com</a>
-                    </div>
-                </div>
-                <div style="margin-top: 16px;">
-                    <a href="<?= getWhatsAppLink('919824913555', 'Hello Jitendrabhai Parmar (CEO), I am inquiring about Varsha Brand drill machines.') ?>" target="_blank" class="btn btn-whatsapp" style="width: 100%; justify-content: center; font-size: 12px;">
-                        💬 WhatsApp with Jitendrabhai (CEO)
-                    </a>
-                </div>
-            </div>
-
-            <!-- Jay Parmar (Co-CEO) -->
-            <div style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.45); border-radius: 14px; padding: 28px 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); position: relative; overflow: hidden; display: flex; flex-direction: column;">
-                <div style="position: absolute; top: 0; right: 0; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; font-weight: 800; font-size: 11px; padding: 4px 14px; border-bottom-left-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
-                    ★ CO-CEO &amp; PRODUCTION HEAD
-                </div>
-                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 20px;">
-                    <div style="position: relative;">
-                        <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Jay Parmar" style="width: 82px; height: 82px; border-radius: 50%; object-fit: contain; background: #0b1120; border: 2.5px solid var(--accent-cyan); padding: 4px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);">
-                        <span style="position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; background: #00e5ff; border: 2px solid #0f172a;"></span>
-                    </div>
-                    <div>
-                        <h3 style="font-family: var(--font-heading); font-size: 20px; font-weight: 800; color: #fff; margin: 0 0 4px 0;">Jay Parmar</h3>
-                        <div style="font-size: 13.5px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 4px;">Co-CEO &amp; Production Engineer</div>
-                        <div style="font-size: 11.5px; color: #94a3b8;">Authorized Signatory &amp; Operations Head</div>
-                    </div>
-                </div>
-                <p style="color: #cbd5e1; font-size: 13.5px; line-height: 1.6; margin-bottom: 20px; flex: 1;">
-                    Specialized in precision spindle runout calibration (&lt;0.015mm), 20MnCr5 hardened alloy gear tooth profiling, 12D digital machinery simulations, and managing client consignments &amp; verified GST tax documentation.
-                </p>
-                <div style="background: rgba(6, 9, 17, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
-                        <span style="color: #94a3b8;">Direct Phone:</span>
-                        <a href="tel:+919714611331" style="color: #34d399; font-weight: 700; text-decoration: none; font-family: monospace; font-size: 13px;">📞 +91 97146 11331</a>
-                    </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
-                        <span style="color: #94a3b8;">Email Address:</span>
-                        <a href="mailto:jayparmar@varshamachines.com" style="color: #38bdf8; font-weight: 600; text-decoration: none; word-break: break-all;">✉️ jayparmar@varshamachines.com</a>
-                    </div>
-                </div>
-                <div style="margin-top: 16px;">
-                    <a href="<?= getWhatsAppLink('919714611331', 'Hello Jay Parmar (Co-CEO), I am inquiring about Varsha Brand drill machines.') ?>" target="_blank" class="btn btn-whatsapp" style="width: 100%; justify-content: center; font-size: 12px;">
-                        💬 WhatsApp with Jay Parmar (Co-CEO)
-                    </a>
-                </div>
             </div>
         </div>
     </div>
