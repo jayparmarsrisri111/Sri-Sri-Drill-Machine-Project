@@ -270,14 +270,14 @@ require_once __DIR__ . '/includes/sidebar.php';
 
         <!-- Orders Table Card -->
         <div class="admin-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
                 <h2 style="font-family: var(--font-heading); font-size: 18px; color: #fff; margin: 0;">
-                    All Orders &amp; Logistics Tracking (<?= count($orders) ?>)
+                    All Orders &amp; Logistics Tracking
                 </h2>
-                <div style="position: relative; width: 100%; max-width: 340px;">
-                    <input type="text" id="orderSearchInput" placeholder="🔍 Search Order #, Invoice #, Name, Phone..." 
-                           style="width: 100%; padding: 8px 12px 8px 36px; background: rgba(15, 23, 42, 0.9); border: 1.5px solid rgba(0, 229, 255, 0.4); border-radius: 8px; color: #fff; font-size: 12.5px; outline: none;">
-                    <span style="position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 13px; opacity: 0.7;">🔍</span>
+                <!-- Orders Instant Search Bar -->
+                <div style="position: relative; width: 100%; max-width: 420px;">
+                    <input type="text" id="orderSearchInput" class="admin-form-control" placeholder="🔍 Search by name, phone, invoice, city, machine..." style="width: 100%; padding: 8px 14px 8px 34px; font-size: 12.5px; border-radius: 8px; border: 1.5px solid rgba(0, 229, 255, 0.4); background: rgba(15, 23, 42, 0.9); color: #fff; box-sizing: border-box;">
+                    <span style="position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 13px; opacity: 0.7; pointer-events: none;">🔍</span>
                 </div>
             </div>
 
@@ -570,20 +570,15 @@ function closeLogisticsModal() {
     document.getElementById('logisticsModal').style.display = 'none';
 }
 
-// Live search filter for orders table
 document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('orderSearchInput');
-    const tableRows = document.querySelectorAll('.tech-table tbody tr');
-    if (searchInput && tableRows.length > 0) {
-        searchInput.addEventListener('input', function() {
+    const input = document.getElementById('orderSearchInput');
+    if (input) {
+        input.addEventListener('input', function() {
             const query = this.value.toLowerCase().trim();
-            tableRows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                if (!query || text.includes(query)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+            const rows = document.querySelectorAll('.tech-table tbody tr');
+            rows.forEach(r => {
+                const text = r.innerText.toLowerCase();
+                r.style.display = (!query || text.includes(query)) ? '' : 'none';
             });
         });
     }

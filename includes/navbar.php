@@ -433,6 +433,12 @@ body.mobile-menu-open #varshaChatbotWindow {
 
         <!-- Right Side Quick Actions -->
         <div class="nav-actions-right">
+            <!-- Quick Search Bar (Desktop) -->
+            <form action="<?= BASE_URL ?>/machines.php" method="GET" class="nav-search-desktop" style="display: inline-flex; align-items: center; position: relative; margin-right: 4px;">
+                <input type="text" name="search" placeholder="Search..." aria-label="Search Machines" style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(0, 229, 255, 0.35); border-radius: 9999px; padding: 5px 12px 5px 26px; font-size: 12px; color: #fff; width: 115px; outline: none; transition: all 0.25s ease;" onfocus="this.style.width='175px'; this.style.borderColor='#00e5ff';" onblur="this.style.width='115px'; this.style.borderColor='rgba(0, 229, 255, 0.35)';">
+                <span style="position: absolute; left: 9px; font-size: 11px; opacity: 0.7; pointer-events: none;">🔍</span>
+            </form>
+
             <!-- Customer Sign In Button (Top bar) -->
             <?php if (!empty($_SESSION['customer_user'])): ?>
                 <div class="btn-top-auth" style="position: relative; display: inline-block;">
@@ -517,6 +523,12 @@ body.mobile-menu-open #varshaChatbotWindow {
         </span>
         <?php require __DIR__ . '/lang-selector.php'; ?>
     </div>
+
+    <!-- Mobile Quick Search Bar -->
+    <form action="<?= BASE_URL ?>/machines.php" method="GET" style="margin-bottom: 12px; position: relative; width: 100%;">
+        <input type="text" name="search" placeholder="🔍 Search drill machines & parts..." style="width: 100%; padding: 9px 12px 9px 32px; background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.4); border-radius: 8px; font-size: 13px; color: #fff; outline: none; box-sizing: border-box;">
+        <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 12px; opacity: 0.8; pointer-events: none;">🔍</span>
+    </form>
 
     <!-- Drawer Navigation Links -->
     <ul class="drawer-nav-list">

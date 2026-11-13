@@ -15,28 +15,25 @@
 
     <!-- Admin Panel Multi-Language Selector (English, Gujarati, Hindi) -->
     <?php 
-        // Suppress dropdown button inside sidebar since we render the 3 pills below
+        // Suppress dropdown button inside sidebar since we render the 3 clean pills below
         $renderLangDropdown = false;
         require_once __DIR__ . '/../../includes/lang-selector.php'; 
     ?>
-    <div class="notranslate" style="padding: 10px 12px; margin: 4px 12px 14px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px;">
+    <div style="padding: 10px 12px; margin: 6px 12px 14px; background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.35); border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
             <span style="font-size: 11px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px;">
-                🌐 LANGUAGE / ભાષા
-            </span>
-            <span style="font-size: 10px; color: #94a3b8; font-weight: 600;">
-                <?= strtoupper($currentLang) ?>
+                🌐 ભાષા પસંદગી (Language)
             </span>
         </div>
-        <div style="display: flex; gap: 5px; justify-content: space-between;">
-            <button type="button" onclick="changeSiteLanguage('en')" class="notranslate" style="flex: 1; padding: 7px 4px; font-size: 11px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'en') ? '#10b981' : 'rgba(255,255,255,0.15)' ?>; background: <?= ($currentLang === 'en') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.05)' ?>; color: <?= ($currentLang === 'en') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center; transition: all 0.2s;">
-                English
+        <div style="display: flex; gap: 4px; justify-content: space-between;">
+            <button type="button" onclick="changeSiteLanguage('en')" style="flex: 1; padding: 6px 2px; font-size: 11px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'en') ? '#10b981' : 'rgba(255,255,255,0.15)' ?>; background: <?= ($currentLang === 'en') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.05)' ?>; color: <?= ($currentLang === 'en') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center;">
+                🇬🇧 EN
             </button>
-            <button type="button" onclick="changeSiteLanguage('gu')" class="notranslate" style="flex: 1.2; padding: 7px 4px; font-size: 11px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'gu') ? '#10b981' : 'rgba(255,255,255,0.15)' ?>; background: <?= ($currentLang === 'gu') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.05)' ?>; color: <?= ($currentLang === 'gu') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center; transition: all 0.2s;">
-                ગુજરાતી
+            <button type="button" onclick="changeSiteLanguage('gu')" style="flex: 1.3; padding: 6px 2px; font-size: 11px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'gu') ? '#10b981' : 'rgba(255,255,255,0.15)' ?>; background: <?= ($currentLang === 'gu') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.05)' ?>; color: <?= ($currentLang === 'gu') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center;">
+                🇮🇳 ગુજરાતી
             </button>
-            <button type="button" onclick="changeSiteLanguage('hi')" class="notranslate" style="flex: 1; padding: 7px 4px; font-size: 11px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'hi') ? '#10b981' : 'rgba(255,255,255,0.15)' ?>; background: <?= ($currentLang === 'hi') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.05)' ?>; color: <?= ($currentLang === 'hi') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center; transition: all 0.2s;">
-                हिन्दी
+            <button type="button" onclick="changeSiteLanguage('hi')" style="flex: 1.1; padding: 6px 2px; font-size: 11px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'hi') ? '#10b981' : 'rgba(255,255,255,0.15)' ?>; background: <?= ($currentLang === 'hi') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.05)' ?>; color: <?= ($currentLang === 'hi') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center;">
+                🇮🇳 हिन्दी
             </button>
         </div>
     </div>

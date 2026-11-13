@@ -96,6 +96,7 @@ try {
         <!-- Live Instant Search Bar -->
         <div style="max-width: 560px; margin: 0 auto; position: relative;">
             <input type="text" id="liveMachineSearch" class="form-control" 
+                   value="<?= e($_GET['search'] ?? '') ?>"
                    placeholder="🔍 Search model, capacity (e.g. 40mm, Radial, SVEW-RD-50)..." 
                    style="padding: 14px 22px; font-size: 15px; border-radius: 9999px; background: rgba(15, 23, 42, 0.9); border: 1.5px solid var(--border-cyan); color: #fff; box-shadow: 0 6px 25px rgba(0, 229, 255, 0.18);">
         </div>
@@ -126,8 +127,8 @@ try {
                          data-search-text="<?= strtolower(e($p['name'] . ' ' . $p['model_number'] . ' ' . $p['drilling_capacity'] . ' ' . $p['category_name'])) ?>">
                         
                         <!-- Real Machine Photo Showcase (Clean, Full-Bleed Workshop Photo) -->
-                        <div class="machine-card-image" style="position: relative; overflow: hidden; background: #060911; border-bottom: 1px solid rgba(255,255,255,0.08); height: 230px; display: flex; align-items: center; justify-content: center; padding: 0;">
-                            <img src="<?= assetUrl($p['image_url']) ?>" alt="<?= e($p['name']) ?>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.4s ease;">
+                        <div class="machine-card-image" style="position: relative; overflow: hidden; background: radial-gradient(circle at center, #1e293b 0%, #060911 100%); border-bottom: 1px solid rgba(255,255,255,0.08); height: 240px; display: flex; align-items: center; justify-content: center; padding: 6px;">
+                            <img src="<?= assetUrl($p['image_url']) ?>" alt="<?= e($p['name']) ?>" loading="lazy" style="max-width: 100%; max-height: 100%; width: 100%; height: 100%; object-fit: contain; object-position: center; transition: transform 0.4s ease;">
                         </div>
 
                         <div class="machine-card-body">
@@ -272,6 +273,10 @@ document.addEventListener('DOMContentLoaded', function () {
             searchQuery = this.value.toLowerCase().trim();
             applyFilters();
         });
+        if (searchInput.value.trim().length > 0) {
+            searchQuery = searchInput.value.toLowerCase().trim();
+            applyFilters();
+        }
     }
 
     filterBtns.forEach(btn => {
