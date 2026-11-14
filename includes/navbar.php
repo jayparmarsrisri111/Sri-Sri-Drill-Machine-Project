@@ -331,58 +331,85 @@ body.mobile-menu-open #varshaChatbotWindow {
 }
 
 /* ==========================================================================
-   LAPTOP & DESKTOP ULTRA-RESPONSIVE POLISH (1025px - 1440px)
-   Guarantees full navigation menu is 100% visible, perfectly aligned,
-   with ZERO wrapping or overflowing on laptops (1366x768, 1280x800, etc.)
+   LAPTOP & DESKTOP ULTRA-RESPONSIVE POLISH (861px - 1400px)
+   Guarantees full navigation menu is 100% visible, perfectly aligned on ONE line,
+   with ZERO wrapping or overflowing on all laptops (1366x768, 1280x800, 1024px scaled)
    ========================================================================== */
-@media (min-width: 1025px) and (max-width: 1366px) {
+@media (min-width: 861px) and (max-width: 1400px) {
     .site-nav-container {
-        padding: 0 10px !important;
+        padding: 0 8px !important;
+        gap: 4px !important;
+        max-width: 100% !important;
+    }
+    .brand-badge-wrap {
         gap: 6px !important;
     }
     .brand-badge-wrap img {
-        height: 36px !important;
-        width: 36px !important;
+        height: 32px !important;
+        width: 32px !important;
     }
     .brand-title-main {
-        font-size: 14px !important;
+        font-size: 13.5px !important;
+        letter-spacing: 0.2px !important;
     }
     .brand-subtitle-tag {
-        font-size: 8px !important;
+        display: none !important;
     }
     .nav-links-center {
         display: flex !important;
-        gap: 6px !important;
+        gap: 3px !important;
     }
     .site-nav-link {
-        font-size: 11.6px !important;
-        padding: 4px 1px !important;
+        font-size: 11px !important;
+        padding: 4px 2px !important;
+        letter-spacing: -0.2px !important;
+    }
+    .site-nav-link span:nth-child(2) {
+        display: none !important; /* Hide 3D LAB micro badge on laptops to save width */
     }
     .nav-actions-right {
-        gap: 6px !important;
-    }
-    .nav-search-desktop {
-        display: none !important; /* Hide extra search bar on laptop header; already in drawer & catalog */
-    }
-    .btn-nav-action {
-        height: 34px !important;
-        padding: 0 8px !important;
-        font-size: 11.5px !important;
         gap: 4px !important;
     }
+    .nav-search-desktop {
+        display: none !important; /* Clean header; search is in catalog & drawer */
+    }
+    .btn-nav-action {
+        height: 32px !important;
+        padding: 0 6px !important;
+        font-size: 11px !important;
+        gap: 3px !important;
+    }
+    .btn-nav-auth {
+        padding: 0 6px !important;
+    }
+    .btn-site-lang-toggle {
+        height: 32px !important;
+        padding: 0 5px !important;
+        font-size: 11px !important;
+        gap: 3px !important;
+    }
+    .btn-site-lang-toggle .active-lang-desktop {
+        font-size: 11px !important;
+    }
     .btn-top-book .btn-text-extra {
-        display: none !important; /* Shows '💳 Book' saving 45px width */
+        display: none !important; /* Shows '💳 Book' */
     }
     .btn-nav-admin .btn-text-full {
-        display: none !important; /* Shows '🔒' icon saving 40px width */
+        display: none !important; /* Shows '🔒' icon */
+    }
+    .btn-nav-cart .btn-text-full {
+        display: none !important; /* Shows '🛒 [count]' */
+    }
+    .btn-nav-cart {
+        padding: 0 6px !important;
     }
     .btn-nav-mobile-toggle {
         display: none !important;
     }
 }
 
-/* Tablet & Mobile Breakpoints: Switch to slide-drawer only below 1025px */
-@media (max-width: 1024px) {
+/* Tablet & Mobile Breakpoints: Switch to slide-drawer only below 861px */
+@media (max-width: 860px) {
     .btn-nav-mobile-toggle {
         display: inline-flex !important;
     }
