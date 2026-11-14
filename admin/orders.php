@@ -213,15 +213,24 @@ require_once __DIR__ . '/includes/sidebar.php';
     margin-bottom: 24px !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
 }
+.table-responsive {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    margin-bottom: 16px !important;
+}
 .tech-table {
     width: 100% !important;
+    min-width: 1080px !important;
     border-collapse: collapse !important;
     font-size: 13.5px !important;
 }
 .tech-table th {
     text-align: left !important;
     padding: 12px 14px !important;
-    background: rgba(11, 17, 32, 0.9) !important;
+    background: rgba(11, 17, 32, 0.95) !important;
     font-family: 'Space Grotesk', sans-serif !important;
     font-size: 11.5px !important;
     font-weight: 700 !important;
@@ -229,6 +238,7 @@ require_once __DIR__ . '/includes/sidebar.php';
     text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
     border-bottom: 1px solid rgba(255,255,255,0.12) !important;
+    white-space: nowrap !important;
 }
 .tech-table td {
     padding: 14px !important;
@@ -321,7 +331,7 @@ require_once __DIR__ . '/includes/sidebar.php';
                                 <th>Customer &amp; Location</th>
                                 <th>Machine / Part</th>
                                 <th>Type &amp; Amount</th>
-                                <th>Real-Time Delivery Status</th>
+                                <th style="min-width: 220px !important; white-space: nowrap !important;">Real-Time Delivery Status</th>
                                 <th>Freight Logistics</th>
                                 <th>Actions</th>
                             </tr>
@@ -408,19 +418,19 @@ require_once __DIR__ . '/includes/sidebar.php';
                                             ?>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style="min-width: 220px !important; vertical-align: top !important;">
                                         <?php if ($delStatus === 'delivered'): ?>
-                                            <span style="display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 800; color: #34d399; background: rgba(16,185,129,0.22); border: 1.5px solid #10b981; box-shadow: 0 0 12px rgba(16,185,129,0.35);">
+                                            <span style="display: inline-flex !important; align-items: center !important; gap: 5px !important; padding: 5px 12px !important; border-radius: 9999px !important; font-size: 11px !important; font-weight: 800 !important; color: #34d399 !important; background: rgba(16,185,129,0.22) !important; border: 1.5px solid #10b981 !important; box-shadow: 0 0 12px rgba(16,185,129,0.35) !important; white-space: nowrap !important;">
                                                 🏁 7. Delivered &amp; Commissioned ✔
                                             </span>
                                         <?php else: ?>
-                                            <span style="display: inline-block; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700; color: <?= $curBadge['color'] ?>; background: <?= $curBadge['bg'] ?>; border: 1px solid <?= $curBadge['color'] ?>;">
+                                            <span style="display: inline-flex !important; align-items: center !important; gap: 5px !important; padding: 4px 10px !important; border-radius: 9999px !important; font-size: 11px !important; font-weight: 700 !important; color: <?= $curBadge['color'] ?> !important; background: <?= $curBadge['bg'] ?> !important; border: 1px solid <?= $curBadge['color'] ?> !important; white-space: nowrap !important;">
                                                 <?= $curBadge['label'] ?>
                                             </span>
                                         <?php endif; ?>
 
                                         <?php if (!empty($ord['current_location'])): ?>
-                                            <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">
+                                            <div style="font-size: 11px; color: #94a3b8; margin-top: 4px; white-space: nowrap;">
                                                 📍 <?= e($ord['current_location']) ?>
                                             </div>
                                         <?php endif; ?>
@@ -429,7 +439,7 @@ require_once __DIR__ . '/includes/sidebar.php';
                                         <form method="POST" style="margin-top: 8px;">
                                             <input type="hidden" name="quick_status_change" value="1">
                                             <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
-                                            <select name="quick_status" onchange="this.form.submit()" style="font-size: 11px; padding: 5px 8px; background: #060911; color: #38bdf8; border: 1.5px solid rgba(56,189,248,0.5); border-radius: 6px; cursor: pointer; width: 100%; font-weight: 600;">
+                                            <select name="quick_status" onchange="this.form.submit()" style="font-size: 11px; padding: 6px 8px; background: #060911; color: #38bdf8; border: 1.5px solid rgba(56,189,248,0.5); border-radius: 6px; cursor: pointer; width: 100%; min-width: 200px; font-weight: 600;">
                                                 <option value="" disabled>⚡ Change Factory Milestone...</option>
                                                 <option value="pending" <?= ($delStatus === 'pending') ? 'selected' : '' ?>>⏳ Pending Verification</option>
                                                 <option value="order_placed" <?= ($delStatus === 'order_placed') ? 'selected' : '' ?>>✅ 1. Order Confirmed &amp; Paid</option>
@@ -444,18 +454,18 @@ require_once __DIR__ . '/includes/sidebar.php';
                                         </form>
 
                                         <!-- Direct 1-Click Status Quick Buttons -->
-                                        <div style="display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap;">
+                                        <div style="display: flex; gap: 5px; margin-top: 6px; flex-wrap: nowrap;">
                                             <?php if ($delStatus !== 'delivered'): ?>
                                                 <form method="POST" style="margin: 0; flex: 1;">
                                                     <input type="hidden" name="quick_status_change" value="1">
                                                     <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
                                                     <input type="hidden" name="quick_status" value="delivered">
-                                                    <button type="submit" title="Mark as Delivered & Commissioned at Factory" style="width: 100%; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: #ffffff; border: 1px solid #34d399; border-radius: 4px; font-size: 10px; font-weight: 800; padding: 4px 6px; cursor: pointer; box-shadow: 0 2px 8px rgba(16,185,129,0.3);">
+                                                    <button type="submit" title="Mark as Delivered & Commissioned at Factory" style="width: 100%; white-space: nowrap; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: #ffffff; border: 1px solid #34d399; border-radius: 4px; font-size: 10px; font-weight: 800; padding: 5px 8px; cursor: pointer; box-shadow: 0 2px 8px rgba(16,185,129,0.3);">
                                                         🏁 Mark Delivered
                                                     </button>
                                                 </form>
                                             <?php else: ?>
-                                                <span style="font-size: 10px; color: #34d399; font-weight: 700; display: inline-flex; align-items: center; gap: 3px;">
+                                                <span style="font-size: 10.5px; color: #34d399; font-weight: 700; display: inline-flex; align-items: center; gap: 3px; white-space: nowrap;">
                                                     ✔ Fully Commissioned
                                                 </span>
                                             <?php endif; ?>
@@ -464,11 +474,12 @@ require_once __DIR__ . '/includes/sidebar.php';
                                                 <input type="hidden" name="quick_status_change" value="1">
                                                 <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
                                                 <input type="hidden" name="quick_status" value="pending">
-                                                <button type="submit" title="Mark Pending" style="background: <?= ($ord['order_status'] === 'pending') ? '#fbbf24' : 'rgba(251,191,36,0.15)' ?>; color: <?= ($ord['order_status'] === 'pending') ? '#060911' : '#fbbf24' ?>; border: 1px solid #fbbf24; border-radius: 4px; font-size: 9.5px; font-weight: 800; padding: 4px 6px; cursor: pointer;">
+                                                <button type="submit" title="Mark Pending" style="white-space: nowrap; background: <?= ($ord['order_status'] === 'pending') ? '#fbbf24' : 'rgba(251,191,36,0.15)' ?>; color: <?= ($ord['order_status'] === 'pending') ? '#060911' : '#fbbf24' ?>; border: 1px solid #fbbf24; border-radius: 4px; font-size: 10px; font-weight: 800; padding: 5px 8px; cursor: pointer;">
                                                     ⏳ Pending
                                                 </button>
                                             </form>
                                         </div>
+                                    </td>
                                     </td>
                                     <td>
                                         <div style="font-size: 12px; color: #fff; font-weight: 600;">

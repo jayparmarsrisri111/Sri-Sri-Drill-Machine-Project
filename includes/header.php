@@ -241,7 +241,7 @@ if (!empty($pageSchema)) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="<?= htmlspecialchars($_COOKIE['site_lang'] ?? 'en') ?>">
+<html lang="en" data-site-lang="<?= htmlspecialchars($_COOKIE['site_lang'] ?? 'en') ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

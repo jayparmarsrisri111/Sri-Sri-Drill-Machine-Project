@@ -16,13 +16,22 @@ require_once __DIR__ . '/includes/navbar.php';
             <div style="width: 58px; height: 58px; border-radius: 50%; border: 2px solid var(--accent-cyan); box-shadow: 0 0 22px rgba(0, 229, 255, 0.45); background: #060911; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;">
                 <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand Emblem" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
-            <div class="pill-badge" style="margin-bottom: 0; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid rgba(0, 229, 255, 0.4); background: rgba(15, 23, 42, 0.85); border-radius: 9999px; padding: 7px 18px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);">
-                <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent-cyan); display: inline-block; box-shadow: 0 0 8px var(--accent-cyan);"></span>
-                <span style="font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 800; color: #ffffff; letter-spacing: 1px;">
+            <div class="pill-badge about-est-pill" style="margin-bottom: 0; display: inline-flex; align-items: center; border: 1.5px solid rgba(0, 229, 255, 0.4); background: rgba(15, 23, 42, 0.85); border-radius: 9999px; padding: 7px 20px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);">
+                <span style="font-family: 'Space Grotesk', sans-serif; font-size: 12.5px; font-weight: 800; color: #ffffff; letter-spacing: 1px;">
                     ESTABLISHED 1998 • <span style="color: var(--accent-cyan);">BHAVNAGAR, GUJARAT</span>
                 </span>
             </div>
         </div>
+        <style>
+            /* Ensure exactly ZERO dots/bullets appear on the left of ESTABLISHED */
+            .about-est-pill::before,
+            .about-est-pill::after {
+                display: none !important;
+                content: none !important;
+                width: 0 !important;
+                height: 0 !important;
+            }
+        </style>
         <h1 class="section-title"><?= getSetting('experience_years', '25+') ?> Years of <span>Industrial Excellence</span></h1>
         <p class="section-desc" style="max-width: 720px; margin: 0 auto; color: #cbd5e1; font-size: 15px; line-height: 1.6;">
             <?= APP_NAME ?> is recognized across India for manufacturing heavy-duty, high-rigidity Radial and Pillar Drill Machines built to perform under extreme production cycles.
@@ -124,88 +133,108 @@ require_once __DIR__ . '/includes/navbar.php';
             </p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 1060px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; max-width: 1080px; margin: 0 auto; align-items: stretch;">
             <!-- Jitendrabhai Parmar (Founder & CEO) -->
-            <div style="background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 15, 29, 0.98) 100%); border: 1.5px solid rgba(245, 158, 11, 0.45); border-radius: 16px; padding: 32px 26px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(245, 158, 11, 0.12); position: relative; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease;">
-                <div style="position: absolute; top: 0; right: 0; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000; font-weight: 800; font-size: 11px; padding: 5px 16px; border-bottom-left-radius: 12px; text-transform: uppercase; letter-spacing: 0.8px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">
-                    ★ FOUNDER &amp; CEO
+            <div style="background: linear-gradient(145deg, rgba(15, 23, 42, 0.96) 0%, rgba(10, 15, 29, 0.98) 100%); border: 1.5px solid rgba(245, 158, 11, 0.5); border-radius: 16px; padding: 28px 26px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), 0 0 25px rgba(245, 158, 11, 0.12); position: relative; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <!-- Header Badge Strip -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid rgba(245, 158, 11, 0.25);">
+                    <span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24; font-weight: 800; font-size: 11px; padding: 4px 12px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.8px;">
+                        ★ FOUNDER &amp; CEO
+                    </span>
+                    <span style="font-size: 11px; color: #94a3b8; font-weight: 600;">25+ Yrs Industry Veteran</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 22px;">
+
+                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 18px;">
                     <div style="position: relative; flex-shrink: 0;">
-                        <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Jitendrabhai Parmar - CEO" style="width: 86px; height: 86px; border-radius: 50%; object-fit: contain; background: #070b14; border: 3px solid #f59e0b; padding: 4px; box-shadow: 0 0 25px rgba(245, 158, 11, 0.4);">
-                        <span style="position: absolute; bottom: 3px; right: 3px; width: 14px; height: 14px; border-radius: 50%; background: #10b981; border: 2.5px solid #0f172a; box-shadow: 0 0 8px #10b981;"></span>
+                        <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Jitendrabhai Parmar - CEO" style="width: 78px; height: 78px; border-radius: 50%; object-fit: contain; background: #070b14; border: 2.5px solid #f59e0b; padding: 3px; box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);">
+                        <span style="position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; background: #10b981; border: 2.5px solid #0f172a; box-shadow: 0 0 8px #10b981;" title="Online / Direct Factory Access"></span>
                     </div>
                     <div>
-                        <h3 style="font-family: var(--font-heading); font-size: 21px; font-weight: 800; color: #ffffff; margin: 0 0 4px 0; letter-spacing: 0.3px;">Jitendrabhai Parmar</h3>
-                        <div style="font-size: 14px; font-weight: 700; color: #fbbf24; margin-bottom: 3px;">Chief Executive Officer (CEO)</div>
+                        <h3 style="font-family: var(--font-heading); font-size: 21px; font-weight: 800; color: #ffffff; margin: 0 0 3px 0; letter-spacing: 0.3px;">Jitendrabhai Parmar</h3>
+                        <div style="font-size: 13.5px; font-weight: 700; color: #fbbf24; margin-bottom: 2px;">Chief Executive Officer (CEO)</div>
                         <div style="font-size: 12px; color: #94a3b8; font-weight: 500;">Founder &amp; Heavy Metallurgy Director</div>
                     </div>
                 </div>
-                <p style="color: #cbd5e1; font-size: 13.5px; line-height: 1.65; margin-bottom: 22px; flex: 1;">
+
+                <p style="color: #cbd5e1; font-size: 13.5px; line-height: 1.65; margin-bottom: 20px; flex: 1;">
                     Visionary founder of Shree Varsha Engineering Works with <strong>25+ years</strong> of hands-on mastery in seasoned Grade-25 cast iron metallurgy, heavy boring machines, and industrial drill press engineering across Bhavnagar's machine-tool cluster.
                 </p>
-                <div style="background: rgba(6, 10, 20, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+
+                <!-- Contact Info Box -->
+                <div style="background: rgba(6, 10, 20, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 13px 16px; display: flex; flex-direction: column; gap: 9px; font-size: 13px; margin-bottom: 18px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
-                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px;">
+                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px; font-size: 12px;">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="#34d399"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24 11.72 11.72 0 003.68.59 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.68 1 1 0 01-.24 1.02l-2.23 2.09z"/></svg>
                             Direct Phone:
                         </span>
-                        <a href="tel:+919824913555" style="color: #34d399; font-weight: 700; text-decoration: none; font-family: 'Space Grotesk', monospace; font-size: 13.5px;">+91 98249 13555</a>
+                        <a href="tel:+919824913555" style="color: #34d399; font-weight: 800; text-decoration: none; font-family: 'Space Grotesk', monospace; font-size: 13.5px;">+91 98249 13555</a>
                     </div>
                     <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
-                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px;">
+                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px; font-size: 12px;">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="#38bdf8"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                             Email Address:
                         </span>
-                        <a href="mailto:varshaengineeringworks@gmail.com" style="color: #38bdf8; font-weight: 600; text-decoration: none; word-break: break-all; font-size: 12.5px;">varshaengineeringworks@gmail.com</a>
+                        <a href="mailto:varshaengineeringworks@gmail.com" style="color: #38bdf8; font-weight: 600; text-decoration: none; word-break: break-all; font-size: 12px;">varshaengineeringworks@gmail.com</a>
                     </div>
                 </div>
-                <div style="margin-top: 18px;">
-                    <a href="<?= getWhatsAppLink('919824913555', 'Hello Jitendrabhai Parmar (CEO), I am inquiring about Varsha Brand drill machines.') ?>" target="_blank" class="btn" style="width: 100%; justify-content: center; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: #ffffff; border: 1px solid #34d399; border-radius: 8px; padding: 11px; text-decoration: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2z"/></svg>
+
+                <!-- WhatsApp Button -->
+                <div>
+                    <a href="<?= getWhatsAppLink('919824913555', 'Hello Jitendrabhai Parmar (CEO), I am inquiring about Varsha Brand drill machines.') ?>" target="_blank" class="btn" style="width: 100%; justify-content: center; font-size: 13px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: #ffffff; border: 1px solid #34d399; border-radius: 8px; padding: 11px; text-decoration: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2z"/></svg>
                         <span>WhatsApp with Jitendrabhai (CEO)</span>
                     </a>
                 </div>
             </div>
 
             <!-- Jay Parmar (Co-CEO & Production Head) -->
-            <div style="background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 15, 29, 0.98) 100%); border: 1.5px solid rgba(0, 229, 255, 0.45); border-radius: 16px; padding: 32px 26px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 229, 255, 0.15); position: relative; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease;">
-                <div style="position: absolute; top: 0; right: 0; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; font-weight: 800; font-size: 11px; padding: 5px 16px; border-bottom-left-radius: 12px; text-transform: uppercase; letter-spacing: 0.8px; box-shadow: 0 4px 12px rgba(0, 229, 255, 0.3);">
-                    ★ CO-CEO &amp; PRODUCTION HEAD
+            <div style="background: linear-gradient(145deg, rgba(15, 23, 42, 0.96) 0%, rgba(10, 15, 29, 0.98) 100%); border: 1.5px solid rgba(0, 229, 255, 0.5); border-radius: 16px; padding: 28px 26px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), 0 0 25px rgba(0, 229, 255, 0.15); position: relative; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <!-- Header Badge Strip -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid rgba(0, 229, 255, 0.25);">
+                    <span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 229, 255, 0.15); border: 1px solid #00e5ff; color: #00e5ff; font-weight: 800; font-size: 11px; padding: 4px 12px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.8px;">
+                        ★ CO-CEO &amp; PRODUCTION HEAD
+                    </span>
+                    <span style="font-size: 11px; color: #94a3b8; font-weight: 600;">Authorized Signatory</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 22px;">
+
+                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 18px;">
                     <div style="position: relative; flex-shrink: 0;">
-                        <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Jay Parmar - Co-CEO" style="width: 86px; height: 86px; border-radius: 50%; object-fit: contain; background: #070b14; border: 3px solid var(--accent-cyan); padding: 4px; box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);">
-                        <span style="position: absolute; bottom: 3px; right: 3px; width: 14px; height: 14px; border-radius: 50%; background: #00e5ff; border: 2.5px solid #0f172a; box-shadow: 0 0 8px #00e5ff;"></span>
+                        <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Jay Parmar - Co-CEO" style="width: 78px; height: 78px; border-radius: 50%; object-fit: contain; background: #070b14; border: 2.5px solid var(--accent-cyan); padding: 3px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);">
+                        <span style="position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; background: #00e5ff; border: 2.5px solid #0f172a; box-shadow: 0 0 8px #00e5ff;" title="Online / Direct Operations Access"></span>
                     </div>
                     <div>
-                        <h3 style="font-family: var(--font-heading); font-size: 21px; font-weight: 800; color: #ffffff; margin: 0 0 4px 0; letter-spacing: 0.3px;">Jay Parmar</h3>
-                        <div style="font-size: 14px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 3px;">Co-CEO &amp; Production Engineer</div>
+                        <h3 style="font-family: var(--font-heading); font-size: 21px; font-weight: 800; color: #ffffff; margin: 0 0 3px 0; letter-spacing: 0.3px;">Jay Parmar</h3>
+                        <div style="font-size: 13.5px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 2px;">Co-CEO &amp; Production Engineer</div>
                         <div style="font-size: 12px; color: #94a3b8; font-weight: 500;">Authorized Signatory &amp; Operations Head</div>
                     </div>
                 </div>
-                <p style="color: #cbd5e1; font-size: 13.5px; line-height: 1.65; margin-bottom: 22px; flex: 1;">
+
+                <p style="color: #cbd5e1; font-size: 13.5px; line-height: 1.65; margin-bottom: 20px; flex: 1;">
                     Specialized in precision spindle runout calibration (&lt;0.015mm), 20MnCr5 hardened alloy gear tooth profiling, 12D digital machinery simulations, and managing client consignments &amp; verified GST tax documentation.
                 </p>
-                <div style="background: rgba(6, 10, 20, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+
+                <!-- Contact Info Box -->
+                <div style="background: rgba(6, 10, 20, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 13px 16px; display: flex; flex-direction: column; gap: 9px; font-size: 13px; margin-bottom: 18px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
-                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px;">
+                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px; font-size: 12px;">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="#34d399"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24 11.72 11.72 0 003.68.59 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.68 1 1 0 01-.24 1.02l-2.23 2.09z"/></svg>
                             Direct Phone:
                         </span>
-                        <a href="tel:+919714611331" style="color: #34d399; font-weight: 700; text-decoration: none; font-family: 'Space Grotesk', monospace; font-size: 13.5px;">+91 97146 11331</a>
+                        <a href="tel:+919714611331" style="color: #34d399; font-weight: 800; text-decoration: none; font-family: 'Space Grotesk', monospace; font-size: 13.5px;">+91 97146 11331</a>
                     </div>
                     <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
-                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px;">
+                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px; font-size: 12px;">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="#38bdf8"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                             Email Address:
                         </span>
-                        <a href="mailto:jayparmar@varshamachines.com" style="color: #38bdf8; font-weight: 600; text-decoration: none; word-break: break-all; font-size: 12.5px;">jayparmar@varshamachines.com</a>
+                        <a href="mailto:jayparmar@varshamachines.com" style="color: #38bdf8; font-weight: 600; text-decoration: none; word-break: break-all; font-size: 12px;">jayparmar@varshamachines.com</a>
                     </div>
                 </div>
-                <div style="margin-top: 18px;">
-                    <a href="<?= getWhatsAppLink('919714611331', 'Hello Jay Parmar (Co-CEO), I am inquiring about Varsha Brand drill machines.') ?>" target="_blank" class="btn" style="width: 100%; justify-content: center; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; border: 1px solid #00e5ff; border-radius: 8px; padding: 11px; text-decoration: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2z"/></svg>
+
+                <!-- WhatsApp Button -->
+                <div>
+                    <a href="<?= getWhatsAppLink('919714611331', 'Hello Jay Parmar (Co-CEO), I am inquiring about Varsha Brand drill machines.') ?>" target="_blank" class="btn" style="width: 100%; justify-content: center; font-size: 13px; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; border: 1px solid #00e5ff; border-radius: 8px; padding: 11px; text-decoration: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(0, 229, 255, 0.35);">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2z"/></svg>
                         <span>WhatsApp with Jay Parmar (Co-CEO)</span>
                     </a>
                 </div>

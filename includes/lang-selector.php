@@ -262,33 +262,33 @@ function setAllTransCookies(targetLang) {
     document.cookie = "googtrans" + deleteExp;
     document.cookie = "googtrans=" + deleteExp + " domain=" + domain + ";";
     
-    // 3. Set standard Google Translate cookie: /en/targetLang
+    // 3. Set standard Google Translate cookie: /en/targetLang & /auto/targetLang
     const transVal = (targetLang === 'en') ? '/en/en' : ('/en/' + targetLang);
     document.cookie = "googtrans=" + transVal + "; path=/; max-age=31536000; SameSite=Lax";
     
-    if (domain !== 'localhost' && !domain.endsWith('.onrender.com')) {
+    if (domain && domain !== 'localhost') {
         document.cookie = "googtrans=" + transVal + "; domain=" + domain + "; path=/; max-age=31536000; SameSite=Lax";
     }
 }
 
-// Instant UI Dictionary for Zero-Latency Localized Display
+// Comprehensive Instant UI Translation Dictionary (Gujarati & Hindi)
 const UI_TRANSLATIONS = {
     'gu': {
-        'Home': 'હોમ',
-        'About': 'અમારા વિશે',
+        'Home': '🏠 હોમ',
+        'About': '🏭 અમારા વિશે',
         'About Us': 'અમારા વિશે',
-        'Machines': 'મશીનો',
+        'Machines': '⚙️ મશીનો',
         'All Machines': 'બધા મશીનો',
-        'Catalog': 'કેટલોગ',
+        'Catalog': '📖 કેટલોગ',
         'Catalog & PDF': 'કેટલોગ અને PDF',
-        'Live Tracking': 'લાઇવ ટ્રેકિંગ',
-        'Contact': 'સંપર્ક',
+        'Live Tracking': '🚚 લાઇવ ટ્રેકિંગ',
+        'Contact': '📍 સંપર્ક',
         'Factory Contact': 'ફેક્ટરી સંપર્ક',
-        'Sign In': 'સાઇન ઇન',
+        'Sign In': '👤 સાઇન ઇન',
         'Cart': 'કાર્ટ',
         'My Cart': 'મારું કાર્ટ',
-        'Book Online': 'ઓનલાઇન બુકિંગ',
-        'Admin': 'એડમિન',
+        'Book Online': '💳 ઓનલાઇન બુકિંગ',
+        'Admin': '🔒 એડમિન',
         'Dashboard': 'ડેશબોર્ડ',
         'Orders & Bills': 'ઓર્ડર્સ અને બિલ',
         'Live Customer Carts (કાર્ટ્સ)': 'લાઇવ ગ્રાહક કાર્ટ્સ',
@@ -306,24 +306,49 @@ const UI_TRANSLATIONS = {
         'Total Orders Placed': 'કુલ નોંધાયેલ ઓર્ડર્સ',
         'Paid / Confirmed': 'પેઇડ / કન્ફર્મ થયેલ',
         'Total Payments Collected': 'કુલ જમા થયેલ પેમેન્ટ',
-        'Authorized Signatory': 'અધિકૃત હસ્તાક્ષરકર્તા'
+        'Authorized Signatory': 'અધિકૃત હસ્તાક્ષરકર્તા',
+        'Industrial Heavy-Duty Radial & Pillar Drill Machines': 'ઔદ્યોગિક હેવી-ડ્યુટી રેડિયલ અને પિલર ડ્રિલ મશીનો',
+        'Engineered for Absolute Precision': 'સંપૂર્ણ ચોકસાઈ અને મજબૂતી સાથે નિર્મિત',
+        '2026 Machine Catalog': '૨૦૨૬ મશીન કેટલોગ',
+        'Book Machine Online': 'ઓનલાઇન મશીન બુક કરો',
+        '360° 12D View & AI': '૩૬૦° ૧૨D વ્યૂ અને AI',
+        'WhatsApp Chat': 'વોટ્સએપ ચેટ',
+        'Our Modern Manufacturing Facility': 'અમારું આધુનિક ઉત્પાદન એકમ (ફેક્ટરી)',
+        'Pioneering High Precision Drill Machine Manufacturing in Bhavnagar': 'ભાવનગરમાં ઉચ્ચ ચોકસાઈવાળા ડ્રિલ મશીનોનું અગ્રણી ઉત્પાદન',
+        'Meet Our Founders & Directors': 'અમારા સ્થાપક અને ડિરેક્ટર્સ',
+        'Chief Executive Officer (CEO)': 'મુખ્ય કાર્યકારી અધિકારી (CEO)',
+        'Co-CEO & Production Engineer': 'સહ-સીઈઓ અને પ્રોડક્શન એન્જિનિયર',
+        'Direct Phone:': 'ડાયરેક્ટ ફોન:',
+        'Email Address:': 'ઈમેઇલ સરનામું:',
+        'WhatsApp with Jitendrabhai (CEO)': 'જીતેન્દ્રભાઈ (CEO) સાથે વોટ્સએપ કરો',
+        'WhatsApp with Jay Parmar (Co-CEO)': 'જય પરમાર (સહ-CEO) સાથે વોટ્સએપ કરો',
+        'Order Placed & Paid': 'ઓર્ડર નોંધાયેલ અને પેઇડ',
+        'Assembly in Progress': 'એસેમ્બલી પ્રગતિમાં છે',
+        'QC Testing Passed': 'ક્વોલિટી ટેસ્ટિંગ પાસ',
+        'Wooden Crate Packed': 'લાકડાના બોક્સમાં પેક થયેલ',
+        'Dispatched / In Transit': 'ડિસ્પેચ થયેલ / રસ્તામાં છે',
+        'Out for Delivery': 'ડિલિવરી માટે નીકળેલ છે',
+        'Successfully Delivered': 'સફળતાપૂર્વક પહોંચાડી દીધેલ છે',
+        'Delivered & Commissioned at Factory': 'ફેક્ટરીમાં ડિલિવર અને કમિશન થયેલ (સંપૂર્ણ)',
+        'Mark Delivered': '🏁 ડિલિવરી પૂર્ણ માર્ક કરો',
+        'Pending': '⏳ પેન્ડિંગ'
     },
     'hi': {
-        'Home': 'होम',
-        'About': 'हमारे बारे में',
+        'Home': '🏠 होम',
+        'About': '🏭 हमारे बारे में',
         'About Us': 'हमारे बारे में',
-        'Machines': 'मशीनें',
+        'Machines': '⚙️ मशीनें',
         'All Machines': 'सभी मशीनें',
-        'Catalog': 'कैटलॉग',
+        'Catalog': '📖 कैटलॉग',
         'Catalog & PDF': 'कैटलॉग और PDF',
-        'Live Tracking': 'लाइव ट्रैकिंग',
-        'Contact': 'संपर्क',
+        'Live Tracking': '🚚 लाइव ट्रैकिंग',
+        'Contact': '📍 संपर्क',
         'Factory Contact': 'फैक्ट्री संपर्क',
-        'Sign In': 'साइन इन',
+        'Sign In': '👤 साइन इन',
         'Cart': 'कार्ट',
         'My Cart': 'मेरी कार्ट',
-        'Book Online': 'ऑनलाइन बुकिंग',
-        'Admin': 'एडमिन',
+        'Book Online': '💳 ऑनलाइन बुकिंग',
+        'Admin': '🔒 एडमिन',
         'Dashboard': 'डैशबोर्ड',
         'Orders & Bills': 'ऑर्डर्स और बिल',
         'Live Customer Carts (કાર્ટ્સ)': 'लाइव कस्टमर कार्ट्स',
@@ -341,7 +366,32 @@ const UI_TRANSLATIONS = {
         'Total Orders Placed': 'कुल प्राप्त ऑर्डर्स',
         'Paid / Confirmed': 'भुगतान सफल / कन्फर्म',
         'Total Payments Collected': 'कुल एकत्र भुगतान',
-        'Authorized Signatory': 'अधिकृत हस्ताक्षरकर्ता'
+        'Authorized Signatory': 'अधिकृत हस्ताक्षरकर्ता',
+        'Industrial Heavy-Duty Radial & Pillar Drill Machines': 'औद्योगिक भारी-भरकम रेडियल और पिलर ड्रिल मशीनें',
+        'Engineered for Absolute Precision': 'सर्वोच्च परिशुद्धता और मजबूती के साथ निर्मित',
+        '2026 Machine Catalog': '२०२६ मशीन कैटलॉग',
+        'Book Machine Online': 'ऑनलाइन मशीन बुक करें',
+        '360° 12D View & AI': '३६०° १२D व्यू और AI',
+        'WhatsApp Chat': 'व्हाट्सएप चैट',
+        'Our Modern Manufacturing Facility': 'हमारी आधुनिक निर्माण सुविधा (फैक्ट्री)',
+        'Pioneering High Precision Drill Machine Manufacturing in Bhavnagar': 'भावनगर में उच्च परिशुद्धता ड्रिल मशीन विनिर्माण में अग्रणी',
+        'Meet Our Founders & Directors': 'हमारे संस्थापक और निदेशक',
+        'Chief Executive Officer (CEO)': 'मुख्य कार्यकारी अधिकारी (CEO)',
+        'Co-CEO & Production Engineer': 'सह-सीईओ एवं प्रोडक्शन इंजीनियर',
+        'Direct Phone:': 'सीधा फोन:',
+        'Email Address:': 'ईमेल पता:',
+        'WhatsApp with Jitendrabhai (CEO)': 'जितेंद्रभाई (CEO) से व्हाट्सएप करें',
+        'WhatsApp with Jay Parmar (Co-CEO)': 'जय परमार (सह-CEO) से व्हाट्सएप करें',
+        'Order Placed & Paid': 'ऑर्डर दर्ज और भुगतान सफल',
+        'Assembly in Progress': 'असेंबली प्रगति पर है',
+        'QC Testing Passed': 'गुणवत्ता परीक्षण सफल',
+        'Wooden Crate Packed': 'लकड़ी के बक्से में पैक',
+        'Dispatched / In Transit': 'भेजा गया / रास्ते में',
+        'Out for Delivery': 'डिलीवरी के लिए निकला है',
+        'Successfully Delivered': 'सफलतापूर्वक वितरित किया गया',
+        'Delivered & Commissioned at Factory': 'फैक्ट्री में डिलीवर एवं चालू (पूर्ण)',
+        'Mark Delivered': '🏁 डिलीवरी पूर्ण मार्क करें',
+        'Pending': '⏳ लंबित'
     }
 };
 
@@ -349,11 +399,20 @@ function applyInstantUiTranslations(lang) {
     if (!lang || lang === 'en' || !UI_TRANSLATIONS[lang]) return;
     const dict = UI_TRANSLATIONS[lang];
     
-    // Fast text translation for sidebar & nav links
-    document.querySelectorAll('.sidebar-link span, .site-nav-link span, .drawer-nav-item span, .topbar-title, .stat-card-title, .tech-table th').forEach(el => {
+    // Fast dictionary translation across navigation, headings, badges, and tables
+    const selectors = '.sidebar-link span, .site-nav-link span, .drawer-nav-item span, .topbar-title, .stat-card-title, .tech-table th, .pill-badge span, .section-title, .feature-title, h1, h2, h3';
+    document.querySelectorAll(selectors).forEach(el => {
         const raw = el.textContent.trim();
         if (dict[raw]) {
             el.textContent = dict[raw];
+        } else {
+            // Check for key phrases
+            for (const [enKey, trVal] of Object.entries(dict)) {
+                if (raw === enKey || (raw.length < 50 && raw.includes(enKey))) {
+                    el.textContent = raw.replace(enKey, trVal);
+                    break;
+                }
+            }
         }
     });
 }
@@ -377,10 +436,10 @@ function changeSiteLanguage(targetLang) {
         combo.dispatchEvent(new Event('change'));
     }
     
-    // 3. Smooth page refresh to guarantee 100% full translation
+    // 3. Smooth page refresh so server and Google Translate align 100%
     setTimeout(function() {
         window.location.reload();
-    }, 200);
+    }, 250);
 }
 
 // Auto-Sync Google Translate on Page Load

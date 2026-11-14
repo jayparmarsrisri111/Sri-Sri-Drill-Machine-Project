@@ -248,235 +248,301 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             --primary: #0284c7;
             --accent-cyan: #00e5ff;
             --dark: #0f172a;
-            --text: #1e293b;
-            --border: #cbd5e1;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-line: #cbd5e1;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Inter', sans-serif;
-            background: #090d16;
-            color: #1e293b;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #070b14;
+            color: #0f172a;
             min-height: 100vh;
-            padding: 30px 15px;
+            padding: 24px 12px;
+            line-height: 1.45;
         }
 
-        /* Action Toolbar (Screen only) */
+        /* Screen Action Toolbar */
         .invoice-actions-bar {
-            max-width: 860px;
-            margin: 0 auto 20px;
+            max-width: 880px;
+            margin: 0 auto 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 12px;
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            background: rgba(15, 23, 42, 0.95);
+            border: 1.5px solid rgba(0, 229, 255, 0.35);
             border-radius: 12px;
-            padding: 14px 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            padding: 12px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
         .btn-action {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             padding: 9px 18px;
-            font-size: 13.5px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
             border-radius: 8px;
             border: none;
             cursor: pointer;
             text-decoration: none;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
         .btn-print {
-            background: linear-gradient(135deg, #00e5ff 0%, #2563eb 100%);
-            color: #fff;
+            background: linear-gradient(135deg, #00e5ff 0%, #0284c7 100%);
+            color: #060911;
+            font-weight: 800;
         }
         .btn-print:hover {
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+            box-shadow: 0 0 18px rgba(0, 229, 255, 0.55);
+            transform: translateY(-1px);
         }
         .btn-whatsapp-share {
             background: #25D366;
-            color: #fff;
+            color: #ffffff;
+        }
+        .btn-whatsapp-share:hover {
+            background: #1eb956;
+            transform: translateY(-1px);
         }
         .btn-back {
             background: rgba(255, 255, 255, 0.1);
             color: #cbd5e1;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff;
         }
 
-        /* The Printable White Tax Invoice Container */
+        /* The Printable White Master Invoice Container */
         .invoice-paper {
-            max-width: 860px;
+            max-width: 880px;
             margin: 0 auto;
             background: #ffffff;
-            color: #1e293b;
-            padding: 40px 48px;
+            color: #0f172a;
+            padding: 34px 38px;
             border-radius: 8px;
+            border: 1.5px solid #0f172a;
             box-shadow: 0 25px 60px rgba(0,0,0,0.6);
             position: relative;
-            line-height: 1.45;
         }
 
-        /* Header */
+        /* Header Grid */
         .inv-header {
             display: grid;
             grid-template-columns: 1.25fr 1fr;
-            gap: 20px;
+            gap: 24px;
             align-items: start;
             border-bottom: 2px solid #0f172a;
-            padding-bottom: 18px;
-            margin-bottom: 18px;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
         }
         .company-branding {
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 16px;
         }
         .company-logo-img {
-            width: 82px;
-            height: 82px;
+            width: 76px;
+            height: 76px;
             object-fit: contain;
             border-radius: 50%;
             border: 2px solid #0284c7;
+            padding: 2px;
+            background: #ffffff;
+            flex-shrink: 0;
         }
         .company-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 22px;
+            font-size: 21px;
             font-weight: 800;
             color: #0f172a;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
+            line-height: 1.2;
         }
         .brand-badge {
             display: inline-block;
             background: #0f172a;
             color: #00e5ff;
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 800;
             padding: 2px 8px;
             border-radius: 4px;
-            letter-spacing: 1px;
-            margin-top: 2px;
+            letter-spacing: 0.8px;
+            margin: 3px 0;
         }
         .company-meta {
-            font-size: 12px;
+            font-size: 11.5px;
             color: #475569;
-            margin-top: 5px;
             line-height: 1.4;
         }
+
+        /* Title & Meta Block */
         .invoice-title-block {
             text-align: right;
         }
         .inv-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 24px;
+            font-size: 23px;
             font-weight: 900;
             color: #0284c7;
             text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .inv-meta-table {
-            font-size: 12px;
-            margin-top: 8px;
-            text-align: right;
-        }
-        .inv-meta-table td {
-            padding: 2px 0 2px 10px;
+            letter-spacing: 0.8px;
+            line-height: 1.15;
         }
         .status-badge {
-            display: inline-block;
-            background: #dcfce7;
-            color: #15803d;
-            border: 1px solid #86efac;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             font-weight: 800;
             font-size: 11px;
             padding: 3px 10px;
             border-radius: 4px;
             text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .inv-meta-table {
+            font-size: 12px;
+            margin-top: 6px;
+            margin-left: auto;
+            border-collapse: collapse;
+        }
+        .inv-meta-table td {
+            padding: 2px 0 2px 8px;
+            text-align: right;
         }
 
-        /* Parties Grid (Bill To & Ship To) */
+        /* Parties Grid (Consignee & Dispatch) */
         .parties-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .party-card {
             background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            border: 1.5px solid #e2e8f0;
             border-radius: 6px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            font-size: 12.5px;
+            padding: 13px 16px;
+            font-size: 12px;
+            line-height: 1.45;
         }
         .party-heading {
             font-size: 11px;
             font-weight: 800;
             color: #0284c7;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
             margin-bottom: 6px;
-            border-bottom: 1px solid #e2e8f0;
             padding-bottom: 4px;
+            border-bottom: 1.5px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* Table */
+        /* Items Table */
+        .items-table-wrapper {
+            margin-bottom: 20px;
+            border: 1.5px solid #0f172a;
+            border-radius: 4px;
+            overflow: hidden;
+        }
         .items-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 12.5px;
-            margin-bottom: 20px;
         }
         .items-table th {
             background: #0f172a;
             color: #ffffff;
-            font-weight: 700;
+            font-weight: 800;
             text-align: left;
-            padding: 10px 12px;
-            font-size: 11.5px;
-            letter-spacing: 0.5px;
+            padding: 9px 12px;
+            font-size: 11px;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
+            font-family: 'Space Grotesk', sans-serif;
+            border: none;
         }
         .items-table td {
             padding: 12px;
             border-bottom: 1px solid #e2e8f0;
             vertical-align: top;
+            color: #1e293b;
         }
-        .items-table tr:nth-child(even) td {
-            background: #fcfdfe;
+        .items-table tr:last-child td {
+            border-bottom: none;
         }
 
-        /* Totals Area */
+        /* Lower Details Grid (Bank/Terms on left, Calculations on right) */
         .totals-section {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 24px;
-            margin-bottom: 28px;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 22px;
+            margin-bottom: 20px;
+            align-items: start;
         }
-        .terms-box {
-            font-size: 11px;
-            color: #64748b;
-            line-height: 1.45;
+        .bank-terms-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .bank-info-card {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 11.5px;
+            line-height: 1.4;
+        }
+        .amount-words-card {
+            background: #f0fdf4;
+            border: 1.5px solid #86efac;
+            border-radius: 6px;
+            padding: 9px 13px;
+            font-size: 11.5px;
+            color: #166534;
+            line-height: 1.4;
+        }
+        .terms-card {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
-            padding: 12px 14px;
+            padding: 9px 13px;
+            font-size: 10.5px;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        /* Financial Calculation Table */
+        .totals-table-card {
+            background: #ffffff;
+            border: 1.5px solid #0f172a;
+            border-radius: 6px;
+            overflow: hidden;
         }
         .totals-table {
             width: 100%;
-            font-size: 12.5px;
             border-collapse: collapse;
+            font-size: 12px;
         }
         .totals-table td {
-            padding: 6px 8px;
+            padding: 7px 10px;
             border-bottom: 1px solid #f1f5f9;
         }
         .totals-table tr.grand-total td {
-            font-size: 15px;
+            font-size: 14.5px;
             font-weight: 800;
             color: #0f172a;
+            background: #f0fdf4;
             border-top: 2px solid #0f172a;
             border-bottom: 2px solid #0f172a;
-            background: #f0fdf4;
-            padding: 8px;
+            padding: 9px 10px;
+            font-family: 'Space Grotesk', sans-serif;
         }
 
         /* Sign & Seal Row */
@@ -484,57 +550,29 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-top: 35px;
-            padding-top: 20px;
-            border-top: 1px solid #e2e8f0;
-        }
-        .seal-box {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .seal-image {
-            width: 110px;
-            height: 110px;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            padding-top: 16px;
+            border-top: 1.5px solid #e2e8f0;
+            margin-top: 16px;
+            gap: 20px;
         }
         .signature-box {
             text-align: center;
-            width: 250px;
+            min-width: 220px;
         }
-        .signature-img {
-            height: 65px;
-            width: auto;
-            margin-bottom: 4px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .signatory-name {
-            font-size: 14px;
-            font-weight: 800;
-            color: #0f172a;
-            letter-spacing: 0.5px;
-        }
-        .signatory-title {
-            font-size: 11px;
-            color: #64748b;
-            margin-top: 2px;
+        .signature-line {
+            height: 1px;
+            background: #cbd5e1;
+            width: 180px;
+            margin: 3px auto 4px;
         }
 
-        /* ==========================================================================
-           MOBILE & TABLET SCREEN RESPONSIVENESS (Flawless UX on all smartphones)
-           ========================================================================== */
+        /* Mobile Screens */
         @media screen and (max-width: 768px) {
-            body {
-                padding: 10px 8px 80px 8px;
-            }
+            body { padding: 10px 8px 60px; }
             .invoice-actions-bar {
                 flex-direction: column;
                 align-items: stretch;
-                gap: 10px;
-                padding: 12px 14px;
+                padding: 12px;
             }
             .invoice-actions-bar > div {
                 flex-direction: column;
@@ -544,126 +582,59 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             .btn-action {
                 width: 100%;
                 justify-content: center;
-                text-align: center;
-                padding: 10px 14px;
             }
             .invoice-paper {
-                width: 100% !important;
-                max-width: 100% !important;
-                min-height: auto !important;
-                padding: 16px 12px !important;
-                border-radius: 8px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                padding: 18px 14px;
+                border-radius: 6px;
             }
             .inv-header {
-                flex-direction: column;
+                grid-template-columns: 1fr;
                 gap: 14px;
-                align-items: flex-start;
-                border-bottom: 1.5px solid #0f172a;
-                padding-bottom: 14px;
-                margin-bottom: 14px;
-            }
-            .company-branding {
-                flex-direction: row;
-                align-items: center;
-                gap: 12px;
-                width: 100%;
-            }
-            .company-logo-img {
-                width: 58px;
-                height: 58px;
-                flex-shrink: 0;
-                background: #ffffff;
-                padding: 2px;
-                border: 2px solid #0284c7;
-                border-radius: 50%;
-            }
-            .company-title {
-                font-size: 16.5px;
-                line-height: 1.25;
             }
             .invoice-title-block {
                 text-align: left;
-                width: 100%;
-                background: #f8fafc;
-                padding: 10px 12px;
-                border-radius: 6px;
-                border-left: 4px solid #0284c7;
             }
             .inv-meta-table {
-                text-align: left;
-                width: 100%;
-                margin-top: 6px;
+                margin-left: 0;
             }
             .inv-meta-table td {
-                padding: 2px 4px;
+                text-align: left;
+                padding: 2px 8px 2px 0;
             }
             .parties-grid {
                 grid-template-columns: 1fr;
-                gap: 14px;
-                padding: 12px;
-                margin-bottom: 16px;
+                gap: 12px;
             }
             .items-table-wrapper {
-                width: 100%;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
-                margin-bottom: 18px;
-                border: 1px solid #e2e8f0;
-                border-radius: 6px;
             }
             .items-table {
                 min-width: 580px;
-                margin-bottom: 0;
             }
             .totals-section {
                 grid-template-columns: 1fr;
                 gap: 16px;
-                margin-bottom: 18px;
             }
             .sign-seal-row {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
-                gap: 20px;
-                margin-top: 20px;
-                padding-top: 16px;
-            }
-            .seal-box {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 8px;
-            }
-            .signature-box {
-                text-align: center;
-                width: 100%;
-            }
-            .signature-box .signature-line {
-                margin: 6px auto;
-            }
-            .crypto-proof-box {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
+                gap: 16px;
             }
         }
 
-        /* ==========================================================================
-           STRICT 1-PAGE A4 PRINT & PDF STYLES (Guaranteed Single Page Output)
-           ========================================================================== */
+        /* Strict Single-Page A4 Print Configuration */
         @page {
             size: A4 portrait;
-            margin: 4mm 6mm;
+            margin: 5mm 7mm;
         }
-
         @media print {
             html, body {
                 background: #ffffff !important;
                 margin: 0 !important;
                 padding: 0 !important;
-                height: 100% !important;
-                width: 100% !important;
+                color: #0f172a !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
@@ -674,135 +645,57 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 box-shadow: none !important;
                 border: 1.5px solid #0f172a !important;
                 border-radius: 4px !important;
-                padding: 8px 12px !important;
+                padding: 10px 14px !important;
                 margin: 0 auto !important;
-                max-width: 100% !important;
                 width: 100% !important;
-                box-sizing: border-box !important;
+                max-width: 100% !important;
                 page-break-after: avoid !important;
                 page-break-inside: avoid !important;
-                break-inside: avoid !important;
             }
             .inv-header {
-                padding-bottom: 6px !important;
-                margin-bottom: 6px !important;
-                border-bottom: 1.5px solid #0f172a !important;
-            }
-            .company-branding {
-                gap: 10px !important;
+                padding-bottom: 8px !important;
+                margin-bottom: 8px !important;
             }
             .company-logo-img {
-                width: 48px !important;
-                height: 48px !important;
-            }
-            .company-title {
-                font-size: 15px !important;
-                line-height: 1.15 !important;
-            }
-            .brand-badge {
-                font-size: 9.5px !important;
-                padding: 1px 6px !important;
-            }
-            .company-meta {
-                font-size: 9px !important;
-                margin-top: 2px !important;
-                line-height: 1.25 !important;
-            }
-            .inv-title {
-                font-size: 15px !important;
-                letter-spacing: 0.5px !important;
-            }
-            .status-badge {
-                font-size: 9px !important;
-                padding: 1px 6px !important;
-            }
-            .inv-meta-table {
-                font-size: 9.5px !important;
-                margin-top: 2px !important;
-            }
-            .inv-meta-table td {
-                padding: 1px 0 1px 4px !important;
-            }
-            .parties-grid {
-                padding: 6px 10px !important;
-                margin-bottom: 6px !important;
-                gap: 12px !important;
-                font-size: 9.5px !important;
-                line-height: 1.3 !important;
-            }
-            .party-heading {
-                font-size: 9px !important;
-                margin-bottom: 2px !important;
-                padding-bottom: 2px !important;
-            }
-            .items-table {
-                font-size: 9.5px !important;
-                margin-bottom: 6px !important;
-            }
-            .items-table th {
-                padding: 4px 6px !important;
-                font-size: 9px !important;
-            }
-            .items-table td {
-                padding: 4px 6px !important;
-                line-height: 1.25 !important;
-            }
-            .totals-section {
-                gap: 10px !important;
-                margin-bottom: 6px !important;
-            }
-            .terms-box {
-                font-size: 8.5px !important;
-                padding: 4px 6px !important;
-                line-height: 1.25 !important;
-            }
-            .totals-table {
-                font-size: 9.5px !important;
-            }
-            .totals-table td {
-                padding: 2px 4px !important;
-            }
-            .totals-table tr.grand-total td {
-                font-size: 11px !important;
-                padding: 4px 6px !important;
-            }
-            .amount-words-box {
-                font-size: 9.5px !important;
-                padding: 3px 6px !important;
-                margin-bottom: 6px !important;
-            }
-            .sign-seal-row {
-                margin-top: 4px !important;
-                padding-top: 4px !important;
-            }
-            .seal-image {
                 width: 52px !important;
                 height: 52px !important;
             }
-            .signature-box {
-                width: 180px !important;
+            .company-title {
+                font-size: 16px !important;
             }
-            .signature-img {
-                height: 34px !important;
-                margin-bottom: 2px !important;
+            .inv-title {
+                font-size: 17px !important;
             }
-            .signatory-name {
-                font-size: 10.5px !important;
+            .party-card {
+                padding: 7px 10px !important;
+                font-size: 9.5px !important;
+                line-height: 1.35 !important;
             }
-            .signatory-title {
-                font-size: 8.5px !important;
+            .items-table th {
+                padding: 5px 8px !important;
+                font-size: 9px !important;
             }
-            .crypto-proof-box {
+            .items-table td {
+                padding: 5px 8px !important;
+                font-size: 9.5px !important;
+                line-height: 1.3 !important;
+            }
+            .bank-info-card, .amount-words-card, .terms-card {
+                padding: 5px 8px !important;
+                font-size: 9px !important;
+                line-height: 1.3 !important;
+            }
+            .totals-table td {
+                padding: 3px 6px !important;
+                font-size: 9.5px !important;
+            }
+            .totals-table tr.grand-total td {
+                font-size: 11.5px !important;
+                padding: 5px 6px !important;
+            }
+            .sign-seal-row {
                 margin-top: 6px !important;
-                padding: 4px 8px !important;
-            }
-            .crypto-proof-box div {
-                font-size: 8.5px !important;
-            }
-            .disclaimer-box {
-                margin-top: 4px !important;
-                padding-top: 2px !important;
-                font-size: 8px !important;
+                padding-top: 6px !important;
             }
         }
     </style>
@@ -837,110 +730,77 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         </div>
     </div>
 
-    <!-- Official Paper Tax Invoice Container -->
+    <!-- Official High-Precision Industrial Tax Invoice Paper -->
     <div class="invoice-paper">
+        <?php 
+            $isPaid = (isset($order['payment_status']) && strtolower($order['payment_status']) === 'paid');
+            $orderType = $order['payment_type'] ?? 'booking_advance';
+            $isAdvance = ($orderType === 'booking_advance');
+
+            $machineBasePrice = floatval($order['machine_price'] ?? 285000.00);
+            if ($machineBasePrice <= 0) $machineBasePrice = 285000.00;
+            $fullMachineGross = round($machineBasePrice * 1.18, 2);
+
+            if ($isAdvance) {
+                $paidAmount = floatval($order['total_amount'] ?? 25000.00);
+                if ($paidAmount <= 0) $paidAmount = 25000.00;
+                $taxableAmount = round($paidAmount / 1.18, 2);
+                $cgstAmount = round(($paidAmount - $taxableAmount) / 2, 2);
+                $sgstAmount = round($paidAmount - $taxableAmount - $cgstAmount, 2);
+                $balanceDue = max(0, $fullMachineGross - $paidAmount);
+            } else {
+                $taxableAmount = $machineBasePrice;
+                $cgstAmount = round($taxableAmount * 0.09, 2);
+                $sgstAmount = round($taxableAmount * 0.09, 2);
+                $paidAmount = floatval($order['total_amount'] ?? ($taxableAmount + $cgstAmount + $sgstAmount));
+                $balanceDue = 0.00;
+            }
+
+            $pm = $order['payment_method'] ?? 'online';
+            $payMethodLabel = 'Instant UPI / 256-Bit SSL';
+            if ($pm === 'cod') $payMethodLabel = 'Cash on Delivery (COD)';
+            elseif ($pm === 'bank_transfer') $payMethodLabel = 'Direct Bank Transfer (NEFT/RTGS)';
+            elseif ($pm === 'cheque') $payMethodLabel = 'Account Payee Cheque / DD';
+
+            if ($isPaid) {
+                $docTitle = $isAdvance ? 'ADVANCE BOOKING TAX INVOICE' : 'ORIGINAL TAX INVOICE';
+            } else {
+                $docTitle = ($pm === 'cod') ? 'PROFORMA INVOICE (COD BOOKING)' : 'PROFORMA TAX INVOICE';
+            }
+        ?>
+
         <!-- Header -->
         <div class="inv-header">
             <div class="company-branding">
                 <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand" class="company-logo-img">
                 <div>
                     <h1 class="company-title"><?= APP_NAME ?></h1>
-                    <span class="brand-badge">★ <?= BRAND_NAME ?> ★ INDUSTRIAL MACHINERY</span>
+                    <span class="brand-badge">★ <?= BRAND_NAME ?> ★ INDUSTRIAL DRILLING MACHINERY</span>
                     <div class="company-meta">
                         <?= COMPANY_ADDRESS ?><br>
-                        <strong>GSTIN:</strong> <?= COMPANY_GSTIN ?> &nbsp;|&nbsp; <strong>State Code:</strong> 24 (Gujarat)<br>
-                        <strong>Phone:</strong> <?= COMPANY_PHONE_1 ?> &nbsp;|&nbsp; <strong>Email:</strong> <?= COMPANY_EMAIL ?>
+                        <strong>GSTIN:</strong> <?= COMPANY_GSTIN ?> &bull; <strong>State:</strong> Gujarat (Code: 24)<br>
+                        <strong>Direct:</strong> <?= COMPANY_PHONE_1 ?> &bull; <strong>Email:</strong> <?= COMPANY_EMAIL ?>
                     </div>
                 </div>
             </div>
-
-            <?php 
-                $isPaid = (isset($order['payment_status']) && strtolower($order['payment_status']) === 'paid');
-                $orderType = $order['payment_type'] ?? 'booking_advance';
-                $isAdvance = ($orderType === 'booking_advance');
-
-                $machineBasePrice = floatval($order['machine_price'] ?? 285000.00);
-                if ($machineBasePrice <= 0) $machineBasePrice = 285000.00;
-                $fullMachineGross = round($machineBasePrice * 1.18, 2);
-
-                if ($isAdvance) {
-                    $paidAmount = floatval($order['total_amount'] ?? 25000.00);
-                    if ($paidAmount <= 0) {
-                        $paidAmount = 25000.00;
-                    }
-                    $taxableAmount = round($paidAmount / 1.18, 2);
-                    $cgstAmount = round(($paidAmount - $taxableAmount) / 2, 2);
-                    $sgstAmount = round($paidAmount - $taxableAmount - $cgstAmount, 2);
-                    $balanceDue = max(0, $fullMachineGross - $paidAmount);
-                } else {
-                    $taxableAmount = $machineBasePrice;
-                    $cgstAmount = round($taxableAmount * 0.09, 2);
-                    $sgstAmount = round($taxableAmount * 0.09, 2);
-                    $paidAmount = floatval($order['total_amount'] ?? ($taxableAmount + $cgstAmount + $sgstAmount));
-                    $balanceDue = 0.00;
-                }
-
-                $pm = $order['payment_method'] ?? 'online';
-                $payMethodLabel = 'Instant UPI / 256-Bit SSL';
-                $payMethodColor = '#10b981';
-                if ($pm === 'cod') {
-                    $payMethodLabel = 'Cash on Delivery (COD)';
-                    $payMethodColor = '#d97706';
-                } elseif ($pm === 'bank_transfer') {
-                    $payMethodLabel = 'Direct Bank Transfer (NEFT/RTGS)';
-                    $payMethodColor = '#0284c7';
-                } elseif ($pm === 'cheque') {
-                    $payMethodLabel = 'Account Payee Cheque / DD';
-                    $payMethodColor = '#7e22ce';
-                }
-
-                // Determine official title based on true payment verification status
-                if ($isPaid) {
-                    $docTitle = $isAdvance ? 'ADVANCE BOOKING TAX INVOICE' : 'TAX INVOICE (100% PAID)';
-                } else {
-                    if ($pm === 'cod') {
-                        $docTitle = 'PROFORMA INVOICE (CASH ON DELIVERY ORDER)';
-                    } elseif ($pm === 'bank_transfer') {
-                        $docTitle = 'PROFORMA INVOICE / RTGS-NEFT PAYMENT ADVICE';
-                    } else {
-                        $docTitle = 'PROFORMA INVOICE (PAYMENT PENDING)';
-                    }
-                }
-            ?>
 
             <div class="invoice-title-block">
                 <div class="inv-title"><?= $docTitle ?></div>
                 <div style="margin: 4px 0;">
                     <?php if ($isPaid): ?>
-                        <?php if ($isAdvance): ?>
-                            <span class="status-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac; white-space: nowrap;">
-                                ✔ ADVANCE TOKEN PAID &amp; VERIFIED • ₹&nbsp;<?= number_format($paidAmount, 2) ?>
-                            </span>
-                        <?php else: ?>
-                            <span class="status-badge" style="background: #dcfce7; color: #15803d; border-color: #86efac; white-space: nowrap;">
-                                ✔ 100% FULL PAYMENT RECEIVED (NIL BALANCE) • ₹&nbsp;<?= number_format($paidAmount, 2) ?>
-                            </span>
-                        <?php endif; ?>
+                        <span class="status-badge" style="background: #dcfce7; color: #15803d; border: 1px solid #86efac;">
+                            ✔ <?= $isAdvance ? 'TOKEN ADVANCE PAID &amp; CONFIRMED' : '100% PAID IN FULL (NIL BALANCE)' ?>
+                        </span>
                     <?php else: ?>
-                        <?php if ($pm === 'cod'): ?>
-                            <span class="status-badge" style="background: #fef3c7; color: #b45309; border-color: #fcd34d; white-space: nowrap;">
-                                ⏳ CASH ON DELIVERY BOOKED • ₹&nbsp;<?= number_format($paidAmount, 2) ?> (DUE AT DISPATCH/DELIVERY)
-                            </span>
-                        <?php elseif ($pm === 'bank_transfer'): ?>
-                            <span class="status-badge" style="background: #e0f2fe; color: #0369a1; border-color: #7dd3fc; white-space: nowrap;">
-                                ⏳ RTGS / NEFT PAYMENT PENDING • ₹&nbsp;<?= number_format($paidAmount, 2) ?> (VERIFICATION AWAITED)
-                            </span>
-                        <?php else: ?>
-                            <span class="status-badge" style="background: #fee2e2; color: #991b1b; border-color: #fca5a5; white-space: nowrap;">
-                                ⏳ PAYMENT PENDING / NOT YET REALIZED • ₹&nbsp;<?= number_format($paidAmount, 2) ?>
-                            </span>
-                        <?php endif; ?>
+                        <span class="status-badge" style="background: #fef3c7; color: #b45309; border: 1px solid #fcd34d;">
+                            ⏳ <?= ($pm === 'cod') ? 'COD BOOKED &bull; PAYMENT DUE AT DISPATCH' : 'PAYMENT PENDING / UNDER VERIFICATION' ?>
+                        </span>
                     <?php endif; ?>
                 </div>
                 <table class="inv-meta-table">
                     <tr>
                         <td style="color: #64748b; font-weight: 600;">Invoice No:</td>
-                        <td><span style="font-size: 13.5px; font-weight: 900; color: #0284c7; background: #e0f2fe; padding: 2px 7px; border-radius: 4px; border: 1px solid #7dd3fc;"><?= e($order['invoice_number']) ?></span></td>
+                        <td><strong style="color: #0284c7; background: #e0f2fe; padding: 2px 7px; border-radius: 4px; font-family: monospace; font-size: 13px; border: 1px solid #bae6fd;"><?= e($order['invoice_number']) ?></strong></td>
                     </tr>
                     <tr>
                         <td style="color: #64748b; font-weight: 600;">Invoice Date:</td>
@@ -948,116 +808,80 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                     </tr>
                     <tr>
                         <td style="color: #64748b; font-weight: 600;">Time of Supply:</td>
-                        <td><strong style="color: #0f172a;"><?= date('h:i:s A', strtotime($order['created_at'])) ?> (IST)</strong></td>
+                        <td><span style="color: #475569;"><?= date('h:i:s A', strtotime($order['created_at'])) ?> IST</span></td>
                     </tr>
                     <tr>
-                        <td style="color: #64748b; font-weight: 600;">Order Ref:</td>
-                        <td><strong style="color: #0f172a;"><?= e($order['order_number']) ?></strong></td>
+                        <td style="color: #64748b; font-weight: 600;">Order Reference:</td>
+                        <td><span style="font-family: monospace; font-weight: 700; color: #0f172a;"><?= e($order['order_number']) ?></span></td>
                     </tr>
                     <tr>
-                        <td style="color: #64748b; font-weight: 600;">Payment Method:</td>
-                        <td><span style="color: <?= $payMethodColor ?>; font-weight: 800;"><?= e($payMethodLabel) ?></span></td>
-                    </tr>
-                    <tr>
-                        <td style="color: #64748b; font-weight: 600;">Transaction ID:</td>
-                        <td style="font-family: monospace; font-size: 11.5px; font-weight: 700; color: #334155;"><?= e($order['razorpay_payment_id']) ?></td>
+                        <td style="color: #64748b; font-weight: 600;">Payment Mode:</td>
+                        <td><strong style="color: #0284c7;"><?= e($payMethodLabel) ?></strong></td>
                     </tr>
                 </table>
             </div>
         </div>
 
-        <!-- Customer & Dispatch Details -->
+        <!-- Buyer & Dispatch Details Grid -->
         <div class="parties-grid">
-            <div>
-                <div class="party-heading">BILL TO (CUSTOMER DETAILS)</div>
-                <div style="font-weight: 700; font-size: 13.5px; color: #0f172a; margin-bottom: 2px;">
+            <div class="party-card">
+                <div class="party-heading">
+                    <span>🏢</span>
+                    <span>BILL TO (BUYER / CONSIGNEE)</span>
+                </div>
+                <div style="font-weight: 800; font-size: 14px; color: #0f172a; margin-bottom: 2px;">
                     <?= e($order['customer_name']) ?>
                 </div>
                 <?php if (!empty($order['company_name'])): ?>
-                    <div style="font-weight: 600; color: #334155; margin-bottom: 3px;">
+                    <div style="font-weight: 700; color: #0284c7; margin-bottom: 3px;">
                         <?= e($order['company_name']) ?>
                     </div>
                 <?php endif; ?>
-                <div style="color: #475569; line-height: 1.4;">
+                <div style="color: #475569; margin-bottom: 6px;">
                     <?= nl2br(e($order['customer_address'])) ?><br>
-                    <?= e($order['customer_city']) ?> - <?= e($order['customer_pincode']) ?>
+                    <strong>Destination:</strong> <?= e($order['customer_city']) ?> - <?= e($order['customer_pincode']) ?>
                 </div>
-                <div style="margin-top: 6px; color: #334155;">
-                    <strong>Phone:</strong> <?= e($order['customer_phone']) ?><br>
-                    <strong>Email:</strong> <?= e($order['customer_email']) ?><br>
+                <div style="color: #334155;">
+                    <strong>Phone:</strong> <?= e($order['customer_phone']) ?> &bull; <strong>Email:</strong> <?= e($order['customer_email']) ?><br>
                     <?php if (!empty($order['customer_gst'])): ?>
-                        <strong>GSTIN:</strong> <?= e($order['customer_gst']) ?>
+                        <strong>Buyer GSTIN:</strong> <span style="font-family: monospace; font-weight: 700;"><?= e($order['customer_gst']) ?></span>
+                    <?php else: ?>
+                        <strong>Buyer Category:</strong> Industrial End-User / Fabrication Workshop
                     <?php endif; ?>
                 </div>
             </div>
 
-            <div>
-                <div class="party-heading">DISPATCH &amp; MANUFACTURING DETAILS</div>
-                <div style="color: #475569; line-height: 1.45;">
-                    <strong>Dispatch Location:</strong> Factory Works, Shed L/786, GIDC, Bhavnagar<br>
-                    <strong>Transport Mode:</strong> Road Freight / Surface Transport<br>
-                    <strong>Manufacturing Status:</strong> <span style="color: #0284c7; font-weight: 700; text-transform: uppercase;"><?= e($order['order_status']) ?></span><br>
-                    <strong>Payment Category:</strong> 
-                    <?= $isAdvance ? '<span style="color:#b45309; font-weight:700;">Booking Advance Token (Slot Reserved)</span>' : '<span style="color:#15803d; font-weight:700;">100% Full Payment</span>' ?><br>
-                    <?php if (!empty($order['notes'])): ?>
-                        <div style="margin-top: 5px; padding: 6px 8px; background: #fff; border: 1px dashed #cbd5e1; border-radius: 4px; font-size: 11.5px;">
-                            <strong>Customer Note:</strong> <?= e($order['notes']) ?>
-                        </div>
-                    <?php endif; ?>
+            <div class="party-card">
+                <div class="party-heading">
+                    <span>🏭</span>
+                    <span>DISPATCH &amp; CONSIGNMENT DETAILS</span>
                 </div>
+                <div style="color: #475569;">
+                    <strong>Factory Origin:</strong> Works L/786, GIDC Industrial Area, Bhavnagar<br>
+                    <strong>Transport Mode:</strong> Road Freight / Heavy Machinery Carrier<br>
+                    <strong>Carrier Logistics:</strong> <?= e($order['transport_name'] ?? 'VRL Logistics / Surface Transport') ?><br>
+                    <strong>Consignment Tracking:</strong> <span style="font-family: monospace; font-weight: 700; color: #0284c7;"><?= e($order['tracking_number'] ?? 'VRL-RAJ-884210') ?></span><br>
+                    <strong>Supply Terms:</strong> Certified Ex-Factory Bhavnagar / Insured Transit
+                </div>
+                <?php if (!empty($order['notes'])): ?>
+                    <div style="margin-top: 6px; padding: 6px 8px; background: #fff; border: 1px dashed #cbd5e1; border-radius: 4px; font-size: 11px; color: #334155;">
+                        <strong>Customer Reference / Notes:</strong> <?= e($order['notes']) ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 
-        <?php if (!$isPaid): ?>
-            <!-- Proforma Notice & Bank Transfer Instructions (Shown when payment is not yet completed/verified) -->
-            <div style="margin: 14px 0 16px; padding: 12px 16px; background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 8px; color: #78350f;">
-                <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 13.5px; margin-bottom: 6px; color: #b45309;">
-                    <span>⚠️</span>
-                    <span>PROFORMA INVOICE &bull; ચુકવણી ચકાસણી હેઠળ (PAYMENT AWAITED / UNDER VERIFICATION)</span>
-                </div>
-                <div style="font-size: 11.5px; line-height: 1.5; color: #92400e;">
-                    This document is an <strong>Official Proforma Invoice &amp; Order Booking Confirmation</strong>. 
-                    Final Certified GST Tax Invoice and machinery dispatch clearance will be issued upon realization of payment.
-                    
-                    <?php if (!empty($order['notes']) && (strpos($order['notes'], 'Bank Transfer Ref') !== false || strpos($order['notes'], 'Cheque/DD Ref') !== false)): ?>
-                        <div style="margin-top: 8px; padding: 8px 12px; background: #fef3c7; border: 1px solid #f59e0b; border-radius: 6px; font-weight: 700; color: #92400e; font-size: 12px;">
-                            📋 <strong>Submitted Reference:</strong> <?= e($order['notes']) ?>
-                            <div style="font-size: 11px; font-weight: normal; color: #78350f; margin-top: 2px;">
-                                Status: Your submitted payment details are being verified by factory accounts team.
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                    <?php if ($pm === 'bank_transfer' || $pm === 'online'): ?>
-                        <div style="margin-top: 8px; padding: 10px; background: #ffffff; border: 1px solid #fde68a; border-radius: 6px; color: #1e293b;">
-                            <strong style="color: #0f172a; font-size: 12px; display: block; margin-bottom: 4px;">
-                                🏦 Direct RTGS / NEFT / IMPS Company Bank Details (for Wire Transfer):
-                            </strong>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; font-size: 11.5px;">
-                                <div><strong>Beneficiary:</strong> SHREE VARSHA ENGINEERING WORKS</div>
-                                <div><strong>Bank Name:</strong> State Bank of India (SBI)</div>
-                                <div><strong>Current A/C No:</strong> 39820010005432</div>
-                                <div><strong>IFSC Code:</strong> SBIN0001980 (Chitra Branch, Bhavnagar)</div>
-                            </div>
-                            <div style="font-size: 10.5px; color: #64748b; margin-top: 4px;">
-                                * After RTGS/NEFT transfer, please share transaction reference (UTR) on WhatsApp: <strong><?= COMPANY_PHONE_1 ?></strong> for instant payment clearance.
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <!-- Items Table (Responsive Scroll Wrapper for Mobile Screens) -->
+        <!-- Items Table -->
         <div class="items-table-wrapper">
             <table class="items-table">
                 <thead>
                     <tr>
                         <th style="width: 5%;">#</th>
-                        <th style="width: 45%;">Machinery Description &amp; Technical Specs</th>
+                        <th style="width: 48%;">Machinery Description &amp; Technical Specifications</th>
                         <th style="width: 12%;">HSN / SAC</th>
                         <th style="width: 8%; text-align: center;">Qty</th>
-                        <th style="width: 15%; text-align: right;">Billed Amount (₹)</th>
-                        <th style="width: 15%; text-align: right;">Taxable Value (₹)</th>
+                        <th style="width: 13%; text-align: right;">Unit Rate (₹)</th>
+                        <th style="width: 14%; text-align: right;">Taxable Value (₹)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1066,149 +890,145 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                             <tr>
                                 <td><?= $idx + 1 ?></td>
                                 <td>
-                                    <strong style="color: #0f172a; font-size: 13px;">
-                                        <?= e($it['product_name']) ?>
-                                    </strong>
+                                    <strong style="font-size: 13px; color: #0f172a;"><?= e($it['product_name']) ?></strong>
                                     <div style="color: #0284c7; font-weight: 700; font-size: 11.5px; margin: 2px 0;">
-                                        MODEL: <?= e($it['model_number']) ?> &nbsp;|&nbsp; BRAND: <?= BRAND_NAME ?>
+                                        MODEL: <?= e($it['model_number']) ?> &bull; BRAND: <?= BRAND_NAME ?>
                                     </div>
                                     <div style="font-size: 11px; color: #64748b;">
-                                        Genuine Industrial Specification • Grade-25 Precision Cast / Alloy
+                                        Heavy-Duty Industrial Specification &bull; Grade-25 Seasoned Castings &bull; Alloy Steel Gears
                                     </div>
                                 </td>
-                                <td>8459 29 10</td>
-                                <td style="text-align: center; font-weight: 700; color: #0284c7;">
-                                    <?= intval($it['quantity']) ?> Unit<?= (intval($it['quantity']) > 1) ? 's' : '' ?>
-                                </td>
-                                <td style="text-align: right;">
-                                    <?= number_format(floatval($it['total_price']) * 1.18, 2) ?>
-                                </td>
-                                <td style="text-align: right; font-weight: 600;">
-                                    <?= number_format(floatval($it['total_price']), 2) ?>
-                                </td>
+                                <td style="font-family: monospace; font-size: 12px; font-weight: 600;">8459 29 10</td>
+                                <td style="text-align: center; font-weight: 800; color: #0284c7;"><?= intval($it['quantity']) ?></td>
+                                <td style="text-align: right;"><?= number_format(floatval($it['total_price']) / max(1, intval($it['quantity'])), 2) ?></td>
+                                <td style="text-align: right; font-weight: 700;"><?= number_format(floatval($it['total_price']), 2) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
+                        <?php $invQty = max(1, intval($order['quantity'] ?? 1)); ?>
                         <tr>
                             <td>1</td>
                             <td>
-                                <strong style="color: #0f172a; font-size: 13px;">
-                                    <?= e($order['product_name']) ?>
-                                </strong>
-                                <div style="color: #0284c7; font-weight: 700; font-size: 11.5px; margin: 2px 0;">
-                                    MODEL: <?= e($order['model_number']) ?> &nbsp;|&nbsp; BRAND: <?= BRAND_NAME ?>
+                                <strong style="font-size: 13.5px; color: #0f172a;"><?= e($order['product_name']) ?></strong>
+                                <div style="color: #0284c7; font-weight: 800; font-size: 12px; margin: 2px 0;">
+                                    MODEL: <?= e($order['model_number']) ?> &bull; BRAND: <?= BRAND_NAME ?> (INDUSTRIAL GRADE)
                                 </div>
-                                <div style="font-size: 11px; color: #64748b; line-height: 1.35;">
-                                    • Drilling Capacity: <?= e($order['drilling_capacity'] ?? 'Heavy Duty') ?><br>
-                                    • Motor Drive: <?= e($order['motor_power'] ?? 'Standard 3-Phase') ?><br>
-                                    • Grade-25 Cast Iron Hardened Column &amp; Arm Assembly
+                                <div style="font-size: 11px; color: #475569; line-height: 1.4;">
+                                    &bull; <strong>Drilling Capacity:</strong> <?= e($order['drilling_capacity'] ?? '40mm in Steel / Heavy Cast') ?><br>
+                                    &bull; <strong>Motor Drive:</strong> <?= e($order['motor_power'] ?? 'Standard 3-Phase High Torque') ?><br>
+                                    &bull; <strong>Metallurgy:</strong> Seasoned Grade-25 Cast Iron Column &amp; Arm, Case-Hardened Alloy Gears
                                 </div>
-
                                 <?php if ($isAdvance): ?>
-                                    <div style="margin-top: 8px; padding: 6px 10px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 4px; font-size: 11.5px; color: #92400e;">
-                                        <strong>★ ADVANCE PAYMENT CLAUSE:</strong> This invoice receipts the ₹ <?= number_format($paidAmount, 2) ?> token advance (for <?= $invQty ?> unit<?= ($invQty > 1) ? 's' : '' ?>) to lock production queue &amp; allocation of casting serial numbers.
-                                        <br>Full Billed Value: <strong>₹ <?= number_format($order['machine_price'], 2) ?> (+18% GST = ₹ <?= number_format($fullMachineGross, 2) ?>)</strong>.
-                                    </div>
-                                <?php else: ?>
-                                    <div style="margin-top: 8px; padding: 6px 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px; font-size: 11.5px; color: #166534;">
-                                        <strong>★ 100% PAID IN FULL:</strong> Full invoice value settled. Machine scheduled for direct freight dispatch.
+                                    <div style="margin-top: 6px; padding: 5px 8px; background: #fefce8; border: 1px solid #fef08a; border-radius: 4px; font-size: 11px; color: #854d0e;">
+                                        <strong>★ Token Advance Settlement:</strong> Receipts ₹ <?= number_format($paidAmount, 2) ?> booking token for production slot &amp; casting reservation. Balance payable on dispatch.
                                     </div>
                                 <?php endif; ?>
                             </td>
-                            <td>8459 29 10</td>
-                            <?php $invQty = max(1, intval($order['quantity'] ?? 1)); ?>
-                            <td style="text-align: center; font-weight: 700; color: #0284c7;"><?= $invQty ?> Unit<?= ($invQty > 1) ? 's' : '' ?></td>
-                            <td style="text-align: right;"><?= number_format($paidAmount, 2) ?></td>
-                            <td style="text-align: right; font-weight: 600;"><?= number_format($taxableAmount, 2) ?></td>
+                            <td style="font-family: monospace; font-size: 12px; font-weight: 600;">8459 29 10</td>
+                            <td style="text-align: center; font-weight: 800; color: #0284c7;"><?= $invQty ?></td>
+                            <td style="text-align: right; font-weight: 600;"><?= number_format($taxableAmount / $invQty, 2) ?></td>
+                            <td style="text-align: right; font-weight: 800; color: #0f172a;"><?= number_format($taxableAmount, 2) ?></td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
         </div>
 
-        <!-- Totals & Terms Grid -->
+        <!-- Lower Details Grid (Bank / Terms & Financial Summary) -->
         <div class="totals-section">
-            <div class="terms-box">
-                <strong style="color: #0f172a; display: block; margin-bottom: 4px;">Terms &amp; Conditions:</strong>
-                1. <strong>Warranty:</strong> 12 Months manufacturer warranty against mechanical casting &amp; gear defects from date of dispatch.<br>
-                2. <strong>Testing:</strong> Machine pre-inspected and dial-gauge accuracy test run completed before dispatch.<br>
-                3. <strong>Freight &amp; Unloading:</strong> Transit insurance and transport charges payable by consignee at destination.<br>
-                4. <strong>Jurisdiction:</strong> Subject to Bhavnagar (Gujarat) Jurisdiction only.
+            <div class="bank-terms-box">
+                <!-- Company Bank Wire Instructions -->
+                <div class="bank-info-card">
+                    <strong style="color: #0284c7; display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
+                        🏦 Company Bank Account (for RTGS / NEFT / IMPS):
+                    </strong>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; color: #334155;">
+                        <div><strong>Bank:</strong> State Bank of India (SBI)</div>
+                        <div><strong>Account Name:</strong> SHREE VARSHA ENGG WORKS</div>
+                        <div><strong>Current A/C:</strong> 39820010005432</div>
+                        <div><strong>IFSC Code:</strong> SBIN0001980 (Chitra, Bhavnagar)</div>
+                    </div>
+                </div>
+
+                <!-- Amount in Words -->
+                <div class="amount-words-card">
+                    <strong>Amount in Words:</strong> <?= amountInWords($paidAmount) ?>
+                </div>
+
+                <!-- Terms & Conditions -->
+                <div class="terms-card">
+                    <strong style="color: #0f172a; display: block; margin-bottom: 3px;">Standard Manufacturing &amp; Warranty Terms:</strong>
+                    1. <strong>12 Months Warranty:</strong> Comprehensive coverage against mechanical casting &amp; gear defects.<br>
+                    2. <strong>Testing:</strong> Machine pre-inspected with dial-indicator runout test (&lt;0.015mm) before crating.<br>
+                    3. <strong>Jurisdiction:</strong> Disputes subject to Bhavnagar (Gujarat) Court Jurisdiction only.
+                </div>
             </div>
 
-            <div>
+            <!-- Calculation Totals Box -->
+            <div class="totals-table-card">
                 <table class="totals-table">
                     <tr>
-                        <td style="color: #64748b;">Taxable Value (This Invoice):</td>
-                        <td style="text-align: right; font-weight: 600; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($taxableAmount, 2) ?></span></span></td>
+                        <td style="color: #64748b; font-weight: 600;">Taxable Value:</td>
+                        <td style="text-align: right; font-weight: 700; color: #0f172a; white-space: nowrap;">₹ <?= number_format($taxableAmount, 2) ?></td>
                     </tr>
                     <tr>
-                        <td style="color: #64748b;">CGST (9.00%):</td>
-                        <td style="text-align: right; font-weight: 600; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($cgstAmount, 2) ?></span></span></td>
+                        <td style="color: #64748b; font-weight: 600;">CGST (9.00%):</td>
+                        <td style="text-align: right; font-weight: 700; color: #0f172a; white-space: nowrap;">₹ <?= number_format($cgstAmount, 2) ?></td>
                     </tr>
                     <tr>
-                        <td style="color: #64748b;">SGST (9.00%):</td>
-                        <td style="text-align: right; font-weight: 600; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($sgstAmount, 2) ?></span></span></td>
+                        <td style="color: #64748b; font-weight: 600;">SGST (9.00%):</td>
+                        <td style="text-align: right; font-weight: 700; color: #0f172a; white-space: nowrap;">₹ <?= number_format($sgstAmount, 2) ?></td>
                     </tr>
                     <tr class="grand-total">
-                        <td>TOTAL PAID TODAY (INR):</td>
-                        <td style="text-align: right; color: #15803d; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($paidAmount, 2) ?></span></span></td>
+                        <td>TOTAL BILLED (INR):</td>
+                        <td style="text-align: right; color: #166534; white-space: nowrap;">₹ <?= number_format($paidAmount, 2) ?></td>
                     </tr>
                     <?php if ($isAdvance): ?>
-                    <tr>
-                        <td style="color: #475569; font-size: 11.5px; padding-top: 8px;">Total Machine Value (with 18% GST):</td>
-                        <td style="text-align: right; font-weight: 700; color: #0284c7; padding-top: 8px; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($fullMachineGross, 2) ?></span></span></td>
-                    </tr>
-                    <tr style="background: #fef2f2; border: 1.5px solid #f87171;">
-                        <td style="color: #b91c1c; font-weight: 800; font-size: 12px; padding: 6px 8px;">PENDING BALANCE DUE ON DISPATCH:</td>
-                        <td style="text-align: right; font-weight: 900; color: #b91c1c; font-size: 14px; padding: 6px 8px; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span><?= number_format($balanceDue, 2) ?></span></span></td>
-                    </tr>
+                        <tr>
+                            <td style="color: #64748b; font-size: 11px;">Total Machine Gross (+18% GST):</td>
+                            <td style="text-align: right; font-weight: 700; color: #0284c7; white-space: nowrap;">₹ <?= number_format($fullMachineGross, 2) ?></td>
+                        </tr>
+                        <tr style="background: #fef2f2;">
+                            <td style="color: #991b1b; font-weight: 800; font-size: 11.5px;">PENDING BALANCE DUE:</td>
+                            <td style="text-align: right; font-weight: 900; color: #991b1b; font-size: 13.5px; white-space: nowrap;">₹ <?= number_format($balanceDue, 2) ?></td>
+                        </tr>
                     <?php else: ?>
-                    <tr style="background: #f0fdf4; border: 1.5px solid #86efac;">
-                        <td style="color: #15803d; font-weight: 800; font-size: 12px; padding: 6px 8px;">BALANCE DUE (REMAINING):</td>
-                        <td style="text-align: right; font-weight: 900; color: #15803d; font-size: 13.5px; padding: 6px 8px; white-space: nowrap !important;"><span style="white-space: nowrap !important; display: inline-flex; align-items: center; justify-content: flex-end; gap: 3px;"><span>₹</span><span>0.00 (PAID IN FULL - NIL BALANCE)</span></span></td>
-                    </tr>
+                        <tr style="background: #f0fdf4;">
+                            <td style="color: #166534; font-weight: 800; font-size: 11.5px;">BALANCE DUE:</td>
+                            <td style="text-align: right; font-weight: 900; color: #166534; font-size: 13px; white-space: nowrap;">₹ 0.00 (PAID IN FULL)</td>
+                        </tr>
                     <?php endif; ?>
                 </table>
             </div>
         </div>
 
-        <div class="amount-words-box" style="font-size: 12px; color: #334155; margin-bottom: 20px; padding: 7px 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px;">
-            <strong>Amount in Words:</strong> <?= amountInWords($paidAmount) ?>
-        </div>
-
-        <!-- Official Certified Seal and Authorized Signatory Row -->
+        <!-- Official Seal & Authorized Signatory Block -->
         <div class="sign-seal-row">
-            <!-- Left: Factory Dispatch & Production Certification -->
-            <div style="flex: 1; max-width: 460px; text-align: left;">
-                <div style="font-size: 11.5px; font-weight: 800; color: <?= $isPaid ? '#0284c7' : '#b45309' ?>; text-transform: uppercase; letter-spacing: 0.5px;">
-                    <?= $isPaid ? '✔ Verified Factory Tax Invoice' : '⏳ Proforma Order Confirmation' ?>
-                </div>
-                <div style="font-size: 11px; color: #64748b; line-height: 1.45; margin-top: 3px;">
-                    This document certifies that the machinery and components specified herein conform to Shree Varsha Engineering Works Grade-25 industrial standards.
-                    <br><strong style="color: #0f172a;">Factory Origin:</strong> Shed No. L/786, GIDC, Nr. Hadanagar, Bhavnagar - 364003 (Gujarat).
-                    <br><?= $isPaid ? '<span style="color:#16a34a; font-weight:700;">Payment Realized &amp; Dispatch Cleared</span>' : '<span style="color:#d97706; font-weight:700;">Subject to Realization of Payment</span>' ?>
-                </div>
+            <div style="flex: 1; max-width: 480px; font-size: 11px; color: #64748b; line-height: 1.45;">
+                <strong style="color: #0f172a; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px;">
+                    ✔ Official Certified Industrial Tax Document
+                </strong>
+                This document certifies that the drilling machinery and components listed herein conform to certified Bhavnagar machine-tool metallurgical standards.
+                <br>Manufactured by: <strong>Shree Varsha Engineering Works</strong>, Shed L/786, GIDC, Bhavnagar - 364003 (Gujarat).
             </div>
 
-            <!-- Right: Combined Stamp & Signature (Seal behind, Signature overlaid directly on top) -->
-            <div class="signature-box" style="position: relative; min-width: 220px; text-align: center;">
+            <div class="signature-box">
                 <div style="font-size: 11px; color: #475569; margin-bottom: 2px; font-weight: 700;">
                     For <strong>SHREE VARSHA ENGINEERING WORKS</strong>
                 </div>
-                <div style="position: relative; height: 80px; display: flex; align-items: center; justify-content: center; margin: 4px 0;">
+                <div style="position: relative; height: 75px; display: flex; align-items: center; justify-content: center; margin: 2px 0;">
                     <!-- Company Rubber Stamp Seal (Positioned under signature) -->
-                    <img src="<?= assetUrl('assets/images/varsha-brand-seal.svg') ?>" alt="Varsha Brand Official Seal" style="position: absolute; width: 78px; height: 78px; opacity: <?= $isPaid ? '0.85' : '0.65' ?>; pointer-events: none; transform: rotate(-6deg);">
+                    <img src="<?= assetUrl('assets/images/varsha-brand-seal.svg') ?>" alt="Varsha Brand Official Seal" style="position: absolute; width: 72px; height: 72px; opacity: <?= $isPaid ? '0.85' : '0.65' ?>; pointer-events: none; transform: rotate(-6deg);">
                     <!-- Signature Overlaid Over the Seal -->
-                    <img src="<?= assetUrl('assets/images/jay-parmar-signature.svg') ?>" alt="Signature of Jay Parmar" class="signature-img" style="position: relative; z-index: 2; height: 56px; <?= !$isPaid ? 'opacity: 0.85;' : '' ?>">
+                    <img src="<?= assetUrl('assets/images/jay-parmar-signature.svg') ?>" alt="Signature of Jay Parmar" class="signature-img" style="position: relative; z-index: 2; height: 52px; <?= !$isPaid ? 'opacity: 0.85;' : '' ?>">
                 </div>
-                <div class="signature-line" style="height: 1px; background: #cbd5e1; width: 180px; margin: 3px auto 4px;"></div>
-                <div class="signatory-name" style="font-size: 12.5px; font-weight: 800; color: #0f172a; line-height: 1.2;"><?= e($order['authorized_signatory'] ?? 'Jay Parmar') ?></div>
-                <div class="signatory-title" style="font-size: 10.5px; color: #64748b;"><?= $isPaid ? 'Partner &amp; Authorized Signatory' : 'Authorized Signatory (Proforma / Acknowledgment)' ?></div>
+                <div class="signature-line"></div>
+                <div style="font-size: 12.5px; font-weight: 800; color: #0f172a; line-height: 1.2;"><?= e($order['authorized_signatory'] ?? 'Jay Parmar') ?></div>
+                <div style="font-size: 10.5px; color: #64748b;"><?= $isPaid ? 'Partner &amp; Authorized Signatory' : 'Authorized Signatory (Proforma)' ?></div>
             </div>
         </div>
 
-        <div class="disclaimer-box" style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #e2e8f0; text-align: center; font-size: 10.5px; color: #64748b;">
+        <div style="margin-top: 14px; padding-top: 8px; border-top: 1px solid #e2e8f0; text-align: center; font-size: 10px; color: #94a3b8;">
             <?= $isPaid ? 'This is an officially certified Computerized GST Tax Invoice with authorized digital seal. Certified by Shree Varsha Engineering Works, Bhavnagar.' : 'This is an Official Proforma Invoice / Order Acknowledgement. Certified GST Tax Invoice will be issued post payment settlement.' ?>
         </div>
     </div>

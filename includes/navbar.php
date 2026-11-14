@@ -330,17 +330,65 @@ body.mobile-menu-open #varshaChatbotWindow {
     gap: 10px;
 }
 
-/* Tablet & Laptop Breakpoints */
-@media (max-width: 1280px) {
+/* ==========================================================================
+   LAPTOP & DESKTOP ULTRA-RESPONSIVE POLISH (1025px - 1440px)
+   Guarantees full navigation menu is 100% visible, perfectly aligned,
+   with ZERO wrapping or overflowing on laptops (1366x768, 1280x800, etc.)
+   ========================================================================== */
+@media (min-width: 1025px) and (max-width: 1366px) {
+    .site-nav-container {
+        padding: 0 10px !important;
+        gap: 6px !important;
+    }
+    .brand-badge-wrap img {
+        height: 36px !important;
+        width: 36px !important;
+    }
+    .brand-title-main {
+        font-size: 14px !important;
+    }
+    .brand-subtitle-tag {
+        font-size: 8px !important;
+    }
+    .nav-links-center {
+        display: flex !important;
+        gap: 6px !important;
+    }
+    .site-nav-link {
+        font-size: 11.6px !important;
+        padding: 4px 1px !important;
+    }
+    .nav-actions-right {
+        gap: 6px !important;
+    }
+    .nav-search-desktop {
+        display: none !important; /* Hide extra search bar on laptop header; already in drawer & catalog */
+    }
+    .btn-nav-action {
+        height: 34px !important;
+        padding: 0 8px !important;
+        font-size: 11.5px !important;
+        gap: 4px !important;
+    }
+    .btn-top-book .btn-text-extra {
+        display: none !important; /* Shows '💳 Book' saving 45px width */
+    }
+    .btn-nav-admin .btn-text-full {
+        display: none !important; /* Shows '🔒' icon saving 40px width */
+    }
+    .btn-nav-mobile-toggle {
+        display: none !important;
+    }
+}
+
+/* Tablet & Mobile Breakpoints: Switch to slide-drawer only below 1025px */
+@media (max-width: 1024px) {
     .btn-nav-mobile-toggle {
         display: inline-flex !important;
     }
     .nav-links-center {
         display: none !important;
     }
-}
-
-@media (max-width: 1024px) {
     .nav-search-desktop {
         display: none !important;
     }
