@@ -172,7 +172,12 @@ body {
     border: none !important;
     box-shadow: none !important;
 }
-.skiptranslate {
+body > .skiptranslate {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+}
+font.skiptranslate, span.skiptranslate {
     display: inline !important;
 }
 .skiptranslate iframe {
@@ -246,38 +251,111 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Central Language Switcher (Full Website in Gujarati, Hindi, or English)
+// Central Language Switcher (Full Website & Admin Panel in Gujarati, Hindi, or English)
 function setAllTransCookies(targetLang) {
     const domain = window.location.hostname;
-    // 1. Site Lang Preference
+    // 1. Site Lang Preference Cookie
     document.cookie = "site_lang=" + targetLang + "; path=/; max-age=31536000; SameSite=Lax";
     
-    // 2. Clear old googtrans
-    const clearVals = ["googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;",
-                       "googtrans=; domain=" + domain + "; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;"];
-    if (domain !== 'localhost') {
-        const parts = domain.split('.');
-        if (parts.length > 2) {
-            clearVals.push("googtrans=; domain=." + parts.slice(-2).join('.') + "; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;");
-        }
-    }
-    clearVals.forEach(c => { document.cookie = c; });
-
-    // 3. Set new googtrans (Supports both /en/ and /auto/ for universal browser coverage)
+    // 2. Clear previous Google Translate cookies across root and domain
+    const deleteExp = "=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    document.cookie = "googtrans" + deleteExp;
+    document.cookie = "googtrans=" + deleteExp + " domain=" + domain + ";";
+    
+    // 3. Set standard Google Translate cookie: /en/targetLang
     const transVal = (targetLang === 'en') ? '/en/en' : ('/en/' + targetLang);
-    const transAuto = (targetLang === 'en') ? '/auto/en' : ('/auto/' + targetLang);
-
     document.cookie = "googtrans=" + transVal + "; path=/; max-age=31536000; SameSite=Lax";
-    document.cookie = "googtrans=" + transAuto + "; path=/; max-age=31536000; SameSite=Lax";
-    if (domain !== 'localhost') {
+    
+    if (domain !== 'localhost' && !domain.endsWith('.onrender.com')) {
         document.cookie = "googtrans=" + transVal + "; domain=" + domain + "; path=/; max-age=31536000; SameSite=Lax";
-        document.cookie = "googtrans=" + transAuto + "; domain=" + domain + "; path=/; max-age=31536000; SameSite=Lax";
-        const parts = domain.split('.');
-        if (parts.length > 2) {
-            document.cookie = "googtrans=" + transVal + "; domain=." + parts.slice(-2).join('.') + "; path=/; max-age=31536000; SameSite=Lax";
-            document.cookie = "googtrans=" + transAuto + "; domain=." + parts.slice(-2).join('.') + "; path=/; max-age=31536000; SameSite=Lax";
-        }
     }
+}
+
+// Instant UI Dictionary for Zero-Latency Localized Display
+const UI_TRANSLATIONS = {
+    'gu': {
+        'Home': 'હોમ',
+        'About': 'અમારા વિશે',
+        'About Us': 'અમારા વિશે',
+        'Machines': 'મશીનો',
+        'All Machines': 'બધા મશીનો',
+        'Catalog': 'કેટલોગ',
+        'Catalog & PDF': 'કેટલોગ અને PDF',
+        'Live Tracking': 'લાઇવ ટ્રેકિંગ',
+        'Contact': 'સંપર્ક',
+        'Factory Contact': 'ફેક્ટરી સંપર્ક',
+        'Sign In': 'સાઇન ઇન',
+        'Cart': 'કાર્ટ',
+        'My Cart': 'મારું કાર્ટ',
+        'Book Online': 'ઓનલાઇન બુકિંગ',
+        'Admin': 'એડમિન',
+        'Dashboard': 'ડેશબોર્ડ',
+        'Orders & Bills': 'ઓર્ડર્સ અને બિલ',
+        'Live Customer Carts (કાર્ટ્સ)': 'લાઇવ ગ્રાહક કાર્ટ્સ',
+        'GST E-Way Bills (All Customers)': 'જીએસટી ઇ-વે બિલ',
+        'Govt E-Way Login ↗': 'સરકારી ઇ-વે પોર્ટલ ↗',
+        'Drill Machines': 'ડ્રિલ મશીનો',
+        'Add Machine': 'નવું મશીન ઉમેરો',
+        'Customer Inquiries': 'ગ્રાહક પૂછપરછ',
+        'Customers & Buyers': 'ગ્રાહકો અને ખરીદદારો',
+        'Customer Feedbacks': 'ગ્રાહક પ્રતિસાદ',
+        'Company Settings': 'કંપની સેટિંગ્સ',
+        'Sign Out Session': 'સાઇન આઉટ',
+        'Real-Time Delivery Status': 'રિયલ-ટાઇમ ડિલિવરી સ્થિતિ',
+        'Freight Logistics': 'ટ્રાન્સપોર્ટ લોજિસ્ટિક્સ',
+        'Total Orders Placed': 'કુલ નોંધાયેલ ઓર્ડર્સ',
+        'Paid / Confirmed': 'પેઇડ / કન્ફર્મ થયેલ',
+        'Total Payments Collected': 'કુલ જમા થયેલ પેમેન્ટ',
+        'Authorized Signatory': 'અધિકૃત હસ્તાક્ષરકર્તા'
+    },
+    'hi': {
+        'Home': 'होम',
+        'About': 'हमारे बारे में',
+        'About Us': 'हमारे बारे में',
+        'Machines': 'मशीनें',
+        'All Machines': 'सभी मशीनें',
+        'Catalog': 'कैटलॉग',
+        'Catalog & PDF': 'कैटलॉग और PDF',
+        'Live Tracking': 'लाइव ट्रैकिंग',
+        'Contact': 'संपर्क',
+        'Factory Contact': 'फैक्ट्री संपर्क',
+        'Sign In': 'साइन इन',
+        'Cart': 'कार्ट',
+        'My Cart': 'मेरी कार्ट',
+        'Book Online': 'ऑनलाइन बुकिंग',
+        'Admin': 'एडमिन',
+        'Dashboard': 'डैशबोर्ड',
+        'Orders & Bills': 'ऑर्डर्स और बिल',
+        'Live Customer Carts (કાર્ટ્સ)': 'लाइव कस्टमर कार्ट्स',
+        'GST E-Way Bills (All Customers)': 'जीएसटी ई-वे बिल',
+        'Govt E-Way Login ↗': 'सरकारी ई-वे लॉगिन ↗',
+        'Drill Machines': 'ड्रिल मशीनें',
+        'Add Machine': 'नई मशीन जोड़ें',
+        'Customer Inquiries': 'ग्राहक पूछताछ',
+        'Customers & Buyers': 'ग्राहक और खरीदार',
+        'Customer Feedbacks': 'ग्राहक फीडबैक',
+        'Company Settings': 'कंपनी सेटिंग्स',
+        'Sign Out Session': 'साइन आउट',
+        'Real-Time Delivery Status': 'रीयल-टाइम डिलीवरी स्थिति',
+        'Freight Logistics': 'परिवहन लॉजिस्टिक्स',
+        'Total Orders Placed': 'कुल प्राप्त ऑर्डर्स',
+        'Paid / Confirmed': 'भुगतान सफल / कन्फर्म',
+        'Total Payments Collected': 'कुल एकत्र भुगतान',
+        'Authorized Signatory': 'अधिकृत हस्ताक्षरकर्ता'
+    }
+};
+
+function applyInstantUiTranslations(lang) {
+    if (!lang || lang === 'en' || !UI_TRANSLATIONS[lang]) return;
+    const dict = UI_TRANSLATIONS[lang];
+    
+    // Fast text translation for sidebar & nav links
+    document.querySelectorAll('.sidebar-link span, .site-nav-link span, .drawer-nav-item span, .topbar-title, .stat-card-title, .tech-table th').forEach(el => {
+        const raw = el.textContent.trim();
+        if (dict[raw]) {
+            el.textContent = dict[raw];
+        }
+    });
 }
 
 function changeSiteLanguage(targetLang) {
@@ -289,16 +367,20 @@ function changeSiteLanguage(targetLang) {
         localStorage.setItem('site_selected_language', targetLang);
     } catch(e) {}
 
-    // Trigger Google Translate combo if available
+    // 1. Instant text translation in place
+    applyInstantUiTranslations(targetLang);
+
+    // 2. Trigger Google Translate combo if available
     const combo = document.querySelector('.goog-te-combo');
     if (combo) {
         combo.value = targetLang;
         combo.dispatchEvent(new Event('change'));
     }
     
+    // 3. Smooth page refresh to guarantee 100% full translation
     setTimeout(function() {
         window.location.reload();
-    }, 150);
+    }, 200);
 }
 
 // Auto-Sync Google Translate on Page Load
@@ -312,6 +394,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (saved && saved !== 'en') {
         setAllTransCookies(saved);
+        applyInstantUiTranslations(saved);
+
         let checks = 0;
         const syncInt = setInterval(function() {
             checks++;

@@ -10,9 +10,11 @@ if (empty($_SESSION['admin_user'])) {
 
 $adminUser = $_SESSION['admin_user'];
 $activeTab = $activeTab ?? 'dashboard';
+$currentLang = $_COOKIE['site_lang'] ?? 'en';
+if (!in_array($currentLang, ['en', 'gu', 'hi'])) $currentLang = 'en';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= htmlspecialchars($currentLang) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

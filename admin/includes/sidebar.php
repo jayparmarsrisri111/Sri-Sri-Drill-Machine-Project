@@ -1,10 +1,10 @@
 <!-- Admin Left Sidebar -->
 <aside class="admin-sidebar" id="adminSidebar">
-    <div class="sidebar-header" style="justify-content: space-between; padding: 18px 20px;">
+    <div class="sidebar-header" style="justify-content: space-between; padding: 14px 16px;">
         <a href="<?= BASE_URL ?>/admin/dashboard.php" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-            <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand" style="height: 40px; width: 40px; border-radius: 50%; border: 1.5px solid var(--accent-cyan); object-fit: contain;">
+            <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand" style="height: 38px; width: 38px; border-radius: 50%; border: 1.5px solid var(--accent-cyan); object-fit: contain;">
             <div>
-                <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.05rem; color: #fff; letter-spacing: 0.5px; display: block; line-height: 1.1;">VARSHA <span style="color: var(--accent-cyan);">ADMIN</span></span>
+                <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1rem; color: #fff; letter-spacing: 0.5px; display: block; line-height: 1.1;">VARSHA <span style="color: var(--accent-cyan);">ADMIN</span></span>
                 <span style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase;">Control Center</span>
             </div>
         </a>
@@ -19,20 +19,20 @@
         $renderLangDropdown = false;
         require_once __DIR__ . '/../../includes/lang-selector.php'; 
     ?>
-    <div style="padding: 10px 12px; margin: 6px 12px 14px; background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.35); border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-            <span style="font-size: 11px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px;">
+    <div style="padding: 8px 10px; margin: 4px 10px 10px; background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.35); border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+            <span style="font-size: 10.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px;">
                 🌐 ભાષા પસંદગી (Language)
             </span>
         </div>
         <div style="display: flex; gap: 4px; justify-content: space-between;">
-            <button type="button" onclick="changeSiteLanguage('en')" style="flex: 1; padding: 6px 2px; font-size: 11px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'en') ? '#10b981' : 'rgba(255,255,255,0.15)' ?>; background: <?= ($currentLang === 'en') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.05)' ?>; color: <?= ($currentLang === 'en') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center;">
+            <button type="button" onclick="changeSiteLanguage('en')" style="flex: 1; padding: 5px 2px; font-size: 10.5px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'en') ? '#10b981' : 'rgba(255,255,255,0.15)' ?>; background: <?= ($currentLang === 'en') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.05)' ?>; color: <?= ($currentLang === 'en') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center;">
                 🇬🇧 EN
             </button>
-            <button type="button" onclick="changeSiteLanguage('gu')" style="flex: 1.3; padding: 6px 2px; font-size: 11px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'gu') ? '#10b981' : 'rgba(255,255,255,0.15)' ?>; background: <?= ($currentLang === 'gu') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.05)' ?>; color: <?= ($currentLang === 'gu') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center;">
+            <button type="button" onclick="changeSiteLanguage('gu')" style="flex: 1.3; padding: 5px 2px; font-size: 10.5px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'gu') ? '#10b981' : 'rgba(255,255,255,0.15)' ?>; background: <?= ($currentLang === 'gu') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.05)' ?>; color: <?= ($currentLang === 'gu') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center;">
                 🇮🇳 ગુજરાતી
             </button>
-            <button type="button" onclick="changeSiteLanguage('hi')" style="flex: 1.1; padding: 6px 2px; font-size: 11px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'hi') ? '#10b981' : 'rgba(255,255,255,0.15)' ?>; background: <?= ($currentLang === 'hi') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.05)' ?>; color: <?= ($currentLang === 'hi') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center;">
+            <button type="button" onclick="changeSiteLanguage('hi')" style="flex: 1.1; padding: 5px 2px; font-size: 10.5px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'hi') ? '#10b981' : 'rgba(255,255,255,0.15)' ?>; background: <?= ($currentLang === 'hi') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.05)' ?>; color: <?= ($currentLang === 'hi') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center;">
                 🇮🇳 हिन्दी
             </button>
         </div>

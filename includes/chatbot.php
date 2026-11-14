@@ -620,10 +620,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // 0.5. Company Name, Firm Details & Factory Background
-        const isCompanyQuery = /\b(company|firm|factory|business|brand|compnay|karkhanu|karhana)\b/i.test(q) || 
-                               q.includes('company name') || q.includes('compnay name') || q.includes('કંપની') || 
-                               q.includes('ફેક્ટરી') || q.includes('બ્રાન્ડ') || q.includes('નામ શું') || 
-                               q.includes('shree varsha') || q.includes('varsha brand');
+        const isCompanyQuery = /\b(company|firm|factory|business|brand|compnay|comny|karkhanu|karhana)\b/i.test(q) || 
+                               q.includes('company name') || q.includes('compnay name') || q.includes('comny name') ||
+                               q.includes('કંપની') || q.includes('ફેક્ટરી') || q.includes('બ્રાન્ડ') || q.includes('નામ શું') || 
+                               q.includes('naam') || q.includes('name') || q.includes('shree varsha') || q.includes('varsha brand');
 
         if (isCompanyQuery) {
             if (isGujarati) {
@@ -631,10 +631,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     text: `<p><strong>🏭 કંપની પરિચય (Company Overview):</strong></p>
                            <p>• <strong>કંપનીનું નામ:</strong> શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સ (Shree Varsha Engineering Works)<br>
                            • <strong>બ્રાન્ડ નેમ:</strong> VARSHA BRAND (વર્ષા બ્રાન્ડ - રજિસ્ટર્ડ ટ્રેડમાર્ક)<br>
-                           • <strong>ફેક્ટરી સરનામું:</strong> શેડ નં. L/786, GIDC ઔદ્યોગિક વસાહત, હાદાનગર પાસે, ભાવનગર - 364003 (ગુજરાત).<br>
+                           • <strong>ફેક્ટરી સરનામું:</strong> શેડ નં. L/786, GIDC ઔદ્યોગિક વસાહત, હાદાનગર પાસે, ભાવનગર - 364003 (ગુજરાત, ભારત).<br>
                            • <strong>અનુભવ:</strong> ૨૫+ વર્ષથી હેવી ડ્યુટી રેડિયલ અને પિલર ડ્રિલ મશીન મેન્યુફેક્ચરિંગ.<br>
                            • <strong>GSTIN:</strong> <?= COMPANY_GSTIN ?><br>
-                           • <strong>મુખ્ય વડા:</strong> શ્રી જીતેન્દ્રભાઈ પરમાર (Founder &amp; CEO) અને શ્રી જય પરમાર (Co-CEO).</p>`,
+                           • <strong>સર્ટિફિકેશન:</strong> ISO 9001:2015 ગુણવત્તા પ્રમાણિત.<br>
+                           • <strong>મુખ્ય વડા:</strong> શ્રી જીતેન્દ્રભાઈ પરમાર (Founder &amp; CEO, +91 98249 13555) અને શ્રી જય પરમાર (Co-CEO &amp; Production Engineer, +91 97146 11331).</p>`,
                     rich: `<div style="display:flex; gap:6px; margin-top:6px;">
                                 <a href="<?= BASE_URL ?>/about.php" class="btn btn-outline" style="font-size:11px; flex:1;">🏭 કંપની વિશે વધુ વાંચો</a>
                                 <a href="<?= BASE_URL ?>/machines.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#0284c7;">📖 મશીન કેટલોગ જુઓ</a>
@@ -648,11 +649,84 @@ document.addEventListener('DOMContentLoaded', function () {
                        • <strong>Manufacturing Plant:</strong> Shed No. L/786, GIDC Industrial Estate, Nr. Hadanagar, Bhavnagar - 364003, Gujarat, India.<br>
                        • <strong>Experience:</strong> 25+ Years of Heavy-Duty Radial &amp; Pillar Drill Machine Manufacturing.<br>
                        • <strong>GSTIN:</strong> <?= COMPANY_GSTIN ?><br>
-                       • <strong>Executive Leadership:</strong> Jitendrabhai Parmar (Founder &amp; CEO) and Jay Parmar (Co-CEO).</p>`,
+                       • <strong>Certification:</strong> ISO 9001:2015 Precision Certified.<br>
+                       • <strong>Executive Leadership:</strong> Jitendrabhai Parmar (Founder &amp; CEO, +91 98249 13555) and Jay Parmar (Co-CEO &amp; Production Engineer, +91 97146 11331).</p>`,
                 rich: `<div style="display:flex; gap:6px; margin-top:6px;">
                             <a href="<?= BASE_URL ?>/about.php" class="btn btn-outline" style="font-size:11px; flex:1;">🏭 Full Company Story</a>
                             <a href="<?= BASE_URL ?>/machines.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#0284c7;">📖 Browse Machines</a>
                        </div>`
+            };
+        }
+
+        // 0.8. Contact Numbers, Phone, Mobile & WhatsApp
+        if (q.includes('phone') || q.includes('mobile') || q.includes('call') || q.includes('contact') || q.includes('whatsapp') || q.includes('email') || q.includes('mail') || q.includes('સંપર્ક') || q.includes('ફોન') || q.includes('નંબર') || q.includes('વાત કરવી') || q.includes('help')) {
+            if (isGujarati) {
+                return {
+                    text: `<p><strong>📞 ફેક્ટરી સીધો સંપર્ક (Direct Factory Contact):</strong></p>
+                           <p>• <strong>મુખ્ય ફોન નં.:</strong> <a href="tel:<?= COMPANY_PHONE_1_CLEAN ?>" style="color:#00e5ff; font-weight:700;"><?= COMPANY_PHONE_1 ?></a> (જીતેન્દ્રભાઈ પરમાર - CEO)<br>
+                           • <strong>પ્રોડક્શન &amp; એન્જિનિયરિંગ:</strong> <a href="tel:<?= COMPANY_PHONE_2_CLEAN ?>" style="color:#38bdf8; font-weight:700;"><?= COMPANY_PHONE_2 ?></a> (જય પરમાર - Co-CEO)<br>
+                           • <strong>વોટ્સએપ હેલ્પલાઇન:</strong> +91 98249 13555<br>
+                           • <strong>ઇમેઇલ:</strong> <?= COMPANY_EMAIL ?> / jayparmar@varshamachines.com<br>
+                           • <strong>ફેક્ટરી સમય:</strong> સોમવાર થી શનિવાર (સવારે ૯:૦૦ થી સાંજે ૭:૦૦)</p>`,
+                    rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                                <a href="tel:<?= COMPANY_PHONE_1_CLEAN ?>" class="btn btn-primary" style="font-size:11px; flex:1; background:#059669;">📞 ડાયરેક્ટ કોલ</a>
+                                <a href="<?= getWhatsAppLink(COMPANY_WHATSAPP, 'નમસ્તે શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સ, મારે મશીન વિશે વાત કરવી છે.') ?>" target="_blank" class="btn btn-whatsapp" style="font-size:11px; flex:1;">💬 વોટ્સએપ ચેટ</a>
+                           </div>`
+                };
+            }
+            return {
+                text: `<p><strong>📞 Factory Direct Contact &amp; Support:</strong></p>
+                       <p>• <strong>Primary Phone:</strong> <a href="tel:<?= COMPANY_PHONE_1_CLEAN ?>" style="color:#00e5ff; font-weight:700;"><?= COMPANY_PHONE_1 ?></a> (Jitendrabhai Parmar - CEO)<br>
+                       • <strong>Engineering &amp; Dispatch:</strong> <a href="tel:<?= COMPANY_PHONE_2_CLEAN ?>" style="color:#38bdf8; font-weight:700;"><?= COMPANY_PHONE_2 ?></a> (Jay Parmar - Co-CEO)<br>
+                       • <strong>WhatsApp:</strong> +91 98249 13555<br>
+                       • <strong>Email:</strong> <?= COMPANY_EMAIL ?><br>
+                       • <strong>Factory Hours:</strong> Monday - Saturday, 9:00 AM - 7:00 PM</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="tel:<?= COMPANY_PHONE_1_CLEAN ?>" class="btn btn-primary" style="font-size:11px; flex:1; background:#059669;">📞 Call Factory</a>
+                            <a href="<?= getWhatsAppLink(COMPANY_WHATSAPP, 'Hello Shree Varsha Engineering Works, I would like to inquire about your Drill Machines.') ?>" target="_blank" class="btn btn-whatsapp" style="font-size:11px; flex:1;">💬 WhatsApp Chat</a>
+                       </div>`
+            };
+        }
+
+        // 0.9. 360° View & 12D Interactive Digital Twin Simulator
+        if (q.includes('360') || q.includes('12d') || q.includes('simulator') || q.includes('3d') || q.includes('degree') || q.includes('turntable') || q.includes('સ્પાર્ક') || q.includes('ડિજિટલ ટ્વિન')) {
+            return {
+                text: `<p><strong>🔄 12D Digital Twin &amp; 360° Interactive Simulator Lab:</strong></p>
+                       <p>• <strong>Touch &amp; Drag 360°:</strong> Rotate the machine from any angle in full 3D interactive view.<br>
+                       • <strong>12D Cutting Sparks:</strong> Live kinetic simulation of heavy-duty drilling with dynamic sparks.<br>
+                       • <strong>Sound Drone:</strong> Acoustic simulation of gear-driven motor and spindle speeds.<br>
+                       • <strong>Real Photo Switch:</strong> Toggle between 3D virtual twin and high-resolution real factory machine photo.</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/simulator-6d.php" class="btn btn-primary" style="font-size:11px; display:block; text-align:center; background:#0284c7;">🔄 Open 360° 12D Simulator Lab</a></div>`
+            };
+        }
+
+        // 0.95. Cart & Shopping Basket
+        if (q.includes('cart') || q.includes('કાર્ટ') || q.includes('basket') || q.includes('bag') || q.includes('add to cart')) {
+            return {
+                text: `<p><strong>🛒 Industrial Cart &amp; Direct Ordering:</strong></p>
+                       <p>• You can add complete drilling machines, parts (spindle quills, alloy gear sets, box tables, coolant pumps, drill chucks) directly to your cart.<br>
+                       • Real-time quantity updater, instant GST breakdown (18%), and multi-item booking checkout.</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/cart.php" class="btn btn-primary" style="font-size:11px; display:block; text-align:center; background:#10b981;">🛒 View My Cart</a></div>`
+            };
+        }
+
+        // 0.96. Factory Admin Portal
+        if (q.includes('admin') || q.includes('એડમિન') || q.includes('control center') || q.includes('admin panel')) {
+            return {
+                text: `<p><strong>🔒 Factory Admin Control Center:</strong></p>
+                       <p>• <strong>Authorized Portal:</strong> Managed exclusively by factory administration.<br>
+                       • <strong>Features:</strong> Live order monitoring, 7-stage delivery status tracking, customer shopping cart tracker, Government GST E-Way bills, inventory management, and company configuration.</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/admin/index.php" class="btn btn-outline" style="font-size:11px; display:block; text-align:center; border-color:#f59e0b; color:#fbbf24;">🔒 Admin Portal Login</a></div>`
+            };
+        }
+
+        // 0.97. Delivered & Commissioned at Factory Milestone
+        if (q.includes('commissioned') || q.includes('કમિશનિંગ') || q.includes('delivered & commissioned') || q.includes('મશીન મળી ગયું') || q.includes('ડિલિવરી મળી ગઈ')) {
+            return {
+                text: `<p><strong>🏁 Delivered &amp; Commissioned at Factory (૧૦૦% સફળ ડિલિવરી):</strong></p>
+                       <p>• <strong>Final Milestone:</strong> This 7th stage signifies that your machinery consignment has arrived at your factory workshop, has been safely unloaded with crane assistance, precision-leveled, and production test-run has been completed successfully.<br>
+                       • In our Live Tracking system, this step displays as <strong>Completed (સફળતાપૂર્વક પૂર્ણ)</strong> with a verified certificate banner.</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/track-order.php" class="btn btn-primary" style="font-size:11px; display:block; text-align:center; background:#059669;">🚚 View Live Order Milestones</a></div>`
             };
         }
 

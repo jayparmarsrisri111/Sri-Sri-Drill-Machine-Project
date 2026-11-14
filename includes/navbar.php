@@ -187,8 +187,11 @@ $navCartCount = intval($navCartSummary['total_qty'] ?? 0);
 /* ==========================================================================
    DEDICATED STANDALONE MOBILE DRAWER & BACKDROP (100% Guaranteed Non-Blank)
    ========================================================================== */
+body.mobile-menu-open {
+    overflow: hidden !important;
+}
+
 .site-mobile-backdrop {
-    display: none;
     position: fixed;
     inset: 0;
     background: rgba(4, 7, 15, 0.85);
@@ -196,15 +199,18 @@ $navCartCount = intval($navCartSummary['total_qty'] ?? 0);
     -webkit-backdrop-filter: blur(8px);
     z-index: 10002;
     opacity: 0;
-    transition: opacity 0.25s ease;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 body.mobile-menu-open .site-mobile-backdrop {
-    display: block;
     opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .site-mobile-drawer {
-    display: none;
+    display: flex;
     position: fixed;
     top: 0;
     right: 0;
@@ -218,15 +224,20 @@ body.mobile-menu-open .site-mobile-backdrop {
     box-shadow: -15px 0 50px rgba(0, 0, 0, 0.95);
     z-index: 10005;
     transform: translateX(105%);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+    visibility: hidden;
+    pointer-events: none;
     overflow-y: auto;
+    overflow-x: hidden;
     flex-direction: column;
     padding: 16px 18px 30px;
     box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
 }
 body.mobile-menu-open .site-mobile-drawer {
-    display: flex !important;
     transform: translateX(0) !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
 }
 
 /* Hide floating launchers when mobile drawer is open to eliminate overlap */
@@ -325,6 +336,12 @@ body.mobile-menu-open #varshaChatbotWindow {
         display: inline-flex !important;
     }
     .nav-links-center {
+        display: none !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    .nav-search-desktop {
         display: none !important;
     }
 }
@@ -516,12 +533,23 @@ body.mobile-menu-open #varshaChatbotWindow {
     </div>
 
     <!-- Mobile Multi-Language Selector (English, Gujarati, Hindi) -->
-    <div style="padding: 10px 14px; margin-bottom: 12px; background: rgba(15, 23, 42, 0.75); border: 1.5px solid rgba(0, 229, 255, 0.35); border-radius: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
-        <span style="font-size: 12px; font-weight: 700; color: #cbd5e1; display: flex; align-items: center; gap: 6px;">
-            <span>🌐</span>
-            <span>ભાષા / LANGUAGE:</span>
-        </span>
-        <?php require __DIR__ . '/lang-selector.php'; ?>
+    <div style="padding: 10px 12px; margin-bottom: 14px; background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.35); border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <span style="font-size: 11.5px; font-weight: 800; color: #00e5ff; letter-spacing: 0.5px;">
+                🌐 ભાષા પસંદગી (LANGUAGE):
+            </span>
+        </div>
+        <div style="display: flex; gap: 6px; justify-content: space-between;">
+            <button type="button" onclick="changeSiteLanguage('en')" style="flex: 1; padding: 7px 4px; font-size: 11.5px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'en') ? '#10b981' : 'rgba(255,255,255,0.18)' ?>; background: <?= ($currentLang === 'en') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.06)' ?>; color: <?= ($currentLang === 'en') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center;">
+                🇬🇧 English
+            </button>
+            <button type="button" onclick="changeSiteLanguage('gu')" style="flex: 1.2; padding: 7px 4px; font-size: 11.5px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'gu') ? '#10b981' : 'rgba(255,255,255,0.18)' ?>; background: <?= ($currentLang === 'gu') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.06)' ?>; color: <?= ($currentLang === 'gu') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center;">
+                🇮🇳 ગુજરાતી
+            </button>
+            <button type="button" onclick="changeSiteLanguage('hi')" style="flex: 1; padding: 7px 4px; font-size: 11.5px; font-weight: 700; border-radius: 6px; border: 1.5px solid <?= ($currentLang === 'hi') ? '#10b981' : 'rgba(255,255,255,0.18)' ?>; background: <?= ($currentLang === 'hi') ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255,255,255,0.06)' ?>; color: <?= ($currentLang === 'hi') ? '#34d399' : '#cbd5e1' ?>; cursor: pointer; text-align: center;">
+                🇮🇳 हिन्दी
+            </button>
+        </div>
     </div>
 
     <!-- Mobile Quick Search Bar -->

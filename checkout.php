@@ -613,8 +613,24 @@ foreach ($products as $p) {
                                     <input type="text" id="bankSenderInput" class="form-control" placeholder="e.g. State Bank of India" style="font-size: 12.5px; height: 38px;">
                                 </div>
                                 <div style="grid-column: span 2;">
-                                    <label class="form-label" style="font-size: 11px; margin-bottom: 3px; color: #fff;">Transfer Date *</label>
-                                    <input type="date" id="bankDateInput" class="form-control" value="<?= date('Y-m-d') ?>" style="font-size: 12.5px; height: 38px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                        <label class="form-label" style="font-size: 11.5px; margin: 0; color: #fff; font-weight: 700;">
+                                            📅 ટ્રાન્સફર તારીખ / Transfer Date *
+                                        </label>
+                                        <span style="font-size: 10.5px; color: #38bdf8;">(કોઈપણ તારીખ મુક્તપણે પસંદ કરો)</span>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                        <input type="date" id="bankDateInput" class="form-control" value="<?= date('Y-m-d') ?>" style="font-size: 13px; height: 40px; color-scheme: dark; background: #060911; border: 1.5px solid rgba(56, 189, 248, 0.5); color: #fff; border-radius: 8px; cursor: pointer; flex: 1; min-width: 140px;">
+                                        <button type="button" onclick="setDynamicDate('bankDateInput', 0)" style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; font-size: 11px; font-weight: 700; height: 40px; padding: 0 10px; border-radius: 8px; cursor: pointer; white-space: nowrap;">
+                                            આજની (Today)
+                                        </button>
+                                        <button type="button" onclick="setDynamicDate('bankDateInput', -1)" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #cbd5e1; font-size: 11px; font-weight: 600; height: 40px; padding: 0 10px; border-radius: 8px; cursor: pointer; white-space: nowrap;">
+                                            ગઈકાલની (Yesterday)
+                                        </button>
+                                    </div>
+                                    <div style="font-size: 10.5px; color: #94a3b8; margin-top: 5px;">
+                                        💡 તમે જે તારીખે NEFT / RTGS / IMPS ટ્રાન્સફર કર્યું હોય તે કોઈપણ તારીખ અહીં કેલેન્ડરમાંથી પસંદ કરો.
+                                    </div>
                                 </div>
                             </div>
                             <div style="font-size: 10.5px; color: #94a3b8; margin-top: 6px;">
@@ -646,8 +662,24 @@ foreach ($products as $p) {
                                     <input type="text" id="chequeBankInput" class="form-control" placeholder="e.g. HDFC Bank, GIDC Branch" style="font-size: 12.5px; height: 38px;">
                                 </div>
                                 <div style="grid-column: span 2;">
-                                    <label class="form-label" style="font-size: 11px; margin-bottom: 3px; color: #fff;">Cheque Issue Date *</label>
-                                    <input type="date" id="chequeDateInput" class="form-control" value="<?= date('Y-m-d') ?>" style="font-size: 12.5px; height: 38px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                        <label class="form-label" style="font-size: 11.5px; margin: 0; color: #fff; font-weight: 700;">
+                                            📅 ચેક તારીખ / Cheque Issue Date *
+                                        </label>
+                                        <span style="font-size: 10.5px; color: #c084fc;">(તમારા ચેક પર લખેલી તારીખ)</span>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                        <input type="date" id="chequeDateInput" class="form-control" value="<?= date('Y-m-d') ?>" style="font-size: 13px; height: 40px; color-scheme: dark; background: #060911; border: 1.5px solid rgba(192, 132, 252, 0.5); color: #fff; border-radius: 8px; cursor: pointer; flex: 1; min-width: 140px;">
+                                        <button type="button" onclick="setDynamicDate('chequeDateInput', 0)" style="background: rgba(168, 85, 247, 0.15); border: 1px solid #a855f7; color: #c084fc; font-size: 11px; font-weight: 700; height: 40px; padding: 0 10px; border-radius: 8px; cursor: pointer; white-space: nowrap;">
+                                            આજની (Today)
+                                        </button>
+                                        <button type="button" onclick="setDynamicDate('chequeDateInput', 7)" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #cbd5e1; font-size: 11px; font-weight: 600; height: 40px; padding: 0 10px; border-radius: 8px; cursor: pointer; white-space: nowrap;">
+                                            +7 દિવસ (Post-Dated)
+                                        </button>
+                                    </div>
+                                    <div style="font-size: 10.5px; color: #94a3b8; margin-top: 5px;">
+                                        💡 તમારા ચેક પર જે તારીખ લખેલી હોય (ભૂતકાળની, આજની કે પોસ્ટ-ડેટેડ) તે કોઈપણ તારીખ મુક્તપણે નાખી શકો છો.
+                                    </div>
                                 </div>
                             </div>
                             <div style="font-size: 10.5px; color: #94a3b8; margin-top: 6px;">
@@ -799,6 +831,19 @@ foreach ($products as $p) {
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
+    // Dynamic Date Setter for Cheque & Direct Bank Transfer
+    window.setDynamicDate = function(inputId, offsetDays) {
+        const el = document.getElementById(inputId);
+        if (!el) return;
+        const d = new Date();
+        d.setDate(d.getDate() + offsetDays);
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        el.value = `${yyyy}-${mm}-${dd}`;
+        el.dispatchEvent(new Event('change'));
+    };
+
     const RAZORPAY_KEY = "<?= RAZORPAY_KEY_ID ?>";
     const BASE_URL = "<?= BASE_URL ?>";
     const isFromCart = <?= $isFromCart ? 'true' : 'false' ?>;

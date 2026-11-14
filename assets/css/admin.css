@@ -13,6 +13,7 @@
   --admin-border-cyan: rgba(0, 229, 255, 0.25);
   
   --accent-cyan: #00e5ff;
+  --admin-cyan: #00e5ff;
   --accent-blue: #3b82f6;
   --accent-amber: #f59e0b;
   --accent-emerald: #10b981;
@@ -30,6 +31,24 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 229, 255, 0.35) rgba(11, 17, 32, 0.6);
+}
+
+/* Global Sleek Dark Industrial Scrollbars (Zero White Bars) */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #070a12;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.35);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00e5ff;
 }
 
 body {
@@ -56,11 +75,25 @@ body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scrollbar-color: var(--admin-cyan) rgba(15, 23, 42, 0.6);
+  scrollbar-color: rgba(0, 229, 255, 0.35) transparent;
+}
+
+.admin-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.admin-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.admin-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.35);
+  border-radius: 4px;
+}
+.admin-sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
 }
 
 .sidebar-header {
-  padding: 24px 20px;
+  padding: 16px 18px;
   border-bottom: 1px solid var(--admin-border);
   display: flex;
   align-items: center;
@@ -68,26 +101,26 @@ body {
 }
 
 .sidebar-header img {
-  height: 42px;
+  height: 38px;
 }
 
 .sidebar-nav {
-  padding: 20px 12px;
+  padding: 10px 10px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   list-style: none;
 }
 
 .sidebar-link {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 10px;
+  padding: 9px 14px;
   color: var(--text-muted);
   font-family: var(--font-heading);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   border-radius: 8px;
   transition: all 0.2s ease;

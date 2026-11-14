@@ -421,10 +421,32 @@ $deliveryStages = [
                     <span>📍</span> Factory Dispatch &amp; Transit Milestones
                 </h3>
 
+                <?php 
+                    $isDeliveredFinal = in_array($currStatusKey, ['delivered', 'completed']); 
+                    if ($isDeliveredFinal):
+                ?>
+                    <div style="margin-bottom: 24px; padding: 14px 18px; background: rgba(16, 185, 129, 0.16); border: 1.5px solid #10b981; border-radius: 12px; display: flex; align-items: center; gap: 14px; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);">
+                        <span style="font-size: 26px;">🎉</span>
+                        <div>
+                            <div style="font-family: var(--font-heading); font-weight: 800; color: #34d399; font-size: 14.5px;">
+                                Delivered &amp; Commissioned at Factory (૧૦૦% સફળ ડિલિવરી પૂર્ણ)
+                            </div>
+                            <div style="font-size: 12px; color: #cbd5e1; margin-top: 3px;">
+                                Your machinery consignment has been safely unloaded, precision-leveled, and production test-run has been completed at your factory workshop.
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
                 <div class="delivery-timeline">
                     <?php foreach ($deliveryStages as $idx => $stg): 
-                        $isCompleted = ($idx < $currentStep);
-                        $isCurrent = ($idx === $currentStep);
+                        if ($isDeliveredFinal) {
+                            $isCompleted = true;
+                            $isCurrent = false;
+                        } else {
+                            $isCompleted = ($idx < $currentStep);
+                            $isCurrent = ($idx === $currentStep);
+                        }
                         $itemClass = $isCompleted ? 'completed' : ($isCurrent ? 'current' : '');
                     ?>
                         <div class="timeline-item <?= $itemClass ?>">
@@ -447,7 +469,7 @@ $deliveryStages = [
                                 </div>
                                 <div>
                                     <?php if ($isCompleted): ?>
-                                        <span class="badge-tag" style="border-color: #10b981; color: #34d399; font-size: 11px;">Completed</span>
+                                        <span class="badge-tag" style="border-color: #10b981; color: #34d399; font-size: 11px; background: rgba(16, 185, 129, 0.15);">✔ Completed</span>
                                     <?php elseif ($isCurrent): ?>
                                         <span class="badge-tag" style="border-color: #00e5ff; color: #00e5ff; font-size: 11px; background: rgba(0, 229, 255, 0.1);">In Progress</span>
                                     <?php else: ?>

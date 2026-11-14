@@ -28,31 +28,55 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['quick_status_
             'order_status'    => 'pending', 
             'payment_status'  => 'pending',
             'delivery_status' => 'pending', 
-            'label'           => '⏳ Pending (પેન્ડિંગ)'
+            'label'           => '⏳ Pending Verification (પેન્ડિંગ)'
         ],
         'success'   => [
             'order_status'    => 'confirmed', 
             'payment_status'  => 'paid',
             'delivery_status' => 'order_placed', 
-            'label'           => '✅ Success / Paid (સફળ પેઇડ)'
+            'label'           => '✅ 1. Order Confirmed & Paid (સફળ પેઇડ)'
         ],
-        'confirmed' => [
+        'order_placed' => [
             'order_status'    => 'confirmed', 
             'payment_status'  => 'paid',
             'delivery_status' => 'order_placed', 
-            'label'           => '✅ Confirmed & Paid'
+            'label'           => '✅ 1. Order Confirmed & Paid'
+        ],
+        'chassis_assembly' => [
+            'order_status'    => 'manufacturing', 
+            'payment_status'  => 'paid',
+            'delivery_status' => 'chassis_assembly', 
+            'label'           => '⚙️ 2. Chassis & Gearbox Assembly'
+        ],
+        'quality_testing' => [
+            'order_status'    => 'manufacturing', 
+            'payment_status'  => 'paid',
+            'delivery_status' => 'quality_testing', 
+            'label'           => '🔬 3. Run-Out QC & ISO Testing Passed'
+        ],
+        'packed' => [
+            'order_status'    => 'manufacturing', 
+            'payment_status'  => 'paid',
+            'delivery_status' => 'packed', 
+            'label'           => '📦 4. Treated Wooden Crate Packed'
         ],
         'dispatched'=> [
             'order_status'    => 'dispatched', 
             'payment_status'  => 'paid',
             'delivery_status' => 'dispatched', 
-            'label'           => '🚚 Dispatched (રવાના / ઇન ટ્રાન્ઝિટ)'
+            'label'           => '🚚 5. Dispatched with Freight Carrier (રવાના)'
+        ],
+        'out_for_delivery'=> [
+            'order_status'    => 'dispatched', 
+            'payment_status'  => 'paid',
+            'delivery_status' => 'out_for_delivery', 
+            'label'           => '🚛 6. Out for Local Delivery'
         ],
         'delivered' => [
             'order_status'    => 'delivered', 
             'payment_status'  => 'paid',
             'delivery_status' => 'delivered', 
-            'label'           => '🏁 Successfully Delivered (ડિલિવરી મળી ગઈ - ૧૦૦% પૂર્ણ)'
+            'label'           => '🏁 7. Delivered & Commissioned at Factory (૧૦૦% સફળ ડિલિવરી પૂર્ણ)'
         ],
         'failure'   => [
             'order_status'    => 'cancelled', 
@@ -385,58 +409,66 @@ require_once __DIR__ . '/includes/sidebar.php';
                                         </div>
                                     </td>
                                     <td>
-                                        <span style="display: inline-block; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700; color: <?= $curBadge['color'] ?>; background: <?= $curBadge['bg'] ?>; border: 1px solid <?= $curBadge['color'] ?>;">
-                                            <?= $curBadge['label'] ?>
-                                        </span>
+                                        <?php if ($delStatus === 'delivered'): ?>
+                                            <span style="display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 9999px; font-size: 11.5px; font-weight: 800; color: #34d399; background: rgba(16,185,129,0.22); border: 1.5px solid #10b981; box-shadow: 0 0 12px rgba(16,185,129,0.35);">
+                                                🏁 7. Delivered &amp; Commissioned ✔
+                                            </span>
+                                        <?php else: ?>
+                                            <span style="display: inline-block; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700; color: <?= $curBadge['color'] ?>; background: <?= $curBadge['bg'] ?>; border: 1px solid <?= $curBadge['color'] ?>;">
+                                                <?= $curBadge['label'] ?>
+                                            </span>
+                                        <?php endif; ?>
+
                                         <?php if (!empty($ord['current_location'])): ?>
                                             <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">
                                                 📍 <?= e($ord['current_location']) ?>
                                             </div>
                                         <?php endif; ?>
 
-                                        <!-- Direct 1-Click Status Buttons (Pending, Success, Failure) -->
-                                        <div style="display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap;">
+                                        <!-- Quick Milestone Updater Dropdown (All 7 Factory Stages) -->
+                                        <form method="POST" style="margin-top: 8px;">
+                                            <input type="hidden" name="quick_status_change" value="1">
+                                            <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
+                                            <select name="quick_status" onchange="this.form.submit()" style="font-size: 11px; padding: 5px 8px; background: #060911; color: #38bdf8; border: 1.5px solid rgba(56,189,248,0.5); border-radius: 6px; cursor: pointer; width: 100%; font-weight: 600;">
+                                                <option value="" disabled>⚡ Change Factory Milestone...</option>
+                                                <option value="pending" <?= ($delStatus === 'pending') ? 'selected' : '' ?>>⏳ Pending Verification</option>
+                                                <option value="order_placed" <?= ($delStatus === 'order_placed') ? 'selected' : '' ?>>✅ 1. Order Confirmed &amp; Paid</option>
+                                                <option value="chassis_assembly" <?= ($delStatus === 'chassis_assembly') ? 'selected' : '' ?>>⚙️ 2. Chassis Assembly</option>
+                                                <option value="quality_testing" <?= ($delStatus === 'quality_testing') ? 'selected' : '' ?>>🔬 3. Run-Out QC Testing</option>
+                                                <option value="packed" <?= ($delStatus === 'packed') ? 'selected' : '' ?>>📦 4. Wooden Crate Packed</option>
+                                                <option value="dispatched" <?= ($delStatus === 'dispatched') ? 'selected' : '' ?>>🚚 5. Dispatched in Transit</option>
+                                                <option value="out_for_delivery" <?= ($delStatus === 'out_for_delivery') ? 'selected' : '' ?>>🚛 6. Out for Delivery</option>
+                                                <option value="delivered" <?= ($delStatus === 'delivered') ? 'selected' : '' ?>>🏁 7. Delivered &amp; Commissioned (૧૦૦% પૂર્ણ)</option>
+                                                <option value="failure" <?= ($delStatus === 'rejected') ? 'selected' : '' ?>>❌ Failure / Cancelled</option>
+                                            </select>
+                                        </form>
+
+                                        <!-- Direct 1-Click Status Quick Buttons -->
+                                        <div style="display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap;">
+                                            <?php if ($delStatus !== 'delivered'): ?>
+                                                <form method="POST" style="margin: 0; flex: 1;">
+                                                    <input type="hidden" name="quick_status_change" value="1">
+                                                    <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
+                                                    <input type="hidden" name="quick_status" value="delivered">
+                                                    <button type="submit" title="Mark as Delivered & Commissioned at Factory" style="width: 100%; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: #ffffff; border: 1px solid #34d399; border-radius: 4px; font-size: 10px; font-weight: 800; padding: 4px 6px; cursor: pointer; box-shadow: 0 2px 8px rgba(16,185,129,0.3);">
+                                                        🏁 Mark Delivered
+                                                    </button>
+                                                </form>
+                                            <?php else: ?>
+                                                <span style="font-size: 10px; color: #34d399; font-weight: 700; display: inline-flex; align-items: center; gap: 3px;">
+                                                    ✔ Fully Commissioned
+                                                </span>
+                                            <?php endif; ?>
+
                                             <form method="POST" style="margin: 0;">
                                                 <input type="hidden" name="quick_status_change" value="1">
                                                 <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
                                                 <input type="hidden" name="quick_status" value="pending">
-                                                <button type="submit" title="Mark Pending (પેન્ડિંગ)" style="background: <?= ($ord['order_status'] === 'pending') ? '#fbbf24' : 'rgba(251,191,36,0.15)' ?>; color: <?= ($ord['order_status'] === 'pending') ? '#060911' : '#fbbf24' ?>; border: 1px solid #fbbf24; border-radius: 4px; font-size: 10px; font-weight: 800; padding: 3px 6px; cursor: pointer;">
+                                                <button type="submit" title="Mark Pending" style="background: <?= ($ord['order_status'] === 'pending') ? '#fbbf24' : 'rgba(251,191,36,0.15)' ?>; color: <?= ($ord['order_status'] === 'pending') ? '#060911' : '#fbbf24' ?>; border: 1px solid #fbbf24; border-radius: 4px; font-size: 9.5px; font-weight: 800; padding: 4px 6px; cursor: pointer;">
                                                     ⏳ Pending
                                                 </button>
                                             </form>
-
-                                            <form method="POST" style="margin: 0;">
-                                                <input type="hidden" name="quick_status_change" value="1">
-                                                <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
-                                                <input type="hidden" name="quick_status" value="success">
-                                                <button type="submit" title="Mark Success / Paid (સક્સેસ)" style="background: <?= ($ord['payment_status'] === 'paid' && $ord['order_status'] !== 'cancelled') ? '#10b981' : 'rgba(16,185,129,0.15)' ?>; color: <?= ($ord['payment_status'] === 'paid' && $ord['order_status'] !== 'cancelled') ? '#060911' : '#34d399' ?>; border: 1px solid #10b981; border-radius: 4px; font-size: 10px; font-weight: 800; padding: 3px 6px; cursor: pointer;">
-                                                    ✅ Success
-                                                </button>
-                                            </form>
-
-                                            <form method="POST" style="margin: 0;">
-                                                <input type="hidden" name="quick_status_change" value="1">
-                                                <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
-                                                <input type="hidden" name="quick_status" value="failure">
-                                                <button type="submit" title="Mark Failure / Cancelled (ફેઇલ)" style="background: <?= ($ord['order_status'] === 'cancelled' || $ord['payment_status'] === 'failed') ? '#ef4444' : 'rgba(239,68,68,0.15)' ?>; color: <?= ($ord['order_status'] === 'cancelled' || $ord['payment_status'] === 'failed') ? '#fff' : '#f87171' ?>; border: 1px solid #ef4444; border-radius: 4px; font-size: 10px; font-weight: 800; padding: 3px 6px; cursor: pointer;">
-                                                    ❌ Failure
-                                                </button>
-                                            </form>
                                         </div>
-
-                                        <!-- Granular Logistics Selector Dropdown -->
-                                        <form method="POST" style="margin-top: 6px;">
-                                            <input type="hidden" name="quick_status_change" value="1">
-                                            <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
-                                            <select name="quick_status" onchange="this.form.submit()" style="font-size: 10.5px; padding: 4px 6px; background: #060911; color: #38bdf8; border: 1px solid rgba(56,189,248,0.4); border-radius: 6px; cursor: pointer; width: 100%;">
-                                                <option value="" disabled selected>⚡ Change Milestone...</option>
-                                                <option value="pending" <?= ($delStatus === 'pending') ? 'selected' : '' ?>>⏳ Pending Verification</option>
-                                                <option value="success" <?= ($delStatus === 'order_placed') ? 'selected' : '' ?>>✅ Payment Success / Placed</option>
-                                                <option value="dispatched" <?= ($delStatus === 'dispatched') ? 'selected' : '' ?>>🚚 Dispatched (In Transit)</option>
-                                                <option value="delivered" <?= ($delStatus === 'delivered') ? 'selected' : '' ?>>🏁 Successfully Delivered</option>
-                                                <option value="failure" <?= ($delStatus === 'rejected') ? 'selected' : '' ?>>❌ Failure / Cancelled</option>
-                                            </select>
-                                        </form>
                                     </td>
                                     <td>
                                         <div style="font-size: 12px; color: #fff; font-weight: 600;">
