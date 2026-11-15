@@ -74,14 +74,16 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
-.admin-sidebar::-webkit-scrollbar {
+.admin-sidebar::-webkit-scrollbar,
+.admin-sidebar *::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
+  background: transparent !important;
 }
 
 /* Global Custom Dark Scrollbars (Zero White Strip Anywhere) */

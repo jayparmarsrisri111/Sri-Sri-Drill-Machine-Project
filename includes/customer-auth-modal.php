@@ -1,4 +1,4 @@
-<!-- Customer Login & Registration Modal -->
+<!-- Customer Login & Registration Modal - Amazon-Style 2-Step OTP Authentication Flow -->
 <div id="customerAuthModal" class="quote-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 7, 13, 0.9); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 10005; align-items: center; justify-content: center; padding: 20px;">
     <div style="background: #090d16; border: 1.5px solid var(--accent-cyan); border-radius: 18px; width: 100%; max-width: 480px; box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 35px rgba(0, 229, 255, 0.25); overflow: hidden; animation: authPop 0.25s ease;">
         <!-- Header -->
@@ -13,8 +13,8 @@
             <button type="button" id="btnAuthModalClose" style="background:none; border:none; color:#94a3b8; font-size:26px; cursor:pointer; line-height:1;">&times;</button>
         </div>
 
-        <!-- Navigation Tabs -->
-        <div style="display: flex; background: rgba(11, 17, 32, 0.9); border-bottom: 1px solid rgba(255,255,255,0.08);">
+        <!-- Navigation Tabs (Only visible when not on OTP step) -->
+        <div id="authNavTabs" style="display: flex; background: rgba(11, 17, 32, 0.9); border-bottom: 1px solid rgba(255,255,255,0.08);">
             <button type="button" class="auth-tab-btn active" id="tabBtnLogin" style="flex: 1; padding: 12px; background: none; border: none; border-bottom: 2px solid var(--accent-cyan); color: #fff; font-weight: 700; font-size: 13.5px; cursor: pointer;">
                 🔑 Sign In (Login)
             </button>
@@ -24,55 +24,37 @@
         </div>
 
         <div style="padding: 22px;">
+            <!-- Dynamic Status / Alert Banner -->
             <div id="authNoticeMsg" style="display: none; padding: 10px 14px; border-radius: 8px; font-size: 12.5px; margin-bottom: 16px; text-align: center;"></div>
 
-            <!-- Tab 1: Login Form -->
-            <form id="formCustomerLogin">
-                <input type="hidden" name="action" id="loginActionType" value="login">
+            <!-- ========================================================
+                 FLOW 1: CUSTOMER LOGIN (AMAZON-STYLE 2-STEP)
+                 ======================================================== -->
+            <!-- Step 1: Enter Password -->
+            <form id="formLoginStep1">
+                <input type="hidden" name="action" value="login_step1">
                 <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
-
-                <!-- Login Mode Switch: Password vs OTP -->
-                <div style="display: flex; gap: 8px; margin-bottom: 14px; background: rgba(15, 23, 42, 0.7); padding: 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
-                    <button type="button" id="btnModePassword" style="flex: 1; padding: 6px; font-size: 12px; font-weight: 700; border-radius: 6px; border: none; background: var(--accent-cyan); color: #060911; cursor: pointer;">
-                        🔑 Password Login
-                    </button>
-                    <button type="button" id="btnModeOtp" style="flex: 1; padding: 6px; font-size: 12px; font-weight: 700; border-radius: 6px; border: none; background: transparent; color: #94a3b8; cursor: pointer;">
-                        📲 Email / SMS OTP
-                    </button>
-                </div>
 
                 <div class="form-group" style="margin-bottom: 14px;">
                     <label class="form-label" style="font-size: 12px;">Mobile Number or Email *</label>
-                    <input type="text" name="identifier" id="loginIdentifier" class="form-control" placeholder="e.g. 9825112345 or email" required style="font-size: 13px; padding: 10px 14px;">
+                    <input type="text" name="identifier" id="loginIdentifier" class="form-control" placeholder="e.g. 9825112345 or email@domain.com" required style="font-size: 13px; padding: 10px 14px;">
                 </div>
 
-                <!-- Password Field (Active in Password Mode) -->
-                <div id="loginPasswordGroup" class="form-group" style="margin-bottom: 16px;">
-                    <label class="form-label" style="font-size: 12px;">Password *</label>
-                    <input type="password" name="password" id="loginPassword" class="form-control" placeholder="••••••••" style="font-size: 13px; padding: 10px 14px;">
-                </div>
-
-                <!-- OTP Field Block (Active in OTP Mode) -->
-                <div id="loginOtpGroup" style="display: none; margin-bottom: 16px;">
-                    <div style="display: flex; gap: 8px; margin-bottom: 10px;">
-                        <button type="button" id="btnSendLoginOtp" class="btn" style="flex: 1; height: 38px; font-size: 12px; font-weight: 700; background: rgba(56, 189, 248, 0.18); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 8px; cursor: pointer;">
-                            📤 Send OTP (Email / SMS)
-                        </button>
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                        <label class="form-label" style="font-size: 12px; margin: 0;">Password *</label>
+                        <a href="javascript:void(0)" id="linkForgotPassword" style="font-size: 11.5px; color: var(--accent-cyan); text-decoration: none;">Forgot password?</a>
                     </div>
-                    <div id="otpInputRow" style="display: none;">
-                        <label class="form-label" style="font-size: 12px; color: #38bdf8;">Enter 6-Digit OTP *</label>
-                        <input type="text" id="loginOtpInput" name="otp" class="form-control" placeholder="6-digit code (e.g. 123456)" maxlength="6" style="font-size: 16px; font-weight: 800; letter-spacing: 4px; text-align: center; height: 42px; border-color: #00e5ff;">
-                        <div id="otpDemoHint" style="display: none; font-size: 11px; color: #34d399; margin-top: 6px; text-align: center;"></div>
-                    </div>
+                    <input type="password" name="password" id="loginPassword" class="form-control" placeholder="••••••••" required style="font-size: 13px; padding: 10px 14px;">
                 </div>
 
-                <button type="submit" id="btnSubmitLogin" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%);">
-                    Sign In to Continue
+                <button type="submit" id="btnSubmitLoginStep1" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); margin-top: 10px;">
+                    Verify Password &amp; Continue →
                 </button>
 
                 <div style="margin: 16px 0 12px; text-align: center; position: relative;">
                     <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 0;">
-                    <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #090d16; padding: 0 10px; font-size: 11px; color: #64748b;">OR DEMO LOGIN</span>
+                    <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #090d16; padding: 0 10px; font-size: 11px; color: #64748b;">OR FAST TESTING</span>
                 </div>
 
                 <button type="button" id="btnFastDemoLogin" class="btn btn-outline" style="width: 100%; padding: 10px; font-size: 12.5px; border-color: #34d399; color: #34d399; font-weight: 700;">
@@ -80,9 +62,43 @@
                 </button>
             </form>
 
-            <!-- Tab 2: Registration Form -->
-            <form id="formCustomerRegister" style="display: none;">
-                <input type="hidden" name="action" value="register">
+            <!-- Step 2: Enter 2FA OTP -->
+            <form id="formLoginStep2" style="display: none;">
+                <input type="hidden" name="action" value="login_step2">
+                <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
+
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <div style="font-size: 26px; margin-bottom: 4px;">🔐</div>
+                    <h4 style="color: #fff; font-size: 16px; font-weight: 800; margin: 0 0 4px 0;">Two-Step Verification</h4>
+                    <p id="loginOtpSubtitle" style="font-size: 12px; color: #94a3b8; margin: 0;">
+                        Enter the 6-digit OTP code sent to your registered mobile and email.
+                    </p>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 14px;">
+                    <label class="form-label" style="font-size: 12px; color: var(--accent-cyan); text-align: center; display: block;">Enter 6-Digit OTP *</label>
+                    <input type="text" name="otp" id="loginOtpInput" class="form-control" placeholder="••••••" maxlength="6" required style="font-size: 22px; font-weight: 800; letter-spacing: 8px; text-align: center; height: 48px; border-color: #00e5ff;">
+                    <div id="loginOtpDemoHint" style="display: none; font-size: 11px; color: #34d399; margin-top: 6px; text-align: center;"></div>
+                </div>
+
+                <button type="submit" id="btnSubmitLoginStep2" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 800; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: #34d399;">
+                    ✔ Verify OTP &amp; Sign In
+                </button>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 12px;">
+                    <a href="javascript:void(0)" id="btnBackToPassword" style="color: #94a3b8; text-decoration: none;">← Back to Password</a>
+                    <button type="button" id="btnResendLoginOtp" style="background: none; border: none; color: var(--accent-cyan); font-weight: 700; cursor: pointer; padding: 0;">
+                        Resend OTP (<span id="loginCountdown">60</span>s)
+                    </button>
+                </div>
+            </form>
+
+            <!-- ========================================================
+                 FLOW 2: CUSTOMER SIGN UP (AMAZON-STYLE 2-STEP)
+                 ======================================================== -->
+            <!-- Step 1: Details Form -->
+            <form id="formRegisterStep1" style="display: none;">
+                <input type="hidden" name="action" value="register_step1">
                 <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
@@ -123,26 +139,111 @@
                     <input type="text" name="address" class="form-control" placeholder="e.g. Shed No. 12, G.I.D.C." style="font-size: 12.5px; padding: 8px 10px;">
                 </div>
 
-                <div class="form-group" style="margin-bottom: 12px;">
+                <div class="form-group" style="margin-bottom: 14px;">
                     <label class="form-label" style="font-size: 11.5px;">Set Account Password *</label>
                     <input type="password" name="password" class="form-control" placeholder="Min. 4 characters" required style="font-size: 12.5px; padding: 8px 10px;">
                 </div>
 
-                <!-- OTP Verification on Sign Up -->
-                <div style="margin-bottom: 14px; padding: 10px; background: rgba(15, 23, 42, 0.7); border: 1px dashed rgba(52, 211, 153, 0.4); border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                        <span style="font-size: 11.5px; color: #34d399; font-weight: 700;">🔐 Email/SMS Verification</span>
-                        <button type="button" id="btnSendRegOtp" style="background: rgba(52, 211, 153, 0.15); border: 1px solid #34d399; color: #34d399; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px; cursor: pointer;">
-                            Send OTP
-                        </button>
-                    </div>
-                    <input type="text" id="regOtpInput" name="reg_otp" class="form-control" placeholder="Enter 6-digit OTP (Optional if test)" maxlength="6" style="font-size: 13px; text-align: center; height: 34px;">
-                    <div id="regOtpHint" style="display: none; font-size: 10.5px; color: #34d399; margin-top: 4px; text-align: center;"></div>
+                <button type="submit" id="btnSubmitRegisterStep1" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399;">
+                    Continue &amp; Verify Mobile/Email →
+                </button>
+            </form>
+
+            <!-- Step 2: Register OTP Verification -->
+            <form id="formRegisterStep2" style="display: none;">
+                <input type="hidden" name="action" value="register_step2">
+                <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
+
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <div style="font-size: 26px; margin-bottom: 4px;">📲</div>
+                    <h4 style="color: #fff; font-size: 16px; font-weight: 800; margin: 0 0 4px 0;">Verify Mobile &amp; Email</h4>
+                    <p id="regOtpSubtitle" style="font-size: 12px; color: #94a3b8; margin: 0;">
+                        Enter the 6-digit verification code sent to your phone and email.
+                    </p>
                 </div>
 
-                <button type="submit" id="btnSubmitRegister" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399;">
-                    Create Account &amp; Proceed
+                <div class="form-group" style="margin-bottom: 14px;">
+                    <label class="form-label" style="font-size: 12px; color: #34d399; text-align: center; display: block;">Enter 6-Digit Verification Code *</label>
+                    <input type="text" name="otp" id="regOtpInput" class="form-control" placeholder="••••••" maxlength="6" required style="font-size: 22px; font-weight: 800; letter-spacing: 8px; text-align: center; height: 48px; border-color: #10b981;">
+                    <div id="regOtpDemoHint" style="display: none; font-size: 11px; color: #34d399; margin-top: 6px; text-align: center;"></div>
+                </div>
+
+                <button type="submit" id="btnSubmitRegisterStep2" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399;">
+                    ✔ Confirm &amp; Create Account
                 </button>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 12px;">
+                    <a href="javascript:void(0)" id="btnBackToRegisterStep1" style="color: #94a3b8; text-decoration: none;">← Edit Details</a>
+                    <button type="button" id="btnResendRegOtp" style="background: none; border: none; color: #34d399; font-weight: 700; cursor: pointer; padding: 0;">
+                        Resend Code (<span id="regCountdown">60</span>s)
+                    </button>
+                </div>
+            </form>
+
+            <!-- ========================================================
+                 FLOW 3: FORGOT PASSWORD (2-STEP OTP RESET)
+                 ======================================================== -->
+            <!-- Forgot Step 1: Identifier -->
+            <form id="formForgotStep1" style="display: none;">
+                <input type="hidden" name="action" value="forgot_step1">
+                <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
+
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <div style="font-size: 26px; margin-bottom: 4px;">🔑</div>
+                    <h4 style="color: #fff; font-size: 16px; font-weight: 800; margin: 0 0 4px 0;">Reset Your Password</h4>
+                    <p style="font-size: 12px; color: #94a3b8; margin: 0;">
+                        Enter your registered Mobile Number or Email to receive a reset OTP.
+                    </p>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label class="form-label" style="font-size: 12px;">Mobile Number or Email *</label>
+                    <input type="text" name="identifier" id="forgotIdentifier" class="form-control" placeholder="e.g. 9825112345 or email@domain.com" required style="font-size: 13px; padding: 10px 14px;">
+                </div>
+
+                <button type="submit" id="btnSubmitForgotStep1" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 800; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-color: #f59e0b;">
+                    Send Password Reset OTP →
+                </button>
+
+                <div style="text-align: center; margin-top: 14px;">
+                    <a href="javascript:void(0)" id="btnBackToLoginFromForgot" style="font-size: 12.5px; color: #94a3b8; text-decoration: none;">← Back to Sign In</a>
+                </div>
+            </form>
+
+            <!-- Forgot Step 2: Enter OTP & New Password -->
+            <form id="formForgotStep2" style="display: none;">
+                <input type="hidden" name="action" value="forgot_step2">
+                <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
+
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <div style="font-size: 26px; margin-bottom: 4px;">🔐</div>
+                    <h4 style="color: #fff; font-size: 16px; font-weight: 800; margin: 0 0 4px 0;">Enter Reset Code</h4>
+                    <p id="forgotOtpSubtitle" style="font-size: 12px; color: #94a3b8; margin: 0;">
+                        Enter the OTP sent to your phone/email and set your new password.
+                    </p>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label class="form-label" style="font-size: 12px; color: #fbbf24; text-align: center; display: block;">Enter 6-Digit OTP *</label>
+                    <input type="text" name="otp" id="forgotOtpInput" class="form-control" placeholder="••••••" maxlength="6" required style="font-size: 22px; font-weight: 800; letter-spacing: 8px; text-align: center; height: 46px; border-color: #f59e0b;">
+                    <div id="forgotOtpDemoHint" style="display: none; font-size: 11px; color: #34d399; margin-top: 4px; text-align: center;"></div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 14px;">
+                    <label class="form-label" style="font-size: 12px;">Set New Password *</label>
+                    <input type="password" name="new_password" class="form-control" placeholder="Min. 4 characters" required style="font-size: 13px; padding: 10px 14px;">
+                </div>
+
+                <button type="submit" id="btnSubmitForgotStep2" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 800; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-color: #f59e0b;">
+                    ✔ Update Password &amp; Sign In
+                </button>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 12px;">
+                    <a href="javascript:void(0)" id="btnBackToForgotStep1" style="color: #94a3b8; text-decoration: none;">← Change Contact</a>
+                    <button type="button" id="btnResendForgotOtp" style="background: none; border: none; color: #fbbf24; font-weight: 700; cursor: pointer; padding: 0;">
+                        Resend Code (<span id="forgotCountdown">60</span>s)
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -152,50 +253,77 @@
 document.addEventListener('DOMContentLoaded', function() {
     const authModal = document.getElementById('customerAuthModal');
     const btnClose = document.getElementById('btnAuthModalClose');
+    const navTabs = document.getElementById('authNavTabs');
     const tabLogin = document.getElementById('tabBtnLogin');
     const tabRegister = document.getElementById('tabBtnRegister');
-    const formLogin = document.getElementById('formCustomerLogin');
-    const formRegister = document.getElementById('formCustomerRegister');
     const authNotice = document.getElementById('authNoticeMsg');
-    const btnDemo = document.getElementById('btnFastDemoLogin');
 
-    // Tab switching
-    if (tabLogin && tabRegister) {
-        tabLogin.addEventListener('click', function() {
-            tabLogin.classList.add('active');
-            tabLogin.style.borderBottomColor = 'var(--accent-cyan)';
-            tabLogin.style.color = '#fff';
-            tabRegister.classList.remove('active');
-            tabRegister.style.borderBottomColor = 'transparent';
-            tabRegister.style.color = '#94a3b8';
-            formLogin.style.display = 'block';
-            formRegister.style.display = 'none';
-            if (authNotice) authNotice.style.display = 'none';
-        });
+    const formLoginStep1 = document.getElementById('formLoginStep1');
+    const formLoginStep2 = document.getElementById('formLoginStep2');
+    const formRegisterStep1 = document.getElementById('formRegisterStep1');
+    const formRegisterStep2 = document.getElementById('formRegisterStep2');
+    const formForgotStep1 = document.getElementById('formForgotStep1');
+    const formForgotStep2 = document.getElementById('formForgotStep2');
 
-        tabRegister.addEventListener('click', function() {
-            tabRegister.classList.add('active');
-            tabRegister.style.borderBottomColor = '#10b981';
-            tabRegister.style.color = '#fff';
-            tabLogin.classList.remove('active');
-            tabLogin.style.borderBottomColor = 'transparent';
-            tabLogin.style.color = '#94a3b8';
-            formLogin.style.display = 'none';
-            formRegister.style.display = 'block';
-            if (authNotice) authNotice.style.display = 'none';
-        });
+    let loginTimer = null, regTimer = null, forgotTimer = null;
+
+    function hideAllForms() {
+        formLoginStep1.style.display = 'none';
+        formLoginStep2.style.display = 'none';
+        formRegisterStep1.style.display = 'none';
+        formRegisterStep2.style.display = 'none';
+        formForgotStep1.style.display = 'none';
+        formForgotStep2.style.display = 'none';
     }
 
+    function showNotice(text, type = 'info') {
+        if (!authNotice) return;
+        authNotice.style.display = 'block';
+        if (type === 'success') {
+            authNotice.style.background = 'rgba(16, 185, 129, 0.15)';
+            authNotice.style.border = '1px solid #10b981';
+            authNotice.style.color = '#34d399';
+        } else if (type === 'error') {
+            authNotice.style.background = 'rgba(239, 68, 68, 0.15)';
+            authNotice.style.border = '1px solid #ef4444';
+            authNotice.style.color = '#f87171';
+        } else {
+            authNotice.style.background = 'rgba(0, 229, 255, 0.15)';
+            authNotice.style.border = '1px solid #00e5ff';
+            authNotice.style.color = '#00e5ff';
+        }
+        authNotice.textContent = text;
+    }
+
+    function startCooldown(btnElem, spanElem, duration = 60) {
+        btnElem.disabled = true;
+        btnElem.style.opacity = '0.5';
+        let remaining = duration;
+        spanElem.textContent = remaining;
+
+        const interval = setInterval(function() {
+            remaining--;
+            spanElem.textContent = remaining;
+            if (remaining <= 0) {
+                clearInterval(interval);
+                btnElem.disabled = false;
+                btnElem.style.opacity = '1';
+                btnElem.innerHTML = 'Resend Code';
+            }
+        }, 1000);
+        return interval;
+    }
+
+    // Modal Opening & Closing
     window.openCustomerAuthModal = function(noticeText = '') {
         if (authModal) {
             authModal.style.display = 'flex';
-            if (noticeText && authNotice) {
-                authNotice.style.display = 'block';
-                authNotice.style.background = 'rgba(0, 229, 255, 0.15)';
-                authNotice.style.border = '1px solid #00e5ff';
-                authNotice.style.color = '#00e5ff';
-                authNotice.textContent = noticeText;
-            }
+            hideAllForms();
+            formLoginStep1.style.display = 'block';
+            if (navTabs) navTabs.style.display = 'flex';
+            tabLogin.click();
+            if (noticeText) showNotice(noticeText, 'info');
+            else if (authNotice) authNotice.style.display = 'none';
         }
     };
 
@@ -211,265 +339,390 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // OTP vs Password Mode Switching
-    const btnModePassword = document.getElementById('btnModePassword');
-    const btnModeOtp = document.getElementById('btnModeOtp');
-    const loginPasswordGroup = document.getElementById('loginPasswordGroup');
-    const loginOtpGroup = document.getElementById('loginOtpGroup');
-    const loginActionType = document.getElementById('loginActionType');
-    const loginPassword = document.getElementById('loginPassword');
-    const btnSendLoginOtp = document.getElementById('btnSendLoginOtp');
-    const otpInputRow = document.getElementById('otpInputRow');
-    const loginOtpInput = document.getElementById('loginOtpInput');
-    const otpDemoHint = document.getElementById('otpDemoHint');
-    const loginIdentifier = document.getElementById('loginIdentifier');
-
-    if (btnModePassword && btnModeOtp) {
-        btnModePassword.addEventListener('click', function() {
-            btnModePassword.style.background = 'var(--accent-cyan)';
-            btnModePassword.style.color = '#060911';
-            btnModeOtp.style.background = 'transparent';
-            btnModeOtp.style.color = '#94a3b8';
-            loginPasswordGroup.style.display = 'block';
-            loginOtpGroup.style.display = 'none';
-            loginActionType.value = 'login';
-            if (loginPassword) loginPassword.required = true;
-            if (loginOtpInput) loginOtpInput.required = false;
+    // Tabs switching
+    if (tabLogin && tabRegister) {
+        tabLogin.addEventListener('click', function() {
+            tabLogin.classList.add('active');
+            tabLogin.style.borderBottomColor = 'var(--accent-cyan)';
+            tabLogin.style.color = '#fff';
+            tabRegister.classList.remove('active');
+            tabRegister.style.borderBottomColor = 'transparent';
+            tabRegister.style.color = '#94a3b8';
+            hideAllForms();
+            formLoginStep1.style.display = 'block';
+            if (authNotice) authNotice.style.display = 'none';
         });
 
-        btnModeOtp.addEventListener('click', function() {
-            btnModeOtp.style.background = 'var(--accent-cyan)';
-            btnModeOtp.style.color = '#060911';
-            btnModePassword.style.background = 'transparent';
-            btnModePassword.style.color = '#94a3b8';
-            loginPasswordGroup.style.display = 'none';
-            loginOtpGroup.style.display = 'block';
-            loginActionType.value = 'verify_otp';
-            if (loginPassword) loginPassword.required = false;
-            if (loginOtpInput) loginOtpInput.required = true;
+        tabRegister.addEventListener('click', function() {
+            tabRegister.classList.add('active');
+            tabRegister.style.borderBottomColor = '#10b981';
+            tabRegister.style.color = '#fff';
+            tabLogin.classList.remove('active');
+            tabLogin.style.borderBottomColor = 'transparent';
+            tabLogin.style.color = '#94a3b8';
+            hideAllForms();
+            formRegisterStep1.style.display = 'block';
+            if (authNotice) authNotice.style.display = 'none';
         });
     }
 
-    // Send Login OTP via SMTP
-    if (btnSendLoginOtp) {
-        btnSendLoginOtp.addEventListener('click', function() {
-            const idVal = loginIdentifier ? loginIdentifier.value.trim() : '';
-            if (!idVal) {
-                alert('Please enter your Mobile Number or Email first.');
-                if (loginIdentifier) loginIdentifier.focus();
-                return;
-            }
-
-            btnSendLoginOtp.disabled = true;
-            btnSendLoginOtp.textContent = 'Sending OTP via SMTP...';
-
-            const fd = new FormData();
-            fd.append('action', 'send_otp');
-            fd.append('identifier', idVal);
-            fd.append('purpose', 'login');
-            fd.append('csrf_token', '<?= getCsrfToken() ?>');
-
-            fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
-                .then(r => r.json())
-                .then(data => {
-                    if (data.success) {
-                        btnSendLoginOtp.textContent = '✔ OTP Dispatched!';
-                        btnSendLoginOtp.style.borderColor = '#10b981';
-                        btnSendLoginOtp.style.color = '#34d399';
-                        if (otpInputRow) otpInputRow.style.display = 'block';
-                        if (loginOtpInput) {
-                            loginOtpInput.focus();
-                            if (data.demo_otp) {
-                                loginOtpInput.value = data.demo_otp;
-                            }
-                        }
-                        if (otpDemoHint) {
-                            otpDemoHint.style.display = 'block';
-                            otpDemoHint.innerHTML = '✔ OTP sent to email! Demo OTP: <strong>' + (data.demo_otp || '123456') + '</strong>';
-                        }
-                        authNotice.style.display = 'block';
-                        authNotice.style.background = 'rgba(16, 185, 129, 0.15)';
-                        authNotice.style.border = '1px solid #10b981';
-                        authNotice.style.color = '#34d399';
-                        authNotice.textContent = data.message;
-                    } else {
-                        alert(data.message);
-                        btnSendLoginOtp.disabled = false;
-                        btnSendLoginOtp.textContent = '📤 Send OTP (Email / SMS)';
-                    }
-                })
-                .catch(err => {
-                    alert('Network error while dispatching OTP.');
-                    btnSendLoginOtp.disabled = false;
-                    btnSendLoginOtp.textContent = '📤 Send OTP (Email / SMS)';
-                });
-        });
-    }
-
-    // Send Registration OTP via SMTP
-    const btnSendRegOtp = document.getElementById('btnSendRegOtp');
-    const regPhone = document.getElementById('regPhone');
-    const regEmail = document.getElementById('regEmail');
-    const regOtpInput = document.getElementById('regOtpInput');
-    const regOtpHint = document.getElementById('regOtpHint');
-
-    if (btnSendRegOtp) {
-        btnSendRegOtp.addEventListener('click', function() {
-            const ph = regPhone ? regPhone.value.trim() : '';
-            const em = regEmail ? regEmail.value.trim() : '';
-            if (!ph && !em) {
-                alert('Please enter Mobile Number and Email to receive OTP.');
-                return;
-            }
-
-            btnSendRegOtp.disabled = true;
-            btnSendRegOtp.textContent = 'Sending...';
-
-            const fd = new FormData();
-            fd.append('action', 'send_otp');
-            fd.append('phone', ph);
-            fd.append('email', em);
-            fd.append('purpose', 'register');
-            fd.append('csrf_token', '<?= getCsrfToken() ?>');
-
-            fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
-                .then(r => r.json())
-                .then(data => {
-                    if (data.success) {
-                        btnSendRegOtp.textContent = '✔ Sent';
-                        if (regOtpInput && data.demo_otp) {
-                            regOtpInput.value = data.demo_otp;
-                        }
-                        if (regOtpHint) {
-                            regOtpHint.style.display = 'block';
-                            regOtpHint.innerHTML = '✔ OTP: <strong>' + (data.demo_otp || '123456') + '</strong>';
-                        }
-                    } else {
-                        alert(data.message);
-                        btnSendRegOtp.disabled = false;
-                        btnSendRegOtp.textContent = 'Send OTP';
-                    }
-                })
-                .catch(() => {
-                    btnSendRegOtp.disabled = false;
-                    btnSendRegOtp.textContent = 'Send OTP';
-                });
-        });
-    }
-
-    // Global Fast 1-Click Demo Login Function
-    window.quickCustomerDemoLogin = function() {
-        if (btnDemo) {
-            btnDemo.click();
-            return;
-        }
-        const fd = new FormData();
-        fd.append('action', 'demo_login');
-        fd.append('csrf_token', '<?= getCsrfToken() ?>');
-        fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
-            .then(r => r.json())
-            .then(data => { window.location.reload(); })
-            .catch(() => { window.location.reload(); });
-    };
-
-    // Fast 1-Click Demo Login
+    // 1-Click Fast Demo Login
+    const btnDemo = document.getElementById('btnFastDemoLogin');
     if (btnDemo) {
         btnDemo.addEventListener('click', function() {
             btnDemo.disabled = true;
-            btnDemo.textContent = 'Logging in as Demo Customer...';
+            btnDemo.textContent = 'Signing in Kishorbhai...';
             const fd = new FormData();
             fd.append('action', 'demo_login');
             fd.append('csrf_token', '<?= getCsrfToken() ?>');
 
             fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
                 .then(r => r.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.reload();
+                .then(d => {
+                    if (d.success) {
+                        showNotice('✔ ' + d.message, 'success');
+                        setTimeout(() => location.reload(), 700);
                     } else {
-                        alert(data.message);
                         btnDemo.disabled = false;
-                        btnDemo.textContent = '⚡ 1-Click Demo Login';
+                        btnDemo.textContent = '⚡ 1-Click Demo Login (Kishorbhai Parmar)';
+                        showNotice(d.message, 'error');
                     }
                 })
-                .catch(() => { window.location.reload(); });
+                .catch(() => {
+                    btnDemo.disabled = false;
+                    btnDemo.textContent = '⚡ 1-Click Demo Login (Kishorbhai Parmar)';
+                });
         });
     }
 
-    // Handle Login Submit
-    if (formLogin) {
-        formLogin.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnSubmitLogin');
-            btn.disabled = true;
-            btn.textContent = 'Verifying Credentials...';
+    // -------------------------------------------------------------
+    // FLOW 1: LOGIN (STEP 1: PASSWORD -> STEP 2: OTP)
+    // -------------------------------------------------------------
+    formLoginStep1.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmitLoginStep1');
+        btn.disabled = true;
+        btn.textContent = 'Verifying Password...';
 
-            fetch('<?= BASE_URL ?>/auth-customer.php', {
-                method: 'POST',
-                body: new FormData(formLogin)
-            })
+        const fd = new FormData(formLoginStep1);
+        fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
             .then(r => r.json())
             .then(data => {
-                if (data.success) {
-                    authNotice.style.display = 'block';
-                    authNotice.style.background = 'rgba(16, 185, 129, 0.2)';
-                    authNotice.style.border = '1px solid #10b981';
-                    authNotice.style.color = '#34d399';
-                    authNotice.textContent = data.message;
-                    setTimeout(function() { window.location.reload(); }, 800);
+                btn.disabled = false;
+                btn.textContent = 'Verify Password & Continue →';
+                if (data.success && data.step === 'otp_required') {
+                    // Password is correct! Amazon-style transition to Step 2 OTP
+                    formLoginStep1.style.display = 'none';
+                    if (navTabs) navTabs.style.display = 'none';
+                    formLoginStep2.style.display = 'block';
+
+                    const subtitle = document.getElementById('loginOtpSubtitle');
+                    if (subtitle && data.masked_contact) {
+                        subtitle.innerHTML = 'Enter the 6-digit OTP code sent to <strong style="color:#00e5ff;">' + data.masked_contact + '</strong>';
+                    }
+
+                    const otpInput = document.getElementById('loginOtpInput');
+                    if (otpInput) {
+                        otpInput.value = data.demo_otp || '';
+                        otpInput.focus();
+                    }
+
+                    const hint = document.getElementById('loginOtpDemoHint');
+                    if (hint && data.demo_otp) {
+                        hint.style.display = 'block';
+                        hint.innerHTML = '✔ OTP dispatched! Testing PIN: <strong>' + data.demo_otp + '</strong>';
+                    }
+
+                    showNotice(data.message, 'success');
+                    loginTimer = startCooldown(document.getElementById('btnResendLoginOtp'), document.getElementById('loginCountdown'));
                 } else {
-                    authNotice.style.display = 'block';
-                    authNotice.style.background = 'rgba(239, 68, 68, 0.2)';
-                    authNotice.style.border = '1px solid #ef4444';
-                    authNotice.style.color = '#f87171';
-                    authNotice.textContent = data.message;
-                    btn.disabled = false;
-                    btn.textContent = 'Sign In to Continue';
+                    showNotice(data.message || 'Invalid Mobile/Email or Password.', 'error');
                 }
             })
             .catch(() => {
                 btn.disabled = false;
-                btn.textContent = 'Sign In to Continue';
+                btn.textContent = 'Verify Password & Continue →';
+                showNotice('Server connection error. Please try again.', 'error');
             });
-        });
-    }
+    });
 
-    // Handle Register Submit
-    if (formRegister) {
-        formRegister.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnSubmitRegister');
-            btn.disabled = true;
-            btn.textContent = 'Creating Account...';
+    formLoginStep2.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmitLoginStep2');
+        btn.disabled = true;
+        btn.textContent = 'Verifying OTP...';
 
-            fetch('<?= BASE_URL ?>/auth-customer.php', {
-                method: 'POST',
-                body: new FormData(formRegister)
-            })
+        const fd = new FormData(formLoginStep2);
+        fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
             .then(r => r.json())
             .then(data => {
                 if (data.success) {
-                    authNotice.style.display = 'block';
-                    authNotice.style.background = 'rgba(16, 185, 129, 0.2)';
-                    authNotice.style.border = '1px solid #10b981';
-                    authNotice.style.color = '#34d399';
-                    authNotice.textContent = data.message;
-                    setTimeout(function() { window.location.reload(); }, 800);
+                    showNotice('✔ ' + data.message, 'success');
+                    setTimeout(() => location.reload(), 700);
                 } else {
-                    authNotice.style.display = 'block';
-                    authNotice.style.background = 'rgba(239, 68, 68, 0.2)';
-                    authNotice.style.border = '1px solid #ef4444';
-                    authNotice.style.color = '#f87171';
-                    authNotice.textContent = data.message;
                     btn.disabled = false;
-                    btn.textContent = 'Create Account & Proceed';
+                    btn.textContent = '✔ Verify OTP & Sign In';
+                    showNotice(data.message || 'Incorrect OTP code.', 'error');
                 }
             })
             .catch(() => {
                 btn.disabled = false;
-                btn.textContent = 'Create Account & Proceed';
+                btn.textContent = '✔ Verify OTP & Sign In';
+                showNotice('Server connection error.', 'error');
             });
-        });
-    }
+    });
+
+    document.getElementById('btnBackToPassword').addEventListener('click', function() {
+        formLoginStep2.style.display = 'none';
+        formLoginStep1.style.display = 'block';
+        if (navTabs) navTabs.style.display = 'flex';
+        if (authNotice) authNotice.style.display = 'none';
+    });
+
+    document.getElementById('btnResendLoginOtp').addEventListener('click', function() {
+        const fd = new FormData();
+        fd.append('action', 'resend_otp');
+        fd.append('flow', 'login');
+        fd.append('csrf_token', '<?= getCsrfToken() ?>');
+
+        fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(d => {
+                if (d.success) {
+                    showNotice(d.message, 'success');
+                    const otpInput = document.getElementById('loginOtpInput');
+                    if (otpInput && d.demo_otp) otpInput.value = d.demo_otp;
+                    loginTimer = startCooldown(document.getElementById('btnResendLoginOtp'), document.getElementById('loginCountdown'));
+                } else {
+                    showNotice(d.message, 'error');
+                }
+            });
+    });
+
+    // -------------------------------------------------------------
+    // FLOW 2: SIGN UP (STEP 1: DETAILS -> STEP 2: OTP)
+    // -------------------------------------------------------------
+    formRegisterStep1.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmitRegisterStep1');
+        btn.disabled = true;
+        btn.textContent = 'Validating & Sending OTP...';
+
+        const fd = new FormData(formRegisterStep1);
+        fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.textContent = 'Continue & Verify Mobile/Email →';
+                if (data.success && data.step === 'otp_required') {
+                    formRegisterStep1.style.display = 'none';
+                    if (navTabs) navTabs.style.display = 'none';
+                    formRegisterStep2.style.display = 'block';
+
+                    const subtitle = document.getElementById('regOtpSubtitle');
+                    if (subtitle && data.masked_contact) {
+                        subtitle.innerHTML = 'Enter the 6-digit code sent to <strong style="color:#10b981;">' + data.masked_contact + '</strong>';
+                    }
+
+                    const otpInput = document.getElementById('regOtpInput');
+                    if (otpInput) {
+                        otpInput.value = data.demo_otp || '';
+                        otpInput.focus();
+                    }
+
+                    const hint = document.getElementById('regOtpDemoHint');
+                    if (hint && data.demo_otp) {
+                        hint.style.display = 'block';
+                        hint.innerHTML = '✔ OTP code dispatched! Testing PIN: <strong>' + data.demo_otp + '</strong>';
+                    }
+
+                    showNotice(data.message, 'success');
+                    regTimer = startCooldown(document.getElementById('btnResendRegOtp'), document.getElementById('regCountdown'));
+                } else {
+                    showNotice(data.message || 'Validation error.', 'error');
+                }
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.textContent = 'Continue & Verify Mobile/Email →';
+                showNotice('Server connection error.', 'error');
+            });
+    });
+
+    formRegisterStep2.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmitRegisterStep2');
+        btn.disabled = true;
+        btn.textContent = 'Activating Account...';
+
+        const fd = new FormData(formRegisterStep2);
+        fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    showNotice('✔ ' + data.message, 'success');
+                    setTimeout(() => location.reload(), 700);
+                } else {
+                    btn.disabled = false;
+                    btn.textContent = '✔ Confirm & Create Account';
+                    showNotice(data.message || 'Incorrect verification code.', 'error');
+                }
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.textContent = '✔ Confirm & Create Account';
+                showNotice('Server connection error.', 'error');
+            });
+    });
+
+    document.getElementById('btnBackToRegisterStep1').addEventListener('click', function() {
+        formRegisterStep2.style.display = 'none';
+        formRegisterStep1.style.display = 'block';
+        if (navTabs) navTabs.style.display = 'flex';
+        if (authNotice) authNotice.style.display = 'none';
+    });
+
+    document.getElementById('btnResendRegOtp').addEventListener('click', function() {
+        const fd = new FormData();
+        fd.append('action', 'resend_otp');
+        fd.append('flow', 'register');
+        fd.append('csrf_token', '<?= getCsrfToken() ?>');
+
+        fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(d => {
+                if (d.success) {
+                    showNotice(d.message, 'success');
+                    const otpInput = document.getElementById('regOtpInput');
+                    if (otpInput && d.demo_otp) otpInput.value = d.demo_otp;
+                    regTimer = startCooldown(document.getElementById('btnResendRegOtp'), document.getElementById('regCountdown'));
+                } else {
+                    showNotice(d.message, 'error');
+                }
+            });
+    });
+
+    // -------------------------------------------------------------
+    // FLOW 3: FORGOT PASSWORD (STEP 1: CONTACT -> STEP 2: OTP + NEW PASS)
+    // -------------------------------------------------------------
+    document.getElementById('linkForgotPassword').addEventListener('click', function() {
+        hideAllForms();
+        if (navTabs) navTabs.style.display = 'none';
+        formForgotStep1.style.display = 'block';
+        if (authNotice) authNotice.style.display = 'none';
+        const loginId = document.getElementById('loginIdentifier');
+        const forgotId = document.getElementById('forgotIdentifier');
+        if (loginId && forgotId && loginId.value) forgotId.value = loginId.value;
+    });
+
+    document.getElementById('btnBackToLoginFromForgot').addEventListener('click', function() {
+        hideAllForms();
+        if (navTabs) navTabs.style.display = 'flex';
+        formLoginStep1.style.display = 'block';
+        if (authNotice) authNotice.style.display = 'none';
+    });
+
+    formForgotStep1.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmitForgotStep1');
+        btn.disabled = true;
+        btn.textContent = 'Sending Reset OTP...';
+
+        const fd = new FormData(formForgotStep1);
+        fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.textContent = 'Send Password Reset OTP →';
+                if (data.success && data.step === 'otp_required') {
+                    formForgotStep1.style.display = 'none';
+                    formForgotStep2.style.display = 'block';
+
+                    const subtitle = document.getElementById('forgotOtpSubtitle');
+                    if (subtitle && data.masked_contact) {
+                        subtitle.innerHTML = 'Enter the reset code sent to <strong style="color:#fbbf24;">' + data.masked_contact + '</strong> and choose a new password.';
+                    }
+
+                    const otpInput = document.getElementById('forgotOtpInput');
+                    if (otpInput) {
+                        otpInput.value = data.demo_otp || '';
+                        otpInput.focus();
+                    }
+
+                    const hint = document.getElementById('forgotOtpDemoHint');
+                    if (hint && data.demo_otp) {
+                        hint.style.display = 'block';
+                        hint.innerHTML = '✔ Reset PIN dispatched! Testing PIN: <strong>' + data.demo_otp + '</strong>';
+                    }
+
+                    showNotice(data.message, 'success');
+                    forgotTimer = startCooldown(document.getElementById('btnResendForgotOtp'), document.getElementById('forgotCountdown'));
+                } else {
+                    showNotice(data.message || 'Account not found.', 'error');
+                }
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.textContent = 'Send Password Reset OTP →';
+                showNotice('Server connection error.', 'error');
+            });
+    });
+
+    formForgotStep2.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmitForgotStep2');
+        btn.disabled = true;
+        btn.textContent = 'Updating Password...';
+
+        const fd = new FormData(formForgotStep2);
+        fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.textContent = '✔ Update Password & Sign In';
+                if (data.success) {
+                    showNotice('✔ ' + data.message, 'success');
+                    setTimeout(() => {
+                        hideAllForms();
+                        if (navTabs) navTabs.style.display = 'flex';
+                        formLoginStep1.style.display = 'block';
+                        tabLogin.click();
+                    }, 1200);
+                } else {
+                    showNotice(data.message || 'Error updating password.', 'error');
+                }
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.textContent = '✔ Update Password & Sign In';
+                showNotice('Server connection error.', 'error');
+            });
+    });
+
+    document.getElementById('btnBackToForgotStep1').addEventListener('click', function() {
+        formForgotStep2.style.display = 'none';
+        formForgotStep1.style.display = 'block';
+        if (authNotice) authNotice.style.display = 'none';
+    });
+
+    document.getElementById('btnResendForgotOtp').addEventListener('click', function() {
+        const fd = new FormData();
+        fd.append('action', 'resend_otp');
+        fd.append('flow', 'forgot');
+        fd.append('csrf_token', '<?= getCsrfToken() ?>');
+
+        fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(d => {
+                if (d.success) {
+                    showNotice(d.message, 'success');
+                    const otpInput = document.getElementById('forgotOtpInput');
+                    if (otpInput && d.demo_otp) otpInput.value = d.demo_otp;
+                    forgotTimer = startCooldown(document.getElementById('btnResendForgotOtp'), document.getElementById('forgotCountdown'));
+                } else {
+                    showNotice(d.message, 'error');
+                }
+            });
+    });
 });
 </script>

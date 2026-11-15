@@ -1,5 +1,5 @@
 <!-- Admin Left Sidebar -->
-<aside class="admin-sidebar" id="adminSidebar">
+<aside class="admin-sidebar" id="adminSidebar" style="scrollbar-width: none !important; -ms-overflow-style: none !important;">
     <div class="sidebar-header" style="justify-content: space-between; padding: 14px 16px;">
         <a href="<?= BASE_URL ?>/admin/dashboard.php" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
             <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha Brand" style="height: 38px; width: 38px; border-radius: 50%; border: 1.5px solid var(--accent-cyan); object-fit: contain;">

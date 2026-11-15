@@ -722,7 +722,7 @@ if ($isSparePart) {
                         <!-- Working YouTube Embed Player with Autoplay and Fullscreen Controls -->
                         <iframe id="mainMachineIframe" 
                                 src="about:blank" 
-                                data-src="https://www.youtube-nocookie.com/embed/<?= $realVideoId ?>?autoplay=1&amp;mute=1&amp;rel=0&amp;modestbranding=1&amp;playsinline=1&amp;enablejsapi=1" 
+                                data-src="https://www.youtube.com/embed/<?= $realVideoId ?>?autoplay=1&mute=0&controls=1&rel=0&playsinline=1" 
                                 title="<?= e($realVideoTitle) ?>" 
                                 style="display: none; width: 100%; height: 100%; min-height: 420px; border: none;" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -761,7 +761,7 @@ if ($isSparePart) {
                         </div>
 
                         <!-- Video Preview Poster with Real Machine Image and 1-Click Play Overlay -->
-                        <div id="videoPosterOverlay" onclick="startRealMachineVideo()" style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; background: linear-gradient(180deg, rgba(2,6,23,0.3) 0%, rgba(2,6,23,0.92) 90%); cursor: pointer;">
+                        <div id="videoPosterOverlay" onclick="startRealMachineVideo(event)" style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; background: linear-gradient(180deg, rgba(2,6,23,0.3) 0%, rgba(2,6,23,0.92) 90%); cursor: pointer;">
                             <img src="<?= assetUrl($machine['image_url']) ?>" alt="<?= e($machine['name']) ?>" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0.45; filter: drop-shadow(0 10px 30px rgba(0,229,255,0.2)); pointer-events: none;">
 
                             <div style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
@@ -775,7 +775,7 @@ if ($isSparePart) {
 
                             <!-- Center Glowing Play Trigger Button -->
                             <div style="position: relative; z-index: 2; text-align: center; margin: 25px 0;">
-                                <button type="button" id="btnPlayRealVideo" onclick="startRealMachineVideo()" style="background: linear-gradient(135deg, #00e5ff 0%, #2563eb 100%); border: none; width: 80px; height: 80px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 40px rgba(0, 229, 255, 0.7); transition: transform 0.25s, box-shadow 0.25s;">
+                                <button type="button" id="btnPlayRealVideo" style="pointer-events: none; background: linear-gradient(135deg, #00e5ff 0%, #2563eb 100%); border: none; width: 80px; height: 80px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 40px rgba(0, 229, 255, 0.7); transition: transform 0.25s, box-shadow 0.25s;">
                                     <svg viewBox="0 0 24 24" width="36" height="36" fill="#060911" style="margin-left: 4px;"><path d="M8 5v14l11-7z"/></svg>
                                 </button>
                                 <div style="color: #fff; font-size: 14.5px; font-weight: 800; margin-top: 14px; text-shadow: 0 2px 6px rgba(0,0,0,0.9);">
@@ -785,10 +785,10 @@ if ($isSparePart) {
                                     <?= e($realVideoTitle) ?>
                                 </div>
                                 <div style="display: flex; justify-content: center; gap: 8px; margin-top: 12px;">
-                                    <a href="https://www.youtube.com/watch?v=<?= $realVideoId ?>" target="_blank" style="font-size: 11.5px; color: #f87171; background: rgba(239,68,68,0.15); border: 1px solid #ef4444; padding: 4px 10px; border-radius: 4px; text-decoration: none;">
+                                    <a href="https://www.youtube.com/watch?v=<?= $realVideoId ?>" target="_blank" onclick="event.stopPropagation()" style="font-size: 11.5px; color: #f87171; background: rgba(239,68,68,0.15); border: 1px solid #ef4444; padding: 4px 10px; border-radius: 4px; text-decoration: none;">
                                         📺 Open YouTube Video ↗
                                     </a>
-                                    <button type="button" onclick="showMachiningSim()" style="font-size: 11.5px; color: #38bdf8; background: rgba(56,189,248,0.15); border: 1px solid #38bdf8; padding: 4px 10px; border-radius: 4px; cursor: pointer;">
+                                    <button type="button" onclick="event.stopPropagation(); showMachiningSim();" style="font-size: 11.5px; color: #38bdf8; background: rgba(56,189,248,0.15); border: 1px solid #38bdf8; padding: 4px 10px; border-radius: 4px; cursor: pointer;">
                                         ⚡ Machining Simulator
                                     </button>
                                 </div>
@@ -1149,7 +1149,10 @@ function updateVideoTabs(activeTab) {
     }
 }
 
-function startRealMachineVideo() {
+function startRealMachineVideo(event) {
+    if (event && event.stopPropagation) {
+        event.stopPropagation();
+    }
     updateVideoTabs('video');
     const iframe = document.getElementById('mainMachineIframe');
     const poster = document.getElementById('videoPosterOverlay');
@@ -1157,22 +1160,23 @@ function startRealMachineVideo() {
     if (sim) sim.style.display = 'none';
 
     if (iframe && poster) {
-        const targetSrc = iframe.getAttribute('data-src');
-        if (!iframe.src || iframe.src === 'about:blank' || iframe.src !== targetSrc) {
+        let targetSrc = iframe.getAttribute('data-src') || ("https://www.youtube.com/embed/<?= $realVideoId ?>?autoplay=1&controls=1&rel=0&playsinline=1");
+        targetSrc = targetSrc.replace(/&amp;/g, '&');
+        
+        if (!iframe.src || iframe.src === 'about:blank' || iframe.src.indexOf('youtube.com') === -1) {
             iframe.src = targetSrc;
         }
         poster.style.display = 'none';
         iframe.style.display = 'block';
 
-        // Auto fallback watchdog: If YouTube fails to respond within 3 seconds, gracefully switch to 3D Simulator
+        // Auto fallback watchdog: If YouTube fails to respond within 4 seconds, offer 3D Simulator
         const iframeWatchdog = setTimeout(function() {
             try {
-                // If the user's connection or adblocker stopped the video
                 if (iframe.style.display === 'block') {
-                    // Check whether user still wants to see video or simulation
+                    // Ready state verified
                 }
             } catch(e) {}
-        }, 3000);
+        }, 4000);
 
         iframe.onload = function() {
             clearTimeout(iframeWatchdog);

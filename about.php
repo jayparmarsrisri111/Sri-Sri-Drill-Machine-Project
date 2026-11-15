@@ -237,22 +237,32 @@ require_once __DIR__ . '/includes/navbar.php';
                     Visionary founder of Shree Varsha Engineering Works with <strong>25+ years</strong> of hands-on mastery in seasoned Grade-25 cast iron metallurgy, heavy boring machines, and industrial drill press engineering across Bhavnagar's machine-tool cluster.
                 </p>
 
-                <!-- Contact Info Box -->
-                <div style="background: rgba(6, 10, 20, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 13px 16px; display: flex; flex-direction: column; gap: 9px; font-size: 13px; margin-bottom: 18px;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
-                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px; font-size: 12px;">
-                            <svg viewBox="0 0 24 24" width="14" height="14" fill="#34d399"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24 11.72 11.72 0 003.68.59 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.68 1 1 0 01-.24 1.02l-2.23 2.09z"/></svg>
-                            Direct Phone:
-                        </span>
-                        <a href="tel:+919824913555" style="color: #34d399; font-weight: 800; text-decoration: none; font-family: 'Space Grotesk', monospace; font-size: 13.5px;">+91 98249 13555</a>
-                    </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
-                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px; font-size: 12px;">
-                            <svg viewBox="0 0 24 24" width="14" height="14" fill="#38bdf8"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                            Email Address:
-                        </span>
-                        <a href="mailto:varshaengineeringworks@gmail.com" style="color: #38bdf8; font-weight: 600; text-decoration: none; word-break: break-all; font-size: 12px;">varshaengineeringworks@gmail.com</a>
-                    </div>
+                <!-- Sleek Executive Direct Contact Micro-Cards -->
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px;">
+                    <a href="tel:+919824913555" style="display: flex; align-items: center; justify-content: space-between; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px 14px; border-radius: 10px; text-decoration: none; transition: all 0.2s ease;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 32px; height: 32px; border-radius: 8px; background: rgba(16, 185, 129, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="#34d399"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24 11.72 11.72 0 003.68.59 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.68 1 1 0 01-.24 1.02l-2.23 2.09z"/></svg>
+                            </span>
+                            <div>
+                                <div style="font-size: 10.5px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Direct Phone</div>
+                                <div style="color: #34d399; font-weight: 800; font-family: 'Space Grotesk', monospace; font-size: 13.5px;">+91 98249 13555</div>
+                            </div>
+                        </div>
+                        <span style="font-size: 11px; font-weight: 800; color: #34d399; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">Call ↗</span>
+                    </a>
+                    <a href="mailto:varshaengineeringworks@gmail.com" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.3); padding: 10px 14px; border-radius: 10px; text-decoration: none; transition: all 0.2s ease;">
+                        <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                            <span style="width: 32px; height: 32px; border-radius: 8px; background: rgba(0, 229, 255, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="#38bdf8"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            </span>
+                            <div style="min-width: 0;">
+                                <div style="font-size: 10.5px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Official Email</div>
+                                <div style="color: #38bdf8; font-weight: 700; font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">varshaengineeringworks@gmail.com</div>
+                            </div>
+                        </div>
+                        <span style="font-size: 11px; font-weight: 800; color: #38bdf8; background: rgba(0, 229, 255, 0.2); border: 1px solid #00e5ff; padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; margin-left: 8px;">Mail ↗</span>
+                    </a>
                 </div>
 
                 <!-- WhatsApp CTA Button -->
@@ -302,22 +312,32 @@ require_once __DIR__ . '/includes/navbar.php';
                     Specialized in precision spindle runout calibration (&lt;0.015mm), 20MnCr5 hardened alloy gear tooth profiling, 12D digital machinery simulations, and managing client consignments &amp; verified GST tax documentation.
                 </p>
 
-                <!-- Contact Info Box -->
-                <div style="background: rgba(6, 10, 20, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 13px 16px; display: flex; flex-direction: column; gap: 9px; font-size: 13px; margin-bottom: 18px;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
-                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px; font-size: 12px;">
-                            <svg viewBox="0 0 24 24" width="14" height="14" fill="#34d399"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24 11.72 11.72 0 003.68.59 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.68 1 1 0 01-.24 1.02l-2.23 2.09z"/></svg>
-                            Direct Phone:
-                        </span>
-                        <a href="tel:+919714611331" style="color: #34d399; font-weight: 800; text-decoration: none; font-family: 'Space Grotesk', monospace; font-size: 13.5px;">+91 97146 11331</a>
-                    </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
-                        <span style="color: #94a3b8; display: inline-flex; align-items: center; gap: 6px; font-size: 12px;">
-                            <svg viewBox="0 0 24 24" width="14" height="14" fill="#38bdf8"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                            Email Address:
-                        </span>
-                        <a href="mailto:jayparmar@varshamachines.com" style="color: #38bdf8; font-weight: 600; text-decoration: none; word-break: break-all; font-size: 12px;">jayparmar@varshamachines.com</a>
-                    </div>
+                <!-- Sleek Executive Direct Contact Micro-Cards -->
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px;">
+                    <a href="tel:+919714611331" style="display: flex; align-items: center; justify-content: space-between; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px 14px; border-radius: 10px; text-decoration: none; transition: all 0.2s ease;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 32px; height: 32px; border-radius: 8px; background: rgba(16, 185, 129, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="#34d399"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24 11.72 11.72 0 003.68.59 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.68 1 1 0 01-.24 1.02l-2.23 2.09z"/></svg>
+                            </span>
+                            <div>
+                                <div style="font-size: 10.5px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Direct Phone</div>
+                                <div style="color: #34d399; font-weight: 800; font-family: 'Space Grotesk', monospace; font-size: 13.5px;">+91 97146 11331</div>
+                            </div>
+                        </div>
+                        <span style="font-size: 11px; font-weight: 800; color: #34d399; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">Call ↗</span>
+                    </a>
+                    <a href="mailto:jayparmar@varshamachines.com" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.3); padding: 10px 14px; border-radius: 10px; text-decoration: none; transition: all 0.2s ease;">
+                        <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                            <span style="width: 32px; height: 32px; border-radius: 8px; background: rgba(0, 229, 255, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="#38bdf8"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            </span>
+                            <div style="min-width: 0;">
+                                <div style="font-size: 10.5px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Official Email</div>
+                                <div style="color: #38bdf8; font-weight: 700; font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">jayparmar@varshamachines.com</div>
+                            </div>
+                        </div>
+                        <span style="font-size: 11px; font-weight: 800; color: #38bdf8; background: rgba(0, 229, 255, 0.2); border: 1px solid #00e5ff; padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; margin-left: 8px;">Mail ↗</span>
+                    </a>
                 </div>
 
                 <!-- WhatsApp CTA Button -->

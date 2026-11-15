@@ -333,79 +333,116 @@ body.mobile-menu-open #varshaChatbotWindow {
 
 /* ==========================================================================
    LAPTOP & DESKTOP ULTRA-RESPONSIVE POLISH (861px - 1600px)
-   Guarantees full navigation menu is 100% visible, perfectly aligned on ONE line,
-   with ZERO wrapping or overflowing on all laptops (1366x768, 1440x900, 1536x864, 1024px scaled)
+   Balanced, centered container with crisp typography, sleek pill hovers,
+   and zero awkward spacing gaps or tiny stripped buttons.
    ========================================================================== */
 @media (min-width: 861px) and (max-width: 1600px) {
     .site-nav-container {
-        padding: 0 8px !important;
-        gap: 4px !important;
-        max-width: 100% !important;
+        max-width: 1440px !important;
+        margin: 0 auto !important;
+        padding: 0 16px !important;
+        gap: 10px !important;
+        justify-content: space-between !important;
     }
     .brand-badge-wrap {
-        gap: 6px !important;
+        gap: 8px !important;
     }
     .brand-badge-wrap img {
-        height: 32px !important;
-        width: 32px !important;
+        height: 38px !important;
+        width: 38px !important;
     }
     .brand-title-main {
-        font-size: 13.5px !important;
-        letter-spacing: 0.2px !important;
+        font-size: 14.5px !important;
+        letter-spacing: 0.3px !important;
     }
     .brand-subtitle-tag {
-        display: none !important;
+        display: block !important;
+        font-size: 9px !important;
     }
     .nav-links-center {
         display: flex !important;
-        gap: 4px !important;
+        align-items: center !important;
+        gap: 6px !important;
     }
     .site-nav-link {
-        font-size: 11.2px !important;
-        padding: 4px 2px !important;
-        letter-spacing: -0.2px !important;
+        font-size: 12.5px !important;
+        font-weight: 600 !important;
+        padding: 5px 8px !important;
+        border-radius: 6px !important;
     }
-    .site-nav-link span:nth-child(2) {
-        display: none !important; /* Hide 3D LAB micro badge on laptops to save width */
+    .site-nav-link:hover {
+        background: rgba(0, 229, 255, 0.08) !important;
     }
     .nav-actions-right {
-        gap: 4px !important;
+        gap: 6px !important;
+        display: flex !important;
+        align-items: center !important;
     }
     .nav-search-desktop {
-        display: none !important; /* Clean header; search is in catalog & drawer */
+        display: inline-flex !important;
+    }
+    .nav-search-desktop input {
+        width: 105px !important;
+        font-size: 11.5px !important;
+        height: 34px !important;
     }
     .btn-nav-action {
-        height: 32px !important;
-        padding: 0 6px !important;
-        font-size: 11px !important;
-        gap: 3px !important;
-    }
-    .btn-nav-auth {
-        padding: 0 6px !important;
+        height: 36px !important;
+        padding: 0 9px !important;
+        font-size: 12px !important;
+        gap: 5px !important;
+        border-radius: 8px !important;
     }
     .btn-site-lang-toggle {
-        height: 32px !important;
-        padding: 0 5px !important;
-        font-size: 11px !important;
-        gap: 3px !important;
+        height: 36px !important;
+        padding: 0 8px !important;
+        font-size: 12px !important;
+        gap: 4px !important;
+        border-radius: 8px !important;
     }
     .btn-site-lang-toggle .active-lang-desktop {
-        font-size: 11px !important;
+        font-size: 12px !important;
     }
     .btn-top-book .btn-text-extra {
-        display: none !important; /* Shows '💳 Book' */
+        display: inline !important;
     }
     .btn-nav-admin .btn-text-full {
-        display: none !important; /* Shows '🔒' icon */
+        display: inline !important;
     }
     .btn-nav-cart .btn-text-full {
-        display: none !important; /* Shows '🛒 [count]' */
-    }
-    .btn-nav-cart {
-        padding: 0 6px !important;
+        display: inline !important;
     }
     .btn-nav-mobile-toggle {
         display: none !important;
+    }
+}
+
+/* Specific adjustment for compact laptop screens (861px - 1180px) */
+@media (min-width: 861px) and (max-width: 1180px) {
+    .site-nav-container {
+        padding: 0 10px !important;
+        gap: 6px !important;
+    }
+    .nav-links-center {
+        gap: 3px !important;
+    }
+    .site-nav-link {
+        font-size: 11.5px !important;
+        padding: 4px 6px !important;
+    }
+    .nav-search-desktop {
+        display: none !important;
+    }
+    .btn-nav-action {
+        height: 34px !important;
+        padding: 0 7px !important;
+        font-size: 11.5px !important;
+        gap: 4px !important;
+    }
+    .btn-site-lang-toggle {
+        height: 34px !important;
+        padding: 0 6px !important;
+        font-size: 11.5px !important;
     }
 }
 

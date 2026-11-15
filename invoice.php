@@ -364,6 +364,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             letter-spacing: 0.3px;
             line-height: 1.2;
             margin-bottom: 4px;
+            white-space: nowrap !important;
         }
         .company-meta {
             font-size: 12px;
@@ -424,7 +425,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             width: 44%;
         }
         .inv-meta-table td.meta-val {
-            text-align: right;
+            text-align: left;
             padding: 6px 12px;
             font-size: 12px;
             color: #0f172a;
@@ -762,7 +763,10 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
     <!-- Official High-Precision Industrial Tax Invoice Paper -->
     <div class="invoice-paper">
         <?php 
-            $isPaid = (isset($order['payment_status']) && strtolower($order['payment_status']) === 'paid');
+            $payStatus = strtolower($order['payment_status'] ?? '');
+            $ordStatus = strtolower($order['order_status'] ?? '');
+            $isPaid = in_array($payStatus, ['paid', 'success', 'completed']) 
+                   || in_array($ordStatus, ['confirmed', 'manufacturing', 'dispatched', 'delivered']);
             $orderType = $order['payment_type'] ?? 'booking_advance';
             $isAdvance = ($orderType === 'booking_advance');
 
@@ -823,9 +827,21 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                         <span class="status-badge" style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; box-shadow: 0 1px 4px rgba(22, 163, 74, 0.15);">
                             ✔ <?= $isAdvance ? 'TOKEN ADVANCE PAID &amp; CONFIRMED' : '100% PAID IN FULL (NIL BALANCE)' ?>
                         </span>
+                    <?php elseif ($pm === 'cod'): ?>
+                        <span class="status-badge" style="background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; box-shadow: 0 1px 4px rgba(3, 105, 161, 0.15);">
+                            📦 COD BOOKED &bull; DUE AT DISPATCH
+                        </span>
+                    <?php elseif ($pm === 'bank_transfer'): ?>
+                        <span class="status-badge" style="background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; box-shadow: 0 1px 4px rgba(217, 119, 6, 0.15);">
+                            ⏳ BANK TRANSFER &bull; VERIFICATION IN PROGRESS
+                        </span>
+                    <?php elseif ($pm === 'cheque'): ?>
+                        <span class="status-badge" style="background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; box-shadow: 0 1px 4px rgba(217, 119, 6, 0.15);">
+                            ⏳ CHEQUE / DD RECEIVED &bull; CLEARANCE IN PROGRESS
+                        </span>
                     <?php else: ?>
                         <span class="status-badge" style="background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; box-shadow: 0 1px 4px rgba(217, 119, 6, 0.15);">
-                            ⏳ <?= ($pm === 'cod') ? 'COD BOOKED &bull; PAYMENT DUE AT DISPATCH' : 'PAYMENT PENDING / UNDER VERIFICATION' ?>
+                            ⏳ PAYMENT PENDING / UNDER VERIFICATION
                         </span>
                     <?php endif; ?>
                 </div>
