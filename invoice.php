@@ -464,33 +464,40 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             word-break: break-all;
             max-width: 100%;
         }
-            border: 1px solid #bae6fd;
-            letter-spacing: 0.4px;
-        }
 
-        /* Parties Grid (Consignee & Dispatch) */
+        /* Parties Grid (Consignee & Dispatch Side-by-Side Professional Layout) */
         .parties-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 16px !important;
+            align-items: stretch !important;
+            margin-bottom: 20px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
         }
         .party-card {
             background: #f8fafc;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 13px 16px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 14px 16px;
             font-size: 12px;
-            line-height: 1.45;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-sizing: border-box;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+            overflow: hidden;
         }
         .party-heading {
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 11px;
             font-weight: 800;
             color: #0284c7;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            margin-bottom: 6px;
-            padding-bottom: 4px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
             border-bottom: 1.5px solid #e2e8f0;
             display: flex;
             align-items: center;
@@ -520,6 +527,9 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             text-transform: uppercase;
             font-family: 'Space Grotesk', sans-serif;
             border: none;
+        }
+        .items-table th.th-nowrap {
+            white-space: nowrap !important;
         }
         .items-table td {
             padding: 12px;
@@ -988,7 +998,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                     <strong>Supply Terms:</strong> Certified Ex-Factory Bhavnagar / Insured Transit
                 </div>
                 <?php if (!empty($order['notes'])): ?>
-                    <div style="margin-top: 6px; padding: 6px 8px; background: #fff; border: 1px dashed #cbd5e1; border-radius: 4px; font-size: 11px; color: #334155;">
+                    <div style="margin-top: 8px; padding: 8px 10px; background: #ffffff; border: 1.5px dashed #cbd5e1; border-radius: 6px; font-size: 11.5px; color: #334155; line-height: 1.45; word-break: break-word;">
                         <strong>Customer Reference / Notes:</strong> <?= e($order['notes']) ?>
                     </div>
                 <?php endif; ?>
@@ -1000,12 +1010,12 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             <table class="items-table">
                 <thead>
                     <tr>
-                        <th style="width: 5%;">#</th>
-                        <th style="width: 48%;">Machinery Description &amp; Technical Specifications</th>
-                        <th style="width: 12%;">HSN / SAC</th>
-                        <th style="width: 8%; text-align: center;">Qty</th>
-                        <th style="width: 13%; text-align: right;">Unit Rate (₹)</th>
-                        <th style="width: 14%; text-align: right;">Taxable Value (₹)</th>
+                        <th style="width: 4%; text-align: center;">#</th>
+                        <th style="width: 42%;">Machinery Description &amp; Technical Specifications</th>
+                        <th class="th-nowrap" style="width: 12%; white-space: nowrap !important;">HSN / SAC</th>
+                        <th class="th-nowrap" style="width: 6%; text-align: center; white-space: nowrap !important;">Qty</th>
+                        <th class="th-nowrap" style="width: 17%; text-align: right; white-space: nowrap !important;">Unit Rate (₹)</th>
+                        <th class="th-nowrap" style="width: 19%; text-align: right; white-space: nowrap !important;">Taxable Value (₹)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1189,6 +1199,18 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         clone.style.borderRadius = '0';
         clone.style.boxSizing = 'border-box';
         clone.style.overflow = 'hidden';
+
+        // Force desktop 2-column grid on clone
+        const cloneParties = clone.querySelector('.parties-grid');
+        if (cloneParties) {
+            cloneParties.style.display = 'grid';
+            cloneParties.style.gridTemplateColumns = '1fr 1fr';
+            cloneParties.style.gap = '16px';
+        }
+        const cloneThs = clone.querySelectorAll('.th-nowrap');
+        cloneThs.forEach(function(th) {
+            th.style.whiteSpace = 'nowrap';
+        });
 
         const wrapper = document.createElement('div');
         wrapper.style.position = 'fixed';

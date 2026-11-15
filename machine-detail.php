@@ -320,6 +320,10 @@ if ($isSparePart) {
             border-top: 1px solid rgba(0, 229, 255, 0.2) !important;
         }
     }
+    .pill-badge.no-dot::before {
+        display: none !important;
+        content: none !important;
+    }
 </style>
 
 <!-- Machine Detail Overview -->
@@ -678,9 +682,8 @@ if ($isSparePart) {
         <div style="margin-top: 55px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(6, 10, 20, 0.98) 100%); border: 1.5px solid var(--border-cyan); border-radius: var(--radius-lg); padding: 30px 26px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 20px;">
                 <div>
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
-                        <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 12px #ef4444; animation: pulse 1.5s infinite;"></span>
-                        <span class="pill-badge" style="background: rgba(239, 68, 68, 0.15); border-color: #ef4444; color: #f87171; font-weight: 800;">
+                    <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                        <span class="pill-badge no-dot" style="background: rgba(239, 68, 68, 0.15); border-color: #ef4444; color: #f87171; font-weight: 800; padding: 4px 14px; margin-bottom: 0;">
                             LIVE FACTORY WORKSHOP DEMONSTRATION
                         </span>
                     </div>

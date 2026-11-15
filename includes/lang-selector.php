@@ -316,7 +316,7 @@ const UI_TRANSLATIONS = {
         'Cart': 'કાર્ટ',
         'My Cart': 'મારું કાર્ટ',
         'Book Online': '💳 ઓનલાઇન બુકિંગ',
-        'Admin': '🔒 એડમિન',
+        'Admin': 'એડમિન',
         'Search...': 'મશીન શોધો...',
         'VARSHA MENU': 'વર્ષા મેનૂ',
 
@@ -456,7 +456,7 @@ const UI_TRANSLATIONS = {
         'Cart': 'कार्ट',
         'My Cart': 'मेरी कार्ट',
         'Book Online': '💳 ऑनलाइन बुकिंग',
-        'Admin': '🔒 एडमिन',
+        'Admin': 'एडमिन',
         'Search...': 'मशीन खोजें...',
         'VARSHA MENU': 'वर्षा मेनू',
 
