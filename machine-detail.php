@@ -721,14 +721,21 @@ if ($isSparePart) {
 
                 <div style="display: grid; grid-template-columns: 1fr 320px; min-height: 420px;" id="videoContainerGrid">
                     <!-- Real Video Player Viewport -->
-                    <div id="videoPlayerViewport" style="position: relative; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; min-height: 380px; width: 100%;">
+                    <div id="videoPlayerViewport" style="position: relative; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; min-height: 420px; width: 100%;">
+
+                        <!-- Video Loading Feedback Overlay -->
+                        <div id="videoLoadingState" style="display: none; position: absolute; inset: 0; background: #020617; z-index: 3; align-items: center; justify-content: center; flex-direction: column; gap: 12px; color: #fff;">
+                            <div style="width: 44px; height: 44px; border: 3px solid rgba(0,229,255,0.2); border-top-color: #00e5ff; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                            <div style="font-size: 13.5px; font-weight: 700; color: #00e5ff;">▶ Starting Live Factory Video...</div>
+                        </div>
 
                         <!-- Working YouTube Embed Player with Autoplay and Fullscreen Controls -->
                         <iframe id="mainMachineIframe" 
                                 src="about:blank" 
-                                data-src="https://www.youtube.com/embed/<?= $realVideoId ?>?autoplay=1&mute=1&controls=1&rel=0&playsinline=1" 
+                                data-src="https://www.youtube.com/embed/<?= $realVideoId ?>?autoplay=1&mute=0&controls=1&rel=0&playsinline=1&modestbranding=1" 
                                 title="<?= e($realVideoTitle) ?>" 
-                                style="display: none; width: 100%; height: 100%; min-height: 380px; border: none;" 
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                style="display: none; width: 100%; height: 100%; min-height: 420px; border: none; flex: 1;" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                                 allowfullscreen>
                         </iframe>
@@ -764,41 +771,15 @@ if ($isSparePart) {
                             </div>
                         </div>
 
-                        <!-- Video Preview Poster with Real Machine Image and 1-Click Play Overlay -->
-                        <div id="videoPosterOverlay" onclick="startRealMachineVideo(event)" role="button" tabindex="0" style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 18px; background: linear-gradient(180deg, rgba(2,6,23,0.45) 0%, rgba(2,6,23,0.95) 90%); cursor: pointer; z-index: 2;">
-                            <img src="<?= assetUrl($machine['image_url']) ?>" alt="<?= e($machine['name']) ?>" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0.45; filter: drop-shadow(0 10px 30px rgba(0,229,255,0.2)); pointer-events: none;">
-
-                            <!-- Top Badges Row (Cleanly spaced, No Collisions) -->
-                            <div style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                                <span style="background: rgba(15, 23, 42, 0.92); border: 1.5px solid #10b981; color: #34d399; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 6px; box-shadow: 0 0 12px rgba(16,185,129,0.3);">
-                                    ● 4K FACTORY WORKSHOP DEMO
-                                </span>
-                                <span style="background: rgba(15, 23, 42, 0.92); border: 1.5px solid rgba(0, 229, 255, 0.5); color: #38bdf8; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px;">
-                                    MODEL: <?= e($machine['model_number']) ?>
-                                </span>
-                            </div>
+                        <!-- Video Preview Poster: Clean Machine Photo and 1-Click Glowing Play Button (Zero Text Clutter) -->
+                        <div id="videoPosterOverlay" onclick="startRealMachineVideo(event)" role="button" tabindex="0" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 50%, rgba(6, 10, 20, 0.2) 0%, rgba(2, 6, 23, 0.55) 100%); cursor: pointer; z-index: 2;">
+                            <img src="<?= assetUrl($machine['image_url']) ?>" alt="<?= e($machine['name']) ?>" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 1; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.85)); pointer-events: none; transition: transform 0.3s ease;">
 
                             <!-- Center Glowing Play ("Push") Trigger Button -->
-                            <div style="position: relative; z-index: 2; text-align: center; margin: 18px 0;">
-                                <button type="button" id="btnPlayRealVideo" onclick="startRealMachineVideo(event)" aria-label="Play Machine Working Video" style="background: linear-gradient(135deg, #00e5ff 0%, #2563eb 100%); border: none; width: 76px; height: 76px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 35px rgba(0, 229, 255, 0.75); transition: transform 0.25s, box-shadow 0.25s; pointer-events: auto;">
-                                    <svg viewBox="0 0 24 24" width="36" height="36" fill="#060911" style="margin-left: 4px;"><path d="M8 5v14l11-7z"/></svg>
+                            <div style="position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <button type="button" id="btnPlayRealVideo" onclick="startRealMachineVideo(event)" aria-label="Play Machine Working Video" style="background: linear-gradient(135deg, #00e5ff 0%, #0284c7 100%); border: 3.5px solid #ffffff; width: 88px; height: 88px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 45px rgba(0, 229, 255, 0.85), 0 0 90px rgba(0, 229, 255, 0.45); transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto;">
+                                    <svg viewBox="0 0 24 24" width="44" height="44" fill="#060911" style="margin-left: 5px;"><path d="M8 5v14l11-7z"/></svg>
                                 </button>
-                                <div style="color: #fff; font-size: 14.5px; font-weight: 800; margin-top: 12px; text-shadow: 0 2px 6px rgba(0,0,0,0.9);">
-                                    Click / Tap to Play Real Machine Video Demonstration
-                                </div>
-                                <div style="color: #94a3b8; font-size: 12px; margin-top: 4px;">
-                                    <?= e($realVideoTitle) ?>
-                                </div>
-                            </div>
-
-                            <!-- Bottom Telemetry HUD Status -->
-                            <div style="position: relative; z-index: 2;">
-                                <div style="display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1; font-family: monospace; background: rgba(15,23,42,0.9); padding: 7px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; gap: 6px;">
-                                    <span>SPINDLE: <strong style="color: #10b981;">650 RPM</strong></span>
-                                    <span>FEED: <strong style="color: #38bdf8;">0.22 mm/rev</strong></span>
-                                    <span>TORQUE: <strong style="color: #facc15;">145 Nm</strong></span>
-                                    <span>RUNOUT: <strong style="color: #34d399;">&lt; 0.012 mm</strong></span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -1155,34 +1136,35 @@ function startRealMachineVideo(event) {
     const iframe = document.getElementById('mainMachineIframe');
     const poster = document.getElementById('videoPosterOverlay');
     const sim = document.getElementById('machiningSimContainer');
+    const loader = document.getElementById('videoLoadingState');
     if (sim) sim.style.display = 'none';
 
-    if (iframe && poster) {
-        let targetSrc = iframe.getAttribute('data-src') || ("https://www.youtube.com/embed/<?= $realVideoId ?>?autoplay=1&mute=1&controls=1&rel=0&playsinline=1");
-        targetSrc = targetSrc.replace(/&amp;/g, '&');
-        
-        if (!iframe.src || iframe.src === 'about:blank' || iframe.src.indexOf('youtube.com') === -1) {
-            iframe.src = targetSrc;
-        }
-        poster.style.display = 'none';
-        iframe.style.display = 'block';
+    if (iframe) {
+        if (loader) loader.style.display = 'flex';
+        const realId = '<?= $realVideoId ?>';
+        // Direct reliable YouTube embed URL with autoplay, full controls & inline playback
+        const embedUrl = 'https://www.youtube.com/embed/' + realId + '?autoplay=1&mute=0&controls=1&rel=0&playsinline=1&modestbranding=1&enablejsapi=1';
 
-        // Auto fallback watchdog: If YouTube fails to respond within 5 seconds, offer 3D Simulator
-        const iframeWatchdog = setTimeout(function() {
-            try {
-                if (iframe.style.display === 'block') {
-                    // Ready state verified
-                }
-            } catch(e) {}
-        }, 5000);
+        iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        
+        iframe.src = embedUrl;
+        iframe.style.display = 'block';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.minHeight = '420px';
+        iframe.style.flex = '1';
+
+        if (poster) poster.style.display = 'none';
 
         iframe.onload = function() {
-            clearTimeout(iframeWatchdog);
+            if (loader) loader.style.display = 'none';
         };
-        iframe.onerror = function() {
-            clearTimeout(iframeWatchdog);
-            showMachiningSim();
-        };
+
+        // Fallback safety timeout for loader
+        setTimeout(function() {
+            if (loader) loader.style.display = 'none';
+        }, 1200);
     }
 }
 
@@ -1191,6 +1173,8 @@ function showMachiningSim() {
     const sim = document.getElementById('machiningSimContainer');
     const iframe = document.getElementById('mainMachineIframe');
     const poster = document.getElementById('videoPosterOverlay');
+    const loader = document.getElementById('videoLoadingState');
+    if (loader) loader.style.display = 'none';
     if (iframe) iframe.style.display = 'none';
     if (poster) poster.style.display = 'none';
     if (sim) {
@@ -1204,7 +1188,9 @@ function resetVideoPoster() {
     const sim = document.getElementById('machiningSimContainer');
     const iframe = document.getElementById('mainMachineIframe');
     const poster = document.getElementById('videoPosterOverlay');
+    const loader = document.getElementById('videoLoadingState');
     if (simAnimId) cancelAnimationFrame(simAnimId);
+    if (loader) loader.style.display = 'none';
     if (iframe) {
         iframe.style.display = 'none';
         iframe.src = 'about:blank';

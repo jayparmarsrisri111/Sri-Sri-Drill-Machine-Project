@@ -61,11 +61,11 @@ $navCartCount = intval($navCartSummary['total_qty'] ?? 0);
 }
 .site-nav-link {
     font-family: var(--font-heading);
-    font-size: 12.8px;
-    font-weight: 600;
-    color: #cbd5e1;
+    font-size: 14px;
+    font-weight: 700;
+    color: #e2e8f0;
     text-decoration: none;
-    padding: 6px 2px;
+    padding: 6px 4px;
     position: relative;
     transition: color 0.2s ease;
     white-space: nowrap;
@@ -351,7 +351,7 @@ body.mobile-menu-open #varshaChatbotWindow {
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
-        padding: 0 14px !important;
+        padding: 0 16px 0 14px !important;
         gap: 6px !important;
         justify-content: space-between !important;
     }
@@ -364,7 +364,7 @@ body.mobile-menu-open #varshaChatbotWindow {
         width: 36px !important;
     }
     .brand-title-main {
-        font-size: 14px !important;
+        font-size: 15px !important;
         letter-spacing: 0.3px !important;
     }
     .brand-subtitle-tag {
@@ -374,13 +374,13 @@ body.mobile-menu-open #varshaChatbotWindow {
     .nav-links-center {
         display: flex !important;
         align-items: center !important;
-        gap: 4px !important;
+        gap: 5px !important;
         flex-shrink: 1 !important;
     }
     .site-nav-link {
-        font-size: 11.5px !important;
-        font-weight: 600 !important;
-        padding: 4px 6px !important;
+        font-size: 13.5px !important;
+        font-weight: 700 !important;
+        padding: 5px 7px !important;
         border-radius: 6px !important;
         white-space: nowrap !important;
     }
@@ -388,24 +388,25 @@ body.mobile-menu-open #varshaChatbotWindow {
         background: rgba(0, 229, 255, 0.08) !important;
     }
     .nav-actions-right {
-        gap: 5px !important;
+        gap: 6px !important;
         display: flex !important;
         align-items: center !important;
         flex-shrink: 0 !important;
+        overflow: visible !important;
     }
     .nav-search-desktop {
         display: inline-flex !important;
     }
     .nav-search-desktop input {
-        width: 85px !important;
-        font-size: 11px !important;
+        width: 90px !important;
+        font-size: 11.5px !important;
         height: 34px !important;
         padding: 4px 8px 4px 24px !important;
     }
     .btn-nav-action {
         height: 34px !important;
-        padding: 0 8px !important;
-        font-size: 11.5px !important;
+        padding: 0 9px !important;
+        font-size: 12px !important;
         gap: 4px !important;
         border-radius: 7px !important;
         flex-shrink: 0 !important;
@@ -413,13 +414,13 @@ body.mobile-menu-open #varshaChatbotWindow {
     .btn-site-lang-toggle {
         height: 34px !important;
         padding: 0 7px !important;
-        font-size: 11.5px !important;
+        font-size: 12px !important;
         gap: 3px !important;
         border-radius: 7px !important;
         flex-shrink: 0 !important;
     }
     .btn-site-lang-toggle .active-lang-desktop {
-        font-size: 11.5px !important;
+        font-size: 12px !important;
     }
     .btn-top-book .btn-text-extra {
         display: inline !important;
@@ -428,6 +429,7 @@ body.mobile-menu-open #varshaChatbotWindow {
         display: inline-flex !important;
         flex-shrink: 0 !important;
         white-space: nowrap !important;
+        margin-right: 2px !important;
     }
     .btn-nav-admin .btn-text-full {
         display: inline !important;
@@ -443,34 +445,45 @@ body.mobile-menu-open #varshaChatbotWindow {
 /* Specific adjustment for compact laptop screens (861px - 1240px) */
 @media (min-width: 861px) and (max-width: 1240px) {
     .site-nav-container {
-        padding: 0 8px !important;
+        padding: 0 12px 0 10px !important;
         gap: 4px !important;
     }
+    .brand-title-main {
+        font-size: 14px !important;
+    }
     .nav-links-center {
-        gap: 2px !important;
+        gap: 3px !important;
     }
     .site-nav-link {
-        font-size: 11px !important;
-        padding: 3px 4px !important;
+        font-size: 12.5px !important;
+        font-weight: 700 !important;
+        padding: 4px 5px !important;
     }
     .nav-search-desktop input {
-        width: 70px !important;
+        width: 75px !important;
         padding: 3px 6px 3px 20px !important;
-        font-size: 10.5px !important;
+        font-size: 11px !important;
     }
     .btn-nav-action {
-        height: 32px !important;
-        padding: 0 6px !important;
-        font-size: 11px !important;
+        height: 33px !important;
+        padding: 0 7px !important;
+        font-size: 11.5px !important;
         gap: 3px !important;
     }
     .btn-site-lang-toggle {
-        height: 32px !important;
-        padding: 0 5px !important;
-        font-size: 11px !important;
+        height: 33px !important;
+        padding: 0 6px !important;
+        font-size: 11.5px !important;
+    }
+    .btn-top-book .btn-text-extra {
+        display: none !important;
     }
     .btn-nav-admin {
-        padding: 0 6px !important;
+        display: inline-flex !important;
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+        padding: 0 7px !important;
+        margin-right: 2px !important;
     }
 }
 

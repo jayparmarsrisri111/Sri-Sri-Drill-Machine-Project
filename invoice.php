@@ -322,34 +322,43 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         /* The Printable White Master Invoice Container */
         .invoice-paper {
             max-width: 880px;
+            width: 100%;
             margin: 0 auto;
             background: #ffffff;
             color: #0f172a;
-            padding: 34px 38px;
+            padding: 30px 32px;
             border-radius: 8px;
             border: 1.5px solid #0f172a;
             box-shadow: 0 25px 60px rgba(0,0,0,0.6);
             position: relative;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
-        /* Header Grid */
+        /* Header Grid (Flex-wrap to eliminate any table overflow on laptop or phone) */
         .inv-header {
-            display: grid;
-            grid-template-columns: 1.25fr 1fr;
-            gap: 24px;
-            align-items: start;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
             border-bottom: 2px solid #0f172a;
             padding-bottom: 16px;
             margin-bottom: 16px;
+            width: 100%;
+            box-sizing: border-box;
         }
         .company-branding {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
+            flex: 1 1 320px;
+            min-width: 260px;
+            max-width: 100%;
         }
         .company-logo-img {
-            width: 96px;
-            height: 96px;
+            width: 90px;
+            height: 90px;
             object-fit: contain;
             border-radius: 50%;
             border: 3px solid #0284c7;
@@ -360,13 +369,13 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         }
         .company-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 24px;
+            font-size: clamp(18px, 2.2vw, 23px);
             font-weight: 800;
             color: #0f172a;
             letter-spacing: 0.3px;
-            line-height: 1.2;
+            line-height: 1.25;
             margin-bottom: 4px;
-            white-space: nowrap !important;
+            word-break: break-word;
         }
         .company-meta {
             font-size: 12px;
@@ -377,10 +386,13 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         /* Title & Meta Block */
         .invoice-title-block {
             text-align: right;
+            flex: 0 1 auto;
+            max-width: 100%;
+            margin-left: auto;
         }
         .inv-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 23px;
+            font-size: 22px;
             font-weight: 900;
             color: #0284c7;
             text-transform: uppercase;
@@ -400,7 +412,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         }
         .inv-meta-table {
             width: 100%;
-            max-width: 380px;
+            max-width: 360px;
             margin-top: 10px;
             margin-left: auto;
             border-collapse: collapse;
@@ -409,6 +421,8 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            table-layout: fixed;
+            box-sizing: border-box;
         }
         .inv-meta-table tr:not(:last-child) {
             border-bottom: 1px solid #e2e8f0;
@@ -418,31 +432,38 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             font-weight: 700;
             font-size: 11px;
             text-align: left;
-            padding: 6px 12px;
-            white-space: nowrap;
+            padding: 6px 10px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             background: #f1f5f9;
             border-right: 1px solid #e2e8f0;
-            width: 44%;
+            width: 42%;
+            white-space: normal;
+            word-break: break-word;
         }
         .inv-meta-table td.meta-val {
             text-align: left;
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 6px 10px;
+            font-size: 11.5px;
             color: #0f172a;
-            white-space: nowrap;
-            width: 56%;
+            width: 58%;
+            word-break: break-word;
+            white-space: normal;
         }
         .invoice-num-tag {
             display: inline-block;
             color: #0284c7;
             background: #e0f2fe;
-            padding: 3px 10px;
+            padding: 2px 8px;
             border-radius: 5px;
             font-family: monospace;
             font-weight: 800;
-            font-size: 13px;
+            font-size: 12px;
+            border: 1px solid #bae6fd;
+            letter-spacing: 0.3px;
+            word-break: break-all;
+            max-width: 100%;
+        }
             border: 1px solid #bae6fd;
             letter-spacing: 0.4px;
         }
@@ -616,7 +637,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 justify-content: center;
             }
             .invoice-paper {
-                padding: 14px 10px;
+                padding: 14px 12px;
                 border-radius: 6px;
                 width: 100%;
                 max-width: 100%;
@@ -624,12 +645,19 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 overflow: hidden;
             }
             .inv-header {
-                grid-template-columns: 1fr;
-                gap: 12px;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 14px !important;
+            }
+            .company-branding {
+                width: 100% !important;
+                min-width: 0 !important;
+                flex: 1 1 auto !important;
             }
             .invoice-title-block {
-                text-align: left;
-                width: 100%;
+                text-align: left !important;
+                width: 100% !important;
+                margin-left: 0 !important;
             }
             .inv-meta-table {
                 margin: 10px 0 0 0 !important;
@@ -1129,7 +1157,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         </div>
     </div>
 
-    <!-- Client-Side Instant PDF Generator -->
+    <!-- Client-Side Instant Real A4 PDF Generator -->
     <script>
     function downloadInvoicePDF() {
         const element = document.getElementById('invoicePaperToPrint');
@@ -1142,16 +1170,46 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         const origHtml = btn ? btn.innerHTML : '';
         if (btn) {
             btn.disabled = true;
-            btn.innerHTML = '<span>⏳</span> <span>Generating High-Res PDF...</span>';
+            btn.innerHTML = '<span>⏳</span> <span>Generating Official Tax Invoice PDF...</span>';
         }
 
         const invNum = '<?= e($order['invoice_number'] ?: 'SVEW-INVOICE') ?>';
+
+        // Clone element to ensure 100% desktop A4 layout even when generated on a mobile phone screen
+        const clone = element.cloneNode(true);
+        clone.id = 'invoicePaperPrintClone';
+        clone.style.width = '840px';
+        clone.style.maxWidth = '840px';
+        clone.style.margin = '0 auto';
+        clone.style.padding = '26px 30px';
+        clone.style.background = '#ffffff';
+        clone.style.color = '#0f172a';
+        clone.style.boxShadow = 'none';
+        clone.style.border = '1.5px solid #0f172a';
+        clone.style.borderRadius = '0';
+        clone.style.boxSizing = 'border-box';
+        clone.style.overflow = 'hidden';
+
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'fixed';
+        wrapper.style.left = '-9999px';
+        wrapper.style.top = '0';
+        wrapper.style.width = '840px';
+        wrapper.style.background = '#ffffff';
+        wrapper.style.zIndex = '-99999';
+        wrapper.appendChild(clone);
+        document.body.appendChild(wrapper);
+
         const opt = {
             margin: [4, 4, 4, 4],
             filename: invNum + '.pdf',
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { 
                 scale: 2, 
+                width: 840,
+                windowWidth: 840,
+                scrollX: 0,
+                scrollY: 0,
                 useCORS: true, 
                 logging: false,
                 backgroundColor: '#ffffff'
@@ -1160,13 +1218,15 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         };
 
         if (typeof html2pdf !== 'undefined') {
-            html2pdf().set(opt).from(element).save().then(function() {
+            html2pdf().set(opt).from(clone).save().then(function() {
+                if (wrapper.parentNode) document.body.removeChild(wrapper);
                 if (btn) {
                     btn.disabled = false;
                     btn.innerHTML = origHtml;
                 }
             }).catch(function(err) {
                 console.warn('html2pdf fallback to print:', err);
+                if (wrapper.parentNode) document.body.removeChild(wrapper);
                 if (btn) {
                     btn.disabled = false;
                     btn.innerHTML = origHtml;
@@ -1175,6 +1235,7 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             });
         } else {
             // Graceful fallback if CDN is not reachable
+            if (wrapper.parentNode) document.body.removeChild(wrapper);
             if (btn) {
                 btn.disabled = false;
                 btn.innerHTML = origHtml;
