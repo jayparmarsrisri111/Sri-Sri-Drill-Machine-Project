@@ -346,19 +346,19 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             gap: 16px;
         }
         .company-logo-img {
-            width: 92px;
-            height: 92px;
+            width: 96px;
+            height: 96px;
             object-fit: contain;
             border-radius: 50%;
-            border: 2.5px solid #0284c7;
-            padding: 3px;
+            border: 3px solid #0284c7;
+            padding: 4px;
             background: #ffffff;
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.25);
+            box-shadow: 0 4px 18px rgba(2, 132, 199, 0.25);
             flex-shrink: 0;
         }
         .company-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 23px;
+            font-size: 24px;
             font-weight: 800;
             color: #0f172a;
             letter-spacing: 0.3px;
@@ -396,31 +396,52 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             letter-spacing: 0.4px;
         }
         .inv-meta-table {
-            font-size: 12.5px;
-            margin-top: 8px;
+            width: 100%;
+            max-width: 380px;
+            margin-top: 10px;
             margin-left: auto;
             border-collapse: collapse;
             background: #f8fafc;
-            border: 1.5px solid #e2e8f0;
+            border: 1.5px solid #cbd5e1;
             border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
         .inv-meta-table tr:not(:last-child) {
-            border-bottom: 1px solid #edf2f7;
+            border-bottom: 1px solid #e2e8f0;
         }
         .inv-meta-table td.meta-label {
-            color: #64748b;
+            color: #475569;
             font-weight: 700;
             font-size: 11px;
-            text-align: right;
-            padding: 4px 10px;
+            text-align: left;
+            padding: 6px 12px;
             white-space: nowrap;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
+            background: #f1f5f9;
+            border-right: 1px solid #e2e8f0;
+            width: 44%;
         }
         .inv-meta-table td.meta-val {
             text-align: right;
-            padding: 4px 10px 4px 4px;
+            padding: 6px 12px;
+            font-size: 12px;
+            color: #0f172a;
             white-space: nowrap;
+            width: 56%;
+        }
+        .invoice-num-tag {
+            display: inline-block;
+            color: #0284c7;
+            background: #e0f2fe;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-weight: 800;
+            font-size: 13px;
+            border: 1px solid #bae6fd;
+            letter-spacing: 0.4px;
         }
 
         /* Parties Grid (Consignee & Dispatch) */
@@ -665,8 +686,8 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 margin-bottom: 8px !important;
             }
             .company-logo-img {
-                width: 52px !important;
-                height: 52px !important;
+                width: 85px !important;
+                height: 85px !important;
             }
             .company-title {
                 font-size: 16px !important;
@@ -784,49 +805,63 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 <div>
                     <h1 class="company-title"><?= APP_NAME ?></h1>
                     <div class="company-meta">
-                        <?= COMPANY_ADDRESS ?><br>
-                        <strong>GSTIN:</strong> <?= COMPANY_GSTIN ?><br>
-                        <strong>State:</strong> Gujarat (Code: 24)<br>
-                        <strong>Direct:</strong> <?= COMPANY_PHONE_1 ?><br>
-                        <strong>Email:</strong> <?= COMPANY_EMAIL ?>
+                        <div style="color: #475569; margin-bottom: 5px;"><?= COMPANY_ADDRESS ?></div>
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            <div><strong>GSTIN:</strong> <span style="font-family: monospace; font-weight: 700; color: #0f172a; font-size: 13px;"><?= COMPANY_GSTIN ?></span></div>
+                            <div><strong>State:</strong> <span style="font-weight: 600; color: #0f172a;">Gujarat (State Code: 24)</span></div>
+                            <div><strong>Direct Phone:</strong> <span style="font-weight: 600; color: #0f172a; font-family: monospace;"><?= COMPANY_PHONE_1 ?></span></div>
+                            <div><strong>Official Email:</strong> <span style="color: #0284c7; font-weight: 600;"><?= COMPANY_EMAIL ?></span></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="invoice-title-block">
                 <div class="inv-title"><?= $docTitle ?></div>
-                <div style="margin: 6px 0;">
+                <div style="margin: 6px 0 10px;">
                     <?php if ($isPaid): ?>
-                        <span class="status-badge" style="background: #dcfce7; color: #15803d; border: 1px solid #86efac;">
+                        <span class="status-badge" style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; box-shadow: 0 1px 4px rgba(22, 163, 74, 0.15);">
                             ✔ <?= $isAdvance ? 'TOKEN ADVANCE PAID &amp; CONFIRMED' : '100% PAID IN FULL (NIL BALANCE)' ?>
                         </span>
                     <?php else: ?>
-                        <span class="status-badge" style="background: #fef3c7; color: #b45309; border: 1px solid #fcd34d;">
+                        <span class="status-badge" style="background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; box-shadow: 0 1px 4px rgba(217, 119, 6, 0.15);">
                             ⏳ <?= ($pm === 'cod') ? 'COD BOOKED &bull; PAYMENT DUE AT DISPATCH' : 'PAYMENT PENDING / UNDER VERIFICATION' ?>
                         </span>
                     <?php endif; ?>
                 </div>
                 <table class="inv-meta-table">
-                    <tr>
-                        <td class="meta-label">Invoice No:</td>
-                        <td class="meta-val"><strong style="color: #0284c7; background: #e0f2fe; padding: 2px 8px; border-radius: 4px; font-family: monospace; font-size: 13px; border: 1px solid #bae6fd;"><?= e($order['invoice_number']) ?></strong></td>
-                    </tr>
-                    <tr>
-                        <td class="meta-label">Invoice Date:</td>
-                        <td class="meta-val"><strong style="color: #0f172a;"><?= date('d-M-Y', strtotime($order['created_at'])) ?></strong></td>
-                    </tr>
-                    <tr>
-                        <td class="meta-label">Time of Supply:</td>
-                        <td class="meta-val"><span style="color: #475569; font-weight: 600;"><?= date('h:i:s A', strtotime($order['created_at'])) ?> IST</span></td>
-                    </tr>
-                    <tr>
-                        <td class="meta-label">Order Ref:</td>
-                        <td class="meta-val"><span style="font-family: monospace; font-weight: 700; color: #0f172a;"><?= e($order['order_number']) ?></span></td>
-                    </tr>
-                    <tr>
-                        <td class="meta-label">Payment Mode:</td>
-                        <td class="meta-val"><strong style="color: #0284c7;"><?= e($payMethodLabel) ?></strong></td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td class="meta-label">Invoice Number</td>
+                            <td class="meta-val">
+                                <span class="invoice-num-tag"><?= e($order['invoice_number']) ?></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="meta-label">Invoice Date</td>
+                            <td class="meta-val">
+                                <strong style="color: #0f172a;"><?= date('d-M-Y', strtotime($order['created_at'])) ?></strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="meta-label">Time of Supply</td>
+                            <td class="meta-val">
+                                <span style="color: #475569; font-weight: 600;"><?= date('h:i:s A', strtotime($order['created_at'])) ?> IST</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="meta-label">Order Reference</td>
+                            <td class="meta-val">
+                                <span style="font-family: monospace; font-weight: 700; color: #0f172a; font-size: 12px;"><?= e($order['order_number']) ?></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="meta-label">Payment Mode</td>
+                            <td class="meta-val">
+                                <strong style="color: #0284c7;"><?= e($payMethodLabel) ?></strong>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
