@@ -175,6 +175,12 @@ require_once __DIR__ . '/includes/navbar.php';
         border-color: var(--accent-cyan);
         background: rgba(0, 229, 255, 0.08);
     }
+    .payment-option-label .price-val {
+        white-space: nowrap !important;
+        display: inline-flex !important;
+        align-items: baseline !important;
+        flex-shrink: 0 !important;
+    }
     .price-row {
         display: flex;
         justify-content: space-between;
@@ -452,11 +458,11 @@ foreach ($products as $p) {
                 <label class="form-label" style="margin-bottom: 10px;">Choose Payment Option *</label>
                 
                 <label class="payment-option-label active" id="labelOptionAdvance">
-                    <input type="radio" name="payment_type" id="payTypeAdvance" value="booking_advance" checked style="accent-color: var(--accent-cyan); width: 18px; height: 18px;">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 700; color: #fff; font-size: 15px; display: flex; justify-content: space-between;">
-                            <span>Standard Token Booking Advance</span>
-                            <span style="color: #34d399;">₹ 25,000</span>
+                    <input type="radio" name="payment_type" id="payTypeAdvance" value="booking_advance" checked style="accent-color: var(--accent-cyan); width: 18px; height: 18px; flex-shrink: 0;">
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="font-weight: 700; color: #fff; font-size: 15px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                            <span style="min-width: 0;">Standard Token Booking Advance</span>
+                            <span style="color: #34d399; white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important; flex-shrink: 0 !important; font-weight: 800;" class="price-val">₹&nbsp;25,000</span>
                         </div>
                         <div style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">
                             Standard token to reserve manufacturing slot and chassis allocation today.
@@ -465,39 +471,39 @@ foreach ($products as $p) {
                 </label>
 
                 <label class="payment-option-label" id="labelOptionCustomAdvance">
-                    <input type="radio" name="payment_type" id="payTypeCustomAdvance" value="custom_advance" style="accent-color: var(--accent-cyan); width: 18px; height: 18px;">
-                    <div style="flex: 1;">
+                    <input type="radio" name="payment_type" id="payTypeCustomAdvance" value="custom_advance" style="accent-color: var(--accent-cyan); width: 18px; height: 18px; flex-shrink: 0;">
+                    <div style="flex: 1; min-width: 0;">
                         <div style="font-weight: 700; color: #fff; font-size: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                            <span>Custom Online Advance (Up to ₹ 4,00,000)</span>
-                            <span style="color: #38bdf8; font-size: 16px; font-weight: 800;" id="customAdvanceDisplay">₹ 90,000</span>
+                            <span style="min-width: 0;">Custom Online Advance (Up to ₹&nbsp;4,00,000)</span>
+                            <span style="color: #38bdf8; font-size: 16px; font-weight: 800; white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important; flex-shrink: 0 !important;" id="customAdvanceDisplay" class="price-val">₹&nbsp;90,000</span>
                         </div>
                         <div style="font-size: 12px; color: var(--text-muted); margin: 4px 0 8px;">
                             Pay custom advance booking online (up to ₹4,00,000). Remaining balance due upon delivery.
                         </div>
                         <div id="customAdvanceBox" style="display: none; margin-top: 10px; padding: 10px 12px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px;">
                             <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
-                                <button type="button" class="btn-advance-chip" data-val="25000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 25,000</button>
-                                <button type="button" class="btn-advance-chip" data-val="50000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 50,000</button>
-                                <button type="button" class="btn-advance-chip active-chip" data-val="90000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: #0284c7; border: 1px solid #38bdf8; color: #fff; cursor: pointer; font-weight: 700;">₹ 90,000</button>
-                                <button type="button" class="btn-advance-chip" data-val="150000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 1,50,000</button>
-                                <button type="button" class="btn-advance-chip" data-val="250000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 2,50,000</button>
-                                <button type="button" class="btn-advance-chip" data-val="400000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer;">₹ 4,00,000 (Max Advance)</button>
+                                <button type="button" class="btn-advance-chip" data-val="25000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer; white-space: nowrap;">₹&nbsp;25,000</button>
+                                <button type="button" class="btn-advance-chip" data-val="50000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer; white-space: nowrap;">₹&nbsp;50,000</button>
+                                <button type="button" class="btn-advance-chip active-chip" data-val="90000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: #0284c7; border: 1px solid #38bdf8; color: #fff; cursor: pointer; font-weight: 700; white-space: nowrap;">₹&nbsp;90,000</button>
+                                <button type="button" class="btn-advance-chip" data-val="150000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer; white-space: nowrap;">₹&nbsp;1,50,000</button>
+                                <button type="button" class="btn-advance-chip" data-val="250000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer; white-space: nowrap;">₹&nbsp;2,50,000</button>
+                                <button type="button" class="btn-advance-chip" data-val="400000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer; white-space: nowrap;">₹&nbsp;4,00,000 (Max Advance)</button>
                             </div>
                             <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                <label style="font-size: 12px; color: #cbd5e1;">Or Enter Amount (₹):</label>
+                                <label style="font-size: 12px; color: #cbd5e1; white-space: nowrap;">Or Enter Amount (₹):</label>
                                 <input type="number" id="inputCustomAdvance" min="5000" max="400000" step="5000" value="90000" class="form-control" style="max-width: 170px; height: 34px; font-size: 14px; font-weight: 700; color: #34d399; padding: 4px 10px;">
-                                <span style="font-size: 11px; color: #94a3b8;">(Min ₹5,000 - Max ₹4,00,000)</span>
+                                <span style="font-size: 11px; color: #94a3b8; white-space: nowrap;">(Min ₹5,000 - Max ₹4,00,000)</span>
                             </div>
                         </div>
                     </div>
                 </label>
 
                 <label class="payment-option-label" id="labelOptionFull">
-                    <input type="radio" name="payment_type" id="payTypeFull" value="full_payment" style="accent-color: var(--accent-cyan); width: 18px; height: 18px;">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 700; color: #fff; font-size: 15px; display: flex; justify-content: space-between;">
-                            <span id="fullPaymentTitle">Full Payment (Price + 18% GST)</span>
-                            <span style="color: var(--accent-cyan);" id="fullPriceLabel">₹ 0</span>
+                    <input type="radio" name="payment_type" id="payTypeFull" value="full_payment" style="accent-color: var(--accent-cyan); width: 18px; height: 18px; flex-shrink: 0;">
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="font-weight: 700; color: #fff; font-size: 15px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                            <span id="fullPaymentTitle" style="min-width: 0;">Full Payment (Price + 18% GST)</span>
+                            <span style="color: var(--accent-cyan); white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important; flex-shrink: 0 !important; font-weight: 800;" id="fullPriceLabel" class="price-val">₹&nbsp;0</span>
                         </div>
                         <div style="font-size: 12px; color: var(--text-muted); margin-top: 3px;" id="fullPaymentDesc">
                             Complete invoice payment with 100% Tax Invoice, priority dispatch & free tooling set.
@@ -790,19 +796,19 @@ foreach ($products as $p) {
             </div>
             <div class="price-row">
                 <span>Billed Base Value:</span>
-                <span id="rowBasePrice">₹ 0.00</span>
+                <span id="rowBasePrice" class="price-val" style="white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important;">₹&nbsp;0.00</span>
             </div>
             <div class="price-row">
                 <span>Central GST (CGST 9%):</span>
-                <span id="rowCgst">₹ 0.00</span>
+                <span id="rowCgst" class="price-val" style="white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important;">₹&nbsp;0.00</span>
             </div>
             <div class="price-row">
                 <span>State GST (SGST 9%):</span>
-                <span id="rowSgst">₹ 0.00</span>
+                <span id="rowSgst" class="price-val" style="white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important;">₹&nbsp;0.00</span>
             </div>
             <div class="price-row">
                 <span>Total Machine Value with GST:</span>
-                <span id="rowFullTotal" style="font-weight: 600; color: #cbd5e1;">₹ 0.00</span>
+                <span id="rowFullTotal" class="price-val" style="font-weight: 600; color: #cbd5e1; white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important;">₹&nbsp;0.00</span>
             </div>
 
             <div class="price-row total-row">
@@ -810,7 +816,7 @@ foreach ($products as $p) {
                     <div>Amount Payable Now:</div>
                     <small id="paymentPlanNotice" style="font-size: 11.5px; color: #34d399; font-weight: normal; display: block;">Booking Token Advance</small>
                 </div>
-                <div id="rowPayableNow" style="color: #34d399;">₹ 25,000.00</div>
+                <div id="rowPayableNow" class="price-val" style="color: #34d399; white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important; font-weight: 800;">₹&nbsp;25,000.00</div>
             </div>
 
             <!-- Certified Seal & Signatory Notice -->
@@ -895,7 +901,7 @@ foreach ($products as $p) {
     const btnDemoInstantPay = document.getElementById('btnDemoInstantPay');
 
     function formatINR(val) {
-        return "₹ " + Number(val).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return "₹\u00A0" + Number(val).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
     const isCustomerLoggedIn = <?= !empty($_SESSION['customer_user']) ? 'true' : 'false' ?>;

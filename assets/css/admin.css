@@ -51,6 +51,69 @@
   background: #00e5ff;
 }
 
+/* ==========================================================================
+   MULTI-LANGUAGE & TRANSLATION IMMUNITY RULES (Preserves Layout Across Languages)
+   ========================================================================== */
+html, body {
+  top: 0 !important;
+  position: static !important;
+}
+body.translated-ltr,
+body.translated-rtl {
+  top: 0 !important;
+  position: static !important;
+}
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover,
+.VIpgJd-ZVi9od-OR95微-waSda,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+.VIpgJd-ZVi9od-aZ2wEe-OiiCO,
+.VIpgJd-ZVi9od-xl07Ob-lTBxed {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
+  pointer-events: none !important;
+}
+.goog-text-highlight {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+font, font > font, font font {
+  display: inline !important;
+  font-family: inherit !important;
+  color: inherit !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  vertical-align: inherit !important;
+}
+.sidebar-link font,
+.sidebar-link font > font,
+.btn font {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+.sidebar-link svg {
+  min-width: 18px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Universal Currency & Rupee (₹) Symbol Anti-Stacking Rule */
+.currency-val, .price-val, .rupee-amount, .price-nowrap {
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 3px !important;
+}
+
 body {
   font-family: var(--font-sans);
   background: var(--admin-bg);

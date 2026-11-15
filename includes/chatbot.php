@@ -23,13 +23,13 @@
                 <img src="<?= assetUrl('assets/images/varsha-logo.png') ?>" alt="Varsha AI" class="bot-avatar-img">
                 <span class="online-indicator"></span>
             </div>
-            <div>
-                <div class="bot-name" style="display: flex; align-items: center; gap: 6px;">
-                    <span>Varsha AI Engineer</span>
-                    <span style="font-size: 9.5px; background: rgba(0, 229, 255, 0.2); border: 1px solid #00e5ff; color: #00e5ff; padding: 1px 6px; border-radius: 9999px; font-weight: 800;">OFFICIAL</span>
+            <div class="bot-info">
+                <div class="bot-name">
+                    <span class="bot-name-text">Varsha AI Engineer</span>
+                    <span class="bot-badge-official">OFFICIAL</span>
                 </div>
                 <div class="bot-status">
-                    <span class="pulse-dot"></span> Online • 24/7 Factory Assistant
+                    <span class="pulse-dot"></span> <span class="bot-status-text">Online • 24/7 Factory Assistant</span>
                 </div>
             </div>
         </div>
@@ -195,26 +195,34 @@
 .chatbot-header {
     background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(6, 10, 20, 0.98) 100%);
     border-bottom: 1px solid rgba(0, 229, 255, 0.25);
-    padding: 14px 18px;
+    padding: 12px 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
+    min-height: 56px;
+    box-sizing: border-box;
 }
 .bot-profile {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
 }
 .bot-avatar-wrap {
     position: relative;
+    flex-shrink: 0;
 }
 .bot-avatar-img {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     border: 1.5px solid #00e5ff;
     object-fit: contain;
     background: #0f172a;
+    display: block;
 }
 .online-indicator {
     position: absolute;
@@ -226,20 +234,55 @@
     border-radius: 50%;
     border: 2px solid #060911;
 }
+.bot-info {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+}
 .bot-name {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 15px;
+    font-size: 13.5px;
     font-weight: 800;
     color: #fff;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.bot-name-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.bot-badge-official {
+    font-size: 8.5px;
+    background: rgba(0, 229, 255, 0.2);
+    border: 1px solid #00e5ff;
+    color: #00e5ff;
+    padding: 1px 5px;
+    border-radius: 9999px;
+    font-weight: 800;
+    flex-shrink: 0;
     letter-spacing: 0.5px;
 }
 .bot-status {
-    font-size: 11px;
+    font-size: 10.5px;
     color: #94a3b8;
     display: flex;
     align-items: center;
     gap: 5px;
     margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.bot-status-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .pulse-dot {
     width: 6px;
@@ -247,11 +290,13 @@
     background: #10b981;
     border-radius: 50%;
     box-shadow: 0 0 6px #10b981;
+    flex-shrink: 0;
 }
 .chatbot-header-actions {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
+    flex-shrink: 0;
 }
 .bot-tool-btn {
     background: rgba(255, 255, 255, 0.08);
@@ -263,9 +308,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
     transition: all 0.2s;
+    flex-shrink: 0;
 }
 .bot-tool-btn:hover {
     background: rgba(0, 229, 255, 0.2);
@@ -489,6 +535,24 @@
     transform: scale(1.06);
 }
 
+@media (max-width: 768px) {
+    .chatbot-header {
+        padding: 10px 12px;
+        gap: 6px;
+    }
+    .bot-name {
+        font-size: 13px;
+    }
+    .bot-status {
+        font-size: 10px;
+    }
+    .bot-tool-btn {
+        width: 26px;
+        height: 26px;
+        font-size: 11px;
+    }
+}
+
 @media (max-width: 480px) {
     .chatbot-launcher {
         bottom: 18px;
@@ -498,12 +562,43 @@
     }
     .chatbot-window {
         bottom: 80px;
-        left: 10px;
-        right: 10px;
+        left: 8px;
+        right: 8px;
         width: auto;
         height: calc(100vh - 100px);
         max-height: 560px;
         border-radius: 14px;
+    }
+    .chatbot-header {
+        padding: 8px 10px;
+        gap: 6px;
+        min-height: 50px;
+    }
+    .bot-profile {
+        gap: 8px;
+    }
+    .bot-avatar-img {
+        width: 32px;
+        height: 32px;
+    }
+    .bot-name {
+        font-size: 12px;
+        gap: 4px;
+    }
+    .bot-badge-official {
+        font-size: 7.5px;
+        padding: 1px 4px;
+    }
+    .bot-status {
+        font-size: 9.5px;
+    }
+    .chatbot-header-actions {
+        gap: 3px;
+    }
+    .bot-tool-btn {
+        width: 25px;
+        height: 25px;
+        font-size: 11px;
     }
 }
 </style>

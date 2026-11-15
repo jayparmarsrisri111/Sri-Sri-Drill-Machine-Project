@@ -311,6 +311,7 @@ $total = floatval($order['total_amount'] ?? ($taxable + $cgst + $sgst));
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600;700&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -527,21 +528,25 @@ $total = floatval($order['total_amount'] ?? ($taxable + $cgst + $sgst));
                 Order: <strong style="color: #fff;"><?= e($order['order_number']) ?></strong> | Customer: <strong style="color: #00e5ff;"><?= e($order['customer_name']) ?></strong>
             </span>
         </div>
-        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" onclick="downloadEwayPdf()" id="btnDownloadEwbPdf" class="btn-action" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; font-weight: 800; border: 1.5px solid #34d399; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);">
+                <span>📥</span>
+                <span>Download PDF (Direct)</span>
+            </button>
             <a href="https://ewaybillgst.gov.in/login.aspx" target="_blank" class="btn-action" style="background: rgba(245, 158, 11, 0.2); border: 1.5px solid #f59e0b; color: #fbbf24; text-decoration: none;" title="Official Government GST E-Way Bill Direct Login">
-                🏛️ Open Govt Portal Direct Login (ewaybillgst.gov.in) ↗
+                🏛️ Govt Login ↗
             </a>
             <a href="<?= BASE_URL ?>/invoice.php?order_id=<?= $order['id'] ?>" target="_blank" class="btn-action btn-back" style="border-color: #38bdf8; color: #38bdf8;">
-                📄 View Tax Invoice
+                📄 Tax Invoice
             </a>
             <button onclick="window.print()" class="btn-action btn-print">
-                🖨️ Print Form GST EWB-01
+                🖨️ Print EWB
             </button>
         </div>
     </div>
 
     <!-- Official GST E-Way Bill Document -->
-    <div class="ewb-sheet">
+    <div class="ewb-sheet" id="ewbSheetToPrint">
         <!-- National Emblem & Header -->
         <div class="ewb-header">
             <div class="ewb-title-gov">Government of India &bull; Goods and Services Tax</div>
@@ -771,5 +776,36 @@ $total = floatval($order['total_amount'] ?? ($taxable + $cgst + $sgst));
         </div>
     </div>
 
+    <script>
+    function downloadEwayPdf() {
+        const element = document.getElementById('ewbSheetToPrint');
+        if (!element) { window.print(); return; }
+        const btn = document.getElementById('btnDownloadEwbPdf');
+        const origHtml = btn ? btn.innerHTML : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span> <span>Generating PDF...</span>';
+        }
+        const opt = {
+            margin: [4, 4, 4, 4],
+            filename: 'EWB-<?= $ewbNumber ?>.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        if (typeof html2pdf !== 'undefined') {
+            html2pdf().set(opt).from(element).save().then(function() {
+                if (btn) { btn.disabled = false; btn.innerHTML = origHtml; }
+            }).catch(function(err) {
+                console.warn('PDF error:', err);
+                if (btn) { btn.disabled = false; btn.innerHTML = origHtml; }
+                window.print();
+            });
+        } else {
+            if (btn) { btn.disabled = false; btn.innerHTML = origHtml; }
+            window.print();
+        }
+    }
+    </script>
 </body>
 </html>

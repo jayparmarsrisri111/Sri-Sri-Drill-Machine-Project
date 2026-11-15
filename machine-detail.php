@@ -234,24 +234,26 @@ if ($isSparePart) {
         transition: transform 0.3s ease, opacity 0.25s ease;
     }
     .gallery-caption-bar {
-        margin-top: 12px;
-        background: rgba(15, 23, 42, 0.85);
-        border: 1px solid rgba(0, 229, 255, 0.25);
+        margin-top: 10px;
+        background: rgba(15, 23, 42, 0.95);
+        border: 1.5px solid rgba(0, 229, 255, 0.35);
         border-radius: 8px;
-        padding: 8px 14px;
+        padding: 10px 14px;
         text-align: left;
         width: 100%;
+        box-sizing: border-box;
     }
     .gallery-caption-title {
         font-family: 'Space Grotesk', sans-serif;
-        font-size: 13px;
+        font-size: 13.5px;
         font-weight: 700;
         color: #38bdf8;
     }
     .gallery-caption-desc {
-        font-size: 11.5px;
-        color: #94a3b8;
-        margin-top: 2px;
+        font-size: 12px;
+        color: #cbd5e1;
+        margin-top: 3px;
+        line-height: 1.4;
     }
     .gallery-thumbs-row {
         display: grid;
@@ -326,8 +328,8 @@ if ($isSparePart) {
         <div class="machine-detail-grid">
             <!-- Left: Multi-Angle Real Photos Showcase -->
             <div class="machine-visual-box">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                    <span class="pill-badge"><?= e($machine['category_name']) ?></span>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;">
+                    <span class="pill-badge" style="white-space: nowrap;"><?= e($machine['category_name']) ?></span>
                     <?php if ($mStock > 3): ?>
                         <span class="badge-tag" style="background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #34d399; font-weight: 700;">
                             READY FOR DISPATCH • <?= $mStock ?> UNITS IN STOCK
@@ -346,10 +348,11 @@ if ($isSparePart) {
                 <!-- Main Active Image -->
                 <div class="main-gallery-view">
                     <img id="mainProductImg" src="<?= $galleryImages[0]['url'] ?>" alt="<?= e($machine['name']) ?>">
-                    <div class="gallery-caption-bar">
-                        <div id="galleryCaptionTitle" class="gallery-caption-title"><?= e($galleryImages[0]['title']) ?></div>
-                        <div id="galleryCaptionDesc" class="gallery-caption-desc"><?= e($galleryImages[0]['desc']) ?></div>
-                    </div>
+                </div>
+                <!-- Clean Outside Caption Bar -->
+                <div class="gallery-caption-bar">
+                    <div id="galleryCaptionTitle" class="gallery-caption-title"><?= e($galleryImages[0]['title']) ?></div>
+                    <div id="galleryCaptionDesc" class="gallery-caption-desc"><?= e($galleryImages[0]['desc']) ?></div>
                 </div>
 
                 <!-- Multi-Angle Thumbnail Switchers -->
@@ -697,34 +700,35 @@ if ($isSparePart) {
 
             <!-- Video Player Display with Machining Telemetry HUD -->
             <div style="position: relative; border-radius: 12px; overflow: hidden; background: #020617; border: 1px solid rgba(0, 229, 255, 0.35); box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+                <!-- Video Mode Switcher Header Bar (Dedicated Top Bar, Zero Mobile Overlap) -->
+                <div style="background: rgba(8, 14, 26, 0.95); border-bottom: 1px solid rgba(0, 229, 255, 0.25); padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button type="button" onclick="startRealMachineVideo(event)" id="btnTabVideo" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: #00e5ff; color: #060911; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px;">
+                            <span>▶</span> <span>Video Mode</span>
+                        </button>
+                        <button type="button" onclick="showMachiningSim()" id="btnTabSim" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: rgba(255,255,255,0.1); color: #cbd5e1; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px;">
+                            <span>⚡</span> <span>3D Spindle Simulator</span>
+                        </button>
+                        <button type="button" onclick="resetVideoPoster()" id="btnTabPoster" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: rgba(255,255,255,0.1); color: #cbd5e1; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px;">
+                            <span>🖼️</span> <span>Real Photo</span>
+                        </button>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=<?= $realVideoId ?>" target="_blank" rel="noopener" style="background: rgba(239, 68, 68, 0.2); border: 1.5px solid #ef4444; color: #fca5a5; font-size: 11.5px; font-weight: 700; padding: 6px 12px; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
+                        <span>📺 Open YouTube</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+
                 <div style="display: grid; grid-template-columns: 1fr 320px; min-height: 420px;" id="videoContainerGrid">
                     <!-- Real Video Player Viewport -->
-                    <div id="videoPlayerViewport" style="position: relative; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; min-height: 400px; width: 100%;">
-                        <!-- Interactive Top Control Switcher Bar -->
-                        <div style="position: absolute; top: 12px; left: 14px; right: 14px; z-index: 10; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; pointer-events: auto;">
-                            <div style="display: flex; gap: 6px; background: rgba(6, 10, 20, 0.85); backdrop-filter: blur(8px); padding: 4px; border-radius: 8px; border: 1px solid rgba(0, 229, 255, 0.35);">
-                                <button type="button" onclick="startRealMachineVideo()" id="btnTabVideo" style="padding: 5px 12px; font-size: 11.5px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: #00e5ff; color: #060911; transition: all 0.2s;">
-                                    ▶ Video Mode
-                                </button>
-                                <button type="button" onclick="showMachiningSim()" id="btnTabSim" style="padding: 5px 12px; font-size: 11.5px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: rgba(255,255,255,0.1); color: #cbd5e1; transition: all 0.2s;">
-                                    ⚡ 3D Spindle Simulator
-                                </button>
-                                <button type="button" onclick="resetVideoPoster()" id="btnTabPoster" style="padding: 5px 12px; font-size: 11.5px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: rgba(255,255,255,0.1); color: #cbd5e1; transition: all 0.2s;">
-                                    🖼️ Real Photo
-                                </button>
-                            </div>
-                            <a href="https://www.youtube.com/watch?v=<?= $realVideoId ?>" target="_blank" rel="noopener" style="background: rgba(239, 68, 68, 0.2); border: 1.5px solid #ef4444; color: #fca5a5; font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
-                                <span>📺 Open YouTube</span>
-                                <span>↗</span>
-                            </a>
-                        </div>
+                    <div id="videoPlayerViewport" style="position: relative; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; min-height: 380px; width: 100%;">
 
                         <!-- Working YouTube Embed Player with Autoplay and Fullscreen Controls -->
                         <iframe id="mainMachineIframe" 
                                 src="about:blank" 
-                                data-src="https://www.youtube.com/embed/<?= $realVideoId ?>?autoplay=1&mute=0&controls=1&rel=0&playsinline=1" 
+                                data-src="https://www.youtube.com/embed/<?= $realVideoId ?>?autoplay=1&mute=1&controls=1&rel=0&playsinline=1" 
                                 title="<?= e($realVideoTitle) ?>" 
-                                style="display: none; width: 100%; height: 100%; min-height: 420px; border: none;" 
+                                style="display: none; width: 100%; height: 100%; min-height: 380px; border: none;" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                                 allowfullscreen>
                         </iframe>
@@ -761,46 +765,39 @@ if ($isSparePart) {
                         </div>
 
                         <!-- Video Preview Poster with Real Machine Image and 1-Click Play Overlay -->
-                        <div id="videoPosterOverlay" onclick="startRealMachineVideo(event)" style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; background: linear-gradient(180deg, rgba(2,6,23,0.3) 0%, rgba(2,6,23,0.92) 90%); cursor: pointer;">
+                        <div id="videoPosterOverlay" onclick="startRealMachineVideo(event)" role="button" tabindex="0" style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 18px; background: linear-gradient(180deg, rgba(2,6,23,0.45) 0%, rgba(2,6,23,0.95) 90%); cursor: pointer; z-index: 2;">
                             <img src="<?= assetUrl($machine['image_url']) ?>" alt="<?= e($machine['name']) ?>" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0.45; filter: drop-shadow(0 10px 30px rgba(0,229,255,0.2)); pointer-events: none;">
 
+                            <!-- Top Badges Row (Cleanly spaced, No Collisions) -->
                             <div style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                                <span style="background: rgba(15, 23, 42, 0.9); border: 1.5px solid #10b981; color: #34d399; font-size: 11.5px; font-weight: 800; padding: 5px 12px; border-radius: 6px; box-shadow: 0 0 15px rgba(16,185,129,0.3);">
+                                <span style="background: rgba(15, 23, 42, 0.92); border: 1.5px solid #10b981; color: #34d399; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 6px; box-shadow: 0 0 12px rgba(16,185,129,0.3);">
                                     ● 4K FACTORY WORKSHOP DEMO
                                 </span>
-                                <span style="background: rgba(15, 23, 42, 0.9); border: 1.5px solid rgba(0, 229, 255, 0.5); color: #38bdf8; font-size: 11.5px; font-weight: 700; padding: 5px 12px; border-radius: 6px;">
+                                <span style="background: rgba(15, 23, 42, 0.92); border: 1.5px solid rgba(0, 229, 255, 0.5); color: #38bdf8; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px;">
                                     MODEL: <?= e($machine['model_number']) ?>
                                 </span>
                             </div>
 
-                            <!-- Center Glowing Play Trigger Button -->
-                            <div style="position: relative; z-index: 2; text-align: center; margin: 25px 0;">
-                                <button type="button" id="btnPlayRealVideo" style="pointer-events: none; background: linear-gradient(135deg, #00e5ff 0%, #2563eb 100%); border: none; width: 80px; height: 80px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 40px rgba(0, 229, 255, 0.7); transition: transform 0.25s, box-shadow 0.25s;">
+                            <!-- Center Glowing Play ("Push") Trigger Button -->
+                            <div style="position: relative; z-index: 2; text-align: center; margin: 18px 0;">
+                                <button type="button" id="btnPlayRealVideo" onclick="startRealMachineVideo(event)" aria-label="Play Machine Working Video" style="background: linear-gradient(135deg, #00e5ff 0%, #2563eb 100%); border: none; width: 76px; height: 76px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 35px rgba(0, 229, 255, 0.75); transition: transform 0.25s, box-shadow 0.25s; pointer-events: auto;">
                                     <svg viewBox="0 0 24 24" width="36" height="36" fill="#060911" style="margin-left: 4px;"><path d="M8 5v14l11-7z"/></svg>
                                 </button>
-                                <div style="color: #fff; font-size: 14.5px; font-weight: 800; margin-top: 14px; text-shadow: 0 2px 6px rgba(0,0,0,0.9);">
-                                    Click to Start Real Machine Video Demonstration
+                                <div style="color: #fff; font-size: 14.5px; font-weight: 800; margin-top: 12px; text-shadow: 0 2px 6px rgba(0,0,0,0.9);">
+                                    Click / Tap to Play Real Machine Video Demonstration
                                 </div>
                                 <div style="color: #94a3b8; font-size: 12px; margin-top: 4px;">
                                     <?= e($realVideoTitle) ?>
-                                </div>
-                                <div style="display: flex; justify-content: center; gap: 8px; margin-top: 12px;">
-                                    <a href="https://www.youtube.com/watch?v=<?= $realVideoId ?>" target="_blank" onclick="event.stopPropagation()" style="font-size: 11.5px; color: #f87171; background: rgba(239,68,68,0.15); border: 1px solid #ef4444; padding: 4px 10px; border-radius: 4px; text-decoration: none;">
-                                        📺 Open YouTube Video ↗
-                                    </a>
-                                    <button type="button" onclick="event.stopPropagation(); showMachiningSim();" style="font-size: 11.5px; color: #38bdf8; background: rgba(56,189,248,0.15); border: 1px solid #38bdf8; padding: 4px 10px; border-radius: 4px; cursor: pointer;">
-                                        ⚡ Machining Simulator
-                                    </button>
                                 </div>
                             </div>
 
                             <!-- Bottom Telemetry HUD Status -->
                             <div style="position: relative; z-index: 2;">
-                                <div style="display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1; font-family: monospace; background: rgba(15,23,42,0.85); padding: 7px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);">
+                                <div style="display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1; font-family: monospace; background: rgba(15,23,42,0.9); padding: 7px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; gap: 6px;">
                                     <span>SPINDLE: <strong style="color: #10b981;">650 RPM</strong></span>
                                     <span>FEED: <strong style="color: #38bdf8;">0.22 mm/rev</strong></span>
                                     <span>TORQUE: <strong style="color: #facc15;">145 Nm</strong></span>
-                                    <span>AUDIO: <strong style="color: #34d399;">Factory Sound</strong></span>
+                                    <span>RUNOUT: <strong style="color: #34d399;">&lt; 0.012 mm</strong></span>
                                 </div>
                             </div>
                         </div>
@@ -1150,8 +1147,9 @@ function updateVideoTabs(activeTab) {
 }
 
 function startRealMachineVideo(event) {
-    if (event && event.stopPropagation) {
-        event.stopPropagation();
+    if (event) {
+        if (event.preventDefault) event.preventDefault();
+        if (event.stopPropagation) event.stopPropagation();
     }
     updateVideoTabs('video');
     const iframe = document.getElementById('mainMachineIframe');
@@ -1160,7 +1158,7 @@ function startRealMachineVideo(event) {
     if (sim) sim.style.display = 'none';
 
     if (iframe && poster) {
-        let targetSrc = iframe.getAttribute('data-src') || ("https://www.youtube.com/embed/<?= $realVideoId ?>?autoplay=1&controls=1&rel=0&playsinline=1");
+        let targetSrc = iframe.getAttribute('data-src') || ("https://www.youtube.com/embed/<?= $realVideoId ?>?autoplay=1&mute=1&controls=1&rel=0&playsinline=1");
         targetSrc = targetSrc.replace(/&amp;/g, '&');
         
         if (!iframe.src || iframe.src === 'about:blank' || iframe.src.indexOf('youtube.com') === -1) {
@@ -1169,14 +1167,14 @@ function startRealMachineVideo(event) {
         poster.style.display = 'none';
         iframe.style.display = 'block';
 
-        // Auto fallback watchdog: If YouTube fails to respond within 4 seconds, offer 3D Simulator
+        // Auto fallback watchdog: If YouTube fails to respond within 5 seconds, offer 3D Simulator
         const iframeWatchdog = setTimeout(function() {
             try {
                 if (iframe.style.display === 'block') {
                     // Ready state verified
                 }
             } catch(e) {}
-        }, 4000);
+        }, 5000);
 
         iframe.onload = function() {
             clearTimeout(iframeWatchdog);

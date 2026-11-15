@@ -27,8 +27,8 @@ $navCartCount = intval($navCartSummary['total_qty'] ?? 0);
     justify-content: space-between;
     width: 100%;
     max-width: 100%;
-    margin: 0 auto;
-    padding: 0 12px;
+    margin: 0;
+    padding: 0 16px;
     gap: 8px;
     box-sizing: border-box;
 }
@@ -332,79 +332,102 @@ body.mobile-menu-open #varshaChatbotWindow {
 }
 
 /* ==========================================================================
-   LAPTOP & DESKTOP ULTRA-RESPONSIVE POLISH (861px - 1600px)
-   Balanced, centered container with crisp typography, sleek pill hovers,
-   and zero awkward spacing gaps or tiny stripped buttons.
+   LAPTOP & DESKTOP ULTRA-RESPONSIVE POLISH (Full-Width, Zero Left Gap, All Buttons Fit)
    ========================================================================== */
+.site-nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 16px !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+}
+
 @media (min-width: 861px) and (max-width: 1600px) {
     .site-nav-container {
-        max-width: 1440px !important;
-        margin: 0 auto !important;
-        padding: 0 16px !important;
-        gap: 10px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 14px !important;
+        gap: 6px !important;
         justify-content: space-between !important;
     }
     .brand-badge-wrap {
-        gap: 8px !important;
+        gap: 7px !important;
+        flex-shrink: 0 !important;
     }
     .brand-badge-wrap img {
-        height: 38px !important;
-        width: 38px !important;
+        height: 36px !important;
+        width: 36px !important;
     }
     .brand-title-main {
-        font-size: 14.5px !important;
+        font-size: 14px !important;
         letter-spacing: 0.3px !important;
     }
     .brand-subtitle-tag {
         display: block !important;
-        font-size: 9px !important;
+        font-size: 8.5px !important;
     }
     .nav-links-center {
         display: flex !important;
         align-items: center !important;
-        gap: 6px !important;
+        gap: 4px !important;
+        flex-shrink: 1 !important;
     }
     .site-nav-link {
-        font-size: 12.5px !important;
+        font-size: 11.5px !important;
         font-weight: 600 !important;
-        padding: 5px 8px !important;
+        padding: 4px 6px !important;
         border-radius: 6px !important;
+        white-space: nowrap !important;
     }
     .site-nav-link:hover {
         background: rgba(0, 229, 255, 0.08) !important;
     }
     .nav-actions-right {
-        gap: 6px !important;
+        gap: 5px !important;
         display: flex !important;
         align-items: center !important;
+        flex-shrink: 0 !important;
     }
     .nav-search-desktop {
         display: inline-flex !important;
     }
     .nav-search-desktop input {
-        width: 105px !important;
-        font-size: 11.5px !important;
+        width: 85px !important;
+        font-size: 11px !important;
         height: 34px !important;
+        padding: 4px 8px 4px 24px !important;
     }
     .btn-nav-action {
-        height: 36px !important;
-        padding: 0 9px !important;
-        font-size: 12px !important;
-        gap: 5px !important;
-        border-radius: 8px !important;
+        height: 34px !important;
+        padding: 0 8px !important;
+        font-size: 11.5px !important;
+        gap: 4px !important;
+        border-radius: 7px !important;
+        flex-shrink: 0 !important;
     }
     .btn-site-lang-toggle {
-        height: 36px !important;
-        padding: 0 8px !important;
-        font-size: 12px !important;
-        gap: 4px !important;
-        border-radius: 8px !important;
+        height: 34px !important;
+        padding: 0 7px !important;
+        font-size: 11.5px !important;
+        gap: 3px !important;
+        border-radius: 7px !important;
+        flex-shrink: 0 !important;
     }
     .btn-site-lang-toggle .active-lang-desktop {
-        font-size: 12px !important;
+        font-size: 11.5px !important;
     }
     .btn-top-book .btn-text-extra {
         display: inline !important;
+    }
+    .btn-nav-admin {
+        display: inline-flex !important;
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
     }
     .btn-nav-admin .btn-text-full {
         display: inline !important;
@@ -417,32 +440,37 @@ body.mobile-menu-open #varshaChatbotWindow {
     }
 }
 
-/* Specific adjustment for compact laptop screens (861px - 1180px) */
-@media (min-width: 861px) and (max-width: 1180px) {
+/* Specific adjustment for compact laptop screens (861px - 1240px) */
+@media (min-width: 861px) and (max-width: 1240px) {
     .site-nav-container {
-        padding: 0 10px !important;
-        gap: 6px !important;
-    }
-    .nav-links-center {
-        gap: 3px !important;
-    }
-    .site-nav-link {
-        font-size: 11.5px !important;
-        padding: 4px 6px !important;
-    }
-    .nav-search-desktop {
-        display: none !important;
-    }
-    .btn-nav-action {
-        height: 34px !important;
-        padding: 0 7px !important;
-        font-size: 11.5px !important;
+        padding: 0 8px !important;
         gap: 4px !important;
     }
-    .btn-site-lang-toggle {
-        height: 34px !important;
+    .nav-links-center {
+        gap: 2px !important;
+    }
+    .site-nav-link {
+        font-size: 11px !important;
+        padding: 3px 4px !important;
+    }
+    .nav-search-desktop input {
+        width: 70px !important;
+        padding: 3px 6px 3px 20px !important;
+        font-size: 10.5px !important;
+    }
+    .btn-nav-action {
+        height: 32px !important;
         padding: 0 6px !important;
-        font-size: 11.5px !important;
+        font-size: 11px !important;
+        gap: 3px !important;
+    }
+    .btn-site-lang-toggle {
+        height: 32px !important;
+        padding: 0 5px !important;
+        font-size: 11px !important;
+    }
+    .btn-nav-admin {
+        padding: 0 6px !important;
     }
 }
 

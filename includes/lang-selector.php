@@ -151,13 +151,23 @@ $dropdownId = 'langSelect_' . substr(md5(uniqid((string)rand(), true)), 0, 8);
 /* Safely hide ONLY Google Translate top toolbar banner, header iframe, and tooltips */
 .goog-te-banner-frame.skiptranslate,
 .goog-te-banner-frame,
-iframe.goog-te-banner-frame {
+iframe.goog-te-banner-frame,
+.VIpgJd-ZVi9od-OR95微-waSda,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+.VIpgJd-ZVi9od-aZ2wEe-OiiCO,
+.VIpgJd-ZVi9od-xl07Ob-lTBxed {
     display: none !important;
     visibility: hidden !important;
     height: 0 !important;
     opacity: 0 !important;
+    pointer-events: none !important;
 }
-body {
+html, body {
+    top: 0px !important;
+    position: static !important;
+}
+body.translated-ltr,
+body.translated-rtl {
     top: 0px !important;
     position: static !important;
 }
@@ -167,16 +177,37 @@ body {
 .goog-tooltip:hover {
     display: none !important;
     visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 .goog-text-highlight {
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
-font.skiptranslate, span.skiptranslate {
+font.skiptranslate, span.skiptranslate, font, font > font, font font {
     display: inline !important;
     font-family: inherit !important;
     color: inherit !important;
+    background: transparent !important;
+}
+.site-nav-link font,
+.btn-nav-action font,
+.sidebar-link font,
+.btn font {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+.sidebar-link svg {
+    min-width: 18px !important;
+    flex-shrink: 0 !important;
+}
+/* Currency & Rupee (₹) Symbol Anti-Stacking Rule */
+.currency-val, .price-val, .rupee-amount, .price-nowrap {
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: baseline !important;
+    gap: 3px !important;
 }
 #google_translate_element {
     position: absolute !important;
@@ -556,7 +587,11 @@ const UI_DICT_KEYS = {
     'hi': Object.keys(UI_TRANSLATIONS['hi']).sort((a, b) => b.length - a.length)
 };
 
-// Full Recursive DOM Tree Translator (Converts 100% of text nodes instantly)
+// Full Recursive DOM Tree Translator (Converts text nodes accurately without corrupting HTML)
+function escapeRegex(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function translateFullDomTree(targetLang) {
     if (!targetLang || targetLang === 'en' || !UI_TRANSLATIONS[targetLang]) return;
     const dict = UI_TRANSLATIONS[targetLang];
@@ -573,10 +608,10 @@ function translateFullDomTree(targetLang) {
                     const parent = node.parentElement;
                     if (!parent) return NodeFilter.FILTER_REJECT;
                     const tag = parent.tagName.toLowerCase();
-                    if (tag === 'script' || tag === 'style' || tag === 'noscript' || tag === 'textarea') {
+                    if (tag === 'script' || tag === 'style' || tag === 'noscript' || tag === 'textarea' || tag === 'code' || tag === 'pre') {
                         return NodeFilter.FILTER_REJECT;
                     }
-                    if (parent.closest('.notranslate') || parent.closest('#varshaChatbotWindow') || parent.closest('#google_translate_element')) {
+                    if (parent.closest('.notranslate') || parent.closest('#varshaChatbotWindow') || parent.closest('#google_translate_element') || parent.closest('.price-nowrap') || parent.closest('.currency-val')) {
                         return NodeFilter.FILTER_REJECT;
                     }
                     return NodeFilter.FILTER_ACCEPT;
@@ -597,8 +632,13 @@ function translateFullDomTree(targetLang) {
             } else {
                 for (let i = 0; i < keys.length; i++) {
                     const k = keys[i];
-                    if (k.length >= 3 && val.includes(k)) {
-                        val = val.split(k).join(dict[k]);
+                    if (k.length >= 4 && val.includes(k)) {
+                        try {
+                            const reg = new RegExp('(^|\\s|[.,;:!?"\'()])' + escapeRegex(k) + '(?=$|\\s|[.,;:!?"\'()])', 'g');
+                            val = val.replace(reg, '$1' + dict[k]);
+                        } catch(e) {
+                            val = val.split(k).join(dict[k]);
+                        }
                     }
                 }
                 node.nodeValue = val;

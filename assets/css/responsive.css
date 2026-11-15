@@ -592,3 +592,18 @@ img, svg, video, canvas {
     font-size: 13.5px !important;
   }
 }
+
+/* ==========================================================================
+   UNIVERSAL CURRENCY & RUPEE (₹) ANTI-STACKING & MOBILE POLISH
+   ========================================================================== */
+.currency-val, .price-val, .rupee-amount, .price-nowrap, .price-badge, [data-price-val] {
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 3px !important;
+}
+
+/* Clean translation text handling */
+.site-nav-link, .btn, .btn-action, .sidebar-link, .pill-badge, .badge-tag {
+  overflow-wrap: break-word;
+}

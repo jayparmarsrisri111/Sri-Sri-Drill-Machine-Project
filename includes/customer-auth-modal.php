@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/otp-popup.php'; ?>
 <!-- Customer Login & Registration Modal - Amazon-Style 2-Step OTP Authentication Flow -->
 <div id="customerAuthModal" class="quote-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 7, 13, 0.9); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 10005; align-items: center; justify-content: center; padding: 20px;">
     <div style="background: #090d16; border: 1.5px solid var(--accent-cyan); border-radius: 18px; width: 100%; max-width: 480px; box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 35px rgba(0, 229, 255, 0.25); overflow: hidden; animation: authPop 0.25s ease;">
@@ -423,14 +424,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     const otpInput = document.getElementById('loginOtpInput');
                     if (otpInput) {
-                        otpInput.value = data.demo_otp || '';
+                        otpInput.value = '';
                         otpInput.focus();
                     }
 
                     const hint = document.getElementById('loginOtpDemoHint');
-                    if (hint && data.demo_otp) {
-                        hint.style.display = 'block';
-                        hint.innerHTML = '✔ OTP dispatched! Testing PIN: <strong>' + data.demo_otp + '</strong>';
+                    if (hint) {
+                        hint.style.display = 'none';
+                    }
+
+                    // Surface OTP exclusively via Responsive Pop-Up Menu Modal
+                    if (typeof window.showVarshaOtpPopup === 'function' && data.demo_otp) {
+                        window.showVarshaOtpPopup({
+                            title: '🔐 CUSTOMER LOGIN PIN',
+                            purpose: 'Customer Sign In (2FA Verification)',
+                            recipient: data.masked_contact || '',
+                            otp: data.demo_otp,
+                            targetInputId: 'loginOtpInput'
+                        });
                     }
 
                     showNotice(data.message, 'success');
@@ -491,7 +502,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (d.success) {
                     showNotice(d.message, 'success');
                     const otpInput = document.getElementById('loginOtpInput');
-                    if (otpInput && d.demo_otp) otpInput.value = d.demo_otp;
+                    if (otpInput) {
+                        otpInput.value = '';
+                        otpInput.focus();
+                    }
+                    if (typeof window.showVarshaOtpPopup === 'function' && d.demo_otp) {
+                        window.showVarshaOtpPopup({
+                            title: '🔐 FRESH LOGIN PIN DISPATCHED',
+                            purpose: 'Customer Sign In (Resent PIN)',
+                            recipient: '',
+                            otp: d.demo_otp,
+                            targetInputId: 'loginOtpInput'
+                        });
+                    }
                     loginTimer = startCooldown(document.getElementById('btnResendLoginOtp'), document.getElementById('loginCountdown'));
                 } else {
                     showNotice(d.message, 'error');
@@ -526,14 +549,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     const otpInput = document.getElementById('regOtpInput');
                     if (otpInput) {
-                        otpInput.value = data.demo_otp || '';
+                        otpInput.value = '';
                         otpInput.focus();
                     }
 
                     const hint = document.getElementById('regOtpDemoHint');
-                    if (hint && data.demo_otp) {
-                        hint.style.display = 'block';
-                        hint.innerHTML = '✔ OTP code dispatched! Testing PIN: <strong>' + data.demo_otp + '</strong>';
+                    if (hint) {
+                        hint.style.display = 'none';
+                    }
+
+                    // Surface OTP exclusively via Responsive Pop-Up Menu Modal
+                    if (typeof window.showVarshaOtpPopup === 'function' && data.demo_otp) {
+                        window.showVarshaOtpPopup({
+                            title: '🔐 REGISTRATION VERIFICATION PIN',
+                            purpose: 'New Customer Account Activation',
+                            recipient: data.masked_contact || '',
+                            otp: data.demo_otp,
+                            targetInputId: 'regOtpInput'
+                        });
                     }
 
                     showNotice(data.message, 'success');
@@ -594,7 +627,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (d.success) {
                     showNotice(d.message, 'success');
                     const otpInput = document.getElementById('regOtpInput');
-                    if (otpInput && d.demo_otp) otpInput.value = d.demo_otp;
+                    if (otpInput) {
+                        otpInput.value = '';
+                        otpInput.focus();
+                    }
+                    if (typeof window.showVarshaOtpPopup === 'function' && d.demo_otp) {
+                        window.showVarshaOtpPopup({
+                            title: '🔐 FRESH REGISTRATION PIN DISPATCHED',
+                            purpose: 'Account Activation (Resent PIN)',
+                            recipient: '',
+                            otp: d.demo_otp,
+                            targetInputId: 'regOtpInput'
+                        });
+                    }
                     regTimer = startCooldown(document.getElementById('btnResendRegOtp'), document.getElementById('regCountdown'));
                 } else {
                     showNotice(d.message, 'error');
@@ -645,14 +690,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     const otpInput = document.getElementById('forgotOtpInput');
                     if (otpInput) {
-                        otpInput.value = data.demo_otp || '';
+                        otpInput.value = '';
                         otpInput.focus();
                     }
 
                     const hint = document.getElementById('forgotOtpDemoHint');
-                    if (hint && data.demo_otp) {
-                        hint.style.display = 'block';
-                        hint.innerHTML = '✔ Reset PIN dispatched! Testing PIN: <strong>' + data.demo_otp + '</strong>';
+                    if (hint) {
+                        hint.style.display = 'none';
+                    }
+
+                    // Surface OTP exclusively via Responsive Pop-Up Menu Modal
+                    if (typeof window.showVarshaOtpPopup === 'function' && data.demo_otp) {
+                        window.showVarshaOtpPopup({
+                            title: '🔐 PASSWORD RESET PIN',
+                            purpose: 'Customer Password Reset Authorization',
+                            recipient: data.masked_contact || '',
+                            otp: data.demo_otp,
+                            targetInputId: 'forgotOtpInput'
+                        });
                     }
 
                     showNotice(data.message, 'success');
@@ -717,7 +772,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (d.success) {
                     showNotice(d.message, 'success');
                     const otpInput = document.getElementById('forgotOtpInput');
-                    if (otpInput && d.demo_otp) otpInput.value = d.demo_otp;
+                    if (otpInput) {
+                        otpInput.value = '';
+                        otpInput.focus();
+                    }
+                    if (typeof window.showVarshaOtpPopup === 'function' && d.demo_otp) {
+                        window.showVarshaOtpPopup({
+                            title: '🔐 FRESH RESET PIN DISPATCHED',
+                            purpose: 'Password Reset (Resent PIN)',
+                            recipient: '',
+                            otp: d.demo_otp,
+                            targetInputId: 'forgotOtpInput'
+                        });
+                    }
                     forgotTimer = startCooldown(document.getElementById('btnResendForgotOtp'), document.getElementById('forgotCountdown'));
                 } else {
                     showNotice(d.message, 'error');

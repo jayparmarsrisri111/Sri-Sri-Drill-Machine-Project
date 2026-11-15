@@ -243,6 +243,8 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Standalone Client-Side PDF Engine for Guaranteed Non-Empty PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --primary: #0284c7;
@@ -614,22 +616,51 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 justify-content: center;
             }
             .invoice-paper {
-                padding: 18px 14px;
+                padding: 14px 10px;
                 border-radius: 6px;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                overflow: hidden;
             }
             .inv-header {
                 grid-template-columns: 1fr;
-                gap: 14px;
+                gap: 12px;
             }
             .invoice-title-block {
                 text-align: left;
+                width: 100%;
             }
             .inv-meta-table {
-                margin-left: 0;
+                margin: 10px 0 0 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                table-layout: fixed !important;
+                border-collapse: separate !important;
+                border-spacing: 0 !important;
             }
-            .inv-meta-table td {
-                text-align: left;
-                padding: 2px 8px 2px 0;
+            .inv-meta-table td.meta-label {
+                width: 42% !important;
+                white-space: normal !important;
+                word-break: break-word !important;
+                padding: 6px 8px !important;
+                font-size: 10.5px !important;
+                text-align: left !important;
+            }
+            .inv-meta-table td.meta-val {
+                width: 58% !important;
+                white-space: normal !important;
+                word-break: break-word !important;
+                padding: 6px 8px !important;
+                font-size: 11px !important;
+                text-align: left !important;
+            }
+            .invoice-num-tag {
+                font-size: 11px !important;
+                padding: 2px 6px !important;
+                word-break: break-all !important;
+                white-space: normal !important;
+                display: inline-block !important;
             }
             .parties-grid {
                 grid-template-columns: 1fr;
@@ -745,23 +776,27 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 <?= ($order['payment_status'] === 'paid') ? '✔ PAYMENT VERIFIED &amp; COMPLETED' : '⏳ PAYMENT STATUS: PENDING / PROFORMA' ?>
             </span>
         </div>
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" onclick="downloadInvoicePDF()" id="btnDownloadInvoicePdf" class="btn-action" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; font-weight: 800; border: 1.5px solid #34d399; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);">
+                <span>📥</span>
+                <span>Download PDF (Direct)</span>
+            </button>
             <button onclick="window.print()" class="btn-action btn-print">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-                🖨️ Print / Download PDF Invoice
+                <span>🖨️ Print</span>
             </button>
             <?php
                 $waText = "Hello " . APP_NAME . ", Here is my order confirmation and invoice:\nInvoice No: " . $order['invoice_number'] . "\nModel: " . $order['model_number'] . "\nAmount: Rs. " . number_format($order['total_amount'], 2) . "\nTransaction Ref: " . $order['razorpay_payment_id'];
             ?>
             <a href="<?= getWhatsAppLink(COMPANY_WHATSAPP, $waText) ?>" target="_blank" class="btn-action btn-whatsapp-share">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2z"/></svg>
-                Share on WhatsApp
+                <span>WhatsApp</span>
             </a>
         </div>
     </div>
 
     <!-- Official High-Precision Industrial Tax Invoice Paper -->
-    <div class="invoice-paper">
+    <div class="invoice-paper" id="invoicePaperToPrint">
         <?php 
             $payStatus = strtolower($order['payment_status'] ?? '');
             $ordStatus = strtolower($order['order_status'] ?? '');
@@ -1094,5 +1129,59 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         </div>
     </div>
 
+    <!-- Client-Side Instant PDF Generator -->
+    <script>
+    function downloadInvoicePDF() {
+        const element = document.getElementById('invoicePaperToPrint');
+        if (!element) {
+            window.print();
+            return;
+        }
+
+        const btn = document.getElementById('btnDownloadInvoicePdf');
+        const origHtml = btn ? btn.innerHTML : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span> <span>Generating High-Res PDF...</span>';
+        }
+
+        const invNum = '<?= e($order['invoice_number'] ?: 'SVEW-INVOICE') ?>';
+        const opt = {
+            margin: [4, 4, 4, 4],
+            filename: invNum + '.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { 
+                scale: 2, 
+                useCORS: true, 
+                logging: false,
+                backgroundColor: '#ffffff'
+            },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        if (typeof html2pdf !== 'undefined') {
+            html2pdf().set(opt).from(element).save().then(function() {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+            }).catch(function(err) {
+                console.warn('html2pdf fallback to print:', err);
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+                window.print();
+            });
+        } else {
+            // Graceful fallback if CDN is not reachable
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = origHtml;
+            }
+            window.print();
+        }
+    }
+    </script>
 </body>
 </html>

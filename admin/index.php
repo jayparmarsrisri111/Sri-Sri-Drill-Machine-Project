@@ -52,8 +52,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $user = $stmt->fetch();
 
                         if ($user && (password_verify($password, $user['password_hash']) || $password === 'admin123')) {
-                            // Credentials match! Generate 6-digit Admin Security Code / OTP
-                            $otp = (string)random_int(100000, 999999);
+                            // Credentials match! Generate unique dynamic 6-digit Admin Security Code / OTP
+                            $lastAdminOtp = $_SESSION['last_admin_otp'] ?? '';
+                            do {
+                                $otp = (string)random_int(100000, 999999);
+                            } while ($otp === $lastAdminOtp);
+                            $_SESSION['last_admin_otp'] = $otp;
+
                             $redirectTo = !empty($_REQUEST['redirect']) ? sanitizeString($_REQUEST['redirect']) : 'dashboard.php';
                             if (strpos($redirectTo, '://') !== false || strpos($redirectTo, '//') === 0) {
                                 $redirectTo = 'dashboard.php';
@@ -123,13 +128,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // -------------------------------------------------------------
         elseif ($step === 'resend_otp') {
             if (!empty($_SESSION['admin_2fa_pending'])) {
-                $otp = (string)random_int(100000, 999999);
+                $lastAdminOtp = $_SESSION['last_admin_otp'] ?? '';
+                do {
+                    $otp = (string)random_int(100000, 999999);
+                } while ($otp === $lastAdminOtp);
+                $_SESSION['last_admin_otp'] = $otp;
+
                 $_SESSION['admin_2fa_pending']['otp'] = $otp;
                 $_SESSION['admin_2fa_pending']['expires'] = time() + 600;
                 sendOtpEmailOrSms($_SESSION['admin_2fa_pending']['user']['email'] ?? COMPANY_EMAIL, COMPANY_PHONE_1, $otp, 'Admin Portal 2FA');
                 $showOtpStep = true;
                 $demoOtp = $otp;
-                $successMessage = "A fresh 6-digit Security PIN has been sent via SMTP Email & SMS!";
+                $successMessage = "A fresh unique 6-digit Security PIN has been dispatched to your email and mobile!";
             } else {
                 $errorMessage = 'No pending session. Please log in with your credentials.';
                 $showOtpStep = false;
@@ -266,12 +276,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label class="form-label" style="font-size: 12.5px; color: var(--accent-cyan); text-align: center; display: block; font-weight: 700;">
                         Enter 6-Digit Admin PIN *
                     </label>
-                    <input type="text" name="otp" class="form-control" placeholder="••••••" maxlength="6" value="<?= e($demoOtp) ?>" required autofocus style="font-size: 26px; font-weight: 800; letter-spacing: 10px; text-align: center; height: 50px; border-color: #00e5ff; box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);">
-                    <?php if (!empty($demoOtp)): ?>
-                        <div style="font-size: 11.5px; color: #34d399; margin-top: 8px; text-align: center; font-weight: 600;">
-                            ✔ Security Code dispatched! Testing PIN: <strong style="letter-spacing: 2px;"><?= e($demoOtp) ?></strong>
-                        </div>
-                    <?php endif; ?>
+                    <input type="text" name="otp" id="adminOtpInput" class="form-control" placeholder="••••••" maxlength="6" value="" required autofocus style="font-size: 26px; font-weight: 800; letter-spacing: 10px; text-align: center; height: 50px; border-color: #00e5ff; box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);">
                 </div>
 
                 <button type="submit" class="btn btn-primary" style="width: 100%; padding: 13px; font-size: 14.5px; font-weight: 800; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: #34d399; box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);">
@@ -304,5 +309,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </a>
         </div>
     </div>
+
+    <!-- Universal OTP Pop-Up Menu -->
+    <?php require_once __DIR__ . '/../includes/otp-popup.php'; ?>
+
+    <?php if ($showOtpStep && !empty($demoOtp)): ?>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof window.showVarshaOtpPopup === 'function') {
+                window.showVarshaOtpPopup({
+                    title: '🔐 ADMIN 2FA SECURITY PIN',
+                    purpose: 'Admin Management Authorization',
+                    recipient: '<?= e(COMPANY_EMAIL) ?> & <?= e(COMPANY_PHONE_1) ?>',
+                    otp: '<?= e($demoOtp) ?>',
+                    targetInputId: 'adminOtpInput'
+                });
+            }
+        });
+        </script>
+    <?php endif; ?>
 </body>
 </html>

@@ -45,6 +45,16 @@ function maskContactInfo($email, $phone) {
     return $masked ?: 'registered mobile/email';
 }
 
+// Helper to generate a strictly fresh, non-repeating 6-digit dynamic OTP
+function generateUniqueOtp($sessionKey = 'customer_last_otp') {
+    $last = $_SESSION[$sessionKey] ?? '';
+    do {
+        $otp = (string)random_int(100000, 999999);
+    } while ($otp === $last);
+    $_SESSION[$sessionKey] = $otp;
+    return $otp;
+}
+
 // ==========================================
 // 1. FAST 1-CLICK DEMO LOGIN (TESTING)
 // ==========================================
@@ -118,8 +128,8 @@ if ($action === 'login_step1' || ($action === 'login' && empty($_POST['otp']))) 
             exit;
         }
 
-        // Credentials correct! Generate 6-digit 2FA OTP
-        $otp = (string)random_int(100000, 999999);
+        // Credentials correct! Generate 6-digit 2FA OTP (Unique & dynamic)
+        $otp = generateUniqueOtp('customer_login_otp');
         $_SESSION['login_2fa'] = [
             'customer_id' => $cust['id'],
             'otp' => $otp,
@@ -243,8 +253,8 @@ if ($action === 'register_step1') {
             exit;
         }
 
-        // Generate 6-digit OTP for registration verification
-        $otp = (string)random_int(100000, 999999);
+        // Generate 6-digit OTP for registration verification (Unique & dynamic)
+        $otp = generateUniqueOtp('customer_reg_otp');
         $_SESSION['register_2fa'] = [
             'data' => [
                 'full_name' => $fullName,
@@ -374,7 +384,7 @@ if ($action === 'forgot_step1') {
         exit;
     }
 
-    $otp = (string)random_int(100000, 999999);
+    $otp = generateUniqueOtp('customer_forgot_otp');
     $_SESSION['forgot_2fa'] = [
         'customer_id' => $cust['id'],
         'otp' => $otp,
@@ -449,7 +459,7 @@ if ($action === 'forgot_step2') {
 // ==========================================
 if ($action === 'resend_otp') {
     $flow = trim($_POST['flow'] ?? 'login');
-    $otp = (string)random_int(100000, 999999);
+    $otp = generateUniqueOtp('customer_resend_otp');
 
     if ($flow === 'login' && !empty($_SESSION['login_2fa'])) {
         $_SESSION['login_2fa']['otp'] = $otp;
