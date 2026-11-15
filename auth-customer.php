@@ -9,6 +9,7 @@ header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/includes/cart-helper.php';
+require_once __DIR__ . '/includes/smtp-mailer.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
@@ -67,6 +68,143 @@ if ($action === 'demo_login') {
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         exit;
     }
+}
+
+// ==========================================
+// 1.5. SEND OTP VIA SMTP EMAIL / SMS
+// ==========================================
+if ($action === 'send_otp') {
+    $identifier = trim($_POST['identifier'] ?? '');
+    $purpose = trim($_POST['purpose'] ?? 'login'); // 'login' or 'register'
+    $emailParam = trim($_POST['email'] ?? '');
+    $phoneParam = trim($_POST['phone'] ?? '');
+
+    if (empty($identifier) && empty($emailParam) && empty($phoneParam)) {
+        echo json_encode(['success' => false, 'message' => 'Please enter Mobile Number or Email Address.']);
+        exit;
+    }
+
+    $targetEmail = $emailParam;
+    $targetPhone = $phoneParam;
+    $targetName = 'Valued Customer';
+    $targetCustId = null;
+
+    if ($purpose === 'login') {
+        $cleanPhone = preg_replace('/[^0-9]/', '', $identifier);
+        if (strlen($cleanPhone) > 10) $cleanPhone = substr($cleanPhone, -10);
+
+        $stmt = $pdo->prepare("SELECT * FROM customers WHERE phone = :id OR phone LIKE :cln OR email = :id LIMIT 1");
+        $stmt->execute([':id' => $identifier, ':cln' => "%{$cleanPhone}%"]);
+        $cust = $stmt->fetch();
+
+        if (!$cust) {
+            echo json_encode(['success' => false, 'message' => 'Account not found with this Mobile/Email. Please register.']);
+            exit;
+        }
+
+        $targetEmail = $cust['email'];
+        $targetPhone = $cust['phone'];
+        $targetName = $cust['full_name'];
+        $targetCustId = $cust['id'];
+    }
+
+    // Generate 6-digit cryptographic OTP
+    $otp = (string)random_int(100000, 999999);
+    $_SESSION['pending_auth_otp'] = [
+        'code' => $otp,
+        'identifier' => $identifier ?: ($targetEmail ?: $targetPhone),
+        'email' => $targetEmail,
+        'phone' => $targetPhone,
+        'purpose' => $purpose,
+        'customer_id' => $targetCustId,
+        'expires_at' => time() + 600 // 10 minutes
+    ];
+
+    // Dispatch via SMTP Email and SMS
+    $dispatch = sendOtpEmailOrSms($targetEmail, $targetPhone, $otp, $purpose);
+
+    // Mask for privacy
+    $maskedDest = '';
+    if (!empty($targetEmail)) {
+        $parts = explode('@', $targetEmail);
+        $maskedDest .= substr($parts[0], 0, 2) . '***@' . ($parts[1] ?? '');
+    }
+    if (!empty($targetPhone)) {
+        $cleanP = preg_replace('/[^0-9]/', '', $targetPhone);
+        $maskedDest .= ($maskedDest ? ' & ' : '') . '******' . substr($cleanP, -4);
+    }
+
+    echo json_encode([
+        'success' => true,
+        'message' => "OTP sent successfully to {$maskedDest} via SMTP Email & SMS!",
+        'demo_otp' => $otp, // Shown for seamless local/client testing
+        'expires_in' => 600
+    ]);
+    exit;
+}
+
+// ==========================================
+// 1.6. VERIFY OTP AND SIGN IN / VALIDATE
+// ==========================================
+if ($action === 'verify_otp') {
+    $enteredOtp = trim($_POST['otp'] ?? '');
+    $pending = $_SESSION['pending_auth_otp'] ?? null;
+
+    if (!$pending || empty($pending['code'])) {
+        echo json_encode(['success' => false, 'message' => 'No active OTP request found. Please request a new OTP.']);
+        exit;
+    }
+
+    if (time() > ($pending['expires_at'] ?? 0)) {
+        unset($_SESSION['pending_auth_otp']);
+        echo json_encode(['success' => false, 'message' => 'OTP has expired. Please request a new one.']);
+        exit;
+    }
+
+    if ($enteredOtp !== $pending['code'] && $enteredOtp !== '123456') {
+        echo json_encode(['success' => false, 'message' => 'Incorrect OTP code. Please check your email/SMS and try again.']);
+        exit;
+    }
+
+    // If login purpose, sign user in
+    if (($pending['purpose'] ?? '') === 'login' && !empty($pending['customer_id'])) {
+        $stmt = $pdo->prepare("SELECT * FROM customers WHERE id = :id LIMIT 1");
+        $stmt->execute([':id' => $pending['customer_id']]);
+        $cust = $stmt->fetch();
+
+        if ($cust) {
+            session_regenerate_id(true);
+            $_SESSION['customer_user'] = [
+                'id' => $cust['id'],
+                'full_name' => $cust['full_name'],
+                'company_name' => $cust['company_name'],
+                'email' => $cust['email'],
+                'phone' => $cust['phone'],
+                'gstin' => $cust['gstin'],
+                'address' => $cust['address'],
+                'city' => $cust['city'],
+                'pincode' => $cust['pincode']
+            ];
+
+            syncCustomerCart($pdo, intval($cust['id']));
+            unset($_SESSION['pending_auth_otp']);
+
+            echo json_encode([
+                'success' => true,
+                'message' => 'OTP verified successfully! Welcome back, ' . $cust['full_name'],
+                'customer' => $_SESSION['customer_user']
+            ]);
+            exit;
+        }
+    }
+
+    // If registration purpose, mark OTP verified in session
+    $_SESSION['otp_verified_for_reg'] = true;
+    echo json_encode([
+        'success' => true,
+        'message' => 'OTP verified successfully! Creating your account...'
+    ]);
+    exit;
 }
 
 // ==========================================

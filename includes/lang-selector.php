@@ -669,6 +669,11 @@ function changeSiteLanguage(targetLang) {
             el.textContent = meta.code;
         });
     }
+
+    // Reload smoothly so full page and server-side components translate 100% seamlessly
+    setTimeout(() => {
+        window.location.reload();
+    }, 280);
 }
 
 // Auto-Sync on Page Load across both Main Website and Admin Panel

@@ -144,6 +144,20 @@ require_once __DIR__ . '/includes/navbar.php';
         top: 95px;
         box-shadow: 0 20px 45px rgba(0,0,0,0.5), 0 0 25px rgba(0, 229, 255, 0.08);
     }
+    .transfer-details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    @media (max-width: 640px) {
+        .transfer-details-grid {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+        }
+        .transfer-details-grid > div {
+            grid-column: span 1 !important;
+        }
+    }
     .payment-option-label {
         display: flex;
         align-items: center;
@@ -603,7 +617,7 @@ foreach ($products as $p) {
                             <div style="font-size: 12.5px; font-weight: 800; color: #38bdf8; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
                                 <span>📝</span> જરૂરી ટ્રાન્સફર વિગતો ભરો (Enter Transfer Details):
                             </div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div class="transfer-details-grid">
                                 <div>
                                     <label class="form-label" style="font-size: 11px; margin-bottom: 3px; color: #fff;">UTR / Transaction Ref No *</label>
                                     <input type="text" id="bankUtrInput" class="form-control" placeholder="e.g. UTR123456789012" style="font-size: 12.5px; height: 38px; text-transform: uppercase;">
@@ -652,7 +666,7 @@ foreach ($products as $p) {
                             <div style="font-size: 12.5px; font-weight: 800; color: #c084fc; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
                                 <span>📝</span> જરૂરી ચેક વિગતો ભરો (Enter Cheque / DD Details):
                             </div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div class="transfer-details-grid">
                                 <div>
                                     <label class="form-label" style="font-size: 11px; margin-bottom: 3px; color: #fff;">Cheque / DD Number *</label>
                                     <input type="text" id="chequeNumberInput" class="form-control" placeholder="e.g. 000452 (6 digits)" style="font-size: 12.5px; height: 38px;">

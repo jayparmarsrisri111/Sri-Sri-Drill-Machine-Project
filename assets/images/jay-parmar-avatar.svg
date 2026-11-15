@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="coCeoBgGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#072233" />
+      <stop offset="60%" stop-color="#08101e" />
+      <stop offset="100%" stop-color="#04060d" />
+    </radialGradient>
+    <linearGradient id="coCeoCyanRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="35%" stop-color="#00e5ff" />
+      <stop offset="70%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#e0f2fe" />
+    </linearGradient>
+    <linearGradient id="coCeoCyanFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0f2fe" />
+      <stop offset="50%" stop-color="#00e5ff" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+    <filter id="coCeoCyanGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Circular Outer Frame -->
+  <circle cx="100" cy="100" r="96" fill="url(#coCeoBgGlow)" stroke="url(#coCeoCyanRing)" stroke-width="4.5" filter="url(#coCeoCyanGlow)" />
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#00e5ff" stroke-width="1" stroke-dasharray="4 3" opacity="0.4" />
+
+  <!-- Precision Engineering Calibration Reticle & Coordinate Grid -->
+  <g opacity="0.35" stroke="#38bdf8" stroke-width="1" fill="none">
+    <circle cx="100" cy="100" r="76" />
+    <line x1="100" y1="12" x2="100" y2="24" stroke-width="1.8" />
+    <line x1="100" y1="176" x2="100" y2="188" stroke-width="1.8" />
+    <line x1="12" y1="100" x2="24" y2="100" stroke-width="1.8" />
+    <line x1="176" y1="100" x2="188" y2="100" stroke-width="1.8" />
+    <!-- 45-deg ticks -->
+    <line x1="39" y1="39" x2="47" y2="47" />
+    <line x1="161" y1="39" x2="153" y2="47" />
+    <line x1="39" y1="161" x2="47" y2="153" />
+    <line x1="161" y1="161" x2="153" y2="153" />
+  </g>
+
+  <!-- Executive Engineering Silhouette: Modern Sharp Silhouette -->
+  <!-- Suit Body -->
+  <path d="M42 176 C46 138, 68 126, 82 120 L100 138 L118 120 C132 126, 154 138, 158 176 Z" fill="url(#coCeoCyanFill)" opacity="0.95" />
+  <!-- Modern Engineering V-Neck & Tie -->
+  <polygon points="86,122 100,140 114,122 100,114" fill="#070b14" />
+  <path d="M96 130 L104 130 L106 156 L100 166 L94 156 Z" fill="#00e5ff" />
+  
+  <!-- Head & Modern Hair Silhouette -->
+  <circle cx="100" cy="74" r="28" fill="url(#coCeoCyanFill)" />
+  <!-- Modern Styled Hair Accent -->
+  <path d="M72 68 C73 44, 95 38, 114 42 C126 44, 129 55, 128 65 C122 56, 110 52, 100 52 C86 52, 75 58, 72 68 Z" fill="#ffffff" />
+  <!-- Precision Calibration Headset / Mic Pin Accent -->
+  <circle cx="127" cy="76" r="4.5" fill="#38bdf8" stroke="#070b14" stroke-width="1.5" />
+
+  <!-- Engineering Precision Symbols (Spindle Caliper & Micro-Target) -->
+  <g fill="#38bdf8" transform="translate(0, -2)">
+    <circle cx="100" cy="28" r="4" fill="none" stroke="#00e5ff" stroke-width="1.5" />
+    <line x1="100" y1="20" x2="100" y2="24" stroke="#00e5ff" stroke-width="1.5" />
+    <line x1="100" y1="32" x2="100" y2="36" stroke="#00e5ff" stroke-width="1.5" />
+    <line x1="92" y1="28" x2="96" y2="28" stroke="#00e5ff" stroke-width="1.5" />
+    <line x1="104" y1="28" x2="108" y2="28" stroke="#00e5ff" stroke-width="1.5" />
+  </g>
+
+  <!-- Production Head Title Pill / Monogram -->
+  <rect x="42" y="165" width="116" height="20" rx="10" fill="#071321" stroke="#00e5ff" stroke-width="1.8" />
+  <text x="100" y="179" text-anchor="middle" fill="#00e5ff" font-family="'Space Grotesk', -apple-system, sans-serif" font-size="9" font-weight="900" letter-spacing="0.8">CO-CEO • OPERATIONS</text>
+</svg>

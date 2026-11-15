@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="ceoBgGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1e180a" />
+      <stop offset="60%" stop-color="#0c0d14" />
+      <stop offset="100%" stop-color="#05070c" />
+    </radialGradient>
+    <linearGradient id="ceoGoldRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="35%" stop-color="#f59e0b" />
+      <stop offset="70%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#fef3c7" />
+    </linearGradient>
+    <linearGradient id="ceoGoldFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <filter id="ceoGoldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Circular Outer Frame -->
+  <circle cx="100" cy="100" r="96" fill="url(#ceoBgGlow)" stroke="url(#ceoGoldRing)" stroke-width="4.5" filter="url(#ceoGoldGlow)" />
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4 3" opacity="0.4" />
+
+  <!-- Industrial Founder Laurel / Gear Teeth Accents -->
+  <g opacity="0.3" stroke="#fbbf24" stroke-width="1.2" fill="none">
+    <circle cx="100" cy="100" r="78" />
+    <line x1="100" y1="12" x2="100" y2="22" />
+    <line x1="100" y1="178" x2="100" y2="188" />
+    <line x1="12" y1="100" x2="22" y2="100" />
+    <line x1="178" y1="100" x2="188" y2="100" />
+    <line x1="38" y1="38" x2="45" y2="45" />
+    <line x1="162" y1="38" x2="155" y2="45" />
+    <line x1="38" y1="162" x2="45" y2="155" />
+    <line x1="162" y1="162" x2="155" y2="155" />
+  </g>
+
+  <!-- Executive Founder Silhouette: Head, Suit, Collar, Tie -->
+  <!-- Suit Body -->
+  <path d="M42 176 C46 138, 68 126, 82 120 L100 138 L118 120 C132 126, 154 138, 158 176 Z" fill="url(#ceoGoldFill)" opacity="0.95" />
+  <!-- Shirt V & Executive Tie -->
+  <polygon points="86,122 100,140 114,122 100,114" fill="#070b14" />
+  <path d="M96 130 L104 130 L106 156 L100 166 L94 156 Z" fill="#fbbf24" />
+  
+  <!-- Head & Hair Silhouette -->
+  <circle cx="100" cy="74" r="28" fill="url(#ceoGoldFill)" />
+  <!-- Executive Hair Line & Glasses / Dignified Features Accent -->
+  <path d="M72 68 C74 46, 92 42, 108 43 C124 44, 128 56, 128 66 C124 58, 114 54, 102 54 C88 54, 76 60, 72 68 Z" fill="#fef3c7" />
+  <!-- Executive Glasses -->
+  <rect x="85" y="70" width="12" height="7" rx="2" fill="none" stroke="#070b14" stroke-width="2" />
+  <rect x="103" y="70" width="12" height="7" rx="2" fill="none" stroke="#070b14" stroke-width="2" />
+  <line x1="97" y1="73" x2="103" y2="73" stroke="#070b14" stroke-width="2" />
+
+  <!-- Stars of Excellence (Top 3 Stars) -->
+  <g fill="#fef08a" transform="translate(0, -2)">
+    <polygon points="100,24 102,29 107,29 103,32 105,37 100,34 95,37 97,32 93,29 98,29" />
+    <polygon points="86,28 87.5,32 92,32 88.5,34.5 90,38.5 86,36 82,38.5 83.5,34.5 80,32 84.5,32" transform="scale(0.85) translate(14, 4)" />
+    <polygon points="114,28 115.5,32 120,32 116.5,34.5 118,38.5 114,36 110,38.5 111.5,34.5 108,32 112.5,32" transform="scale(0.85) translate(22, 4)" />
+  </g>
+
+  <!-- Founder Title Pill / Monogram -->
+  <rect x="52" y="165" width="96" height="20" rx="10" fill="#0c111d" stroke="#f59e0b" stroke-width="1.8" />
+  <text x="100" y="179" text-anchor="middle" fill="#fbbf24" font-family="'Space Grotesk', -apple-system, sans-serif" font-size="9.5" font-weight="900" letter-spacing="1">FOUNDER • CEO</text>
+</svg>

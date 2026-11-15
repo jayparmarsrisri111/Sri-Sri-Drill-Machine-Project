@@ -385,8 +385,8 @@ require_once __DIR__ . '/includes/sidebar.php';
                                         <?php else: ?>
                                             <span style="color: #38bdf8; font-weight: 700; font-size: 11.5px; display: block;">Full Payment</span>
                                         <?php endif; ?>
-                                        <strong style="color: #34d399; font-size: 15px; white-space: nowrap !important; display: inline-flex; align-items: center; gap: 3px;">
-                                            <span>₹</span><span><?= number_format($ord['total_amount'], 2) ?></span>
+                                        <strong style="color: #34d399; font-size: 15px; white-space: nowrap !important;">
+                                            <span style="white-space: nowrap !important;">₹<?= number_format($ord['total_amount'], 2) ?></span>
                                         </strong>
                                         <div style="margin-top: 4px;">
                                             <?php if (($ord['payment_status'] ?? '') === 'paid'): ?>
@@ -439,47 +439,57 @@ require_once __DIR__ . '/includes/sidebar.php';
                                         <form method="POST" style="margin-top: 8px;">
                                             <input type="hidden" name="quick_status_change" value="1">
                                             <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
-                                            <select name="quick_status" onchange="this.form.submit()" style="font-size: 11px; padding: 6px 8px; background: #060911; color: #38bdf8; border: 1.5px solid rgba(56,189,248,0.5); border-radius: 6px; cursor: pointer; width: 100%; min-width: 200px; font-weight: 600;">
-                                                <option value="" disabled>⚡ Change Factory Milestone...</option>
-                                                <option value="pending" <?= ($delStatus === 'pending') ? 'selected' : '' ?>>⏳ Pending Verification</option>
-                                                <option value="order_placed" <?= ($delStatus === 'order_placed') ? 'selected' : '' ?>>✅ 1. Order Confirmed &amp; Paid</option>
+                                            <select name="quick_status" onchange="this.form.submit()" style="font-size: 11px; padding: 6px 8px; background: #060911; color: #38bdf8; border: 1.5px solid rgba(56,189,248,0.5); border-radius: 6px; cursor: pointer; width: 100%; min-width: 190px; font-weight: 600;">
+                                                <option value="" disabled>⚡ Change Milestone...</option>
+                                                <option value="pending" <?= ($delStatus === 'pending') ? 'selected' : '' ?>>⏳ Pending</option>
+                                                <option value="order_placed" <?= ($delStatus === 'order_placed') ? 'selected' : '' ?>>✅ 1. Order Confirmed</option>
                                                 <option value="chassis_assembly" <?= ($delStatus === 'chassis_assembly') ? 'selected' : '' ?>>⚙️ 2. Chassis Assembly</option>
-                                                <option value="quality_testing" <?= ($delStatus === 'quality_testing') ? 'selected' : '' ?>>🔬 3. Run-Out QC Testing</option>
+                                                <option value="quality_testing" <?= ($delStatus === 'quality_testing') ? 'selected' : '' ?>>🔬 3. QC Testing</option>
                                                 <option value="packed" <?= ($delStatus === 'packed') ? 'selected' : '' ?>>📦 4. Wooden Crate Packed</option>
-                                                <option value="dispatched" <?= ($delStatus === 'dispatched') ? 'selected' : '' ?>>🚚 5. Dispatched in Transit</option>
+                                                <option value="dispatched" <?= ($delStatus === 'dispatched') ? 'selected' : '' ?>>🚚 5. Dispatched</option>
                                                 <option value="out_for_delivery" <?= ($delStatus === 'out_for_delivery') ? 'selected' : '' ?>>🚛 6. Out for Delivery</option>
-                                                <option value="delivered" <?= ($delStatus === 'delivered') ? 'selected' : '' ?>>🏁 7. Delivered &amp; Commissioned (૧૦૦% પૂર્ણ)</option>
+                                                <option value="delivered" <?= ($delStatus === 'delivered') ? 'selected' : '' ?>>🏁 7. Delivered &amp; Commissioned</option>
                                                 <option value="failure" <?= ($delStatus === 'rejected') ? 'selected' : '' ?>>❌ Failure / Cancelled</option>
                                             </select>
                                         </form>
 
                                         <!-- Direct 1-Click Status Quick Buttons -->
-                                        <div style="display: flex; gap: 5px; margin-top: 6px; flex-wrap: nowrap;">
-                                            <?php if ($delStatus !== 'delivered'): ?>
-                                                <form method="POST" style="margin: 0; flex: 1;">
-                                                    <input type="hidden" name="quick_status_change" value="1">
-                                                    <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
-                                                    <input type="hidden" name="quick_status" value="delivered">
-                                                    <button type="submit" title="Mark as Delivered & Commissioned at Factory" style="width: 100%; white-space: nowrap; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: #ffffff; border: 1px solid #34d399; border-radius: 4px; font-size: 10px; font-weight: 800; padding: 5px 8px; cursor: pointer; box-shadow: 0 2px 8px rgba(16,185,129,0.3);">
-                                                        🏁 Mark Delivered
-                                                    </button>
-                                                </form>
+                                        <div style="margin-top: 6px;">
+                                            <?php if ($delStatus === 'delivered'): ?>
+                                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                                                    <span style="font-size: 10.5px; background: rgba(16, 185, 129, 0.2); border: 1.5px solid #10b981; color: #34d399; font-weight: 800; padding: 4px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
+                                                        🏁 7. Fully Commissioned ✔
+                                                    </span>
+                                                    <form method="POST" style="margin: 0;">
+                                                        <input type="hidden" name="quick_status_change" value="1">
+                                                        <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
+                                                        <input type="hidden" name="quick_status" value="pending">
+                                                        <button type="submit" title="Revert to Pending" style="background: none; border: none; color: #64748b; font-size: 9.5px; cursor: pointer; text-decoration: underline;">
+                                                            Revert
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             <?php else: ?>
-                                                <span style="font-size: 10.5px; color: #34d399; font-weight: 700; display: inline-flex; align-items: center; gap: 3px; white-space: nowrap;">
-                                                    ✔ Fully Commissioned
-                                                </span>
+                                                <div style="display: flex; gap: 5px; flex-wrap: nowrap;">
+                                                    <form method="POST" style="margin: 0; flex: 1;">
+                                                        <input type="hidden" name="quick_status_change" value="1">
+                                                        <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
+                                                        <input type="hidden" name="quick_status" value="delivered">
+                                                        <button type="submit" title="Mark as Delivered & Commissioned at Factory" style="width: 100%; white-space: nowrap; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: #ffffff; border: 1px solid #34d399; border-radius: 4px; font-size: 10px; font-weight: 800; padding: 5px 8px; cursor: pointer; box-shadow: 0 2px 8px rgba(16,185,129,0.3);">
+                                                            🏁 Mark Delivered
+                                                        </button>
+                                                    </form>
+                                                    <form method="POST" style="margin: 0;">
+                                                        <input type="hidden" name="quick_status_change" value="1">
+                                                        <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
+                                                        <input type="hidden" name="quick_status" value="pending">
+                                                        <button type="submit" title="Mark Pending" style="white-space: nowrap; background: <?= ($ord['order_status'] === 'pending') ? '#fbbf24' : 'rgba(251,191,36,0.15)' ?>; color: <?= ($ord['order_status'] === 'pending') ? '#060911' : '#fbbf24' ?>; border: 1px solid #fbbf24; border-radius: 4px; font-size: 10px; font-weight: 800; padding: 5px 8px; cursor: pointer;">
+                                                            ⏳ Pending
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             <?php endif; ?>
-
-                                            <form method="POST" style="margin: 0;">
-                                                <input type="hidden" name="quick_status_change" value="1">
-                                                <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
-                                                <input type="hidden" name="quick_status" value="pending">
-                                                <button type="submit" title="Mark Pending" style="white-space: nowrap; background: <?= ($ord['order_status'] === 'pending') ? '#fbbf24' : 'rgba(251,191,36,0.15)' ?>; color: <?= ($ord['order_status'] === 'pending') ? '#060911' : '#fbbf24' ?>; border: 1px solid #fbbf24; border-radius: 4px; font-size: 10px; font-weight: 800; padding: 5px 8px; cursor: pointer;">
-                                                    ⏳ Pending
-                                                </button>
-                                            </form>
                                         </div>
-                                    </td>
                                     </td>
                                     <td>
                                         <div style="font-size: 12px; color: #fff; font-weight: 600;">

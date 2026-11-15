@@ -26,10 +26,11 @@ $navCartCount = intval($navCartSummary['total_qty'] ?? 0);
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 1460px;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 0 16px;
-    gap: 10px;
+    padding: 0 12px;
+    gap: 8px;
+    box-sizing: border-box;
 }
 .brand-badge-wrap {
     display: flex;
@@ -331,11 +332,11 @@ body.mobile-menu-open #varshaChatbotWindow {
 }
 
 /* ==========================================================================
-   LAPTOP & DESKTOP ULTRA-RESPONSIVE POLISH (861px - 1400px)
+   LAPTOP & DESKTOP ULTRA-RESPONSIVE POLISH (861px - 1600px)
    Guarantees full navigation menu is 100% visible, perfectly aligned on ONE line,
-   with ZERO wrapping or overflowing on all laptops (1366x768, 1280x800, 1024px scaled)
+   with ZERO wrapping or overflowing on all laptops (1366x768, 1440x900, 1536x864, 1024px scaled)
    ========================================================================== */
-@media (min-width: 861px) and (max-width: 1400px) {
+@media (min-width: 861px) and (max-width: 1600px) {
     .site-nav-container {
         padding: 0 8px !important;
         gap: 4px !important;
@@ -357,10 +358,10 @@ body.mobile-menu-open #varshaChatbotWindow {
     }
     .nav-links-center {
         display: flex !important;
-        gap: 3px !important;
+        gap: 4px !important;
     }
     .site-nav-link {
-        font-size: 11px !important;
+        font-size: 11.2px !important;
         padding: 4px 2px !important;
         letter-spacing: -0.2px !important;
     }

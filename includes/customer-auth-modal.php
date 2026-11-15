@@ -28,17 +28,42 @@
 
             <!-- Tab 1: Login Form -->
             <form id="formCustomerLogin">
-                <input type="hidden" name="action" value="login">
+                <input type="hidden" name="action" id="loginActionType" value="login">
                 <input type="hidden" name="csrf_token" value="<?= getCsrfToken() ?>">
+
+                <!-- Login Mode Switch: Password vs OTP -->
+                <div style="display: flex; gap: 8px; margin-bottom: 14px; background: rgba(15, 23, 42, 0.7); padding: 4px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+                    <button type="button" id="btnModePassword" style="flex: 1; padding: 6px; font-size: 12px; font-weight: 700; border-radius: 6px; border: none; background: var(--accent-cyan); color: #060911; cursor: pointer;">
+                        🔑 Password Login
+                    </button>
+                    <button type="button" id="btnModeOtp" style="flex: 1; padding: 6px; font-size: 12px; font-weight: 700; border-radius: 6px; border: none; background: transparent; color: #94a3b8; cursor: pointer;">
+                        📲 Email / SMS OTP
+                    </button>
+                </div>
 
                 <div class="form-group" style="margin-bottom: 14px;">
                     <label class="form-label" style="font-size: 12px;">Mobile Number or Email *</label>
-                    <input type="text" name="identifier" class="form-control" placeholder="e.g. 9825112345 or email" required style="font-size: 13px; padding: 10px 14px;">
+                    <input type="text" name="identifier" id="loginIdentifier" class="form-control" placeholder="e.g. 9825112345 or email" required style="font-size: 13px; padding: 10px 14px;">
                 </div>
 
-                <div class="form-group" style="margin-bottom: 16px;">
+                <!-- Password Field (Active in Password Mode) -->
+                <div id="loginPasswordGroup" class="form-group" style="margin-bottom: 16px;">
                     <label class="form-label" style="font-size: 12px;">Password *</label>
-                    <input type="password" name="password" class="form-control" placeholder="••••••••" required style="font-size: 13px; padding: 10px 14px;">
+                    <input type="password" name="password" id="loginPassword" class="form-control" placeholder="••••••••" style="font-size: 13px; padding: 10px 14px;">
+                </div>
+
+                <!-- OTP Field Block (Active in OTP Mode) -->
+                <div id="loginOtpGroup" style="display: none; margin-bottom: 16px;">
+                    <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                        <button type="button" id="btnSendLoginOtp" class="btn" style="flex: 1; height: 38px; font-size: 12px; font-weight: 700; background: rgba(56, 189, 248, 0.18); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 8px; cursor: pointer;">
+                            📤 Send OTP (Email / SMS)
+                        </button>
+                    </div>
+                    <div id="otpInputRow" style="display: none;">
+                        <label class="form-label" style="font-size: 12px; color: #38bdf8;">Enter 6-Digit OTP *</label>
+                        <input type="text" id="loginOtpInput" name="otp" class="form-control" placeholder="6-digit code (e.g. 123456)" maxlength="6" style="font-size: 16px; font-weight: 800; letter-spacing: 4px; text-align: center; height: 42px; border-color: #00e5ff;">
+                        <div id="otpDemoHint" style="display: none; font-size: 11px; color: #34d399; margin-top: 6px; text-align: center;"></div>
+                    </div>
                 </div>
 
                 <button type="submit" id="btnSubmitLogin" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 800; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%);">
@@ -74,11 +99,11 @@
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
                     <div class="form-group" style="margin-bottom: 0;">
                         <label class="form-label" style="font-size: 11.5px;">Mobile Number *</label>
-                        <input type="tel" name="phone" class="form-control" placeholder="e.g. 9898123456" required style="font-size: 12.5px; padding: 8px 10px;">
+                        <input type="tel" name="phone" id="regPhone" class="form-control" placeholder="e.g. 9898123456" required style="font-size: 12.5px; padding: 8px 10px;">
                     </div>
                     <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" style="font-size: 11.5px;">Email Address</label>
-                        <input type="email" name="email" class="form-control" placeholder="e.g. rajesh@gmail.com" style="font-size: 12.5px; padding: 8px 10px;">
+                        <label class="form-label" style="font-size: 11.5px;">Email Address *</label>
+                        <input type="email" name="email" id="regEmail" class="form-control" placeholder="e.g. rajesh@gmail.com" required style="font-size: 12.5px; padding: 8px 10px;">
                     </div>
                 </div>
 
@@ -98,9 +123,21 @@
                     <input type="text" name="address" class="form-control" placeholder="e.g. Shed No. 12, G.I.D.C." style="font-size: 12.5px; padding: 8px 10px;">
                 </div>
 
-                <div class="form-group" style="margin-bottom: 16px;">
+                <div class="form-group" style="margin-bottom: 12px;">
                     <label class="form-label" style="font-size: 11.5px;">Set Account Password *</label>
-                    <input type="password" name="password" class="form-control" placeholder="Min. 6 characters" required style="font-size: 12.5px; padding: 8px 10px;">
+                    <input type="password" name="password" class="form-control" placeholder="Min. 4 characters" required style="font-size: 12.5px; padding: 8px 10px;">
+                </div>
+
+                <!-- OTP Verification on Sign Up -->
+                <div style="margin-bottom: 14px; padding: 10px; background: rgba(15, 23, 42, 0.7); border: 1px dashed rgba(52, 211, 153, 0.4); border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <span style="font-size: 11.5px; color: #34d399; font-weight: 700;">🔐 Email/SMS Verification</span>
+                        <button type="button" id="btnSendRegOtp" style="background: rgba(52, 211, 153, 0.15); border: 1px solid #34d399; color: #34d399; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 4px; cursor: pointer;">
+                            Send OTP
+                        </button>
+                    </div>
+                    <input type="text" id="regOtpInput" name="reg_otp" class="form-control" placeholder="Enter 6-digit OTP (Optional if test)" maxlength="6" style="font-size: 13px; text-align: center; height: 34px;">
+                    <div id="regOtpHint" style="display: none; font-size: 10.5px; color: #34d399; margin-top: 4px; text-align: center;"></div>
                 </div>
 
                 <button type="submit" id="btnSubmitRegister" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 800; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-color: #34d399;">
@@ -171,6 +208,152 @@ document.addEventListener('DOMContentLoaded', function() {
     if (authModal) {
         authModal.addEventListener('click', function(e) {
             if (e.target === authModal) authModal.style.display = 'none';
+        });
+    }
+
+    // OTP vs Password Mode Switching
+    const btnModePassword = document.getElementById('btnModePassword');
+    const btnModeOtp = document.getElementById('btnModeOtp');
+    const loginPasswordGroup = document.getElementById('loginPasswordGroup');
+    const loginOtpGroup = document.getElementById('loginOtpGroup');
+    const loginActionType = document.getElementById('loginActionType');
+    const loginPassword = document.getElementById('loginPassword');
+    const btnSendLoginOtp = document.getElementById('btnSendLoginOtp');
+    const otpInputRow = document.getElementById('otpInputRow');
+    const loginOtpInput = document.getElementById('loginOtpInput');
+    const otpDemoHint = document.getElementById('otpDemoHint');
+    const loginIdentifier = document.getElementById('loginIdentifier');
+
+    if (btnModePassword && btnModeOtp) {
+        btnModePassword.addEventListener('click', function() {
+            btnModePassword.style.background = 'var(--accent-cyan)';
+            btnModePassword.style.color = '#060911';
+            btnModeOtp.style.background = 'transparent';
+            btnModeOtp.style.color = '#94a3b8';
+            loginPasswordGroup.style.display = 'block';
+            loginOtpGroup.style.display = 'none';
+            loginActionType.value = 'login';
+            if (loginPassword) loginPassword.required = true;
+            if (loginOtpInput) loginOtpInput.required = false;
+        });
+
+        btnModeOtp.addEventListener('click', function() {
+            btnModeOtp.style.background = 'var(--accent-cyan)';
+            btnModeOtp.style.color = '#060911';
+            btnModePassword.style.background = 'transparent';
+            btnModePassword.style.color = '#94a3b8';
+            loginPasswordGroup.style.display = 'none';
+            loginOtpGroup.style.display = 'block';
+            loginActionType.value = 'verify_otp';
+            if (loginPassword) loginPassword.required = false;
+            if (loginOtpInput) loginOtpInput.required = true;
+        });
+    }
+
+    // Send Login OTP via SMTP
+    if (btnSendLoginOtp) {
+        btnSendLoginOtp.addEventListener('click', function() {
+            const idVal = loginIdentifier ? loginIdentifier.value.trim() : '';
+            if (!idVal) {
+                alert('Please enter your Mobile Number or Email first.');
+                if (loginIdentifier) loginIdentifier.focus();
+                return;
+            }
+
+            btnSendLoginOtp.disabled = true;
+            btnSendLoginOtp.textContent = 'Sending OTP via SMTP...';
+
+            const fd = new FormData();
+            fd.append('action', 'send_otp');
+            fd.append('identifier', idVal);
+            fd.append('purpose', 'login');
+            fd.append('csrf_token', '<?= getCsrfToken() ?>');
+
+            fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        btnSendLoginOtp.textContent = '✔ OTP Dispatched!';
+                        btnSendLoginOtp.style.borderColor = '#10b981';
+                        btnSendLoginOtp.style.color = '#34d399';
+                        if (otpInputRow) otpInputRow.style.display = 'block';
+                        if (loginOtpInput) {
+                            loginOtpInput.focus();
+                            if (data.demo_otp) {
+                                loginOtpInput.value = data.demo_otp;
+                            }
+                        }
+                        if (otpDemoHint) {
+                            otpDemoHint.style.display = 'block';
+                            otpDemoHint.innerHTML = '✔ OTP sent to email! Demo OTP: <strong>' + (data.demo_otp || '123456') + '</strong>';
+                        }
+                        authNotice.style.display = 'block';
+                        authNotice.style.background = 'rgba(16, 185, 129, 0.15)';
+                        authNotice.style.border = '1px solid #10b981';
+                        authNotice.style.color = '#34d399';
+                        authNotice.textContent = data.message;
+                    } else {
+                        alert(data.message);
+                        btnSendLoginOtp.disabled = false;
+                        btnSendLoginOtp.textContent = '📤 Send OTP (Email / SMS)';
+                    }
+                })
+                .catch(err => {
+                    alert('Network error while dispatching OTP.');
+                    btnSendLoginOtp.disabled = false;
+                    btnSendLoginOtp.textContent = '📤 Send OTP (Email / SMS)';
+                });
+        });
+    }
+
+    // Send Registration OTP via SMTP
+    const btnSendRegOtp = document.getElementById('btnSendRegOtp');
+    const regPhone = document.getElementById('regPhone');
+    const regEmail = document.getElementById('regEmail');
+    const regOtpInput = document.getElementById('regOtpInput');
+    const regOtpHint = document.getElementById('regOtpHint');
+
+    if (btnSendRegOtp) {
+        btnSendRegOtp.addEventListener('click', function() {
+            const ph = regPhone ? regPhone.value.trim() : '';
+            const em = regEmail ? regEmail.value.trim() : '';
+            if (!ph && !em) {
+                alert('Please enter Mobile Number and Email to receive OTP.');
+                return;
+            }
+
+            btnSendRegOtp.disabled = true;
+            btnSendRegOtp.textContent = 'Sending...';
+
+            const fd = new FormData();
+            fd.append('action', 'send_otp');
+            fd.append('phone', ph);
+            fd.append('email', em);
+            fd.append('purpose', 'register');
+            fd.append('csrf_token', '<?= getCsrfToken() ?>');
+
+            fetch('<?= BASE_URL ?>/auth-customer.php', { method: 'POST', body: fd })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        btnSendRegOtp.textContent = '✔ Sent';
+                        if (regOtpInput && data.demo_otp) {
+                            regOtpInput.value = data.demo_otp;
+                        }
+                        if (regOtpHint) {
+                            regOtpHint.style.display = 'block';
+                            regOtpHint.innerHTML = '✔ OTP: <strong>' + (data.demo_otp || '123456') + '</strong>';
+                        }
+                    } else {
+                        alert(data.message);
+                        btnSendRegOtp.disabled = false;
+                        btnSendRegOtp.textContent = 'Send OTP';
+                    }
+                })
+                .catch(() => {
+                    btnSendRegOtp.disabled = false;
+                    btnSendRegOtp.textContent = 'Send OTP';
+                });
         });
     }
 

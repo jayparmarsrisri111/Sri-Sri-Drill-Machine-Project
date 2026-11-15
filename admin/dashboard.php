@@ -44,11 +44,13 @@ try {
     $machStmt = $pdo->query("SELECT p.*, c.name as category_name FROM products p JOIN categories c ON p.category_id = c.id ORDER BY p.id DESC LIMIT 4");
     $featuredMachines = $machStmt->fetchAll();
 
-    // Dynamic Monthly Revenue & Profit arrays for past 6 months
+    // Dynamic Monthly Revenue & Profit arrays for past 6 months from real DB
     $chartMonths = [];
     $chartSales = [];
     $chartCosts = [];
     $chartProfits = [];
+
+    // Base fallback curve if DB is fresh
     $baseMonthlySales = [11.5, 14.2, 12.8, 16.5, 13.9, 15.7];
 
     for ($i = 5; $i >= 0; $i--) {
@@ -57,31 +59,80 @@ try {
         $mPrefix = date('Y-m', $mTime);
         $chartMonths[] = $mLabel;
 
-        $mDbTotal = 0;
+        $mDbTotal = 0.0;
         try {
             $mStmt = $pdo->prepare("SELECT COALESCE(SUM(total_amount), 0) FROM orders WHERE payment_status = 'paid' AND created_at LIKE :pref");
             $mStmt->execute([':pref' => "{$mPrefix}%"]);
-            $mDbTotal = floatval($mStmt->fetchColumn() ?? 0) / 100000.0;
+            $mDbTotal = floatval($mStmt->fetchColumn() ?? 0) / 100000.0; // In Lakhs
         } catch (Exception $mEx) {}
 
-        $baseVal = $baseMonthlySales[5 - $i] ?? 12.5;
-        $totalLakhs = round($baseVal + $mDbTotal, 1);
-        $costLakhs = round($totalLakhs * 0.65, 1);
-        $profitLakhs = round($totalLakhs - $costLakhs, 1);
+        if ($mDbTotal > 0) {
+            $totalLakhs = round($mDbTotal, 2);
+        } else {
+            $baseVal = $baseMonthlySales[5 - $i] ?? 12.5;
+            $totalLakhs = round($baseVal, 1);
+        }
+
+        $costLakhs = round($totalLakhs * 0.65, 2);
+        $profitLakhs = round($totalLakhs - $costLakhs, 2);
 
         $chartSales[] = $totalLakhs;
         $chartCosts[] = $costLakhs;
         $chartProfits[] = $profitLakhs;
     }
 
-    // Dynamic Product Demand Share
-    $shareData = [
-        ['label' => '40mm Radial', 'value' => 42, 'color' => '#00e5ff'],
-        ['label' => '50mm Heavy',  'value' => 28, 'color' => '#10b981'],
-        ['label' => '65mm Heavy',  'value' => 16, 'color' => '#f59e0b'],
-        ['label' => 'Pillar Drills','value' => 10, 'color' => '#8b5cf6'],
-        ['label' => 'Spare Parts', 'value' => 4,  'color' => '#ec4899']
-    ];
+    $sumSalesLakhs = round(array_sum($chartSales), 2);
+    $sumCostsLakhs = round(array_sum($chartCosts), 2);
+    $sumProfitLakhs = round(array_sum($chartProfits), 2);
+    $profitMarginPct = ($sumSalesLakhs > 0) ? round(($sumProfitLakhs / $sumSalesLakhs) * 100, 1) : 35.0;
+
+    // Fully Dynamic Product Demand Share from Real Orders / Products
+    $shareData = [];
+    $colors = ['#00e5ff', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#38bdf8'];
+    try {
+        $shareStmt = $pdo->query("
+            SELECT 
+                COALESCE(model_number, product_name) as p_name, 
+                COUNT(*) as order_count,
+                COALESCE(SUM(total_amount), 0) as total_sales
+            FROM orders 
+            GROUP BY p_name 
+            ORDER BY order_count DESC, total_sales DESC 
+            LIMIT 5
+        ");
+        $dbShares = $shareStmt->fetchAll();
+        if (!empty($dbShares)) {
+            $totalOrdersCount = array_sum(array_column($dbShares, 'order_count'));
+            $cIdx = 0;
+            foreach ($dbShares as $ds) {
+                $pct = ($totalOrdersCount > 0) ? round(($ds['order_count'] / $totalOrdersCount) * 100) : 20;
+                $shareData[] = [
+                    'label' => $ds['p_name'],
+                    'value' => max(5, $pct),
+                    'color' => $colors[$cIdx % count($colors)]
+                ];
+                $cIdx++;
+            }
+        }
+    } catch (Exception $ex) {}
+
+    // Fallback if no order history
+    if (empty($shareData)) {
+        try {
+            $prodStmt = $pdo->query("SELECT model_number, name FROM products WHERE is_active = 1 ORDER BY is_featured DESC, id ASC LIMIT 5");
+            $prods = $prodStmt->fetchAll();
+            $defaultWeights = [42, 28, 16, 10, 4];
+            $cIdx = 0;
+            foreach ($prods as $p) {
+                $shareData[] = [
+                    'label' => $p['model_number'],
+                    'value' => $defaultWeights[$cIdx] ?? 10,
+                    'color' => $colors[$cIdx % count($colors)]
+                ];
+                $cIdx++;
+            }
+        } catch (Exception $ex) {}
+    }
 } catch (Exception $e) {
     //
 }
@@ -177,23 +228,23 @@ try {
                     </div>
                     <div style="display: flex; gap: 8px; align-items: center;">
                         <span class="badge-tag" style="border-color: #10b981; color: #34d399; font-weight: 800;">
-                            +35.4% Net Profit
+                            +<?= $profitMarginPct ?>% Net Profit
                         </span>
                     </div>
                 </div>
 
                 <div class="chart-summary-metrics" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;">
                     <div style="background: rgba(11, 17, 32, 0.7); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 8px; padding: 10px 14px;">
-                        <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Gross Sales (YTD)</div>
-                        <div style="font-size: 18px; font-weight: 800; color: #00e5ff;">₹ 84.60 L</div>
+                        <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Gross Sales (6 Months)</div>
+                        <div style="font-size: 18px; font-weight: 800; color: #00e5ff; white-space: nowrap;">₹ <?= number_format($sumSalesLakhs, 2) ?> L</div>
                     </div>
                     <div style="background: rgba(11, 17, 32, 0.7); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; padding: 10px 14px;">
                         <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Factory &amp; Parts Cost</div>
-                        <div style="font-size: 18px; font-weight: 800; color: #f87171;">₹ 54.65 L</div>
+                        <div style="font-size: 18px; font-weight: 800; color: #f87171; white-space: nowrap;">₹ <?= number_format($sumCostsLakhs, 2) ?> L</div>
                     </div>
                     <div style="background: rgba(11, 17, 32, 0.7); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 8px; padding: 10px 14px;">
                         <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Net Benefit / Profit</div>
-                        <div style="font-size: 18px; font-weight: 800; color: #34d399;">₹ 29.95 L</div>
+                        <div style="font-size: 18px; font-weight: 800; color: #34d399; white-space: nowrap;">₹ <?= number_format($sumProfitLakhs, 2) ?> L</div>
                     </div>
                 </div>
 
@@ -219,11 +270,12 @@ try {
                     <canvas id="productShareChart" style="width: 100%; height: 100%; display: block;"></canvas>
                 </div>
 
-                <div style="display: flex; justify-content: space-around; font-size: 11.5px; color: #94a3b8; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px;">
-                    <span>🔵 40mm: <strong>42%</strong></span>
-                    <span>🟢 50mm: <strong>28%</strong></span>
-                    <span>🟡 65mm: <strong>16%</strong></span>
-                    <span>🟣 Parts: <strong>14%</strong></span>
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 8px; font-size: 11px; color: #94a3b8; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px;">
+                    <?php foreach (array_slice($shareData, 0, 4) as $sd): ?>
+                        <span style="white-space: nowrap;">
+                            <span style="color: <?= e($sd['color']) ?>;">●</span> <?= e($sd['label']) ?>: <strong><?= e($sd['value']) ?>%</strong>
+                        </span>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>

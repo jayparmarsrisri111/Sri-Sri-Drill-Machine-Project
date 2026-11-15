@@ -74,21 +74,29 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 229, 255, 0.35) transparent;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .admin-sidebar::-webkit-scrollbar {
-  width: 4px;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
-.admin-sidebar::-webkit-scrollbar-track {
-  background: transparent;
+
+/* Global Custom Dark Scrollbars (Zero White Strip Anywhere) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
-.admin-sidebar::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-track {
+  background: #090d18;
+}
+::-webkit-scrollbar-thumb {
   background: rgba(0, 229, 255, 0.35);
   border-radius: 4px;
 }
-.admin-sidebar::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background: var(--accent-cyan);
 }
 
