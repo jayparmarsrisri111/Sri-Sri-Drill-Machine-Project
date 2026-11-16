@@ -103,7 +103,8 @@ require_once __DIR__ . '/includes/sidebar.php';
                 </p>
             </div>
         </div>
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <?php require __DIR__ . '/../includes/lang-selector.php'; ?>
             <a href="<?= BASE_URL ?>/admin/orders.php" class="btn btn-outline" style="border-color: #38bdf8; color: #38bdf8;">
                 📦 View All Orders
             </a>

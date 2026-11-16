@@ -320,6 +320,94 @@ if ($isSparePart) {
             border-top: 1px solid rgba(0, 229, 255, 0.2) !important;
         }
     }
+    .video-mode-bar {
+        background: rgba(8, 14, 26, 0.96);
+        border-bottom: 1.5px solid rgba(0, 229, 255, 0.25);
+        padding: 10px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .video-mode-tabs {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .video-mode-tab-btn {
+        padding: 7px 14px;
+        font-size: 12px;
+        font-weight: 700;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        background: rgba(255,255,255,0.08);
+        color: #cbd5e1;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+    }
+    .video-mode-tab-btn.active,
+    .video-mode-tab-btn:hover {
+        background: #00e5ff;
+        color: #060911;
+        box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+    }
+    .btn-open-youtube {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 15px;
+        font-size: 12px;
+        font-weight: 800;
+        border-radius: 6px;
+        background: rgba(220, 38, 38, 0.16);
+        border: 1.5px solid #ef4444;
+        color: #ffffff;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+    .btn-open-youtube:hover {
+        background: #dc2626;
+        color: #ffffff;
+        box-shadow: 0 0 16px rgba(239, 68, 68, 0.6);
+        transform: translateY(-1px);
+    }
+    @media (max-width: 768px) {
+        .video-mode-bar {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+            padding: 10px 12px;
+        }
+        .video-mode-tabs {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+        .video-mode-tab-btn {
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+            font-size: 11px !important;
+            padding: 8px 4px !important;
+        }
+        .btn-open-youtube {
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+            padding: 9px 12px;
+            font-size: 12.5px;
+            box-sizing: border-box;
+        }
+    }
     .pill-badge.no-dot::before {
         display: none !important;
         content: none !important;
@@ -704,21 +792,22 @@ if ($isSparePart) {
             <!-- Video Player Display with Machining Telemetry HUD -->
             <div style="position: relative; border-radius: 12px; overflow: hidden; background: #020617; border: 1px solid rgba(0, 229, 255, 0.35); box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
                 <!-- Video Mode Switcher Header Bar (Dedicated Top Bar, Zero Mobile Overlap) -->
-                <div style="background: rgba(8, 14, 26, 0.95); border-bottom: 1px solid rgba(0, 229, 255, 0.25); padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                        <button type="button" onclick="startRealMachineVideo(event)" id="btnTabVideo" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: #00e5ff; color: #060911; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px;">
+                <div class="video-mode-bar">
+                    <div class="video-mode-tabs">
+                        <button type="button" onclick="startRealMachineVideo(event)" id="btnTabVideo" class="video-mode-tab-btn active">
                             <span>▶</span> <span>Video Mode</span>
                         </button>
-                        <button type="button" onclick="showMachiningSim()" id="btnTabSim" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: rgba(255,255,255,0.1); color: #cbd5e1; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px;">
+                        <button type="button" onclick="showMachiningSim()" id="btnTabSim" class="video-mode-tab-btn">
                             <span>⚡</span> <span>3D Spindle Simulator</span>
                         </button>
-                        <button type="button" onclick="resetVideoPoster()" id="btnTabPoster" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: rgba(255,255,255,0.1); color: #cbd5e1; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px;">
+                        <button type="button" onclick="resetVideoPoster()" id="btnTabPoster" class="video-mode-tab-btn">
                             <span>🖼️</span> <span>Real Photo</span>
                         </button>
                     </div>
-                    <a href="https://www.youtube.com/watch?v=<?= $realVideoId ?>" target="_blank" rel="noopener" style="background: rgba(239, 68, 68, 0.2); border: 1.5px solid #ef4444; color: #fca5a5; font-size: 11.5px; font-weight: 700; padding: 6px 12px; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
-                        <span>📺 Open YouTube</span>
-                        <span>↗</span>
+                    <a href="https://www.youtube.com/watch?v=<?= $realVideoId ?>" target="_blank" rel="noopener" class="btn-open-youtube" title="Watch full factory demonstration video on YouTube">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="#ff0000" style="flex-shrink: 0;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        <span>Open YouTube Video</span>
+                        <span style="font-size: 11px; opacity: 0.85;">↗</span>
                     </a>
                 </div>
 

@@ -61,9 +61,10 @@ if ($orderId === 0 && empty($orderNum)) {
         <header class="admin-topbar">
             <div style="display: flex; align-items: center; gap: 12px;">
                 <button type="button" id="adminSidebarToggle" class="btn-sm btn-cyan" style="padding: 6px 10px; cursor: pointer;">☰</button>
-                <h1 class="topbar-title">Customer-wise GST E-Way Bills (ઇ-વે બિલ મેનેજમેન્ટ)</h1>
+                <h1 class="topbar-title">Customer-wise GST E-Way Bills</h1>
             </div>
-            <div class="topbar-actions">
+            <div class="topbar-actions" style="display: flex; align-items: center; gap: 8px;">
+                <?php require __DIR__ . '/../includes/lang-selector.php'; ?>
                 <a href="https://ewaybillgst.gov.in/login.aspx" target="_blank" class="btn-sm btn-cyan" style="background: rgba(245, 158, 11, 0.15); border-color: #f59e0b; color: #fbbf24; font-weight: 800;" title="Official Government GST E-Way Bill Direct Login">
                     🏛️ Open Govt E-Way Portal Login ↗
                 </a>
@@ -76,27 +77,31 @@ if ($orderId === 0 && empty($orderNum)) {
         <!-- Body -->
         <main class="admin-body">
             <!-- Top Controls & Government Portal Hero Banner -->
-            <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(6, 10, 20, 0.98) 100%); border: 1.5px solid var(--admin-border-cyan); border-radius: 12px; padding: 22px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-                <div>
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                        <span style="background: rgba(16,185,129,0.15); border: 1px solid #10b981; color: #34d399; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px;">
+            <div class="eway-hero-banner" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(6, 10, 20, 0.98) 100%); border: 1.5px solid var(--admin-border-cyan); border-radius: 12px; padding: 22px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <div style="flex: 1 1 320px; min-width: 0;">
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+                        <span style="background: rgba(16,185,129,0.15); border: 1px solid #10b981; color: #34d399; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 4px; white-space: nowrap;">
                             FORM GST EWB-01 COMPLIANT
                         </span>
-                        <span style="font-size: 11.5px; color: #94a3b8;">
+                        <span style="font-size: 11.5px; color: #94a3b8; white-space: nowrap;">
                             Supplier GSTIN: <strong style="color: #fff;"><?= COMPANY_GSTIN ?></strong> (<?= COMPANY_CITY ?>)
                         </span>
                     </div>
-                    <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; color: #fff; margin: 0;">
-                        GST E-Way Bill Consignment Registry (દરેક ગ્રાહક વાઇઝ ઇ-વે બિલ)
+                    <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(18px, 2.5vw, 24px); font-weight: 800; color: #fff; margin: 0; line-height: 1.3;">
+                        GST E-Way Bill Consignment Registry
                     </h2>
-                    <p style="font-size: 13px; color: #cbd5e1; margin: 6px 0 0;">
+                    <p style="font-size: 13px; color: #cbd5e1; margin: 8px 0 0; line-height: 1.5;">
                         Generate, print, or verify 12-digit GST E-Way Bills for heavy machinery dispatches across India under HSN Code 8459.
                     </p>
                 </div>
 
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <a href="https://ewaybillgst.gov.in/login.aspx" target="_blank" class="btn-sm" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; font-size: 13px; font-weight: 800; background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); color: #060911; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);" title="Direct Login to Government GST E-Way Bill Portal">
-                        <span>🏛️ Official Government Portal Direct Login (ewaybillgst.gov.in/login.aspx) ↗</span>
+                <div style="flex-shrink: 0; max-width: 100%;">
+                    <a href="https://ewaybillgst.gov.in/login.aspx" target="_blank" class="btn-gov-eway-login" style="display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; font-size: 13px; font-weight: 800; background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); color: #060911; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); max-width: 100%; box-sizing: border-box;" title="Direct Login to Government GST E-Way Bill Portal">
+                        <span style="font-size: 18px; flex-shrink: 0;">🏛️</span>
+                        <div style="text-align: left; line-height: 1.25; min-width: 0;">
+                            <div style="font-weight: 800; color: #060911; letter-spacing: 0.2px; font-size: 13px;">Official Government Portal Direct Login ↗</div>
+                            <div style="font-size: 11px; opacity: 0.85; font-weight: 700; word-break: break-all;">ewaybillgst.gov.in/login.aspx</div>
+                        </div>
                     </a>
                 </div>
             </div>
@@ -219,12 +224,12 @@ if ($orderId === 0 && empty($orderNum)) {
                                                 Model: <strong style="color: #38bdf8;"><?= e($ord['model_number'] ?? 'SVEW-RD-40') ?></strong> (HSN: 8459)
                                             </div>
                                         </td>
-                                        <td>
-                                            <div style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 800; color: #34d399;">
-                                                ₹ <?= number_format($ord['total_amount'], 2) ?>
+                                        <td style="white-space: nowrap !important;">
+                                            <div style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 800; color: #34d399; white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important; gap: 3px !important;">
+                                                <span>₹</span><span><?= number_format($ord['total_amount'], 2) ?></span>
                                             </div>
-                                            <div style="font-size: 10.5px; color: #94a3b8;">
-                                                Tax: ₹ <?= number_format($ord['cgst_amount'] + $ord['sgst_amount'], 2) ?>
+                                            <div style="font-size: 10.5px; color: #94a3b8; white-space: nowrap !important; display: block;">
+                                                Tax: <span style="white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important; gap: 2px !important;"><span>₹</span><span><?= number_format($ord['cgst_amount'] + $ord['sgst_amount'], 2) ?></span></span>
                                             </div>
                                         </td>
                                         <td>

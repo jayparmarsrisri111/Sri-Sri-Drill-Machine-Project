@@ -78,7 +78,8 @@ foreach ($rows as $r) {
             <button type="button" id="adminSidebarToggle" class="btn-sm btn-cyan" style="padding: 6px 10px; cursor: pointer;">☰</button>
             <h1 class="topbar-title">Company Profile & Contact Settings</h1>
         </div>
-        <div class="topbar-actions">
+        <div class="topbar-actions" style="display: flex; align-items: center; gap: 8px;">
+            <?php require __DIR__ . '/../includes/lang-selector.php'; ?>
             <a href="<?= BASE_URL ?>/index.php" target="_blank" class="btn-sm btn-cyan">
                 View Changes on Website →
             </a>

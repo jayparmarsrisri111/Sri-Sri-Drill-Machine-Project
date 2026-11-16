@@ -46,7 +46,8 @@ try {
             <button type="button" id="adminSidebarToggle" class="btn-sm btn-cyan" style="padding: 6px 10px; cursor: pointer;">☰</button>
             <h1 class="topbar-title">Manage Drill Machines Catalog</h1>
         </div>
-        <div class="topbar-actions">
+        <div class="topbar-actions" style="display: flex; align-items: center; gap: 8px;">
+            <?php require __DIR__ . '/../includes/lang-selector.php'; ?>
             <a href="machine-add.php" class="btn-sm btn-cyan">
                 + Add New Machine
             </a>

@@ -385,6 +385,20 @@ body {
   background: rgba(255, 255, 255, 0.02);
 }
 
+/* Universal Currency & Rupee (₹) Anti-Stacking Rule */
+.admin-table td strong,
+.admin-table td .amount-val,
+.currency-val,
+.price-val,
+.rupee-amount,
+.price-nowrap,
+.currency-amount {
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 3px !important;
+}
+
 /* Status Badges */
 .status-pill {
   display: inline-flex;
@@ -802,14 +816,20 @@ body {
     width: 100%;
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
   }
   .topbar-actions .btn-sm,
   .topbar-actions .btn {
-    flex: 1;
+    flex: 1 1 auto;
     font-size: 11.5px;
     padding: 8px 10px;
     text-align: center;
     justify-content: center;
+    white-space: nowrap;
+  }
+  .topbar-actions .site-lang-dropdown-wrap {
+    flex-shrink: 0;
   }
 
   .admin-body {
@@ -867,5 +887,18 @@ body {
   .tech-table th,
   .tech-table td {
     padding: 10px 12px !important;
+  }
+
+  /* E-Way Hero Banner Mobile Optimization */
+  .eway-hero-banner {
+    padding: 16px 14px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+  }
+  .btn-gov-eway-login {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    padding: 10px 14px !important;
   }
 }

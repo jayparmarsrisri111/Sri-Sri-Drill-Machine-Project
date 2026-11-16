@@ -368,7 +368,7 @@ try {
                                 <th>Order / Invoice #</th>
                                 <th>Customer</th>
                                 <th>Machine Model</th>
-                                <th>Amount Paid</th>
+                                <th style="white-space: nowrap !important;">Amount Paid</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -387,8 +387,10 @@ try {
                                     <td>
                                         <span class="badge-tag" style="border-color: var(--accent-cyan); color: var(--accent-cyan);"><?= e($ro['model_number']) ?></span>
                                     </td>
-                                    <td>
-                                        <strong style="color: #34d399;">₹ <?= number_format($ro['total_amount'], 2) ?></strong>
+                                    <td style="white-space: nowrap !important;">
+                                        <strong style="color: #34d399; white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important; gap: 3px !important;">
+                                            <span>₹</span><span><?= number_format($ro['total_amount'], 2) ?></span>
+                                        </strong>
                                     </td>
                                     <td>
                                         <span style="color: #10b981; font-weight: 700; text-transform: uppercase; font-size: 12px;"><?= e($ro['order_status']) ?></span>

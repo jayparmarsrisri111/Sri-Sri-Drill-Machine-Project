@@ -53,7 +53,8 @@ unset($_SESSION['flash_message']);
             <button type="button" id="adminSidebarToggle" class="btn-sm btn-cyan" style="padding: 6px 10px; cursor: pointer;">☰</button>
             <h1 class="topbar-title">Customer Quotations & Leads</h1>
         </div>
-        <div class="topbar-actions">
+        <div class="topbar-actions" style="display: flex; align-items: center; gap: 8px;">
+            <?php require __DIR__ . '/../includes/lang-selector.php'; ?>
             <a href="inquiries.php" class="btn-sm <?= ($statusFilter === 'all') ? 'btn-cyan' : 'btn-outline' ?>">All</a>
             <a href="inquiries.php?status=new" class="btn-sm <?= ($statusFilter === 'new') ? 'btn-cyan' : 'btn-outline' ?>">New Leads</a>
             <a href="inquiries.php?status=contacted" class="btn-sm <?= ($statusFilter === 'contacted') ? 'btn-cyan' : 'btn-outline' ?>">Contacted</a>

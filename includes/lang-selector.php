@@ -290,10 +290,13 @@ function setAllTransCookies(targetLang) {
     
     // 3. Set standard Google Translate cookie: /en/targetLang & /auto/targetLang
     const transVal = (targetLang === 'en') ? '/en/en' : ('/en/' + targetLang);
+    const autoVal = (targetLang === 'en') ? '/auto/en' : ('/auto/' + targetLang);
     document.cookie = "googtrans=" + transVal + "; path=/; max-age=31536000; SameSite=Lax";
+    document.cookie = "googtrans=" + autoVal + "; path=/; max-age=31536000; SameSite=Lax";
     
-    if (domain && domain !== 'localhost') {
+    if (domain && domain !== 'localhost' && domain !== '127.0.0.1') {
         document.cookie = "googtrans=" + transVal + "; domain=" + domain + "; path=/; max-age=31536000; SameSite=Lax";
+        document.cookie = "googtrans=" + autoVal + "; domain=" + domain + "; path=/; max-age=31536000; SameSite=Lax";
     }
 }
 
@@ -437,7 +440,104 @@ const UI_TRANSLATIONS = {
         'Actions': 'ક્રિયાઓ',
         'Edit': 'ફેરફાર કરો',
         'Delete': 'ડિલીટ કરો',
-        'View Bill': 'બિલ જુઓ'
+        'View Bill': 'બિલ જુઓ',
+
+        // Checkout & Machinery Booking
+        'Select Machine or Genuine Spare Part': 'મશીન અથવા જેન્યુઇન સ્પેર પાર્ટ પસંદ કરો',
+        'Customer & Factory Delivery Details': 'ગ્રાહક અને ફેક્ટરી ડિલિવરી વિગતો',
+        'Customer Contact & Delivery Address': 'ગ્રાહક સંપર્ક અને ડિલિવરી સરનામું',
+        'Select Machinery Model / Genuine Spare Part': 'મશીનરી મોડેલ / જેન્યુઇન સ્પેર પાર્ટ પસંદ કરો',
+        'Standard Token Booking Advance': 'સ્ટાન્ડર્ડ ટોકન બુકિંગ એડવાન્સ',
+        'Standard token to reserve manufacturing slot and chassis allocation today.': 'ઉત્પાદન સ્લોટ અને ચેસીસ અલોકેશન રિઝર્વ કરવા માટે પ્રમાણિત ટોકન એડવાન્સ.',
+        'Custom Online Advance': 'કસ્ટમ ઓનલાઇન એડવાન્સ',
+        'Pay custom advance booking online': 'કસ્ટમ એડવાન્સ બુકિંગ ઓનલાઇન ચૂકવો',
+        'Remaining balance due upon delivery.': 'બાકીની રકમ ડિલિવરી વખતે ચૂકવવાની રહેશે.',
+        'Max Advance': 'મહત્તમ એડવાન્સ',
+        'Or Enter Amount': 'અથવા રકમ દાખલ કરો',
+        'Full Payment (Price + 18% GST)': 'સંપૂર્ણ ચુકવણી (કિંમત + ૧૮% GST)',
+        'Complete invoice payment with 100% Tax Invoice, priority dispatch & free tooling set.': '૧૦૦% ટેક્સ ઇન્વોઇસ, પ્રાયોરિટી ડિસ્પેચ અને ફ્રી ટૂલિંગ સેટ સાથે સંપૂર્ણ પેમેન્ટ.',
+        'Ordering Machine or Spare Parts? Sign In to Link Your Order': 'મશીન અથવા સ્પેરપાર્ટ્સ ઓર્ડર કરી રહ્યા છો? ઓર્ડર લિંક કરવા સાઇન ઇન કરો',
+        'Log in to track delivery via real-time live status and download GST tax invoices anytime.': 'રીયલ-ટાઇમ લાઇવ સ્ટેટસ ટ્રેક કરવા અને GST ટેક્સ ઇન્વોઇસ ડાઉનલોડ કરવા લોગ ઇન કરો.',
+        'Sign In / Register': '👤 સાઇન ઇન / રજીસ્ટર',
+        'Full Name *': 'પૂરું નામ *',
+        'Company / Factory Name *': 'કંપની / ફેક્ટરીનું નામ *',
+        'Mobile / WhatsApp Number *': 'મોબાઇલ / વોટ્સએપ નંબર *',
+        'Email Address': 'ઇમેઇલ સરનામું',
+        'Delivery Factory Address *': 'ડિલિવરી ફેક્ટરીનું સરનામું *',
+        'City / District *': 'શહેર / જિલ્લો *',
+        'Pincode *': 'પિનકોડ *',
+        'GSTIN Number (Optional)': 'GSTIN નંબર (વૈકલ્પિક)',
+        'Purchase Order (PO) / Delivery Notes': 'પર્ચેઝ ઓર્ડર (PO) / ડિલિવરી નોટ્સ',
+        'Order Quantity': 'ઓર્ડર જથ્થો (નંગ)',
+        'Units in Factory Stock': 'યુનિટ ફેક્ટરી સ્ટોકમાં ઉપલબ્ધ',
+        'Pay Booking Advance': '🔒 બુકિંગ એડવાન્સ ચૂકવો',
+        'Pay Online Advance': '🔒 ઓનલાઇન એડવાન્સ ચૂકવો',
+        'Pay Full Amount': '🔒 સંપૂર્ણ રકમ ચૂકવો',
+        'Confirm Cash on Delivery': '📦 કેશ ઓન ડિલિવરી ઓર્ડર કન્ફર્મ કરો',
+        'Confirm Direct Bank Transfer': '🏛️ ડાયરેક્ટ બેંક ટ્રાન્સફર ઓર્ડર કન્ફર્મ કરો',
+
+        // Admin & E-Way Bill
+        'GST E-Way Bill Consignment Registry': 'જીએસટી ઇ-વે બિલ કન્સાઇનમેન્ટ રજિસ્ટ્રી',
+        'Customer-wise GST E-Way Bills': 'ગ્રાહક વાઇઝ જીએસટી ઇ-વે બિલ',
+        'Generate, print, or verify 12-digit GST E-Way Bills for heavy machinery dispatches across India under HSN Code 8459.': 'HSN કોડ ૮૪૫૯ હેઠળ સમગ્ર ભારતમાં હેવી મશીનરી ડિસ્પેચ માટે ૧૨-અંકના જીએસટી ઇ-વે બિલ જનરેટ, પ્રિન્ટ અથવા વેરિફાય કરો.',
+        'Official Government Portal Direct Login': 'સત્તાવાર સરકારી પોર્ટલ ડાયરેક્ટ લોગિન',
+        'Total Consignments': 'કુલ કન્સાઇનમેન્ટ્સ',
+        'Total Consignment Value': 'કુલ કન્સાઇનમેન્ટ મૂલ્ય',
+        'HSN Code': 'HSN કોડ',
+        'Amount Paid': 'ચૂકવેલ રકમ',
+        'Order / Invoice #': 'ઓર્ડર / ઇન્વોઇસ #',
+        'Customer': 'ગ્રાહક',
+        'Machine Model': 'મશીન મોડેલ',
+        'Status': 'સ્થિતિ',
+        'Order / Invoice': 'ઓર્ડર / ઇન્વોઇસ',
+        'Customer & Company': 'ગ્રાહક અને કંપની',
+        'GSTIN & Destination': 'GSTIN અને ગંતવ્ય',
+        'E-Way Bill': 'ઇ-વે બિલ',
+        'Live Customer Carts': 'લાઇવ ગ્રાહક કાર્ટ્સ',
+        'Customer Orders & Live Delivery Tracking': 'ગ્રાહક ઓર્ડર્સ અને લાઇવ ડિલિવરી ટ્રેકિંગ',
+        'Track machine bookings, verified online payments, tax invoices, and manage live delivery milestones.': 'મશીન બુકિંગ, વેરિફાઇડ ઓનલાઇન પેમેન્ટ્સ, ટેક્સ ઇન્વોઇસ અને લાઇવ ડિલિવરી માઇલસ્ટોન્સ મેનેજ કરો.',
+        'Registered Customers & Machinery Buyers': 'નોંધાયેલા ગ્રાહકો અને મશીનરી ખરીદદારો',
+        'Directory of verified client workshops, contact persons, GST numbers, and order histories.': 'ચકાસાયેલ ક્લાયન્ટ વર્કશોપ, સંપર્ક વ્યક્તિઓ, GST નંબરો અને ઓર્ડર ઇતિહાસની ડિરેક્ટરી.',
+        'Manage Drill Machines Catalog': 'ડ્રિલ મશીનો કેટલોગ મેનેજ કરો',
+        'Customer Quotations & Leads': 'ગ્રાહક ક્વોટેશન્સ અને લીડ્સ',
+        'Customer Ratings & Factory Reviews': 'ગ્રાહક રેટિંગ્સ અને ફેક્ટરી સમીક્ષાઓ',
+        'Company Profile & Contact Settings': 'કંપની પ્રોફાઇલ અને સંપર્ક સેટિંગ્સ',
+        'Ready for Transit': 'ટ્રાન્ઝિટ માટે તૈયાર ✔',
+        'SUCCESS / PAID': 'પેઇડ / સફળ ✔',
+        'FAILURE / CANCELLED': 'નિષ્ફળ / રદ ✖',
+        'PENDING': 'પેન્ડિંગ ⏳',
+        'View Live Website': 'લાઈવ વેબસાઇટ જુઓ',
+        'Add Drill Machine': 'નવું ડ્રિલ મશીન ઉમેરો',
+
+        // Video Player & Machine Detail
+        'Open YouTube Video': 'યૂટ્યૂબ વિડીયો જુઓ',
+        'Video Mode': 'વિડીયો મોડ',
+        '3D Spindle Simulator': '૩D સ્પિન્ડલ સિમ્યુલેટર',
+        'Real Photo': 'અસલ ફોટો',
+        'Live Machine Metrics': 'લાઇવ મશીન મેટ્રિક્સ',
+        'Play Live Workshop Video': 'લાઇવ વર્કશોપ વિડીયો ચલાવો',
+        'Live Factory Video Call': 'લાઇવ ફેક્ટરી વિડીયો કૉલ',
+        'Open 360° 12D Lab View': '૩૬૦° ૧૨D લેબ વ્યૂ જુઓ',
+        'Runout Accuracy': 'રનઆઉટ ચોકસાઈ',
+        'Coolant Circulation': 'કૂલન્ટ પરિભ્રમણ',
+        'Vibration Index': 'વાઇબ્રેશન ઇન્ડેક્સ',
+        'Dynamic Factory Inventory': 'ડાયનેમિક ફેક્ટરી સ્ટોક',
+        'Units Ready in Stock': 'યુનિટ સ્ટોકમાં તૈયાર',
+
+        // Invoice & Proforma Bill
+        'Proforma Tax Invoice': 'પ્રોફોર્મા ટેક્સ ઇન્વોઇસ',
+        'Tax Invoice': 'ટેક્સ ઇન્વોઇસ',
+        'Official Certified Industrial Tax Document': 'સત્તાવાર પ્રમાણિત ઔદ્યોગિક ટેક્સ દસ્તાવેજ',
+        'Bill To (Buyer / Consignee)': 'બિલ ટુ (ગ્રાહક / ખરીદનાર)',
+        'Dispatch & Consignment Details': 'ડિસ્પેચ અને કન્સાઇનમેન્ટ વિગતો',
+        'Machinery Description & Technical Specifications': 'મશીનરી વર્ણન અને તકનીકી વિશિષ્ટતાઓ',
+        'Taxable Value': 'કરપાત્ર મૂલ્ય',
+        'Total Billed': 'કુલ બિલ રકમ',
+        'Balance Due': 'બાકી ચૂકવવાપાત્ર',
+        'PAID IN FULL': 'સંપૂર્ણ ચૂકવેલ ✔',
+        'Company Bank Account': 'કંપની બેંક ખાતું',
+        'Amount in Words': 'શબ્દોમાં રકમ',
+        'Standard Manufacturing & Warranty Terms': 'ઉત્પાદન અને વોરંટી શરતો'
     },
     'hi': {
         // Navigation & Topbar
@@ -577,7 +677,104 @@ const UI_TRANSLATIONS = {
         'Actions': 'क्रियाएं',
         'Edit': 'संपादित करें',
         'Delete': 'हटाएं',
-        'View Bill': 'बिल देखें'
+        'View Bill': 'बिल देखें',
+
+        // Checkout & Machinery Booking
+        'Select Machine or Genuine Spare Part': 'मशीन या असली स्पेयर पार्ट चुनें',
+        'Customer & Factory Delivery Details': 'ग्राहक और फैक्ट्री डिलीवरी विवरण',
+        'Customer Contact & Delivery Address': 'ग्राहक संपर्क और डिलीवरी पता',
+        'Select Machinery Model / Genuine Spare Part': 'मशीनरी मॉडल / असली स्पेयर पार्ट चुनें',
+        'Standard Token Booking Advance': 'मानक टोकन बुकिंग अग्रिम',
+        'Standard token to reserve manufacturing slot and chassis allocation today.': 'विनिर्माण स्लॉट और चेसिस आवंटन सुरक्षित करने के लिए मानक टोकन।',
+        'Custom Online Advance': 'कस्टम ऑनलाइन अग्रिम',
+        'Pay custom advance booking online': 'कस्टम अग्रिम बुकिंग ऑनलाइन भुगतान करें',
+        'Remaining balance due upon delivery.': 'शेष राशि डिलीवरी पर देय होगी।',
+        'Max Advance': 'अधिकतम अग्रिम',
+        'Or Enter Amount': 'या राशि दर्ज करें',
+        'Full Payment (Price + 18% GST)': 'पूर्ण भुगतान (कीमत + १८% GST)',
+        'Complete invoice payment with 100% Tax Invoice, priority dispatch & free tooling set.': '१००% टैक्स इनवॉइस, प्राथमिकता डिस्पैच और मुफ्त टूलिंग सेट के साथ पूर्ण भुगतान।',
+        'Ordering Machine or Spare Parts? Sign In to Link Your Order': 'मशीन या स्पेयर पार्ट्स ऑर्डर कर रहे हैं? ऑर्डर लिंक करने के लिए साइन इन करें',
+        'Log in to track delivery via real-time live status and download GST tax invoices anytime.': 'रीयल-टाइम डिलीवरी ट्रैक करने और जीएसटी इनवॉइस डाउनलोड करने के लिए लॉगिन करें।',
+        'Sign In / Register': '👤 साइन इन / रजिस्टर',
+        'Full Name *': 'पूरा नाम *',
+        'Company / Factory Name *': 'कंपनी / फैक्ट्री का नाम *',
+        'Mobile / WhatsApp Number *': 'मोबाइल / व्हाट्सएप नंबर *',
+        'Email Address': 'ईमेल पता',
+        'Delivery Factory Address *': 'डिलीवरी फैक्ट्री का पता *',
+        'City / District *': 'शहर / जिला *',
+        'Pincode *': 'पिनकोड *',
+        'GSTIN Number (Optional)': 'GSTIN नंबर (वैकल्पिक)',
+        'Purchase Order (PO) / Delivery Notes': 'परचेज ऑर्डर (PO) / डिलीवरी नोट्स',
+        'Order Quantity': 'ऑर्डर मात्रा',
+        'Units in Factory Stock': 'यूनिट फैक्ट्री स्टॉक में उपलब्ध',
+        'Pay Booking Advance': '🔒 बुकिंग अग्रिम भुगतान करें',
+        'Pay Online Advance': '🔒 ऑनलाइन अग्रिम भुगतान करें',
+        'Pay Full Amount': '🔒 पूरी राशि भुगतान करें',
+        'Confirm Cash on Delivery': '📦 कैश ऑन डिलीवरी ऑर्डर कन्फर्म करें',
+        'Confirm Direct Bank Transfer': '🏛️ डायरेक्ट बैंक ट्रांसफर ऑर्डर कन्फर्म करें',
+
+        // Admin & E-Way Bill
+        'GST E-Way Bill Consignment Registry': 'जीएसटी ई-वे बिल कंसाइनमेंट रजिस्ट्री',
+        'Customer-wise GST E-Way Bills': 'ग्राहक अनुसार जीएसटी ई-वे बिल',
+        'Generate, print, or verify 12-digit GST E-Way Bills for heavy machinery dispatches across India under HSN Code 8459.': 'HSN कोड ८४५૯ के तहत पूरे भारत में भारी मशीनरी प्रेषण के लिए १२-अंकीय जीएसटी ई-वे बिल जनरेट, प्रिंट या सत्यापित करें।',
+        'Official Government Portal Direct Login': 'आधिकारिक सरकारी पोर्टल डायरेक्ट लॉगिन',
+        'Total Consignments': 'कुल कंसाइनमेंट',
+        'Total Consignment Value': 'कुल कंसाइनमेंट मूल्य',
+        'HSN Code': 'HSN कोड',
+        'Amount Paid': 'भुगतान की गई राशि',
+        'Order / Invoice #': 'ऑर्डर / इनवॉइस #',
+        'Customer': 'ग्राहक',
+        'Machine Model': 'मशीन मॉडल',
+        'Status': 'स्थिति',
+        'Order / Invoice': 'ऑर्डर / इनवॉइस',
+        'Customer & Company': 'ग्राहक और कंपनी',
+        'GSTIN & Destination': 'GSTIN और गंतव्य',
+        'E-Way Bill': 'ई-वे बिल',
+        'Live Customer Carts': 'लाइव कस्टमर कार्ट्स',
+        'Customer Orders & Live Delivery Tracking': 'ग्राहक ऑर्डर्स और लाइव डिलीवरी ट्रैकिंग',
+        'Track machine bookings, verified online payments, tax invoices, and manage live delivery milestones.': 'मशीन बुकिंग, सत्यापित ऑनलाइन भुगतान, टैक्स इनवॉइस और डिलीवरी ट्रैक करें।',
+        'Registered Customers & Machinery Buyers': 'पंजीकृत ग्राहक और मशीनरी खरीदार',
+        'Directory of verified client workshops, contact persons, GST numbers, and order histories.': 'सत्यापित ग्राहक वर्कशॉप, संपर्क व्यक्ति, जीएसटी नंबर और ऑर्डर इतिहास।',
+        'Manage Drill Machines Catalog': 'ड्रिल मशीन कैटलॉग प्रबंधित करें',
+        'Customer Quotations & Leads': 'ग्राहक कोटेशन और लीड्स',
+        'Customer Ratings & Factory Reviews': 'ग्राहक रेटिंग और फैक्ट्री समीक्षाएं',
+        'Company Profile & Contact Settings': 'कंपनी प्रोफाइल और संपर्क सेटिंग्स',
+        'Ready for Transit': 'ट्रांजिट के लिए तैयार ✔',
+        'SUCCESS / PAID': 'सफल / भुगतान पूर्ण ✔',
+        'FAILURE / CANCELLED': 'विफल / रद्द ✖',
+        'PENDING': 'लंबित ⏳',
+        'View Live Website': 'लाइव वेबसाइट देखें',
+        'Add Drill Machine': 'नई ड्रिल मशीन जोड़ें',
+
+        // Video Player & Machine Detail
+        'Open YouTube Video': 'यूट्यूब वीडियो देखें',
+        'Video Mode': 'वीडियो मोड',
+        '3D Spindle Simulator': '३D स्पिंडल सिम्युलेटर',
+        'Real Photo': 'असली फोटो',
+        'Live Machine Metrics': 'लाइव मशीन मेट्रिक्स',
+        'Play Live Workshop Video': 'लाइव वर्कशॉप वीडियो चलाएं',
+        'Live Factory Video Call': 'लाइव फैक्ट्री वीडियो कॉल',
+        'Open 360° 12D Lab View': '३६०° १२D लैब व्यू खोलें',
+        'Runout Accuracy': 'रनआउट सटीकता',
+        'Coolant Circulation': 'कूलेंट परिसंचरण',
+        'Vibration Index': 'वाइब्रेशन इंडेक्स',
+        'Dynamic Factory Inventory': 'डायनामिक फैक्ट्री इन्वेंटरी',
+        'Units Ready in Stock': 'यूनिट स्टॉक में तैयार',
+
+        // Invoice & Proforma Bill
+        'Proforma Tax Invoice': 'प्रोफॉर्मा टैक्स इनवॉइस',
+        'Tax Invoice': 'टैक्स इनवॉइस',
+        'Official Certified Industrial Tax Document': 'आधिकारिक प्रमाणित औद्योगिक टैक्स दस्तावेज़',
+        'Bill To (Buyer / Consignee)': 'बिल टू (क्रेता / कंसाइनी)',
+        'Dispatch & Consignment Details': 'डिस्पैच एवं कंसाइनमेंट विवरण',
+        'Machinery Description & Technical Specifications': 'मशीनरी विवरण और तकनीकी विनिर्देश',
+        'Taxable Value': 'कर योग्य मूल्य',
+        'Total Billed': 'कुल बिल राशि',
+        'Balance Due': 'शेष देय राशि',
+        'PAID IN FULL': 'पूर्ण भुगतान प्राप्त ✔',
+        'Company Bank Account': 'कंपनी बैंक खाता',
+        'Amount in Words': 'शब्दों में राशि',
+        'Standard Manufacturing & Warranty Terms': 'मानक विनिर्माण एवं वारंटी शर्तें'
     }
 };
 
@@ -730,6 +927,19 @@ document.addEventListener('DOMContentLoaded', function() {
         // Instant full DOM conversion
         translateFullDomTree(saved);
 
+        // Continuous DOM observer so dynamic elements (like cart/checkout/tables) stay translated
+        if (window.MutationObserver) {
+            let debounceTimer = null;
+            const observer = new MutationObserver(function(mutations) {
+                // Avoid infinite loops by checking if mutations are from translation font/text
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(function() {
+                    translateFullDomTree(saved);
+                }, 120);
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        }
+
         // Sync with Google Translate combo when it loads
         let checks = 0;
         const syncInt = setInterval(function() {
@@ -742,7 +952,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 clearInterval(syncInt);
             }
-            if (checks > 35) clearInterval(syncInt);
+            if (checks > 50) clearInterval(syncInt);
         }, 120);
     }
 });

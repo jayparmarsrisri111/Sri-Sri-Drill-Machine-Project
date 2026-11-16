@@ -127,6 +127,17 @@ require_once __DIR__ . '/includes/navbar.php';
             padding: 16px !important;
             position: static !important;
         }
+        .payment-option-label {
+            padding: 12px 14px !important;
+            gap: 10px !important;
+        }
+        #customAdvanceBox {
+            padding: 10px 10px !important;
+        }
+        .btn-advance-chip {
+            padding: 5px 8px !important;
+            font-size: 11px !important;
+        }
     }
     .checkout-card {
         background: var(--bg-card);
@@ -385,8 +396,9 @@ foreach ($products as $p) {
                 </div>
             <?php endif; ?>
 
-            <h2 style="font-family: var(--font-heading); font-size: 19px; color: #fff; margin-bottom: 18px; display: flex; align-items: center; gap: 10px;">
-                <span style="color: var(--accent-cyan);">1.</span> Select Machine or Genuine Spare Part
+            <h2 style="font-family: var(--font-heading); font-size: clamp(16px, 4.5vw, 20px); color: #fff; margin-bottom: 18px; display: flex; align-items: baseline; gap: 8px; line-height: 1.35;">
+                <span style="color: var(--accent-cyan); font-weight: 800; flex-shrink: 0;">1.</span>
+                <span>Select Machine or Genuine Spare Part</span>
             </h2>
 
             <div class="form-group">
@@ -453,7 +465,13 @@ foreach ($products as $p) {
                 </div>
             </div>
 
-            <!-- Payment Type Selection (Supports Online Advance up to ₹90,000 or Full Payment) -->
+            <?php
+            $initialBasePrice = floatval($selectedMachine['price'] ?? 285000);
+            $initialMaxAdvance = round($initialBasePrice * $initialQty * 1.18);
+            $initialMaxAdvanceFormatted = '₹ ' . number_format($initialMaxAdvance, 0);
+            ?>
+
+            <!-- Payment Type Selection (Supports Online Advance up to Product Price or Full Payment) -->
             <div style="margin: 22px 0;">
                 <label class="form-label" style="margin-bottom: 10px;">Choose Payment Option *</label>
                 
@@ -474,25 +492,25 @@ foreach ($products as $p) {
                     <input type="radio" name="payment_type" id="payTypeCustomAdvance" value="custom_advance" style="accent-color: var(--accent-cyan); width: 18px; height: 18px; flex-shrink: 0;">
                     <div style="flex: 1; min-width: 0;">
                         <div style="font-weight: 700; color: #fff; font-size: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                            <span style="min-width: 0;">Custom Online Advance (Up to ₹&nbsp;4,00,000)</span>
+                            <span style="min-width: 0;">Custom Online Advance (Up to <span id="customAdvanceMaxTitle"><?= $initialMaxAdvanceFormatted ?></span>)</span>
                             <span style="color: #38bdf8; font-size: 16px; font-weight: 800; white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important; flex-shrink: 0 !important;" id="customAdvanceDisplay" class="price-val">₹&nbsp;90,000</span>
                         </div>
                         <div style="font-size: 12px; color: var(--text-muted); margin: 4px 0 8px;">
-                            Pay custom advance booking online (up to ₹4,00,000). Remaining balance due upon delivery.
+                            Pay custom advance booking online (up to <span id="customAdvanceMaxDesc"><?= $initialMaxAdvanceFormatted ?></span>). Remaining balance due upon delivery.
                         </div>
                         <div id="customAdvanceBox" style="display: none; margin-top: 10px; padding: 10px 12px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px;">
-                            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
+                            <div id="advanceChipsContainer" style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
                                 <button type="button" class="btn-advance-chip" data-val="25000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer; white-space: nowrap;">₹&nbsp;25,000</button>
                                 <button type="button" class="btn-advance-chip" data-val="50000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer; white-space: nowrap;">₹&nbsp;50,000</button>
                                 <button type="button" class="btn-advance-chip active-chip" data-val="90000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: #0284c7; border: 1px solid #38bdf8; color: #fff; cursor: pointer; font-weight: 700; white-space: nowrap;">₹&nbsp;90,000</button>
                                 <button type="button" class="btn-advance-chip" data-val="150000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer; white-space: nowrap;">₹&nbsp;1,50,000</button>
                                 <button type="button" class="btn-advance-chip" data-val="250000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer; white-space: nowrap;">₹&nbsp;2,50,000</button>
-                                <button type="button" class="btn-advance-chip" data-val="400000" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer; white-space: nowrap;">₹&nbsp;4,00,000 (Max Advance)</button>
+                                <button type="button" class="btn-advance-chip chip-max-advance" id="chipMaxAdvance" data-val="<?= $initialMaxAdvance ?>" style="padding: 4px 10px; font-size: 11.5px; border-radius: 6px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; cursor: pointer; white-space: nowrap;"><?= $initialMaxAdvanceFormatted ?> (Max Advance)</button>
                             </div>
                             <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                                 <label style="font-size: 12px; color: #cbd5e1; white-space: nowrap;">Or Enter Amount (₹):</label>
-                                <input type="number" id="inputCustomAdvance" min="5000" max="400000" step="5000" value="90000" class="form-control" style="max-width: 170px; height: 34px; font-size: 14px; font-weight: 700; color: #34d399; padding: 4px 10px;">
-                                <span style="font-size: 11px; color: #94a3b8; white-space: nowrap;">(Min ₹5,000 - Max ₹4,00,000)</span>
+                                <input type="number" id="inputCustomAdvance" min="5000" max="<?= $initialMaxAdvance ?>" step="5000" value="90000" class="form-control" style="max-width: 170px; height: 34px; font-size: 14px; font-weight: 700; color: #34d399; padding: 4px 10px;">
+                                <span id="customAdvanceMaxHint" style="font-size: 11px; color: #94a3b8; white-space: nowrap;">(Min ₹5,000 - Max <?= $initialMaxAdvanceFormatted ?>)</span>
                             </div>
                         </div>
                     </div>
@@ -513,8 +531,9 @@ foreach ($products as $p) {
             </div>
 
             <!-- Step 2: Customer Contact & Delivery Address -->
-            <h2 style="font-family: var(--font-heading); font-size: 19px; color: #fff; margin: 28px 0 18px; display: flex; align-items: center; gap: 10px;">
-                <span style="color: var(--accent-cyan);">2.</span> Customer &amp; Factory Delivery Details
+            <h2 style="font-family: var(--font-heading); font-size: clamp(16px, 4.5vw, 20px); color: #fff; margin: 28px 0 18px; display: flex; align-items: baseline; gap: 8px; line-height: 1.35;">
+                <span style="color: var(--accent-cyan); font-weight: 800; flex-shrink: 0;">2.</span>
+                <span>Customer &amp; Factory Delivery Details</span>
             </h2>
 
             <form id="orderForm">
@@ -1019,15 +1038,15 @@ foreach ($products as $p) {
             return 25000 * qty;
         } else if (payTypeCustomAdvance && payTypeCustomAdvance.checked) {
             let val = parseFloat(inputCustomAdvance.value) || (90000 * qty);
-            if (val > (400000 * qty)) val = 400000 * qty;
-            if (val < (5000 * qty)) val = 5000 * qty;
+            if (val > fullTotal) val = fullTotal;
+            if (val < (5000 * qty)) val = Math.min(5000 * qty, fullTotal);
             return val;
         } else {
             return fullTotal;
         }
     }
 
-    // Quick chip handlers for custom advance up to ₹4,00,000
+    // Quick chip handlers for custom advance according to product price
     document.querySelectorAll('.btn-advance-chip').forEach(chip => {
         chip.addEventListener('click', function(e) {
             e.preventDefault();
@@ -1049,7 +1068,8 @@ foreach ($products as $p) {
     if (inputCustomAdvance) {
         inputCustomAdvance.addEventListener('input', function() {
             let val = parseFloat(this.value) || 0;
-            if (val > 400000) this.value = 400000;
+            const maxVal = parseFloat(this.max) || 400000;
+            if (val > maxVal) this.value = maxVal;
             if (payTypeCustomAdvance) payTypeCustomAdvance.checked = true;
             recalculate();
         });
@@ -1192,6 +1212,43 @@ foreach ($products as $p) {
         if (rowFullTotal) rowFullTotal.textContent = formatINR(fullTotal);
         if (fullPriceLabel) fullPriceLabel.textContent = formatINR(fullTotal);
 
+        // Update Custom Online Advance maximum amount dynamically according to product price
+        const maxAdvance = Math.round(fullTotal);
+        const maxAdvFormatted = formatINR(maxAdvance);
+
+        const customAdvanceMaxTitle = document.getElementById('customAdvanceMaxTitle');
+        if (customAdvanceMaxTitle) customAdvanceMaxTitle.textContent = maxAdvFormatted;
+
+        const customAdvanceMaxDesc = document.getElementById('customAdvanceMaxDesc');
+        if (customAdvanceMaxDesc) customAdvanceMaxDesc.textContent = maxAdvFormatted;
+
+        const chipMaxAdvance = document.getElementById('chipMaxAdvance');
+        if (chipMaxAdvance) {
+            chipMaxAdvance.setAttribute('data-val', maxAdvance);
+            chipMaxAdvance.textContent = maxAdvFormatted + ' (Max Advance)';
+        }
+
+        const customAdvanceMaxHint = document.getElementById('customAdvanceMaxHint');
+        if (customAdvanceMaxHint) customAdvanceMaxHint.textContent = '(Min ₹5,000 - Max ' + maxAdvFormatted + ')';
+
+        if (inputCustomAdvance) {
+            inputCustomAdvance.max = maxAdvance;
+            let curVal = parseFloat(inputCustomAdvance.value) || 0;
+            if (curVal > maxAdvance) {
+                inputCustomAdvance.value = maxAdvance;
+            }
+        }
+
+        // Show/hide preset chips based on product price
+        document.querySelectorAll('.btn-advance-chip:not(.chip-max-advance)').forEach(chip => {
+            const chipVal = parseFloat(chip.getAttribute('data-val')) || 0;
+            if (chipVal >= maxAdvance) {
+                chip.style.display = 'none';
+            } else {
+                chip.style.display = 'inline-block';
+            }
+        });
+
         let payableNowNum = fullTotal;
         let isAdvance = false;
 
@@ -1206,8 +1263,8 @@ foreach ($products as $p) {
             if (btnPayRazorpay) btnPayRazorpay.innerHTML = "🔒 Pay Booking Advance " + formatINR(payableNowNum) + " (Instant UPI / Cards)";
         } else if (!isFromCart && payTypeCustomAdvance && payTypeCustomAdvance.checked && pType !== 'part') {
             let customVal = parseFloat(inputCustomAdvance.value) || (90000 * qty);
-            if (customVal > (400000 * qty)) customVal = (400000 * qty);
-            if (customVal < (5000 * qty)) customVal = (5000 * qty);
+            if (customVal > fullTotal) customVal = fullTotal;
+            if (customVal < (5000 * qty)) customVal = Math.min(5000 * qty, fullTotal);
             payableNowNum = customVal;
             isAdvance = true;
             if (customAdvanceBox) customAdvanceBox.style.display = 'block';

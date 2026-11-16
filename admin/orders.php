@@ -262,7 +262,8 @@ require_once __DIR__ . '/includes/sidebar.php';
                 </p>
             </div>
         </div>
-        <div style="display: flex; gap: 8px;">
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <?php require __DIR__ . '/../includes/lang-selector.php'; ?>
             <a href="<?= BASE_URL ?>/track-order.php" target="_blank" class="btn btn-outline" style="font-size: 13px; border-color: #34d399; color: #34d399;">
                 🚚 Live Tracking Page
             </a>
@@ -379,14 +380,14 @@ require_once __DIR__ . '/includes/sidebar.php';
                                             <?= e($ord['product_name']) ?>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style="white-space: nowrap !important;">
                                         <?php if ($ord['payment_type'] === 'booking_advance'): ?>
                                             <span style="color: #34d399; font-weight: 700; font-size: 11.5px; display: block;">Token Advance</span>
                                         <?php else: ?>
                                             <span style="color: #38bdf8; font-weight: 700; font-size: 11.5px; display: block;">Full Payment</span>
                                         <?php endif; ?>
-                                        <strong style="color: #34d399; font-size: 15px; white-space: nowrap !important;">
-                                            <span style="white-space: nowrap !important;">₹<?= number_format($ord['total_amount'], 2) ?></span>
+                                        <strong style="color: #34d399; font-size: 15px; white-space: nowrap !important; display: inline-flex !important; align-items: baseline !important; gap: 3px !important;">
+                                            <span>₹</span><span><?= number_format($ord['total_amount'], 2) ?></span>
                                         </strong>
                                         <div style="margin-top: 4px;">
                                             <?php if (($ord['payment_status'] ?? '') === 'paid'): ?>

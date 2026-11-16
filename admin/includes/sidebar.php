@@ -22,7 +22,7 @@
     <div style="padding: 8px 10px; margin: 4px 10px 10px; background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(0, 229, 255, 0.35); border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
             <span style="font-size: 10.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px;">
-                🌐 ભાષા પસંદગી (Language)
+                🌐 Language / ભાષા
             </span>
         </div>
         <div style="display: flex; gap: 4px; justify-content: space-between;">
@@ -54,7 +54,7 @@
         <li>
             <a href="<?= BASE_URL ?>/admin/carts.php" class="sidebar-link <?= ($activeTab === 'carts') ? 'active' : '' ?>" style="color: #fbbf24;">
                 <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                <span>Live Customer Carts (કાર્ટ્સ)</span>
+                <span>Live Customer Carts</span>
             </a>
         </li>
         <li>

@@ -166,9 +166,10 @@ require_once __DIR__ . '/includes/sidebar.php';
     <header class="admin-topbar">
         <div style="display: flex; align-items: center; gap: 12px;">
             <button type="button" id="adminSidebarToggle" class="btn-sm btn-cyan" style="padding: 6px 10px; cursor: pointer;">☰</button>
-            <h1 class="topbar-title">Live Customer Carts (કાર્ટ્સ મોનિટરિંગ)</h1>
+            <h1 class="topbar-title">Live Customer Carts</h1>
         </div>
-        <div class="topbar-actions">
+        <div class="topbar-actions" style="display: flex; align-items: center; gap: 8px;">
+            <?php require __DIR__ . '/../includes/lang-selector.php'; ?>
             <a href="<?= BASE_URL ?>/cart.php" target="_blank" class="btn-sm btn-cyan" style="border-color: #f59e0b; color: #fbbf24;">
                 🛒 Open Frontend Cart
             </a>

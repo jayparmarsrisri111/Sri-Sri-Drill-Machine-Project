@@ -369,13 +369,14 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
         }
         .company-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(18px, 2.2vw, 23px);
+            font-size: clamp(15px, 2vw, 21px);
             font-weight: 800;
             color: #0f172a;
             letter-spacing: 0.3px;
             line-height: 1.25;
             margin-bottom: 4px;
-            word-break: break-word;
+            white-space: nowrap !important;
+            word-break: normal;
         }
         .company-meta {
             font-size: 12px;
@@ -664,6 +665,10 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 min-width: 0 !important;
                 flex: 1 1 auto !important;
             }
+            .company-title {
+                font-size: clamp(13px, 3.8vw, 17px) !important;
+                white-space: nowrap !important;
+            }
             .invoice-title-block {
                 text-align: left !important;
                 width: 100% !important;
@@ -760,7 +765,8 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
                 height: 85px !important;
             }
             .company-title {
-                font-size: 16px !important;
+                font-size: 14.5px !important;
+                white-space: nowrap !important;
             }
             .inv-title {
                 font-size: 17px !important;
@@ -815,10 +821,6 @@ $pageTitle = 'Tax Invoice #' . $order['invoice_number'] . ' | ' . APP_NAME;
             </span>
         </div>
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button type="button" onclick="downloadInvoicePDF()" id="btnDownloadInvoicePdf" class="btn-action" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; font-weight: 800; border: 1.5px solid #34d399; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);">
-                <span>📥</span>
-                <span>Download PDF (Direct)</span>
-            </button>
             <button onclick="window.print()" class="btn-action btn-print">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
                 <span>🖨️ Print</span>
