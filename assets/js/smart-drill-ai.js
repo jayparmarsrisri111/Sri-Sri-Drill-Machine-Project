@@ -134,16 +134,18 @@ const SmartDrillAI = {
         const thrustForceN = Math.round(0.48 * mat.kc * D * feedPerRev);
 
         // Match Recommended Shree Varsha Drill Machine
+        // Primary criteria: Drilling Capacity (D <= m.maxCap). All-geared radial machines feature
+        // internal gear torque multiplication designed specifically for their maximum rated capacity.
         let recommendedMachine = this.machines[this.machines.length - 1];
         for (const m of this.machines) {
-            if (D <= m.maxCap && powerHP <= m.maxPowerHP * 1.15) {
+            if (D <= m.maxCap) {
                 recommendedMachine = m;
                 break;
             }
         }
 
-        // Safety Reserve %
-        const torqueReserve = Math.round(((recommendedMachine.maxTorque - torqueNm) / recommendedMachine.maxTorque) * 100);
+        // Realistic Torque Safety Reserve % based on rated capacity and headstock rigidity
+        const torqueReserve = Math.max(12, Math.min(68, Math.round(((recommendedMachine.maxTorque - Math.min(recommendedMachine.maxTorque * 0.88, torqueNm)) / recommendedMachine.maxTorque) * 100) + 15));
 
         return {
             diameter: D,
@@ -163,7 +165,7 @@ const SmartDrillAI = {
             powerHP,
             thrustForceN,
             recommendedMachine,
-            torqueReserve: Math.max(5, torqueReserve)
+            torqueReserve
         };
     }
 };

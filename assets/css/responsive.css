@@ -46,9 +46,9 @@ img, svg, video, canvas {
 }
 
 /* ==========================================================================
-   TABLETS (Portrait & Landscape: max-width: 1024px)
+   TABLETS (Portrait & Landscape: max-width: 1139px)
    ========================================================================== */
-@media (max-width: 1024px) {
+@media (max-width: 1139px) {
   .container {
     padding: 0 16px;
   }
@@ -408,6 +408,14 @@ img, svg, video, canvas {
     right: 12px;
     gap: 8px;
     z-index: 999;
+  }
+
+  /* Lift floating widgets if sticky cart bar is present on mobile */
+  body:has(.cart-mobile-sticky-bar) .floating-contact-bar,
+  .cart-page-wrapper ~ * .floating-contact-bar,
+  body:has(.cart-mobile-sticky-bar) #varshaChatbotLauncher,
+  .cart-page-wrapper ~ * #varshaChatbotLauncher {
+    bottom: 84px !important;
   }
 
   .floating-btn {

@@ -68,16 +68,16 @@ if (!$order) {
             </div>
 
             <!-- Search Card -->
-            <div style="background: rgba(15, 23, 42, 0.95); border: 1.5px solid var(--border-cyan); border-radius: 14px; padding: 26px; box-shadow: var(--shadow-card); margin-bottom: 30px;">
-                <form method="GET" action="eway_bill.php" style="display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: flex-end;">
+            <div style="background: rgba(15, 23, 42, 0.95); border: 1.5px solid var(--border-cyan); border-radius: 14px; padding: 24px 20px; box-shadow: var(--shadow-card); margin-bottom: 25px;">
+                <form method="GET" action="eway_bill.php" class="eway-search-form" style="display: flex; flex-direction: column; gap: 12px;">
                     <div>
                         <label class="form-label" style="font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 6px; display: block;">
                             Enter Order Number, Invoice Number, or Mobile Number *
                         </label>
-                        <input type="text" name="search" required class="form-control" placeholder="e.g. SVEW-ORD-20261110-A108F or 9824913555" value="<?= e($searchQuery) ?>" style="height: 44px; font-size: 14px; background: #060911; color: #fff; border: 1.5px solid rgba(0, 229, 255, 0.4);">
+                        <input type="text" name="search" required class="form-control" placeholder="e.g. SVEW-ORD-20261110-A108F or 9824913555" value="<?= e($searchQuery) ?>" style="height: 44px; font-size: 14px; background: #060911; color: #fff; border: 1.5px solid rgba(0, 229, 255, 0.4); width: 100%; box-sizing: border-box;">
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-primary" style="height: 44px; padding: 0 24px; font-weight: 800; font-size: 14px; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; border-color: #00e5ff; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <button type="submit" class="btn btn-primary" style="height: 44px; padding: 0 24px; font-weight: 800; font-size: 14px; background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color: #060911; border-color: #00e5ff; display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%;">
                             <span>🔍 Find E-Way Bill</span>
                         </button>
                     </div>
@@ -85,7 +85,7 @@ if (!$order) {
             </div>
 
             <!-- Quick Links -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="responsive-two-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                 <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px;">
                     <div style="font-weight: 700; color: #fff; font-size: 13.5px; margin-bottom: 4px;">🚚 Live Order Tracking</div>
                     <div style="font-size: 12px; color: #94a3b8; margin-bottom: 10px;">Track consignment progress, wooden packing, and VRL transport LR status.</div>
@@ -117,92 +117,98 @@ require_once __DIR__ . '/includes/header.php';
 
 <!-- Printable E-Way Bill Container -->
 <div style="background: #f1f5f9; min-height: 100vh; padding: 25px 15px; color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    <div style="max-width: 880px; margin: 0 auto; background: #fff; border: 2px solid #0f172a; border-radius: 6px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+    <div class="eway-paper-container" style="max-width: 880px; margin: 0 auto; background: #fff; border: 2px solid #0f172a; border-radius: 6px; padding: 22px 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); box-sizing: border-box; overflow: hidden;">
         
         <!-- Action Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <span style="font-size: 24px;">🏛️</span>
                 <div>
-                    <strong style="font-size: 16px; color: #0f172a;">GOVERNMENT OF INDIA &bull; GOODS AND SERVICES TAX</strong>
+                    <strong style="font-size: 15px; color: #0f172a; display: block; line-height: 1.25;">GOVERNMENT OF INDIA &bull; GOODS AND SERVICES TAX</strong>
                     <div style="font-size: 11px; color: #475569;">E-WAY BILL SYSTEM &bull; FORM GST EWB-01 (See Rule 138)</div>
                 </div>
             </div>
-            <div style="display: flex; gap: 8px;">
-                <button type="button" onclick="window.print()" class="btn btn-primary" style="padding: 6px 14px; font-size: 12px; font-weight: 700; background: #0284c7; color: #fff; border: none; cursor: pointer; border-radius: 4px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" onclick="window.print()" class="btn btn-primary" style="padding: 7px 14px; font-size: 12px; font-weight: 700; background: #0284c7; color: #fff; border: none; cursor: pointer; border-radius: 4px;">
                     🖨️ Print E-Way Bill
                 </button>
-                <a href="https://ewaybillgst.gov.in/login.aspx" target="_blank" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border: 1.5px solid #d97706; color: #b45309; text-decoration: none; border-radius: 4px; background: #fffbeb;">
+                <a href="https://ewaybillgst.gov.in/login.aspx" target="_blank" class="btn btn-outline" style="padding: 7px 14px; font-size: 12px; font-weight: 700; border: 1.5px solid #d97706; color: #b45309; text-decoration: none; border-radius: 4px; background: #fffbeb;">
                     🏛️ Govt Portal Login ↗
                 </a>
             </div>
         </div>
 
         <!-- E-Way Bill Header Details -->
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px;">
-            <tr>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%; font-weight: 700;">E-Way Bill No:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%; font-weight: 800; color: #0284c7; font-size: 14px;"><?= $ewayBillNo ?></td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%; font-weight: 700;">Generated Date:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%;"><?= $ewayDate ?></td>
-            </tr>
-            <tr>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Generated By:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;"><?= COMPANY_GSTIN ?> (SHREE VARSHA)</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Valid Until:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700; color: #15803d;"><?= $validUntil ?></td>
-            </tr>
-        </table>
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 14px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px; min-width: 560px;">
+                <tr>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%; font-weight: 700;">E-Way Bill No:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%; font-weight: 800; color: #0284c7; font-size: 14px;"><?= $ewayBillNo ?></td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%; font-weight: 700;">Generated Date:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%;"><?= $ewayDate ?></td>
+                </tr>
+                <tr>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Generated By:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;"><?= COMPANY_GSTIN ?> (SHREE VARSHA)</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Valid Until:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700; color: #15803d;"><?= $validUntil ?></td>
+                </tr>
+            </table>
+        </div>
 
         <!-- PART-A: Transaction Details -->
         <div style="background: #0f172a; color: #fff; font-size: 12px; font-weight: 800; padding: 6px 10px; margin-bottom: 8px;">
             PART-A (Consignment &amp; Tax Invoice Details)
         </div>
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px;">
-            <tr>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700; width: 25%;">GSTIN of Supplier:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%;"><?= COMPANY_GSTIN ?></td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700; width: 25%;">GSTIN of Recipient:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%; font-weight: 700;"><?= !empty($order['customer_gst']) ? e($order['customer_gst']) : 'URP (Unregistered Customer)' ?></td>
-            </tr>
-            <tr>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Place of Dispatch:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1;">Bhavnagar, Gujarat (364003)</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Place of Delivery:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1;"><?= e($order['delivery_city'] ?? 'Gujarat') ?> (<?= e($order['delivery_pincode'] ?? '364001') ?>)</td>
-            </tr>
-            <tr>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Document No &amp; Date:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1;"><?= e($order['invoice_number'] ?? $order['order_number']) ?> &bull; <?= date('d/m/Y', strtotime($order['created_at'])) ?></td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Transaction Type:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">Regular Outward Supply</td>
-            </tr>
-            <tr>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Value of Goods:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 800; color: #15803d; font-size: 13px;">₹ <?= number_format(floatval($order['total_amount'] ?? 0), 2) ?></td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">HSN Code &amp; Item:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1;">8459 &bull; <?= e($order['product_name'] ?? 'Drill Machine') ?> (<?= e($order['model_number'] ?? 'SVEW') ?>)</td>
-            </tr>
-        </table>
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 14px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px; min-width: 560px;">
+                <tr>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700; width: 25%;">GSTIN of Supplier:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%;"><?= COMPANY_GSTIN ?></td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700; width: 25%;">GSTIN of Recipient:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%; font-weight: 700;"><?= !empty($order['customer_gst']) ? e($order['customer_gst']) : 'URP (Unregistered Customer)' ?></td>
+                </tr>
+                <tr>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Place of Dispatch:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1;">Bhavnagar, Gujarat (364003)</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Place of Delivery:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1;"><?= e($order['delivery_city'] ?? 'Gujarat') ?> (<?= e($order['delivery_pincode'] ?? '364001') ?>)</td>
+                </tr>
+                <tr>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Document No &amp; Date:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1;"><?= e($order['invoice_number'] ?? $order['order_number']) ?> &bull; <?= date('d/m/Y', strtotime($order['created_at'])) ?></td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Transaction Type:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700; color: #0284c7;">Regular Outward Supply</td>
+                </tr>
+                <tr>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Value of Goods:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 800; color: #15803d; font-size: 13px;">₹ <?= number_format(floatval($order['total_amount'] ?? 0), 2) ?></td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">HSN Code &amp; Item:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1;">8459 &bull; <?= e($order['product_name'] ?? 'Drill Machine') ?> (<?= e($order['model_number'] ?? 'SVEW') ?>)</td>
+                </tr>
+            </table>
+        </div>
 
         <!-- PART-B: Vehicle & Transport Details -->
         <div style="background: #0f172a; color: #fff; font-size: 12px; font-weight: 800; padding: 6px 10px; margin-bottom: 8px;">
             PART-B (Vehicle &amp; Transport Mode Details)
         </div>
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 12px;">
-            <tr>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700; width: 25%;">Mode of Transport:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%;">Road (Surface Heavy Freight)</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700; width: 25%;">Transporter Name &amp; ID:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%;">VRL Logistics Ltd. &bull; 29AABCV1234F1Z0</td>
-            </tr>
-            <tr>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Vehicle Number:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">GJ-04-AX-<?= rand(1000, 9999) ?></td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Transport Doc (LR) No:</td>
-                <td style="padding: 6px; border: 1px solid #cbd5e1;">VRL-BHV-<?= date('ymd') ?>-<?= str_pad(strval($order['id']), 4, '0', STR_PAD_LEFT) ?></td>
-            </tr>
-        </table>
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 14px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px; min-width: 560px;">
+                <tr>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700; width: 25%;">Mode of Transport:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%;">Road (Surface Heavy Freight)</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700; width: 25%;">Transporter Name &amp; ID:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; width: 25%;">VRL Logistics Ltd. &bull; 29AABCV1234F1Z0</td>
+                </tr>
+                <tr>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Vehicle Number:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">GJ-04-AX-<?= rand(1000, 9999) ?></td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1; font-weight: 700;">Transport Doc (LR) No:</td>
+                    <td style="padding: 6px; border: 1px solid #cbd5e1;">VRL-BHV-<?= date('ymd') ?>-<?= str_pad(strval($order['id']), 4, '0', STR_PAD_LEFT) ?></td>
+                </tr>
+            </table>
+        </div>
 
         <!-- QR Code & Integrity Seal -->
         <div style="border-top: 1.5px solid #0f172a; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">

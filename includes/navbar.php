@@ -346,7 +346,10 @@ body.mobile-menu-open #varshaChatbotWindow {
     box-sizing: border-box !important;
 }
 
-@media (min-width: 861px) and (max-width: 1600px) {
+/* ==========================================================================
+   DESKTOP VIEW (1140px and wider)
+   ========================================================================== */
+@media (min-width: 1140px) {
     .site-nav-container {
         width: 100% !important;
         max-width: 100% !important;
@@ -360,8 +363,8 @@ body.mobile-menu-open #varshaChatbotWindow {
         flex-shrink: 0 !important;
     }
     .brand-badge-wrap img {
-        height: 36px !important;
-        width: 36px !important;
+        height: 38px !important;
+        width: 38px !important;
     }
     .brand-title-main {
         font-size: 15px !important;
@@ -374,13 +377,13 @@ body.mobile-menu-open #varshaChatbotWindow {
     .nav-links-center {
         display: flex !important;
         align-items: center !important;
-        gap: 5px !important;
+        gap: 6px !important;
         flex-shrink: 1 !important;
     }
     .site-nav-link {
         font-size: 13.5px !important;
         font-weight: 700 !important;
-        padding: 5px 7px !important;
+        padding: 5px 8px !important;
         border-radius: 6px !important;
         white-space: nowrap !important;
     }
@@ -398,7 +401,7 @@ body.mobile-menu-open #varshaChatbotWindow {
         display: inline-flex !important;
     }
     .nav-search-desktop input {
-        width: 90px !important;
+        width: 85px !important;
         font-size: 11.5px !important;
         height: 34px !important;
         padding: 4px 8px 4px 24px !important;
@@ -422,8 +425,14 @@ body.mobile-menu-open #varshaChatbotWindow {
     .btn-site-lang-toggle .active-lang-desktop {
         font-size: 12px !important;
     }
+    .btn-top-book {
+        display: inline-flex !important;
+    }
     .btn-top-book .btn-text-extra {
         display: inline !important;
+    }
+    .btn-top-auth {
+        display: inline-flex !important;
     }
     .btn-nav-admin {
         display: inline-flex !important;
@@ -442,80 +451,15 @@ body.mobile-menu-open #varshaChatbotWindow {
     }
 }
 
-/* Specific adjustment for compact laptop screens (861px - 1240px) */
-@media (min-width: 861px) and (max-width: 1240px) {
-    .site-nav-container {
-        padding: 0 12px 0 10px !important;
-        gap: 4px !important;
-    }
-    .brand-title-main {
-        font-size: 14px !important;
-    }
-    .nav-links-center {
-        gap: 3px !important;
-    }
-    .site-nav-link {
-        font-size: 12.5px !important;
-        font-weight: 700 !important;
-        padding: 4px 5px !important;
-    }
-    .nav-search-desktop input {
-        width: 75px !important;
-        padding: 3px 6px 3px 20px !important;
-        font-size: 11px !important;
-    }
-    .btn-nav-action {
-        height: 33px !important;
-        padding: 0 7px !important;
-        font-size: 11.5px !important;
-        gap: 3px !important;
-    }
-    .btn-site-lang-toggle {
-        height: 33px !important;
-        padding: 0 6px !important;
-        font-size: 11.5px !important;
-    }
-    .btn-top-book .btn-text-extra {
-        display: none !important;
-    }
-    .btn-nav-admin {
-        display: inline-flex !important;
-        flex-shrink: 0 !important;
-        white-space: nowrap !important;
-        padding: 0 7px !important;
-        margin-right: 2px !important;
-    }
-}
-
-/* Tablet & Mobile Breakpoints: Switch to slide-drawer only below 861px */
-@media (max-width: 860px) {
-    .btn-nav-mobile-toggle {
-        display: inline-flex !important;
-    }
+/* ==========================================================================
+   TABLET & MOBILE VIEW (below 1140px)
+   Smooth Drawer Navigation - Zero Horizontal Overflow Guaranteed
+   ========================================================================== */
+@media (max-width: 1139px) {
     .nav-links-center {
         display: none !important;
     }
     .nav-search-desktop {
-        display: none !important;
-    }
-}
-
-@media (max-width: 768px) {
-    .site-navbar {
-        height: 58px;
-    }
-    .site-nav-container {
-        padding: 0 10px;
-        gap: 6px;
-    }
-    .brand-badge-wrap img {
-        height: 34px;
-        width: 34px;
-    }
-    .brand-title-main {
-        font-size: 13.5px !important;
-    }
-    .brand-subtitle-tag {
         display: none !important;
     }
     .btn-top-auth {
@@ -531,6 +475,56 @@ body.mobile-menu-open #varshaChatbotWindow {
     .btn-nav-cart .btn-text-full {
         display: none !important;
     }
+    .brand-subtitle-tag {
+        display: none !important;
+    }
+    .btn-nav-mobile-toggle {
+        display: inline-flex !important;
+        height: 36px !important;
+        width: 36px !important;
+        font-size: 19px !important;
+        flex-shrink: 0 !important;
+        border: 1.5px solid var(--accent-cyan) !important;
+        box-shadow: 0 0 10px rgba(0, 229, 255, 0.3) !important;
+    }
+    .nav-actions-right {
+        gap: 6px !important;
+        display: flex !important;
+        align-items: center !important;
+        flex-shrink: 0 !important;
+    }
+    .btn-site-lang-toggle {
+        height: 36px !important;
+        padding: 0 8px !important;
+    }
+    .btn-site-lang-toggle .active-lang-desktop {
+        display: none !important;
+    }
+    .btn-site-lang-toggle .active-lang-mobile {
+        display: inline !important;
+    }
+    .btn-nav-cart {
+        height: 36px !important;
+        padding: 0 8px !important;
+    }
+}
+
+/* Mobile Phones (max-width: 768px) */
+@media (max-width: 768px) {
+    .site-navbar {
+        height: 58px;
+    }
+    .site-nav-container {
+        padding: 0 10px;
+        gap: 6px;
+    }
+    .brand-badge-wrap img {
+        height: 34px;
+        width: 34px;
+    }
+    .brand-title-main {
+        font-size: 13.5px !important;
+    }
     .btn-nav-cart {
         height: 34px !important;
         padding: 0 7px !important;
@@ -542,24 +536,20 @@ body.mobile-menu-open #varshaChatbotWindow {
         padding: 0 7px;
         font-size: 11.5px;
     }
-    .nav-actions-right {
-        gap: 6px !important;
-        flex-shrink: 0 !important;
+    .btn-site-lang-toggle {
+        height: 34px !important;
+        padding: 0 6px !important;
     }
     .btn-nav-mobile-toggle {
-        display: inline-flex !important;
         height: 34px !important;
         width: 34px !important;
         font-size: 18px !important;
-        flex-shrink: 0 !important;
-        border: 1.5px solid var(--accent-cyan) !important;
-        box-shadow: 0 0 10px rgba(0, 229, 255, 0.3) !important;
     }
 }
 
 @media (max-width: 420px) {
     .brand-title-main {
-        font-size: 13px !important;
+        font-size: 12.5px !important;
     }
     .site-nav-container {
         padding: 0 8px;

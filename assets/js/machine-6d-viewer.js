@@ -273,6 +273,7 @@ class Machine6DViewer {
 
         dom.addEventListener('touchmove', (e) => {
             if (e.touches.length === 1 && this.isDragging) {
+                if (e.cancelable) e.preventDefault();
                 const deltaX = e.touches[0].clientX - this.previousMousePosition.x;
                 const deltaY = e.touches[0].clientY - this.previousMousePosition.y;
                 this.spherical.theta -= deltaX * 0.009;
@@ -281,6 +282,7 @@ class Machine6DViewer {
                 this.updateCameraPosition();
                 this.previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
             } else if (e.touches.length === 2) {
+                if (e.cancelable) e.preventDefault();
                 const currentDistance = Math.hypot(
                     e.touches[0].clientX - e.touches[1].clientX,
                     e.touches[0].clientY - e.touches[1].clientY
@@ -291,7 +293,7 @@ class Machine6DViewer {
                 initialDistance = currentDistance;
                 this.updateCameraPosition();
             }
-        });
+        }, { passive: false });
 
         dom.addEventListener('touchend', () => {
             this.isDragging = false;

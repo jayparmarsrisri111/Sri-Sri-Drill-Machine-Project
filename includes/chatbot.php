@@ -847,6 +847,239 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         }
 
+        // 0.98. Live Order Tracking & Dispatch Status
+        const isTrackingQuery = q.includes('track') || q.includes('tracking') || q.includes('status') || 
+                                q.includes('ટ્રેક') || q.includes('ટ્રેકિંગ') || q.includes('ઓર્ડર ક્યાં') || 
+                                q.includes('order status') || q.includes('where is my order') || 
+                                q.includes('live track') || q.includes('મારો ઓર્ડર');
+
+        if (isTrackingQuery) {
+            if (isGujarati) {
+                return {
+                    text: `<p><strong>🚚 લાઇવ ઓર્ડર ટ્રેકિંગ અને ડિસ્પેચ સ્ટેટસ (Live Order Tracking):</strong></p>
+                           <p>તમે તમારા મશીનનો ઓર્ડર ૨૪/૭ લાઈવ ટ્રેક કરી શકો છો:<br>
+                           • <strong>કેવી રીતે ટ્રેક કરવું:</strong> અમારા ટ્રેકિંગ પેજ પર તમારો <strong>મોબાઇલ નંબર</strong> અથવા <strong>ઓર્ડર નંબર</strong> (દા.ત. SVEW-ORD-...) દાખલ કરો.<br>
+                           • <strong>૭ સ્ટેજ ટ્રેકિંગ:</strong> ઓર્ડર કન્ફર્મ -> વુડન ક્રેટ પેકિંગ -> VRL/TCI ફ્રેઇટ ડિસ્પેચ -> રસ્તા પર પરિવહન -> તમારા વર્કશોપ પર ડિલિવરી.<br>
+                           • અધિકૃત GST ઇ-વે બિલ અને ટ્રાન્સપોર્ટ LR કોપી તરત જ દેખાશે.</p>`,
+                    rich: `<div style="display:flex; gap:6px; margin-top:8px;">
+                                <a href="<?= BASE_URL ?>/track-order.php" class="btn btn-primary" style="font-size:11px; flex:1; background:linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color:#060911; font-weight:800; text-align:center;">🚚 લાઇવ ઓર્ડર ટ્રેક કરો</a>
+                                <a href="<?= BASE_URL ?>/customer-dashboard.php" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center; border-color:#00e5ff; color:#00e5ff;">📊 કસ્ટમર ડેશબોર્ડ</a>
+                           </div>`
+                };
+            }
+            return {
+                text: `<p><strong>🚚 Real-Time Live Order &amp; Consignment Tracking:</strong></p>
+                       <p>You can track your Varsha Brand drill machine consignment 24/7 across all 7 factory logistics stages:<br>
+                       • <strong>How to Track:</strong> Simply enter your <strong>10-digit registered mobile number</strong> or <strong>Order ID</strong> (e.g. SVEW-ORD-...) on our tracking portal.<br>
+                       • <strong>7 Real-Time Milestones:</strong> Order Confirmed → VCI Protective Wrap &amp; Wooden Crating → Transport Loading → Highway In-Transit → Doorstep Unloading &amp; Commissioning.<br>
+                       • View transporter name, vehicle number, transport LR docket, and official GST E-Way Bill.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:8px;">
+                            <a href="<?= BASE_URL ?>/track-order.php" class="btn btn-primary" style="font-size:11px; flex:1; background:linear-gradient(135deg, #0284c7 0%, #00e5ff 100%); color:#060911; font-weight:800; text-align:center;">🚚 Live Order Tracking</a>
+                            <a href="<?= BASE_URL ?>/customer-dashboard.php" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center; border-color:#00e5ff; color:#00e5ff;">📊 View All Orders</a>
+                       </div>`
+            };
+        }
+
+        // 0.99. How to Book Online & Purchasing Guide
+        const isBookingQuery = q.includes('how to book') || q.includes('book online') || q.includes('how to order') || 
+                               q.includes('booking') || q.includes('બુકિંગ') || q.includes('ઓર્ડર કરવો') || 
+                               q.includes('કેવી રીતે બુક') || q.includes('ખરીદવું') || q.includes('order kaise') || 
+                               q.includes('buy drill') || q.includes('buy machine') || (q.includes('book') && !q.includes('facebook'));
+
+        if (isBookingQuery) {
+            if (isGujarati) {
+                return {
+                    text: `<p><strong>💳 વર્ષા બ્રાન્ડ ડ્રિલ મશીન ઓનલાઇન બુકિંગ ગાઇડ (3 Simple Steps):</strong></p>
+                           <p>૧. <strong>મોડલ પસંદ કરો:</strong> ૨૦મીમી થી ૬૫મીમી રેડિયલ અથવા પિલર ડ્રિલ મશીન પસંદ કરો.<br>
+                           ૨. <strong>ટોકન એડવાન્સ ભરો:</strong> માત્ર <strong>₹ 25,000</strong> ટોકન એડવાન્સ (અથવા ૧૦૦% પેમેન્ટ) UPI, કાર્ડ્સ કે નેટબેંકિંગથી ઓનલાઇન ભરીને પ્રોડક્શન સ્લોટ લોક કરો.<br>
+                           ૩. <strong>ઇન્સ્ટન્ટ જીએસટી બિલ:</strong> પેમેન્ટ થતાં જ સત્તાવાર GST Tax Invoice નંબર જનરેટ થશે અને મશીનનું હેવી વુડન બોક્સ પેકિંગ શરૂ થઈ જશે.<br>
+                           • બાકી રકમ ફેક્ટરીમાંથી મશીન ડિસ્પેચ થાય ત્યારે ટ્રાન્સપોર્ટ LR કોપી સામે ચૂકવવાની રહેશે.</p>`,
+                    rich: `<div style="display:flex; gap:6px; margin-top:8px;">
+                                <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981; font-weight:800; text-align:center;">💳 ₹25,000 ટોકનથી બુક કરો</a>
+                                <a href="<?= BASE_URL ?>/machines.php" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">📖 મશીનો જુઓ</a>
+                           </div>`
+                };
+            }
+            return {
+                text: `<p><strong>💳 Step-by-Step Online Machine Booking Guide:</strong></p>
+                       <p>Booking a precision drill machine direct from our Bhavnagar factory is quick &amp; 100% secure:<br>
+                       • <strong>Step 1:</strong> Select your preferred model (20mm Bench, 25/32/40mm Pillar, or 40/50/65mm Radial).<br>
+                       • <strong>Step 2:</strong> Pay the standard <strong>₹25,000 Advance Token</strong> via instant UPI, Debit/Credit Card, NetBanking, or RTGS to reserve your factory build queue.<br>
+                       • <strong>Step 3:</strong> Receive your instant official GST Tax Invoice and unique Order Tracking ID.<br>
+                       • <strong>Balance Payment:</strong> The remaining balance is payable upon pre-dispatch inspection against the Transport Lorry Receipt (LR) copy.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:8px;">
+                            <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981; font-weight:800; text-align:center;">💳 Book Machine Online (₹25k)</a>
+                            <a href="<?= BASE_URL ?>/machines.php" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">📖 View All Models</a>
+                       </div>`
+            };
+        }
+
+        // 0.991. Advance Token (₹25,000) Policy & Clarification
+        const isAdvanceTokenQuery = q.includes('token') || q.includes('advance') || q.includes('ટોકન') || 
+                                    q.includes('૨૫૦૦૦') || q.includes('25000') || q.includes('advance payment') || 
+                                    q.includes('kitna advance') || q.includes('advans');
+
+        if (isAdvanceTokenQuery) {
+            if (isGujarati) {
+                return {
+                    text: `<p><strong>🪙 ₹25,000 ટોકન એડવાન્સ સિસ્ટમ (Token Advance Explained):</strong></p>
+                           <p>• <strong>શા માટે ₹25,000 ટોકન?</strong> મશીનની પૂરી કિંમત (દા.ત. ₹૨.૮૫ લાખ) મોટી હોવાથી UPI અને બેંકિંગ લિમિટ નડતી હોય છે. આથી અમે માત્ર <strong>₹ 25,000</strong> ના ન્યૂનતમ ટોકનથી ઓર્ડર કન્ફર્મ કરીએ છીએ.<br>
+                           • <strong>લાભ:</strong> ટોકન ભરતા જ ભાવ લોક થઈ જાય છે, મશીન રિઝર્વ થાય છે અને સત્તાવાર GST Tax Invoice જનરેટ થાય છે.<br>
+                           • <strong>બાકી રકમ:</strong> બાકીનું પેમેન્ટ મશીન ટેસ્ટ-રન થઈને ટ્રાન્સપોર્ટમાં મુકાય ત્યારે LR બિલ્ટી સામે ચૂકવવાનું રહેશે.</p>`,
+                    rich: `<div style="display:flex; gap:6px; margin-top:8px;">
+                                <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981; font-weight:800; text-align:center;">🪙 ₹25,000 ટોકનથી બુક કરો</a>
+                                <a href="<?= BASE_URL ?>/contact.php" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">🏛️ બેંક RTGS વિગતો</a>
+                           </div>`
+                };
+            }
+            return {
+                text: `<p><strong>🪙 What is the ₹25,000 Token Advance?</strong></p>
+                       <p>• <strong>Production Queue Lock:</strong> Instead of paying ₹2 to ₹5 Lakhs upfront, you only pay <strong>₹25,000</strong> to start factory scheduling, pre-dispatch testing, and wooden crating.<br>
+                       • <strong>Overcomes UPI Limits:</strong> Eliminates "Transaction Limit Exceeded" errors common on Google Pay / PhonePe for high-value machinery.<br>
+                       • <strong>Balance Payment:</strong> Balance amount is payable when machine is tested and loaded into transport against official LR (Lorry Receipt).<br>
+                       • Spare parts require 100% full payment as they dispatch the very same day.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:8px;">
+                            <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981; font-weight:800; text-align:center;">🪙 Book with ₹25,000 Token</a>
+                            <a href="<?= BASE_URL ?>/faqs.php" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">❓ Read FAQs</a>
+                       </div>`
+            };
+        }
+
+        // 0.992. Machine Selection & Recommendation Guide (Which machine should I buy?)
+        const isRecommendQuery = q.includes('recommend') || q.includes('which machine') || q.includes('buying guide') || 
+                                 q.includes('કયું મશીન') || q.includes('પસંદગી') || q.includes('સિલેક્શન') || 
+                                 q.includes('સૌથી સારું') || q.includes('guide') || q.includes('કાણું પાડવા') || 
+                                 q.includes('કપાસિયા') || q.includes('ફેબ્રિકેશન') || q.includes('લેથ') || 
+                                 q.includes('kon sa machine') || q.includes('best machine');
+
+        if (isRecommendQuery) {
+            if (isGujarati) {
+                return {
+                    text: `<p><strong>🎯 તમારી જરૂરિયાત મુજબ બેસ્ટ ડ્રિલ મશીન પસંદગી ગાઇડ:</strong></p>
+                           <p>• <strong>૧ થી ૨૦ મીમી કાણાં / લાઇટ વર્ક:</strong> <strong>SVEW-BD-20</strong> (૨૦મીમી બેન્ચ ડ્રિલ - ₹48,000)<br>
+                           • <strong>૧ થી ૨૫ મીમી સામાન્ય ફેબ્રિકેશન &amp; ગેરેજ:</strong> <strong>SVEW-PD-25</strong> (૨૫મીમી પિલર ડ્રિલ - ₹85,000)<br>
+                           • <strong>૧ થી ૩૨ મીમી ગિયર ડ્રાઇવ હેવી વર્ક:</strong> <strong>SVEW-PD-32</strong> (૩૨મીમી ગિયર્ડ પિલર - ₹1,35,000)<br>
+                           • <strong>ઇન્ટરનલ થ્રેડિંગ (M6 થી M24 આંટા પાડવા):</strong> <strong>SVEW-TP-25</strong> (ટેપિંગ મશીન - ₹1,25,000)<br>
+                           • <strong>મોટા જોબ / ફ્લેંજ ફેબ્રિકેશન (૪૦મીમી સુધી):</strong> <strong>SVEW-RD-40</strong> (૪૦મીમી ઓલ-ગિયર્ડ રેડિયલ - ₹2,85,000)<br>
+                           • <strong>હેવી ઇન્ડસ્ટ્રીયલ સ્ટ્રક્ચરલ (૫૦મીમી):</strong> <strong>SVEW-RD-50</strong> (૫૦મીમી હેવી રેડિયલ - ₹3,95,000)<br>
+                           • <strong>અલ્ટ્રા હેવી / શિપયાર્ડ (૬૫મીમી):</strong> <strong>SVEW-RD-65</strong> (૬૫મીમી રેડિયલ - ₹5,75,000)</p>`,
+                    rich: `<div style="display:flex; gap:6px; margin-top:8px;">
+                                <a href="<?= BASE_URL ?>/machines.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#0284c7; text-align:center;">📖 તમામ મોડલ સરખાવો</a>
+                                <a href="<?= BASE_URL ?>/simulator-6d.php" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">⚡ AI પેરામીટર કેલ્ક્યુલેટર</a>
+                           </div>`
+                };
+            }
+            return {
+                text: `<p><strong>🎯 Engineering Recommendation: Choosing the Right Drill Machine:</strong></p>
+                       <p>• <strong>Light Fabrication &amp; Tool Rooms (Up to 20mm):</strong> <strong>SVEW-BD-20</strong> (20mm High Speed Bench - ₹48,000)<br>
+                       • <strong>Automotive Workshops &amp; General Fabrication (Up to 25mm):</strong> <strong>SVEW-PD-25</strong> (25mm Pillar - ₹85,000)<br>
+                       • <strong>Heavy Production &amp; Agricultural Implements (Up to 32mm):</strong> <strong>SVEW-PD-32</strong> (32mm Geared Column Pillar - ₹1,35,000)<br>
+                       • <strong>Thread Tapping (M6 to M24 Internal Threads):</strong> <strong>SVEW-TP-25</strong> (Auto-Reversing Tapping - ₹1,25,000)<br>
+                       • <strong>Flange Drilling &amp; Structural Jobs (Up to 40mm):</strong> <strong>SVEW-RD-40</strong> (40mm All-Geared Radial - ₹2,85,000)<br>
+                       • <strong>Heavy Plate &amp; Pressure Vessels (Up to 50mm):</strong> <strong>SVEW-RD-50</strong> (50mm Heavy Radial - ₹3,95,000)<br>
+                       • <strong>Shipyards &amp; Ultra-Heavy Machinery (Up to 65mm):</strong> <strong>SVEW-RD-65</strong> (65mm Extra Heavy - ₹5,75,000)</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:8px;">
+                            <a href="<?= BASE_URL ?>/machines.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#0284c7; text-align:center;">📖 Browse All Machines</a>
+                            <a href="<?= BASE_URL ?>/simulator-6d.php" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">⚡ 360° AI Simulator Lab</a>
+                       </div>`
+            };
+        }
+
+        // 0.993. Discounts, Offers & Factory-Direct Pricing
+        const isDiscountQuery = q.includes('discount') || q.includes('offer') || q.includes('ઓફર') || 
+                                q.includes('ડિસ્કાઉન્ટ') || q.includes('છૂટ') || q.includes('best rate') || 
+                                q.includes('best price') || q.includes('sastu') || q.includes('kam bhav') || 
+                                q.includes('deal') || q.includes('bargain');
+
+        if (isDiscountQuery) {
+            if (isGujarati) {
+                return {
+                    text: `<p><strong>💰 ફેક્ટરી ડાયરેક્ટ ભાવ અને ડિસ્કાઉન્ટ પોલિસી:</strong></p>
+                           <p>• <strong>ઝીરો વચેટિયા કમિશન:</strong> અમે ભાવનગરમાં સીધા ઉત્પાદક છીએ, આથી કોઈ ડીલર કે ડિસ્ટ્રીબ્યુટર વગર સીધો ફેક્ટરી ભાવ મળે છે (બજાર કરતાં ૨૦-૨૫% ની બચત).<br>
+                           • <strong>કોમ્બો બંડલ ઓફર:</strong> મશીન સાથે સ્પેર પાર્ટ્સ (સ્પિન્ડલ, બોક્સ ટેબલ, કૂલન્ટ પંપ) ખરીદવા પર વધારાનું <strong>5% સ્પેશિયલ કોમ્બો ડિસ્કાઉન્ટ</strong> મળે છે.<br>
+                           • <strong>ફ્રી ઇન્ડસ્ટ્રીયલ પેકિંગ:</strong> દરેક મશીન પર ભારે વુડન બોક્સ ક્રેટિંગ અને રસ્ટ-પ્રુફ ઓઇલ કોટિંગ સંપૂર્ણ ફ્રી મળે છે.</p>`,
+                    rich: `<div style="display:flex; gap:6px; margin-top:8px;">
+                                <a href="<?= BASE_URL ?>/machines.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981; text-align:center;">💰 તમામ મોડલના ભાવ જુઓ</a>
+                                <a href="<?= BASE_URL ?>/catalog.php" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">📖 કેટલોગ ડાઉનલોડ કરો</a>
+                           </div>`
+                };
+            }
+            return {
+                text: `<p><strong>💰 Direct Factory Pricing &amp; Value Guarantee:</strong></p>
+                       <p>• <strong>0% Middleman Margin:</strong> You buy directly from Shree Varsha Engineering Works factory in Bhavnagar, saving 20-25% over third-party dealer markups.<br>
+                       • <strong>Combo Bundle Savings:</strong> Save <strong>5% extra</strong> on essential tooling &amp; spare accessories (Box Tables, Coolant Pumps, Keyless Chucks) when bundled with any drill machine.<br>
+                       • <strong>Free Reinforced Packaging:</strong> Heavy fumigated wooden box crating and VCI moisture-proof wrap included free of charge with all orders.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:8px;">
+                            <a href="<?= BASE_URL ?>/machines.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981; text-align:center;">💰 View Machine Prices</a>
+                            <a href="<?= BASE_URL ?>/catalog.php" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">📖 2026 Price Catalog</a>
+                       </div>`
+            };
+        }
+
+        // 0.994. Electric Motor, Horsepower & Power Supply
+        const isMotorQuery = q.includes('motor') || q.includes('hp') || q.includes('મોટર') || 
+                             q.includes('હોર્સપાવર') || q.includes('electric') || q.includes('voltage') || 
+                             q.includes('phase') || q.includes('power') || q.includes('વીજળી');
+
+        if (isMotorQuery) {
+            return {
+                text: `<p><strong>⚡ ઇલેક્ટ્રિક મોટર અને પાવર સ્પેસિફિકેશન (Electric Motors &amp; Power):</strong></p>
+                       <p>અમારા તમામ મશીનોમાં ૧૦૦% પ્યોર ઇલેક્ટ્રોલિટીક કોપર વાઇન્ડિંગ વાળી હેવી ડ્યુટી 415V, 3-Phase ઇન્ડક્શન મોટર્સ વપરાય છે:<br>
+                       • <strong>SVEW-BD-20 (20mm Bench):</strong> 0.75 HP (0.55 kW)<br>
+                       • <strong>SVEW-PD-25 (25mm Pillar):</strong> 1.0 HP (0.75 kW)<br>
+                       • <strong>SVEW-PD-32 (32mm Geared Pillar):</strong> 1.5 HP (1.1 kW)<br>
+                       • <strong>SVEW-PD-40 (40mm Heavy Pillar):</strong> 2.0 HP (1.5 kW)<br>
+                       • <strong>SVEW-TP-25 (Tapping Machine):</strong> 1.5 HP Auto-Reversing Special Motor<br>
+                       • <strong>SVEW-RD-40 (40mm Radial):</strong> 2.0 HP ડ્રિલ મોટર + 1.0 HP આર્મ એલિવેશન મોટર<br>
+                       • <strong>SVEW-RD-50 (50mm Radial):</strong> 3.0 HP ડ્રિલ મોટર + 1.5 HP આર્મ એલિવેશન મોટર<br>
+                       • <strong>SVEW-RD-65 (65mm Radial):</strong> 5.0 HP હેવી ડ્રાઇવ મોટર + 2.0 HP આર્મ એલિવેશન મોટર</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/catalog.php" class="btn btn-outline" style="font-size:11px; display:block; text-align:center;">📖 ટેકનિકલ ડેટાશીટ જુઓ</a></div>`
+            };
+        }
+
+        // 0.995. Spindle Speeds, RPM, Feed Rate & Transmission
+        const isSpeedRpmQuery = q.includes('rpm') || q.includes('speed') || q.includes('feed') || 
+                                q.includes('ગતિ') || q.includes('સ્પીડ') || q.includes('gearbox') || 
+                                q.includes('ગિયર') || q.includes('ચક્કર');
+
+        if (isSpeedRpmQuery) {
+            return {
+                text: `<p><strong>⚙️ સ્પિન્ડલ સ્પીડ રેન્જ અને ઓટોમેટિક ફીડ (Spindle Speeds &amp; RPM):</strong></p>
+                       <p>• <strong>રેડિયલ ડ્રિલ્સ (RD-40 / RD-50 / RD-65):</strong> ૮ થી ૧૬ ઓલ-ગિયર્ડ સ્પીડ સ્ટેપ્સ (૨૫ થી ૧૮૦૦ RPM) જે ઓઇલ બાથ ગિયરબોક્સમાં ચાલે છે.<br>
+                       • <strong>ઓટો ફીડ મેકેનિઝમ:</strong> મશીનમાં હેવી ડ્યુટી મિકેનિકલ ઓટોમેટિક સ્પીન્ડલ ફીડ સિસ્ટમ (૦.૦૫ થી ૦.૩૫ mm/rev) છે, જેથી ડીપ હોલ ડ્રિલિંગ આપોઆપ સરળતાથી થાય છે.<br>
+                       • <strong>સ્પિન્ડલ ટેપર:</strong> Morse Taper MT-3 (25mm/32mm), MT-4 (40mm), અને MT-5 (50mm/65mm) જેથી મોટા ડ્રિલ બિટ સીધા ફિટ થાય છે.<br>
+                       • ચોક્કસ સ્પીડ ગણતરી માટે અમારું 12D AI ટૂલ વાપરો.</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/simulator-6d.php" class="btn btn-primary" style="font-size:11px; display:block; text-align:center; background:#0284c7;">⚡ લાઈવ RPM &amp; ફીડ કેલ્ક્યુલેટ કરો</a></div>`
+            };
+        }
+
+        // 0.996. Lubrication, Gear Oil & Maintenance Guidelines
+        const isOilQuery = q.includes('oil') || q.includes('lubricat') || q.includes('ઓઇલ') || 
+                           q.includes('તેલ') || q.includes('મેન્ટેનન્સ') || q.includes('maintenance') || 
+                           q.includes('grease');
+
+        if (isOilQuery) {
+            return {
+                text: `<p><strong>🛢️ ગિયર ઓઇલ અને મેન્ટેનન્સ માર્ગદર્શિકા (Lubrication Guide):</strong></p>
+                       <p>• <strong>ગિયરબોક્સ ઓઇલ:</strong> ઓલ-ગિયર્ડ હેડસ્ટોક માટે <strong>ISO VG 68 અથવા 90 ગ્રેડ ઇન્ડસ્ટ્રીયલ ગિયર ઓઇલ</strong> વાપરવું.<br>
+                       • <strong>ઓઇલ બદલવાની અવધિ:</strong> શરૂઆતમાં પ્રથમ 500 કલાક રન પછી ઓઇલ બદલવું, ત્યારબાદ દર 12 મહિને ઓઇલ બદલવું.<br>
+                       • <strong>ગ્રીસિંગ:</strong> એલિવેટિંગ સ્ક્રૂ, કોલમ સ્લીવ અને આર્મ રેક પર દર અઠવાડિયે ઉચ્ચ-ગુણવત્તાવાળું લિથિયમ બેઝ ગ્રીસ લગાવવું.<br>
+                       • ઓઇલ લેવલ તપાસવા માટે હેડસ્ટોક પર પારદર્શક ઓઇલ ગેજ ગ્લાસ આપેલો છે.</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/catalog.php" class="btn btn-outline" style="font-size:11px; display:block; text-align:center;">📖 મેન્ટેનન્સ મેન્યુઅલ PDF</a></div>`
+            };
+        }
+
+        // 0.997. Courtesy & Thank You
+        if (/\b(thank|thanks|dhanyawad|shukriya|aabhar)\b/i.test(q) || q.includes('આભાર') || q.includes('ધન્યવાદ') || q.includes('થેન્ક્સ') || q.includes('shukriya')) {
+            return {
+                text: `<p><strong>🙏 આપનો ખૂબ ખૂબ આભાર! (You are most welcome!)</strong></p>
+                       <p>શ્રી વર્ષા એન્જિનિયરિંગ વર્ક્સ સાથે જોડાવા બદલ આનંદ થયો. જો આપને મશીન સિલેક્શન, ફેક્ટરી વિઝિટ કે વિશેષ ઓર્ડર બાબતે કોઈ પણ પ્રશ્ન હોય, તો અમારા પ્રોડક્શન એન્જિનિયરનો સીધો સંપર્ક કરી શકો છો:</p>
+                       <p>📞 <strong>+91 98249 13555</strong> (જીતેન્દ્રભાઈ પરમાર - CEO)<br>
+                       📞 <strong>+91 97146 11331</strong> (જય પરમાર - Co-CEO)</p>`,
+                rich: `<div style="margin-top:6px;"><a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; display:block; text-align:center; background:#10b981;">💳 ઓનલાઇન બુકિંગ પોર્ટલ</a></div>`
+            };
+        }
+
         // 1. Owners, Leadership & Company Founders (Exact word matching to prevent false triggers)
         const isOwnerQuery = /\b(owner|founder|director|maalik|ceo)\b/i.test(q) || 
                              q.includes('માલિક') || q.includes('ડાયરેક્ટર') || q.includes('કોણ છે માલિક') || 
@@ -1028,17 +1261,97 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         }
 
-        // Pillar & Bench Drills
-        if (q.includes('pillar') || q.includes('bench') || q.includes('પિલર') || q.includes('બેન્ચ') || q.includes('25mm') || q.includes('32mm') || q.includes('20mm')) {
+        // 20mm Bench Drill
+        if (q.includes('bd-20') || q.includes('bd 20') || q.includes('bench') || q.includes('બેન્ચ') || (q.includes('20mm') && !q.includes('radial'))) {
             return {
-                text: `<p><strong>Varsha Brand Precision Pillar &amp; Bench Drill Models:</strong></p>
-                       <p>• <strong>SVEW-BD-20 (20mm Bench Drill):</strong> ₹ 48,000<br>
-                          • <strong>SVEW-PD-25 (25mm Pillar Drill):</strong> ₹ 85,000<br>
+                text: `<p><strong>SVEW-BD-20 Precision Bench Drill Machine (20mm):</strong></p>
+                       <p>• Drilling Capacity: 20mm Steel / 25mm Cast Iron<br>
+                          • Spindle Speeds: 4 Speeds (500 to 2800 RPM) • MT-2 Taper<br>
+                          • Motor: 0.75 HP (0.55 kW) 415V / 230V High Torque Induction Motor<br>
+                          • Factory Ex-Price: <strong>₹ 48,000</strong> (+18% GST)<br>
+                          • Precision ground column with smooth depth-stop dial for repetitive tool room batch drilling.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/checkout.php?product_id=7" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981; font-weight:800; text-align:center;">💳 Book SVEW-BD-20</a>
+                            <a href="<?= BASE_URL ?>/machine-detail.php?id=7" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">Specs &amp; Photos</a>
+                       </div>`
+            };
+        }
+
+        // 25mm Pillar Drill
+        if (q.includes('pd-25') || q.includes('pd 25') || (q.includes('25mm') && !q.includes('tap') && !q.includes('ટેપ'))) {
+            return {
+                text: `<p><strong>SVEW-PD-25 Heavy Duty Pillar Drill Machine (25mm):</strong></p>
+                       <p>• Drilling Capacity: 25mm Steel / 32mm Cast Iron<br>
+                          • Spindle Speeds: 8 Speeds (85 to 2400 RPM) • MT-3 Taper<br>
+                          • Column Diameter: 92mm solid ground pipe • Weight: Approx 280 kg<br>
+                          • Motor: 1.0 HP (0.75 kW) 1440 RPM continuous duty<br>
+                          • Factory Ex-Price: <strong>₹ 85,000</strong> (+18% GST)<br>
+                          • 360° swiveling &amp; tilting heavy worktable with rack-pinion elevation.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/checkout.php?product_id=4" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981; font-weight:800; text-align:center;">💳 Book SVEW-PD-25</a>
+                            <a href="<?= BASE_URL ?>/machine-detail.php?id=4" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">Full Specs</a>
+                       </div>`
+            };
+        }
+
+        // 32mm Geared Column Pillar Drill
+        if (q.includes('pd-32') || q.includes('pd 32') || q.includes('32mm')) {
+            return {
+                text: `<p><strong>SVEW-PD-32 Geared Column Pillar Drill Machine (32mm):</strong></p>
+                       <p>• Drilling Capacity: 32mm Steel / 38mm Cast Iron<br>
+                          • Spindle Speeds: 8 Speeds (70 to 2100 RPM) • MT-3 Spindle Nose<br>
+                          • Column Diameter: 115mm • Weight: Approx 460 kg mass<br>
+                          • Motor: 1.5 HP (1.1 kW) Copper Wound Motor<br>
+                          • Factory Ex-Price: <strong>₹ 1,35,000</strong> (+18% GST)<br>
+                          • Oil-bath gear drive with automatic spindle feeds for fabrication shops.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/checkout.php?product_id=5" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981; font-weight:800; text-align:center;">💳 Book SVEW-PD-32</a>
+                            <a href="<?= BASE_URL ?>/machine-detail.php?id=5" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">Full Specs</a>
+                       </div>`
+            };
+        }
+
+        // 40mm Heavy Duty Pillar Drill
+        if (q.includes('pd-40') || q.includes('pd 40') || (q.includes('40mm') && q.includes('pillar'))) {
+            return {
+                text: `<p><strong>SVEW-PD-40 Extra Heavy Upright Pillar Drill (40mm):</strong></p>
+                       <p>• Drilling Capacity: 40mm Steel / 45mm Cast Iron • MT-4 Spindle<br>
+                          • Spindle Speeds: 8 Speeds (60 to 1800 RPM) • Column: 140mm<br>
+                          • Motor: 2.0 HP (1.5 kW) Heavy Duty Motor • Weight: Approx 650 kg<br>
+                          • Factory Ex-Price: <strong>₹ 1,95,000</strong> (+18% GST)</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/checkout.php?product_id=6" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981; font-weight:800; text-align:center;">💳 Book SVEW-PD-40</a>
+                            <a href="<?= BASE_URL ?>/machine-detail.php?id=6" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">Full Specs</a>
+                       </div>`
+            };
+        }
+
+        // 25mm Auto-Reversing Drilling & Tapping Machine
+        if (q.includes('tp-25') || q.includes('tp 25') || q.includes('tapping') || q.includes('ટેપિંગ') || q.includes('ટાંકા') || q.includes('આંટા')) {
+            return {
+                text: `<p><strong>SVEW-TP-25 Auto-Reversing Drilling &amp; Tapping Machine (25mm):</strong></p>
+                       <p>• Drilling Capacity: 25mm • Tapping Capacity: M6 to M24 threads<br>
+                          • Auto-Reversing Spindle Clutch for instantaneous tap withdrawal<br>
+                          • Motor: 1.5 HP dual-direction reversing motor<br>
+                          • Factory Ex-Price: <strong>₹ 1,25,000</strong> (+18% GST)<br>
+                          • Ideal for valve bodies, flange threading, and high-volume automotive tapping.</p>`,
+                rich: `<div style="display:flex; gap:6px; margin-top:6px;">
+                            <a href="<?= BASE_URL ?>/checkout.php?product_id=8" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981; font-weight:800; text-align:center;">💳 Book SVEW-TP-25</a>
+                            <a href="<?= BASE_URL ?>/machine-detail.php?id=8" class="btn btn-outline" style="font-size:11px; flex:1; text-align:center;">Full Specs</a>
+                       </div>`
+            };
+        }
+
+        // General Pillar Drills Overview
+        if (q.includes('pillar') || q.includes('પિલર')) {
+            return {
+                text: `<p><strong>Varsha Brand Precision Pillar Drill Lineup:</strong></p>
+                       <p>• <strong>SVEW-PD-25 (25mm Pillar Drill):</strong> ₹ 85,000<br>
                           • <strong>SVEW-PD-32 (32mm Geared Column Pillar):</strong> ₹ 1,35,000<br>
                           • <strong>SVEW-PD-40 (40mm Extra Heavy Pillar):</strong> ₹ 1,95,000<br>
-                          • <strong>SVEW-TP-25 (Drilling &amp; Tapping Machine):</strong> ₹ 1,25,000</p>`,
+                          • <strong>SVEW-TP-25 (Auto-Reversing Tapping):</strong> ₹ 1,25,000</p>`,
                 rich: `<div style="display:flex; gap:6px; margin-top:6px;">
-                            <a href="<?= BASE_URL ?>/machines.php" class="btn btn-outline" style="font-size:11px; flex:1;">View All Models</a>
+                            <a href="<?= BASE_URL ?>/machines.php?category=pillar-drills" class="btn btn-outline" style="font-size:11px; flex:1;">View All Pillar Models</a>
                             <a href="<?= BASE_URL ?>/checkout.php" class="btn btn-primary" style="font-size:11px; flex:1; background:#10b981;">Book Online</a>
                        </div>`
             };
