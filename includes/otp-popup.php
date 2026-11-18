@@ -450,8 +450,65 @@
         const btnCopy = document.getElementById('btnOtpPopupCopy');
         const btnFill = document.getElementById('btnOtpPopupFill');
 
+        function getTargetOtpInput() {
+            if (currentTargetInputId) {
+                const el = document.getElementById(currentTargetInputId);
+                if (el) return el;
+            }
+            return document.getElementById('adminOtpInput') ||
+                   document.getElementById('loginOtpInput') ||
+                   document.getElementById('regOtpInput') ||
+                   document.getElementById('forgotOtpInput') ||
+                   document.querySelector('input[name="otp"]');
+        }
+
+        function showOtpCopyToast(msg) {
+            let toast = document.getElementById('varshaOtpCopyToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'varshaOtpCopyToast';
+                toast.setAttribute('style', 'position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(30px); background: rgba(15, 23, 42, 0.96); border: 1.5px solid #00e5ff; color: #fff; padding: 12px 22px; border-radius: 12px; font-family: "Space Grotesk", -apple-system, sans-serif; font-size: 13.5px; font-weight: 700; box-shadow: 0 12px 35px rgba(0,0,0,0.85), 0 0 20px rgba(0,229,255,0.35); z-index: 100060; display: flex; align-items: center; gap: 10px; opacity: 0; transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; max-width: 90vw; text-align: center; box-sizing: border-box;');
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = '<span style="font-size: 16px;">📋</span><span>' + msg + '</span>';
+            requestAnimationFrame(function() {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            });
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(function() {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(30px)';
+            }, 3200);
+        }
+
+        function fallbackClipboardCopy(text) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                ta.style.top = '0';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            } catch (e) {
+                console.warn('Fallback clipboard copy failed:', e);
+            }
+        }
+
         if (btnClose) btnClose.addEventListener('click', window.closeVarshaOtpPopup);
-        if (btnDismiss) btnDismiss.addEventListener('click', window.closeVarshaOtpPopup);
+        if (btnDismiss) {
+            btnDismiss.addEventListener('click', function() {
+                const input = getTargetOtpInput();
+                if (input) input.focus();
+                window.closeVarshaOtpPopup();
+            });
+        }
 
         if (modal) {
             modal.addEventListener('click', function(e) {
@@ -459,44 +516,51 @@
             });
         }
 
-        // Copy Code to Clipboard
+        // Copy Code to Clipboard and automatically transition to OTP fill-up page
         if (btnCopy) {
             btnCopy.addEventListener('click', function() {
-                if (!currentOtp) return;
-                navigator.clipboard.writeText(currentOtp).then(function() {
-                    const copyText = document.getElementById('otpCopyText');
-                    const copyIcon = document.getElementById('otpCopyIcon');
-                    if (copyText) copyText.textContent = '✔ Copied!';
-                    if (copyIcon) copyIcon.textContent = '✅';
-                    setTimeout(function() {
-                        if (copyText) copyText.textContent = 'Copy Code';
-                        if (copyIcon) copyIcon.textContent = '📋';
-                    }, 2500);
-                }).catch(function() {
-                    // Fallback
-                    const ta = document.createElement('textarea');
-                    ta.value = currentOtp;
-                    document.body.appendChild(ta);
-                    ta.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(ta);
-                    const copyText = document.getElementById('otpCopyText');
-                    if (copyText) copyText.textContent = '✔ Copied!';
-                });
+                if (!currentOtp) {
+                    window.closeVarshaOtpPopup();
+                    return;
+                }
+
+                function onCopyComplete() {
+                    const input = getTargetOtpInput();
+                    if (input) {
+                        input.focus();
+                    }
+                    window.closeVarshaOtpPopup();
+                    showOtpCopyToast('OTP code copied to clipboard! Paste in the input.');
+                    if (typeof showNotice === 'function') {
+                        try {
+                            showNotice('📋 OTP Code copied to clipboard! (૧૦૦% કૉપિ થઈ ગયો છે)', 'success');
+                        } catch(e) {}
+                    }
+                }
+
+                if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(currentOtp).then(function() {
+                        onCopyComplete();
+                    }).catch(function() {
+                        fallbackClipboardCopy(currentOtp);
+                        onCopyComplete();
+                    });
+                } else {
+                    fallbackClipboardCopy(currentOtp);
+                    onCopyComplete();
+                }
             });
         }
 
-        // Auto-Fill in Input field
+        // Auto-Fill in Input field and transition to OTP fill-up page
         if (btnFill) {
             btnFill.addEventListener('click', function() {
-                if (currentTargetInputId) {
-                    const input = document.getElementById(currentTargetInputId);
-                    if (input) {
-                        input.value = currentOtp;
-                        input.focus();
-                        // Trigger input event
-                        input.dispatchEvent(new Event('input', { bubbles: true }));
-                    }
+                const input = getTargetOtpInput();
+                if (input) {
+                    input.value = currentOtp;
+                    input.focus();
+                    // Trigger input event
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
                 }
                 window.closeVarshaOtpPopup();
             });
